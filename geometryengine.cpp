@@ -51,7 +51,6 @@
 #include "geometryengine.h"
 
 #include <iostream>
-
 #include <QVector2D>
 #include <QVector3D>
 
@@ -128,7 +127,17 @@ void GeometryEngine::initCubeGeometry()
         {QVector3D( 1.0f,  1.0f, -1.0f), QVector2D(0.66f, 1.0f)}  // v23
     };
 
-
+    float hVertices = 16;
+    float vVertices = 16;
+    float planeVertexNumber = hVertices * vVertices;
+    VertexData planeVertices[ int(hVertices) * int(vVertices) ];
+    int count = 0;
+    for( float i =0; i<vVertices; i++){
+        for (float j = 0; j<hVertices; j++ ){
+            planeVertices[count] = { QVector3D( -1.0f + j/( hVertices - 1.0) *2.0f, -1.0f + i/( vVertices - 1.0) *2.0f, 1.0f ),  QVector2D(j/( hVertices - 1.0), i/( vVertices - 1.0))};
+            count++;
+        }
+    }
 
     // Indices for drawing cube faces using triangle strips.
     // Triangle strips can be connected by duplicating indices
@@ -147,14 +156,26 @@ void GeometryEngine::initCubeGeometry()
         20, 20, 21, 22, 23      // Face 5 - triangle strip (v20, v21, v22, v23)
     };
 
+
+    for ( int j=0; j<vVertices-1;j++){
+        if( j % 2 == 0 ){
+
+            for( int i=0; i<hVertices;i++){
+
+            }
+        }
+    }
+    GLushort planeIndices[] = {
+    };
+
 //! [1]
     // Transfer vertex data to VBO 0
     arrayBuf.bind();
-    arrayBuf.allocate(vertices, vertexNumber * sizeof(VertexData));
+    arrayBuf.allocate(planeVertices, planeVertexNumber * sizeof(VertexData));
 
     // Transfer index data to VBO 1
     indexBuf.bind();
-    indexBuf.allocate(indices,  indexCount* sizeof(GLushort));
+    indexBuf.allocate(planeIndices,  planeIndexCount* sizeof(GLushort));
 //! [1]
 }
 

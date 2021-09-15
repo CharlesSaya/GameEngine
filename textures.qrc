@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>cube.png</file>
+        <file>Heightmap_Mountain.png</file>
     </qresource>
 </RCC>

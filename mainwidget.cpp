@@ -120,7 +120,7 @@ void MainWidget::timerEvent(QTimerEvent *)
 
 void MainWidget::initializeGL()
 {
-    initializeOpenGLFunctions();
+    initializeOpenGLFunctions();    //  essentiel pour lancer OpenGL
 
     glClearColor(0, 0, 0, 1);
 
@@ -131,8 +131,9 @@ void MainWidget::initializeGL()
     // Enable depth buffer
     glEnable(GL_DEPTH_TEST);
 
+    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
     // Enable back face culling
-    glEnable(GL_CULL_FACE);
+//    glEnable(GL_CULL_FACE);
 //! [2]
 
     geometries = new GeometryEngine;
@@ -166,7 +167,7 @@ void MainWidget::initShaders()
 void MainWidget::initTextures()
 {
     // Load cube.png image
-    texture = new QOpenGLTexture(QImage(":/cube.png").mirrored());
+    texture = new QOpenGLTexture(QImage(":/Heightmap_Mountain.png").mirrored());
 
     // Set nearest filtering mode for texture minification
     texture->setMinificationFilter(QOpenGLTexture::Nearest);
