@@ -11,7 +11,10 @@ out vec2 v_texcoord;
 void main()
 {
     // Calculate vertex position in screen space
-    gl_Position = mvp_matrix * a_position;
+    vec4 position = a_position;
+    if ( a_position.x > 0.4 && a_position.x < 0.6 &&  a_position.y > 0.4 && a_position.y < 0.6 )
+        position += vec4(0.0,0.0,-.10,0.0);
+    gl_Position = mvp_matrix * position;
 
     // Pass texture coordinate to fragment shader
     // Value will be automatically interpolated to fragments inside polygon faces

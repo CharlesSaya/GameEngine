@@ -60,6 +60,7 @@ MainWidget::MainWidget(QWidget *parent) :
     texture(0),
     angularSpeed(0)
 {
+
 }
 
 MainWidget::~MainWidget()
@@ -113,8 +114,9 @@ void MainWidget::timerEvent(QTimerEvent *)
         rotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * rotation;
 
         // Request an update
-        update();
     }
+    update();
+
 }
 //! [1]
 
@@ -131,15 +133,24 @@ void MainWidget::initializeGL()
     // Enable depth buffer
     glEnable(GL_DEPTH_TEST);
 
-    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
+//    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
     // Enable back face culling
 //    glEnable(GL_CULL_FACE);
 //! [2]
 
     geometries = new GeometryEngine;
 
+    cameraPosition = QVector3D(0.0,0.0,0.0);
+    cameraTarget = QVector3D(0.0,0.0,-5.0);
+
+    cameraDirection = (cameraPosition - cameraTarget).normalized();
+
+    cameraRight = QVector3D::crossProduct(up,cameraDirection).normalized();
+
+    cameraUp    = QVector3D::crossProduct(cameraDirection, cameraRight);
+    time.start();
     // Use QBasicTimer because its faster than QTimer
-    timer.start(12, this);
+    timer.start(16, this);
 }
 
 //! [3]
@@ -167,7 +178,7 @@ void MainWidget::initShaders()
 void MainWidget::initTextures()
 {
     // Load cube.png image
-    texture = new QOpenGLTexture(QImage(":/Heightmap_Mountain.png").mirrored());
+    texture = new QOpenGLTexture(QImage(":/rock.png").mirrored());
 
     // Set nearest filtering mode for texture minification
     texture->setMinificationFilter(QOpenGLTexture::Nearest);
@@ -188,7 +199,7 @@ void MainWidget::resizeGL(int w, int h)
     qreal aspect = qreal(w) / qreal(h ? h : 1);
 
     // Set near plane to 3.0, far plane to 7.0, field of view 45 degrees
-    const qreal zNear = 3.0, zFar = 7.0, fov = 45.0;
+    const qreal zNear = 2.0, zFar = 10.0, fov = 45.0;
 
     // Reset projection
     projection.setToIdentity();
@@ -198,6 +209,26 @@ void MainWidget::resizeGL(int w, int h)
 }
 //! [5]
 
+void MainWidget::keyPressEvent(QKeyEvent *key){
+    float speed =.05;
+    switch( key->key() ){
+        case Qt::Key_Up:
+            cameraPosition += speed * up;
+            break;
+        case Qt::Key_Down:
+            cameraPosition -= speed * up;
+            break;
+        case Qt::Key_Right:
+            cameraPosition += speed * QVector3D::crossProduct(cameraFront,up).normalized() ;
+            break;
+        case Qt::Key_Left:
+            cameraPosition -= speed * QVector3D::crossProduct(cameraFront,up).normalized() ;
+            break;
+
+    }
+
+}
+
 void MainWidget::paintGL()
 {
     // Clear color and depth buffer
@@ -205,19 +236,23 @@ void MainWidget::paintGL()
 
     texture->bind();
 
-//! [6]
+    //! [6]
     // Calculate model view transformation
     QMatrix4x4 matrix;
-    matrix.translate(0.0, 0.0, -5.0);
+    matrix.translate(0.0,0.0,-5.0);
     matrix.rotate(rotation);
 
-    // Set modelview-projection matrix
-    program.setUniformValue("mvp_matrix", projection * matrix);
-//! [6]
+
+
+    view.lookAt( cameraPosition, cameraPosition + cameraDirection , cameraUp );
+
+    program.setUniformValue("mvp_matrix", projection * view * matrix);
+    //! [6]
 
     // Use texture unit 0 which contains cube.png
     program.setUniformValue("texture", 0);
 
     // Draw cube geometry
     geometries->drawCubeGeometry(&program);
+
 }

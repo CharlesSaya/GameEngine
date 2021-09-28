@@ -20,3 +20,5 @@ RESOURCES += \
 # install
 target.path = $$[YOUR_PATH]
 INSTALLS += target
+
+DISTFILES +=

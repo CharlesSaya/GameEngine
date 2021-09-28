@@ -54,6 +54,8 @@
 #include <QVector2D>
 #include <QVector3D>
 
+using namespace std;
+
 struct VertexData
 {
     QVector3D position;
@@ -127,15 +129,18 @@ void GeometryEngine::initCubeGeometry()
         {QVector3D( 1.0f,  1.0f, -1.0f), QVector2D(0.66f, 1.0f)}  // v23
     };
 
-    float hVertices = 16;
-    float vVertices = 16;
-    float planeVertexNumber = hVertices * vVertices;
-    VertexData planeVertices[ int(hVertices) * int(vVertices) ];
+    int hVertices = 16;
+    int vVertices = 16;
+    int planeVertexNumber = hVertices * vVertices;
+    VertexData planeVertices[planeVertexNumber];
     int count = 0;
-    for( float i =0; i<vVertices; i++){
-        for (float j = 0; j<hVertices; j++ ){
-            planeVertices[count] = { QVector3D( -1.0f + j/( hVertices - 1.0) *2.0f, -1.0f + i/( vVertices - 1.0) *2.0f, 1.0f ),  QVector2D(j/( hVertices - 1.0), i/( vVertices - 1.0))};
-            count++;
+    for( int i =0; i<vVertices; i++){
+        for (int j = 0; j<hVertices; j++ ){
+            planeVertices[count++] = { QVector3D( -1.0f + float( j/(hVertices-1.0)) * 2.0f,
+                                                  -1.0f + float( i/ ( vVertices-1.0 ) ) *2.0f,
+                                                   0.0f ),
+                                       QVector2D(float(j/(hVertices-1.0) - 1.0),
+                                                 float(i/(vVertices-1.0) - 1.0))};
         }
     }
 
@@ -155,18 +160,21 @@ void GeometryEngine::initCubeGeometry()
         16, 16, 17, 18, 19, 19, // Face 4 - triangle strip (v16, v17, v18, v19)
         20, 20, 21, 22, 23      // Face 5 - triangle strip (v20, v21, v22, v23)
     };
-
-
-    for ( int j=0; j<vVertices-1;j++){
-        if( j % 2 == 0 ){
-
-            for( int i=0; i<hVertices;i++){
-
-            }
+    unsigned int planeIndexCount = 508; //Careful update indicesNumber when creating new geometry
+    GLushort planeIndices[planeIndexCount];
+    count = 0;
+    for ( int i =0; i < vVertices - 1; i++ ){
+        int j = 0;
+        if ( i >0 )
+            planeIndices[count++] = GLushort(j + i * hVertices);
+        for ( ; j< hVertices; j++){
+            planeIndices[count++] = GLushort(j + i * hVertices);
+            planeIndices[count++] = GLushort(j + i * hVertices + hVertices);
         }
+        if ( i < vVertices -1 )
+            planeIndices[count++] = planeIndices[count-1];
     }
-    GLushort planeIndices[] = {
-    };
+    printf("%d", count);
 
 //! [1]
     // Transfer vertex data to VBO 0
@@ -175,7 +183,7 @@ void GeometryEngine::initCubeGeometry()
 
     // Transfer index data to VBO 1
     indexBuf.bind();
-    indexBuf.allocate(planeIndices,  planeIndexCount* sizeof(GLushort));
+    indexBuf.allocate(planeIndices,  (planeIndexCount)* sizeof(GLushort));
 //! [1]
 }
 

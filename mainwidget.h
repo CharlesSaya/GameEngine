@@ -59,6 +59,7 @@
 #include <QQuaternion>
 #include <QVector2D>
 #include <QBasicTimer>
+#include <QTime>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 
@@ -75,6 +76,8 @@ public:
 protected:
     void mousePressEvent(QMouseEvent *e) override;
     void mouseReleaseEvent(QMouseEvent *e) override;
+    void keyPressEvent(QKeyEvent *key);
+
     void timerEvent(QTimerEvent *e) override;
 
     void initializeGL() override;
@@ -85,18 +88,32 @@ protected:
     void initTextures();
 
 private:
+    QTime time;
+
     QBasicTimer timer;
     QOpenGLShaderProgram program;
     GeometryEngine *geometries;
 
     QOpenGLTexture *texture;
+    QOpenGLTexture *heightMap;
 
     QMatrix4x4 projection;
+    QMatrix4x4 view;
 
     QVector2D mousePressPosition;
     QVector3D rotationAxis;
     qreal angularSpeed;
     QQuaternion rotation;
+
+    QVector3D cameraPosition;
+    QVector3D cameraTarget;
+    QVector3D cameraDirection;
+    QVector3D cameraRight;
+    QVector3D cameraUp;
+
+    QVector3D up = QVector3D(0.0,1.0,0.0);
+    QVector3D cameraFront = QVector3D(0.0f, 0.0f, -1.0f);
+
 };
 
 #endif // MAINWIDGET_H
