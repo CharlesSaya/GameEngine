@@ -52,6 +52,7 @@
 #define MAINWIDGET_H
 
 #include "geometryengine.h"
+#include "camera.h"
 
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions_3_1>
@@ -70,15 +71,17 @@ class MainWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_1
     Q_OBJECT
 
 public:
-    explicit MainWidget(QWidget *parent = 0);
+    explicit MainWidget(int frames, QWidget *parent = 0);
     ~MainWidget();
 
 protected:
     void mousePressEvent(QMouseEvent *e) override;
     void mouseReleaseEvent(QMouseEvent *e) override;
-    void keyPressEvent(QKeyEvent *key);
+    void keyPressEvent(QKeyEvent *key) override;
 
     void timerEvent(QTimerEvent *e) override;
+
+    void orbital();
 
     void initializeGL() override;
     void resizeGL(int w, int h) override;
@@ -94,8 +97,11 @@ private:
     QOpenGLShaderProgram program;
     GeometryEngine *geometries;
 
-    QOpenGLTexture *texture;
     QOpenGLTexture *heightMap;
+
+    QOpenGLTexture *rockTexture;
+    QOpenGLTexture *grassTexture;
+    QOpenGLTexture *snowTexture;
 
     QMatrix4x4 projection;
     QMatrix4x4 view;
@@ -105,15 +111,16 @@ private:
     qreal angularSpeed;
     QQuaternion rotation;
 
-    QVector3D cameraPosition;
-    QVector3D cameraTarget;
-    QVector3D cameraDirection;
-    QVector3D cameraRight;
-    QVector3D cameraUp;
+    Camera camera;
+    Camera orbitalCamera;
 
     QVector3D up = QVector3D(0.0,1.0,0.0);
     QVector3D cameraFront = QVector3D(0.0f, 0.0f, -1.0f);
 
+    boolean orbitalMode = false;
+    boolean rotationMode = false;
+    float rotationSpeed  = 10.;
+    int frames;
 };
 
 #endif // MAINWIDGET_H

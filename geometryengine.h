@@ -68,7 +68,7 @@ private:
 
     QOpenGLBuffer arrayBuf;
     QOpenGLBuffer indexBuf;
-
+    unsigned int planeIndexCount;
 };
 
 #endif // GEOMETRYENGINE_H

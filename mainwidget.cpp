@@ -51,16 +51,16 @@
 #include "mainwidget.h"
 
 #include <QMouseEvent>
-
 #include <math.h>
 
-MainWidget::MainWidget(QWidget *parent) :
+MainWidget::MainWidget(int frames, QWidget *parent) :
     QOpenGLWidget(parent),
     geometries(0),
-    texture(0),
-    angularSpeed(0)
+    rockTexture(0),
+    angularSpeed(0),
+    frames(frames)
 {
-
+    this->setWindowTitle( QString( QString::number( frames )) + "FPS" );
 }
 
 MainWidget::~MainWidget()
@@ -68,7 +68,7 @@ MainWidget::~MainWidget()
     // Make sure the context is current when deleting the texture
     // and the buffers.
     makeCurrent();
-    delete texture;
+    delete rockTexture;
     delete geometries;
     doneCurrent();
 }
@@ -76,12 +76,17 @@ MainWidget::~MainWidget()
 //! [0]
 void MainWidget::mousePressEvent(QMouseEvent *e)
 {
+    if (orbitalMode)
+        return;
     // Save mouse press position
     mousePressPosition = QVector2D(e->localPos());
 }
 
 void MainWidget::mouseReleaseEvent(QMouseEvent *e)
 {
+    if (orbitalMode)
+        return;
+
     // Mouse release position - mouse press position
     QVector2D diff = QVector2D(e->localPos()) - mousePressPosition;
 
@@ -104,19 +109,28 @@ void MainWidget::mouseReleaseEvent(QMouseEvent *e)
 void MainWidget::timerEvent(QTimerEvent *)
 {
     // Decrease angular speed (friction)
-    angularSpeed *= 0.99;
+    angularSpeed *= 0.8;
 
-    // Stop rotation when speed goes below threshold
-    if (angularSpeed < 0.01) {
-        angularSpeed = 0.0;
-    } else {
-        // Update rotation
-        rotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * rotation;
+    if( orbitalMode) {
 
-        // Request an update
+        orbitalCamera.cameraPosition = QVector3D( 20.* sin( time.elapsed() / 1000. ), orbitalCamera.cameraPosition.y(),
+                                                   -20. - 20. *( - cos(time.elapsed() /  1000. )));
+        update();
     }
-    update();
-
+    else {
+        if( rotationMode ){
+            rotation = QQuaternion::fromAxisAndAngle(QVector3D(0.,1.,0.), -rotationSpeed*( time.elapsed() / 1000. ));
+            update();
+        }
+        else{
+            if (angularSpeed < 0.01) {
+                angularSpeed = 0.0;
+            } else {
+                rotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * rotation;
+                update();
+            }
+        }
+    }
 }
 //! [1]
 
@@ -135,22 +149,23 @@ void MainWidget::initializeGL()
 
 //    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
     // Enable back face culling
-//    glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
 //! [2]
 
     geometries = new GeometryEngine;
 
-    cameraPosition = QVector3D(0.0,0.0,0.0);
-    cameraTarget = QVector3D(0.0,0.0,-5.0);
+    QVector3D cameraPosition = QVector3D(.0,10.0,-0.);
+    QVector3D orbitalCameraPosition = QVector3D(.0,15.0,-0.);
 
-    cameraDirection = (cameraPosition - cameraTarget).normalized();
+    //Object center
+    QVector3D cameraTarget = QVector3D(0.0,0.,-20.0);
 
-    cameraRight = QVector3D::crossProduct(up,cameraDirection).normalized();
+    camera = Camera( cameraPosition, cameraTarget );
+    orbitalCamera = Camera( orbitalCameraPosition, cameraTarget, true );
 
-    cameraUp    = QVector3D::crossProduct(cameraDirection, cameraRight);
     time.start();
     // Use QBasicTimer because its faster than QTimer
-    timer.start(16, this);
+    timer.start(1000/frames , this);
 }
 
 //! [3]
@@ -178,17 +193,55 @@ void MainWidget::initShaders()
 void MainWidget::initTextures()
 {
     // Load cube.png image
-    texture = new QOpenGLTexture(QImage(":/rock.png").mirrored());
+    rockTexture = new QOpenGLTexture(QImage(":/rock.png").mirrored());
 
     // Set nearest filtering mode for texture minification
-    texture->setMinificationFilter(QOpenGLTexture::Nearest);
+    rockTexture->setMinificationFilter(QOpenGLTexture::Nearest);
 
     // Set bilinear filtering mode for texture magnification
-    texture->setMagnificationFilter(QOpenGLTexture::Linear);
+    rockTexture->setMagnificationFilter(QOpenGLTexture::Linear);
 
     // Wrap texture coordinates by repeating
     // f.ex. texture coordinate (1.1, 1.2) is same as (0.1, 0.2)
-    texture->setWrapMode(QOpenGLTexture::Repeat);
+    rockTexture->setWrapMode(QOpenGLTexture::Repeat);
+
+    // Load cube.png image
+    grassTexture = new QOpenGLTexture(QImage(":/grass.png").mirrored());
+
+    // Set nearest filtering mode for texture minification
+    grassTexture->setMinificationFilter(QOpenGLTexture::Nearest);
+
+    // Set bilinear filtering mode for texture magnification
+    grassTexture->setMagnificationFilter(QOpenGLTexture::Linear);
+
+    // Wrap texture coordinates by repeating
+    // f.ex. texture coordinate (1.1, 1.2) is same as (0.1, 0.2)
+    grassTexture->setWrapMode(QOpenGLTexture::Repeat);
+
+    // Load cube.png image
+    snowTexture = new QOpenGLTexture(QImage(":/snowrocks.png").mirrored());
+
+    // Set nearest filtering mode for texture minification
+    snowTexture->setMinificationFilter(QOpenGLTexture::Nearest);
+
+    // Set bilinear filtering mode for texture magnification
+    snowTexture->setMagnificationFilter(QOpenGLTexture::Linear);
+
+    // Wrap texture coordinates by repeating
+    // f.ex. texture coordinate (1.1, 1.2) is same as (0.1, 0.2)
+    snowTexture->setWrapMode(QOpenGLTexture::Repeat);
+
+    heightMap = new QOpenGLTexture( QImage(":/heightmap-1024x1024.png") );
+
+    // Set nearest filtering mode for texture minification
+    heightMap->setMinificationFilter(QOpenGLTexture::Nearest);
+
+    // Set bilinear filtering mode for texture magnification
+    heightMap->setMagnificationFilter(QOpenGLTexture::Linear);
+
+    // Wrap texture coordinates by repeating
+    // f.ex. texture coordinate (1.1, 1.2) is same as (0.1, 0.2)
+    heightMap->setWrapMode(QOpenGLTexture::Repeat);
 }
 //! [4]
 
@@ -199,7 +252,7 @@ void MainWidget::resizeGL(int w, int h)
     qreal aspect = qreal(w) / qreal(h ? h : 1);
 
     // Set near plane to 3.0, far plane to 7.0, field of view 45 degrees
-    const qreal zNear = 2.0, zFar = 10.0, fov = 45.0;
+    const qreal zNear = 5.0, zFar = 100.0, fov = 80.0;
 
     // Reset projection
     projection.setToIdentity();
@@ -210,23 +263,60 @@ void MainWidget::resizeGL(int w, int h)
 //! [5]
 
 void MainWidget::keyPressEvent(QKeyEvent *key){
-    float speed =.05;
+    float cameraSpeed =.2;
+
     switch( key->key() ){
         case Qt::Key_Up:
-            cameraPosition += speed * up;
+            if (rotationMode)
+                rotationSpeed+=20.;
+            else
+                camera.cameraPosition += cameraSpeed * cameraFront;
             break;
         case Qt::Key_Down:
-            cameraPosition -= speed * up;
+            if (rotationMode)
+                if (rotationSpeed - 20. < 0.)
+                    rotationSpeed = 0.;
+                else
+                    rotationSpeed-=20.;
+            else
+                camera.cameraPosition -= cameraSpeed * cameraFront;
             break;
         case Qt::Key_Right:
-            cameraPosition += speed * QVector3D::crossProduct(cameraFront,up).normalized() ;
+            if (rotationMode)
+                return;
+            else
+                camera.cameraPosition += cameraSpeed * QVector3D::crossProduct(cameraFront,up).normalized() ;
             break;
         case Qt::Key_Left:
-            cameraPosition -= speed * QVector3D::crossProduct(cameraFront,up).normalized() ;
+            if (rotationMode)
+                return;
+            else
+                camera.cameraPosition -= cameraSpeed * QVector3D::crossProduct(cameraFront,up).normalized() ;
+            break;
+        case Qt::Key_C:
+            time.restart();
+            if( orbitalMode ){
+                orbitalMode = false;
+            }
+            else{
+                orbitalMode = true;
+            }
+            break;
+        case Qt::Key_R:
+            time.restart();
+            if (!orbitalMode){
+                if( rotationMode )
+                    rotationMode = false;
+
+                else{
+                    rotationSpeed = 5.;
+                    rotationMode = true;
+                }
+            }
             break;
 
     }
-
+    update();
 }
 
 void MainWidget::paintGL()
@@ -234,25 +324,38 @@ void MainWidget::paintGL()
     // Clear color and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    texture->bind();
+    rockTexture->bind(0);
+    grassTexture->bind(1);
+    snowTexture->bind(2);
+    heightMap->bind(3);
 
     //! [6]
     // Calculate model view transformation
-    QMatrix4x4 matrix;
-    matrix.translate(0.0,0.0,-5.0);
-    matrix.rotate(rotation);
+    QMatrix4x4 model;
+    model.translate(0.0,.0,-20.0);
+    model.rotate(rotation);
+    model.rotate(QQuaternion::fromAxisAndAngle(1.,0.,0.,90));
 
+    if (orbitalMode){
+        view = orbitalCamera.getViewMatrix();
+    }
+    else
+        view = camera.getViewMatrix() ;
 
-
-    view.lookAt( cameraPosition, cameraPosition + cameraDirection , cameraUp );
-
-    program.setUniformValue("mvp_matrix", projection * view * matrix);
+    program.setUniformValue("mvp_matrix", projection * view * model);
     //! [6]
 
-    // Use texture unit 0 which contains cube.png
-    program.setUniformValue("texture", 0);
+    program.setUniformValue("rockTexture", 0);
+    program.setUniformValue("grassTexture", 1);
+    program.setUniformValue("snowTexture", 2);
+    program.setUniformValue("heightMap",3);
 
     // Draw cube geometry
     geometries->drawCubeGeometry(&program);
+
+    rockTexture->release();
+    grassTexture->release();
+    snowTexture->release();
+    heightMap->release();
 
 }

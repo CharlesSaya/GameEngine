@@ -129,18 +129,20 @@ void GeometryEngine::initCubeGeometry()
         {QVector3D( 1.0f,  1.0f, -1.0f), QVector2D(0.66f, 1.0f)}  // v23
     };
 
-    int hVertices = 16;
-    int vVertices = 16;
+    int hVertices = 128;
+    int vVertices = 128;
     int planeVertexNumber = hVertices * vVertices;
     VertexData planeVertices[planeVertexNumber];
     int count = 0;
     for( int i =0; i<vVertices; i++){
         for (int j = 0; j<hVertices; j++ ){
-            planeVertices[count++] = { QVector3D( -1.0f + float( j/(hVertices-1.0)) * 2.0f,
-                                                  -1.0f + float( i/ ( vVertices-1.0 ) ) *2.0f,
+            planeVertices[count++] = { QVector3D( -10.0f + (float(j)/(float(hVertices)-1.0)) * 20.0f,
+                                                  -10.0f + (float(i)/(float(vVertices)-1.0)) * 20.0f,
                                                    0.0f ),
-                                       QVector2D(float(j/(hVertices-1.0) - 1.0),
-                                                 float(i/(vVertices-1.0) - 1.0))};
+                                       QVector2D( float(j)/float(hVertices-1),
+                                                  float(i)/float(vVertices-1))
+                                     };
+
         }
     }
 
@@ -160,7 +162,7 @@ void GeometryEngine::initCubeGeometry()
         16, 16, 17, 18, 19, 19, // Face 4 - triangle strip (v16, v17, v18, v19)
         20, 20, 21, 22, 23      // Face 5 - triangle strip (v20, v21, v22, v23)
     };
-    unsigned int planeIndexCount = 508; //Careful update indicesNumber when creating new geometry
+    planeIndexCount = vVertices * hVertices * 2 - 4; //Careful update indicesNumber when creating new geometry
     GLushort planeIndices[planeIndexCount];
     count = 0;
     for ( int i =0; i < vVertices - 1; i++ ){
@@ -174,7 +176,7 @@ void GeometryEngine::initCubeGeometry()
         if ( i < vVertices -1 )
             planeIndices[count++] = planeIndices[count-1];
     }
-    printf("%d", count);
+    printf("%d", planeIndexCount);
 
 //! [1]
     // Transfer vertex data to VBO 0
@@ -183,7 +185,7 @@ void GeometryEngine::initCubeGeometry()
 
     // Transfer index data to VBO 1
     indexBuf.bind();
-    indexBuf.allocate(planeIndices,  (planeIndexCount)* sizeof(GLushort));
+    indexBuf.allocate(planeIndices,  planeIndexCount * sizeof(GLushort));
 //! [1]
 }
 
@@ -211,6 +213,6 @@ void GeometryEngine::drawCubeGeometry(QOpenGLShaderProgram *program)
     program->setAttributeBuffer(texcoordLocation, GL_FLOAT, offset, 2, sizeof(VertexData));
 
     // Draw cube geometry using indices from VBO 1
-    glDrawElements(GL_TRIANGLE_STRIP, indexBuf.size(), GL_UNSIGNED_SHORT, 0); //Careful update indicesNumber when creating new geometry
+    glDrawElements(GL_TRIANGLE_STRIP, planeIndexCount, GL_UNSIGNED_SHORT, 0); //Careful update indicesNumber when creating new geometry
 }
 //! [2]

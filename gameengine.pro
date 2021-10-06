@@ -10,6 +10,7 @@ SOURCES += \
     geometryengine.cpp
 
 HEADERS += \
+    camera.h \
     mainwidget.h \
     geometryengine.h
 
