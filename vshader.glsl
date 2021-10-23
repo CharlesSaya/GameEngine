@@ -14,7 +14,7 @@ void main()
     // Calculate vertex position in screen space
     vec4 position = a_position;
     vec4 h = texture2D( heightMap,a_texcoord );
-    position += vec4(0.,0., - h.z*1.8,0.);
+//    position += vec4(0.,0., - h.z*1.8,0.);
     gl_Position = mvp_matrix * position;
 
     // Pass texture coordinate to fragment shader

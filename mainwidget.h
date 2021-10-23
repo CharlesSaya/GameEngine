@@ -53,6 +53,9 @@
 
 #include "geometryengine.h"
 #include "camera.h"
+#include "transform.h"
+#include "gameObject.h"
+#include "sceneGraph.h"
 
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions_3_1>
@@ -119,7 +122,18 @@ private:
 
     boolean orbitalMode = false;
     boolean rotationMode = false;
-    float rotationSpeed  = 10.;
+    float rotationSpeed  = 25.;
+
+    SceneGraph sceneGraph;
+
+    GameObject * sun ;
+    GameObject * moon ;
+    GameObject * earth ;
+
+    GameObject * solarSystem ;
+    GameObject * moonOrbit ;
+    GameObject * earthOrbit ;
+
     int frames;
 };
 

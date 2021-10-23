@@ -3,6 +3,7 @@
 uniform sampler2D rockTexture;
 uniform sampler2D grassTexture;
 uniform sampler2D snowTexture;
+uniform vec3 meshColor;
 
 in vec2 v_texcoord;
 in float height;
@@ -20,6 +21,9 @@ void main()
         gl_FragColor = rockColor;
     else
         gl_FragColor = snowColor;
+
+    gl_FragColor = vec4( meshColor, 1.0);
+
 }
 //! [0]
 

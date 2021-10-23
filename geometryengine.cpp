@@ -66,7 +66,7 @@ struct VertexData
 GeometryEngine::GeometryEngine()
     : indexBuf(QOpenGLBuffer::IndexBuffer)
 {
-    initializeOpenGLFunctions();
+    initializeOpenGLFunctions();    //  essentiel pour lancer OpenGL
 
     // Generate 2 VBOs
     arrayBuf.create();
@@ -176,7 +176,6 @@ void GeometryEngine::initCubeGeometry()
         if ( i < vVertices -1 )
             planeIndices[count++] = planeIndices[count-1];
     }
-    printf("%d", planeIndexCount);
 
 //! [1]
     // Transfer vertex data to VBO 0
@@ -192,6 +191,7 @@ void GeometryEngine::initCubeGeometry()
 //! [2]
 void GeometryEngine::drawCubeGeometry(QOpenGLShaderProgram *program)
 {
+
     // Tell OpenGL which VBOs to use
     arrayBuf.bind();
     indexBuf.bind();
