@@ -1,11 +1,11 @@
 <RCC>
     <qresource prefix="/">
-        <file>cube.png</file>
-        <file>Heightmap_Mountain.png</file>
-        <file>rock.png</file>
-        <file>grass.png</file>
-        <file>snowrocks.png</file>
-        <file>heightmap-1024x1024.png</file>
-        <file>Heightmap_Rocky.png</file>
+        <file>textures/cube.png</file>
+        <file>textures/Heightmap_Mountain.png</file>
+        <file>textures/rock.png</file>
+        <file>textures/grass.png</file>
+        <file>textures/snowrocks.png</file>
+        <file>textures/heightmap-1024x1024.png</file>
+        <file>textures/Heightmap_Rocky.png</file>
     </qresource>
 </RCC>

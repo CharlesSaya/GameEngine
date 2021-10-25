@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/">
-        <file>sphere.obj</file>
-        <file>sphere.off</file>
-        <file>bunny.obj</file>
+        <file>objects/sphere.obj</file>
+        <file>objects/sphere.off</file>
+        <file>objects/bunny.obj</file>
     </qresource>
 </RCC>

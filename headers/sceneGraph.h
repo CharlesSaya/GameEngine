@@ -2,7 +2,7 @@
 #define SCENEGRAPH_H
 
 #include <QVector3D>
-#include <gameObject.h>
+#include "gameObject.h"
 
 class SceneGraph{
 private:

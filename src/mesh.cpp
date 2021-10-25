@@ -1,4 +1,4 @@
-#include "mesh.h"
+#include "headers/mesh.h"
 
 using namespace OBJIO;
 
@@ -8,7 +8,7 @@ Mesh::Mesh(){
 
 Mesh::Mesh( std::string filepath, QVector3D meshColor ){
     this->meshColor = meshColor;
-    initializeOpenGLFunctions();    //  essentiel pour lancer OpenGL
+    initializeOpenGLFunctions();
 
     // Generate 2 VBOs
     verticesBuffer =  QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);

@@ -3,29 +3,23 @@ QT       += core gui widgets
 TARGET = gameengine
 TEMPLATE = app
 
-SOURCES += main.cpp \
-    gameObject.cpp \
-    gameobjectcamera.cpp \
-    gameobjectmesh.cpp \
-    mesh.cpp \
-    sceneGraph.cpp \
-    transform.cpp
-
-SOURCES += \
-    mainwidget.cpp \
-    geometryengine.cpp
+SOURCES += src/main.cpp \
+    src/gameObject.cpp \
+    src/mesh.cpp \
+    src/sceneGraph.cpp \
+    src/transform.cpp \
+    src/mainwidget.cpp \
+    src/geometryengine.cpp
 
 HEADERS += \
-    BasicIO.h \
-    camera.h \
-    gameObject.h \
-    gameobjectcamera.h \
-    gameobjectmesh.h \
-    mainwidget.h \
-    geometryengine.h \
-    mesh.h \
-    sceneGraph.h \
-    transform.h
+    headers/BasicIO.h \
+    headers/camera.h \
+    headers/gameObject.h \
+    headers/mainwidget.h \
+    headers/geometryengine.h \
+    headers/mesh.h \
+    headers/sceneGraph.h \
+    headers/transform.h
 
 RESOURCES += \
     objects.qrc \
