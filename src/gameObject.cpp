@@ -82,7 +82,7 @@ void GameObject::drawMesh( QOpenGLShaderProgram * program  ){
     this->mesh.drawMesh( program );
 }
 
-void GameObject::resetTransformMatrix(){
+void GameObject::resetModelMatrix(){
     this->transform.resetModel();
 }
 

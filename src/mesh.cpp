@@ -26,6 +26,7 @@ void Mesh::loadGeometry( std::string filepath ){
     std::vector<QVector3D> v;
     std::vector< std::vector< unsigned int > > indexes;
     open<QVector3D, unsigned int>( filepath, v, indexes );
+    this->boundingBox = AABB( v );
 
     //Create vertex data
     Q_FOREACH( QVector3D vec, v){

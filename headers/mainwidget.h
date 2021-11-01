@@ -66,6 +66,7 @@
 #include <QTime>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
+#include <QtMath>
 
 class GeometryEngine;
 
@@ -80,6 +81,7 @@ public:
 protected:
     void mousePressEvent(QMouseEvent *e) override;
     void mouseReleaseEvent(QMouseEvent *e) override;
+    void mouseMoveEvent(QMouseEvent *e) override;
     void keyPressEvent(QKeyEvent *key) override;
 
     void timerEvent(QTimerEvent *e) override;
@@ -125,6 +127,11 @@ private:
     GameObject * earthOrbit ;
 
     int frames;
+
+    float deltaTime = 0.0f;
+    float lastFrame = 0.0f;
+    float pitch = 0.f;
+    float yaw = -90.f;
 };
 
 #endif // MAINWIDGET_H

@@ -6,10 +6,11 @@
 class Transform{
 
 private:
-    QVector3D position;
+    QVector3D translation;
     QQuaternion rotation;
     QVector3D scale;
     QMatrix4x4 model;
+
 public:
     Transform();
     Transform( QVector3D &translation,  QQuaternion & rotation, QVector3D  &scale );

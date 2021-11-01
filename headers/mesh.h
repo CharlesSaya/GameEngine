@@ -9,6 +9,7 @@
 #include <QVector3D>
 #include <QOpenGLTexture>
 
+#include "AABB.h"
 #include "BasicIO.h"
 
 
@@ -27,6 +28,7 @@ class Mesh : protected QOpenGLFunctions_3_1{
     QOpenGLTexture * texture;
     QOpenGLBuffer verticesBuffer, indexesBuffer;
     QVector3D meshColor;
+    AABB boundingBox;
 
  public:
     Mesh();

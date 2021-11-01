@@ -12,6 +12,7 @@ SOURCES += src/main.cpp \
     src/geometryengine.cpp
 
 HEADERS += \
+    headers/AABB.h \
     headers/BasicIO.h \
     headers/camera.h \
     headers/gameObject.h \
