@@ -4,7 +4,7 @@
 #include <vector>
 #include <QVector3D>
 
-#include "mesh.h"
+#include "../render/mesh.h"
 #include "transform.h"
 
 class GameObject{

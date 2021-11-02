@@ -1,4 +1,4 @@
-#include "headers/mesh.h"
+#include "headers/render/mesh.h"
 
 using namespace OBJIO;
 
@@ -7,8 +7,8 @@ Mesh::Mesh(){
 }
 
 Mesh::Mesh( std::string filepath, QVector3D meshColor ){
+
     this->meshColor = meshColor;
-    initializeOpenGLFunctions();
 
     // Generate 2 VBOs
     verticesBuffer =  QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
@@ -18,6 +18,7 @@ Mesh::Mesh( std::string filepath, QVector3D meshColor ){
     indexesBuffer.create();
 
     loadGeometry( filepath );
+    initBuffers();
 }
 
 void Mesh::loadGeometry( std::string filepath ){
@@ -26,7 +27,6 @@ void Mesh::loadGeometry( std::string filepath ){
     std::vector<QVector3D> v;
     std::vector< std::vector< unsigned int > > indexes;
     open<QVector3D, unsigned int>( filepath, v, indexes );
-    this->boundingBox = AABB( v );
 
     //Create vertex data
     Q_FOREACH( QVector3D vec, v){
@@ -39,6 +39,12 @@ void Mesh::loadGeometry( std::string filepath ){
         }
     }
 
+    this->bBox = AABB( v );
+}
+
+void Mesh::initBuffers(){
+    initializeOpenGLFunctions();
+
     indexCount = faces.size() ;
 
     verticesBuffer.bind();
@@ -49,6 +55,7 @@ void Mesh::loadGeometry( std::string filepath ){
 
 }
 
+
 void Mesh::drawMesh( QOpenGLShaderProgram *program ){
     program->setUniformValue("meshColor", this->meshColor );
 
@@ -57,14 +64,12 @@ void Mesh::drawMesh( QOpenGLShaderProgram *program ){
 
     quintptr offset = 0;
 
-    // Tell OpenGL programmable pipeline how to locate vertex position data
     int vertexLocation = program->attributeLocation("a_position");
     program->enableAttributeArray(vertexLocation);
     program->setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(VertexData));
 
     offset += sizeof(QVector3D);
 
-    // Tell OpenGL programmable pipeline how to locate vertex texture coordinate data
     int texcoordLocation = program->attributeLocation("a_texcoord");
     program->enableAttributeArray(texcoordLocation);
     program->setAttributeBuffer(texcoordLocation, GL_FLOAT, offset , 2, sizeof(VertexData));

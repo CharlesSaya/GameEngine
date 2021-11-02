@@ -51,10 +51,10 @@
 #ifndef MAINWIDGET_H
 #define MAINWIDGET_H
 
-#include "geometryengine.h"
-#include "camera.h"
-#include "transform.h"
-#include "gameObject.h"
+#include "../render/geometryengine.h"
+#include "../render/camera.h"
+#include "../core/transform.h"
+#include "../core/gameObject.h"
 #include "sceneGraph.h"
 
 #include <QOpenGLWidget>
@@ -97,8 +97,8 @@ protected:
 
 private:
     QTime time;
-
     QBasicTimer timer;
+
     QOpenGLShaderProgram program;
 
     QOpenGLTexture *heightMap;

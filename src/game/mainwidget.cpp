@@ -1,5 +1,5 @@
 #include <math.h>
-#include "headers/mainwidget.h"
+#include "headers/game/mainwidget.h"
 
 #include <QMouseEvent>
 
@@ -171,16 +171,16 @@ void MainWidget::keyPressEvent(QKeyEvent *key){
     float movementSpeed = 10. * deltaTime;
 
     switch( key->key() ){
-        case Qt::Key_Up:
+        case Qt::Key_Z:
             camera.move( camera.cameraForward, movementSpeed );
             break;
-        case Qt::Key_Down:
+        case Qt::Key_S:
             camera.move( -camera.cameraForward, movementSpeed );
             break;
-        case Qt::Key_Left:
+        case Qt::Key_Q:
             camera.move( camera.getRight(), movementSpeed );
             break;
-        case Qt::Key_Right:
+        case Qt::Key_D:
             camera.move( camera.getLeft(), movementSpeed );
             break;
     }

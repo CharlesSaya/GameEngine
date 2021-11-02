@@ -3,7 +3,7 @@
 
 #include "gameObject.h"
 
-class GameObjectCamera : GameObject
+class GameObjectCamera : public GameObject
 {
 public:
     GameObjectCamera();

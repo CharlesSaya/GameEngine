@@ -5,12 +5,13 @@
 
 #include <QOpenGLFunctions_3_1>
 #include <QOpenGLShaderProgram>
-#include <QOpenGLBuffer>
-#include <QVector3D>
 #include <QOpenGLTexture>
 
+#include <QOpenGLBuffer>
+#include <QVector3D>
+
 #include "AABB.h"
-#include "BasicIO.h"
+#include "../core/BasicIO.h"
 
 
 typedef struct VertexData
@@ -22,20 +23,23 @@ typedef struct VertexData
 class Mesh : protected QOpenGLFunctions_3_1{
 
  private:
+    int indexCount;
+
     std::vector<VertexData> vertices;
     std::vector<GLushort> faces ;
-    int indexCount;
     QOpenGLTexture * texture;
     QOpenGLBuffer verticesBuffer, indexesBuffer;
     QVector3D meshColor;
-    AABB boundingBox;
+    AABB bBox;
 
  public:
     Mesh();
     Mesh( std::string filepath, QVector3D meshColor );
 
     void loadGeometry( std::string filepath );
+    void initBuffers();
     void drawMesh( QOpenGLShaderProgram *program);
+    void drawAABB( QOpenGLShaderProgram *program);
 };
 
 #endif // MESH_H
