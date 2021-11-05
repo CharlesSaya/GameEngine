@@ -5,6 +5,7 @@
 #include <QVector3D>
 
 #include "../render/mesh.h"
+#include "../core/gameComponent.h"
 #include "transform.h"
 
 class GameObject{
@@ -18,7 +19,7 @@ private:
     bool containsMesh = false;
 
     std::vector<GameObject *> children;
-    std::vector< std::vector< int > > faces;
+    std::vector<GameComponent * > gameComponents;
 
 public:
     GameObject();
@@ -37,9 +38,16 @@ public:
     void setMesh( Mesh &mesh );
     Mesh &getMesh();
 
+    void addComponent( GameComponent * component );
+    void removeComponent( GameComponent * component);
+
     bool hasMesh();
 
-    void translate( QVector3D translation );
+    void input();
+    void update();
+    void render();
+
+    void move( QVector3D translation );
     void rotate( QVector3D axis, float angle );
     void scale( QVector3D scale );
 

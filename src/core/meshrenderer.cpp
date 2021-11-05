@@ -9,8 +9,17 @@ MeshRenderer::MeshRenderer(QOpenGLShaderProgram * program, Mesh &mesh){
     this->mesh = mesh;
 }
 
-void MeshRenderer::render(){
-    if( renderAABB )
-        qDebug( "Implement AABB rendering" );
+void MeshRenderer::input(){
+
 }
 
+void MeshRenderer::update(){
+
+}
+
+void MeshRenderer::render(){
+
+    this->program->setUniformValue("meshColor", this->mesh.getMeshColor() );
+    this->mesh.drawMesh(this->program);
+
+}

@@ -48,90 +48,68 @@
 **
 ****************************************************************************/
 
-#ifndef MAINWIDGET_H
-#define MAINWIDGET_H
+#ifndef COREENGINE_H
+#define COREENGINE_H
 
-#include "../render/geometryengine.h"
 #include "../render/camera.h"
-#include "../core/transform.h"
-#include "../core/gameObject.h"
-#include "sceneGraph.h"
+#include "../render/geometryengine.h"
 
-#include <QOpenGLWidget>
-#include <QOpenGLFunctions_3_1>
+#include "../game/game.h"
+#include "../game/sceneGraph.h"
+
+#include "transform.h"
+#include "gameObject.h"
+#include "meshrenderer.h"
+
+#include <QTime>
+#include <QBasicTimer>
+
+#include <QtMath>
+#include <QVector2D>
 #include <QMatrix4x4>
 #include <QQuaternion>
-#include <QVector2D>
-#include <QBasicTimer>
-#include <QTime>
-#include <QOpenGLShaderProgram>
+
+#include <QOpenGLWidget>
 #include <QOpenGLTexture>
-#include <QtMath>
+#include <QOpenGLShaderProgram>
+#include <QOpenGLFunctions_3_1>
 
-class GeometryEngine;
 
-class MainWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_1
+
+class CoreEngine : public QOpenGLWidget, protected QOpenGLFunctions_3_1
 {
     Q_OBJECT
 
 public:
-    explicit MainWidget(int frames, QWidget *parent = 0);
-    ~MainWidget();
+    explicit CoreEngine(int frames, Game game, QWidget *parent = 0);
+    ~CoreEngine();
 
 protected:
-    void mousePressEvent(QMouseEvent *e) override;
-    void mouseReleaseEvent(QMouseEvent *e) override;
+
     void mouseMoveEvent(QMouseEvent *e) override;
     void keyPressEvent(QKeyEvent *key) override;
-
     void timerEvent(QTimerEvent *e) override;
 
     void initializeGL() override;
     void resizeGL(int w, int h) override;
     void paintGL() override;
 
-    void initShaders();
-    void initTextures();
-
-    void initScene();
-
 private:
     QTime time;
     QBasicTimer timer;
-
-    QOpenGLShaderProgram program;
-
-    QOpenGLTexture *heightMap;
-
-    QOpenGLTexture *rockTexture;
-    QOpenGLTexture *grassTexture;
-    QOpenGLTexture *snowTexture;
-
-    QMatrix4x4 projection;
-    QMatrix4x4 view;
 
     QVector2D mousePressPosition;
     QVector3D rotationAxis;
     QQuaternion rotation;
 
-    Camera camera;
+    QMatrix4x4 projection;
 
-    SceneGraph sceneGraph;
-
-    GameObject * sun ;
-    GameObject * moon ;
-    GameObject * earth ;
-
-    GameObject * solarSystem ;
-    GameObject * moonOrbit ;
-    GameObject * earthOrbit ;
+    Game game;
 
     int frames;
 
     float deltaTime = 0.0f;
     float lastFrame = 0.0f;
-    float pitch = 0.f;
-    float yaw = -90.f;
 };
 
-#endif // MAINWIDGET_H
+#endif // COREENGINE_H

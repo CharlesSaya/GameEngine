@@ -23,13 +23,14 @@ public:
     QVector3D cameraUp;
     QVector3D cameraForward ;
     QVector3D cameraRight;
+    QMatrix4x4 view;
 
     float fov, zNear, zFar;
 
     Camera(){
     }
 
-    Camera(QVector3D cameraPosition, QVector3D cameraTarget, bool orbital = false){
+    Camera(QVector3D cameraPosition, QVector3D cameraTarget ){
         this->cameraPosition = cameraPosition;
         this->cameraTarget = cameraTarget;
 
@@ -39,11 +40,11 @@ public:
 
     }
 
-    QMatrix4x4 getViewMatrix(){
-        QMatrix4x4 view;
-
+    QMatrix4x4 &getViewMatrix(){
+        view.setToIdentity();
         view.lookAt(this->cameraPosition, this->cameraPosition + this->cameraForward, this->cameraUp);
         return view;
+
     }
 
     QVector3D getRight(){

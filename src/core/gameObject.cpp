@@ -27,13 +27,6 @@ void GameObject::setName(const std::string &newName)
     name = newName;
 }
 
-void GameObject::setFaces( const std::vector< std::vector< int > > &faces ){
-    this->faces = faces;
-}
-
-const std::vector< std::vector< int > > GameObject::getFaces(){
-    return this->faces;
-}
 
 void GameObject::addChild( GameObject *newChildren)
 {
@@ -66,7 +59,7 @@ bool GameObject::hasMesh(){
     return this->containsMesh;
 }
 
-void GameObject::translate( QVector3D translation ){
+void GameObject::move( QVector3D translation ){
     this->transform.applyTranslation( translation );
 }
 
@@ -79,6 +72,7 @@ void GameObject::scale( QVector3D scale ){
 }
 
 void GameObject::drawMesh( QOpenGLShaderProgram * program  ){
+
     this->mesh.drawMesh( program );
 }
 
@@ -92,4 +86,23 @@ QMatrix4x4 GameObject::getModel(){
     }
     else
         return this->parent->getModel() * this->transform.getModel();
+}
+
+void GameObject::addComponent(GameComponent *component){
+    this->gameComponents.push_back( component );
+}
+
+void GameObject::input(){
+    Q_FOREACH( GameComponent * component, gameComponents )
+        component->input();
+}
+
+void GameObject::update(){
+    Q_FOREACH( GameComponent * component, gameComponents )
+        component->update();
+}
+
+void GameObject::render(){
+    Q_FOREACH( GameComponent * component, gameComponents )
+        component->render();
 }

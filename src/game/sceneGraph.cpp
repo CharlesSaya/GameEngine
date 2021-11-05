@@ -12,15 +12,24 @@ GameObject * SceneGraph::getRoot(){
     return this->root;
 }
 
-void SceneGraph:: draw( GameObject * gameObject, QMatrix4x4 &view, QMatrix4x4 &projection, QOpenGLShaderProgram * program ){
+void  SceneGraph::input(){
+
+
+}
+
+void SceneGraph::update(){
+
+}
+
+void SceneGraph::render( GameObject * gameObject, QMatrix4x4 &view, QMatrix4x4 &projection, QOpenGLShaderProgram * program ){
 
     program->setUniformValue("mvp_matrix", projection * view * gameObject->getModel());
 
     if ( gameObject->hasMesh()){
-        gameObject->drawMesh(program);
+        gameObject->render();
     }
 
     Q_FOREACH (GameObject * g , gameObject->getChildren() ){
-        draw( g, view, projection, program );
+        render( g, view, projection, program );
     }
 }

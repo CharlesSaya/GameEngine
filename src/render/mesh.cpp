@@ -21,6 +21,17 @@ Mesh::Mesh( std::string filepath, QVector3D meshColor ){
     initBuffers();
 }
 
+
+const QVector3D &Mesh::getMeshColor() const
+{
+    return meshColor;
+}
+
+void Mesh::setMeshColor(const QVector3D &newMeshColor)
+{
+    meshColor = newMeshColor;
+}
+
 void Mesh::loadGeometry( std::string filepath ){
 
     //Load object
@@ -57,7 +68,6 @@ void Mesh::initBuffers(){
 
 
 void Mesh::drawMesh( QOpenGLShaderProgram *program ){
-    program->setUniformValue("meshColor", this->meshColor );
 
     verticesBuffer.bind();
     indexesBuffer.bind();

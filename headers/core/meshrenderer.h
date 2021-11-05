@@ -15,13 +15,21 @@ class MeshRenderer : public QOpenGLFunctions_3_1, public GameComponent
 public:
     MeshRenderer();
     MeshRenderer( QOpenGLShaderProgram * program, Mesh &mesh );
-    void render();
+
+    void input();
+    void update() ;
+    void render() ;
+
+    void renderAABB();
 
 private:
     Mesh mesh;
     QOpenGLShaderProgram * program;
 
-    bool renderAABB = false;
+    QOpenGLBuffer verticesBuffer, indexesBuffer;
+
+    int indexCount;
+    bool renderBoundingBox = false;
 };
 
 #endif // MESHRENDERER_H

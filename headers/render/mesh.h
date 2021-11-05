@@ -40,6 +40,8 @@ class Mesh : protected QOpenGLFunctions_3_1{
     void initBuffers();
     void drawMesh( QOpenGLShaderProgram *program);
     void drawAABB( QOpenGLShaderProgram *program);
+    const QVector3D &getMeshColor() const;
+    void setMeshColor(const QVector3D &newMeshColor);
 };
 
 #endif // MESH_H
