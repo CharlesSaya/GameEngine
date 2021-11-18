@@ -7,25 +7,27 @@
 
 #include <vector>
 
-#include "../render/mesh.h"
-#include "gameComponent.h"
+#include "headers/render/mesh.h"
+
+#include "headers/core/camera.h"
+#include "headers/core/transform.h"
+#include "headers/core/gameComponent.h"
 
 class MeshRenderer : public QOpenGLFunctions_3_1, public GameComponent
 {
 public:
     MeshRenderer();
-    MeshRenderer( QOpenGLShaderProgram * program, Mesh &mesh );
+    MeshRenderer( Mesh &mesh,  Transform & transform );
 
-    void input();
-    void update() ;
-    void render() ;
+    void input() override;
+    void update() override;
+    void render( const QMatrix4x4& model, const QMatrix4x4& view, const QMatrix4x4& projection, const QVector3D& cameraPosition ) override;
 
     void renderAABB();
 
 private:
     Mesh mesh;
-    QOpenGLShaderProgram * program;
-
+    Transform &transform;
     QOpenGLBuffer verticesBuffer, indexesBuffer;
 
     int indexCount;

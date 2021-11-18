@@ -7,13 +7,15 @@
 #include<QVector3D>
 #include<vector>
 
+#include "headers/render/vertexData.h"
+
 class AABB{
 
     private:
         int indexCount;
 
         std::vector<QVector3D> vertices;
-        std::vector<GLushort> lines ;
+        std::vector<GLuint> lines ;
 
         QOpenGLBuffer verticesBuffer, indexesBuffer;
         QVector3D min = QVector3D(__FLT_MAX__ ,__FLT_MAX__, __FLT_MAX__) ;
@@ -23,13 +25,16 @@ class AABB{
 
         AABB();
 
-        AABB( std::vector<QVector3D> points );
+        AABB( std::vector<VertexData> &points );
 
         const QVector3D &getMin() const;
         void setMin(const QVector3D &newMin);
 
         const QVector3D &getMax() const;
         void setMax(const QVector3D &newMax);
+
+        float getHeight();
+        float getWidth();
 
         void initBuffers();
         void drawAABB( QOpenGLShaderProgram * program );

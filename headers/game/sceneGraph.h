@@ -2,8 +2,11 @@
 #define SCENEGRAPH_H
 
 #include <QVector3D>
+#include <QOpenGLShaderProgram>
 
-#include "../core/gameObject.h"
+#include "headers/core/camera.h"
+#include "headers/core/gameObject.h"
+#include "headers/render/shader.h"
 
 class SceneGraph{
 private:
@@ -20,7 +23,7 @@ public:
 
     void input();
     void update();
-    void render( GameObject * root,  QMatrix4x4 &view, QMatrix4x4 &projection, QOpenGLShaderProgram * program  );
+    void render( GameObject * root,  Camera &camera , QMatrix4x4 &projection );
 };
 
 #endif // SCENEGRAPH_H

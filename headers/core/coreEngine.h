@@ -51,11 +51,18 @@
 #ifndef COREENGINE_H
 #define COREENGINE_H
 
-#include "../render/camera.h"
-#include "../render/geometryengine.h"
+#include <math.h>
 
-#include "../game/game.h"
-#include "../game/sceneGraph.h"
+#include "headers/core/player.h"
+#include "headers/core/camera.h"
+
+#include "headers/render/light.h"
+#include "headers/render/terrain.h"
+
+//#include "headers/game/game.h"
+#include "headers/game/sceneGraph.h"
+
+
 
 #include "transform.h"
 #include "gameObject.h"
@@ -68,7 +75,9 @@
 #include <QVector2D>
 #include <QMatrix4x4>
 #include <QQuaternion>
+#include <QMouseEvent>
 
+#include <QApplication>
 #include <QOpenGLWidget>
 #include <QOpenGLTexture>
 #include <QOpenGLShaderProgram>
@@ -81,10 +90,12 @@ class CoreEngine : public QOpenGLWidget, protected QOpenGLFunctions_3_1
     Q_OBJECT
 
 public:
-    explicit CoreEngine(int frames, Game game, QWidget *parent = 0);
-    ~CoreEngine();
+    explicit CoreEngine();
+    explicit CoreEngine(int frames, QWidget *parent = 0);
 
 protected:
+
+    void initGame();
 
     void mouseMoveEvent(QMouseEvent *e) override;
     void keyPressEvent(QKeyEvent *key) override;
@@ -95,6 +106,14 @@ protected:
     void paintGL() override;
 
 private:
+
+    int frames;
+
+    float deltaTime = 0.0f;
+    float lastFrame = 0.0f;
+
+    float yaw = 90., pitch  =0.;
+
     QTime time;
     QBasicTimer timer;
 
@@ -104,12 +123,20 @@ private:
 
     QMatrix4x4 projection;
 
-    Game game;
+//    Game game;
 
-    int frames;
+    SceneGraph sceneGraph;
+    Terrain terrain;
+    Camera camera;
+    Player player;
 
-    float deltaTime = 0.0f;
-    float lastFrame = 0.0f;
+    GameObject * terrainGO ;
+    GameObject * playerGO;
+
+    Shader * shader ;
+    Shader * terrainShader;
+
+    QVector3D white = QVector3D( 1., 0., 0.);
 };
 
 #endif // COREENGINE_H

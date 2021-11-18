@@ -6,27 +6,27 @@
 
     }
 
-    AABB::AABB( std::vector<QVector3D> points ){
+    AABB::AABB( std::vector<VertexData> &points ){
 //        initializeOpenGLFunctions();
 
         for( unsigned int i = 0; i < points.size(); i++){
-            if (min.x() > points[i].x())
-                min.setX( points[i].x() );
+            if (min.x() > points[i].position.x())
+                min.setX( points[i].position.x() );
 
-            if (min.y() > points[i].y())
-                min.setY( points[i].y() );
+            if (min.y() > points[i].position.y())
+                min.setY( points[i].position.y() );
 
-            if (min.z() > points[i].z())
-                min.setZ( points[i].z() );
+            if (min.z() > points[i].position.z())
+                min.setZ( points[i].position.z() );
 
-            if (max.x() < points[i].x())
-                max.setX( points[i].x() );
+            if (max.x() < points[i].position.x())
+                max.setX( points[i].position.x() );
 
-            if (max.x() > points[i].y())
-                max.setY( points[i].y() );
+            if (max.y() < points[i].position.y())
+                max.setY( points[i].position.y() );
 
-            if (max.z() < points[i].z())
-                max.setZ( points[i].z() );
+            if (max.z() < points[i].position.z())
+                max.setZ( points[i].position.z() );
         }
 
 
@@ -37,6 +37,14 @@
 //        indexesBuffer.create();
 //        initBuffers();
 
+    }
+
+    float AABB::getHeight(){
+        return this->max.y() - this->min.y();
+    }
+
+    float AABB::getWidth(){
+        return this->max.x() - this->min.x();
     }
 
     const QVector3D &AABB::getMax() const
@@ -99,7 +107,7 @@
 //        verticesBuffer.allocate( vertices.data(), vertices.size() * sizeof( QVector3D ) );
 
 //        indexesBuffer.bind();
-//        indexesBuffer.allocate ( lines.data(), indexCount * sizeof( GLushort ) );
+//        indexesBuffer.allocate ( lines.data(), indexCount * sizeof( GLuint ) );
 //    }
 
 //    void AABB::drawAABB( QOpenGLShaderProgram * program ){

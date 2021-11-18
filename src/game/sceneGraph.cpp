@@ -21,15 +21,11 @@ void SceneGraph::update(){
 
 }
 
-void SceneGraph::render( GameObject * gameObject, QMatrix4x4 &view, QMatrix4x4 &projection, QOpenGLShaderProgram * program ){
+void SceneGraph::render( GameObject * gameObject, Camera &camera, QMatrix4x4 &projection ){
 
-    program->setUniformValue("mvp_matrix", projection * view * gameObject->getModel());
-
-    if ( gameObject->hasMesh()){
-        gameObject->render();
-    }
+    gameObject->render( gameObject->getModel(), camera.getViewMatrix(), projection, camera.getCameraPosition() );
 
     Q_FOREACH (GameObject * g , gameObject->getChildren() ){
-        render( g, view, projection, program );
+        render( g, camera, projection );
     }
 }

@@ -5,45 +5,7 @@ Game::Game(){
 }
 
 void Game::initGame(){
-    BasicShader& shader = BasicShader::getInstance();
 
-    shader.useShaderProgram();
-
-    // Cameras  -------------------------------------------------------------------------------
-    QVector3D cameraPosition = QVector3D(.0,0.0,4.);
-    QVector3D cameraTarget = QVector3D(.0,.0,0.);
-
-    camera = Camera( cameraPosition, cameraTarget );
-
-    //Build scene graph  -------------------------------------------------------------------------------
-
-    std::string sphereObj = "../GameEngine/objects/sphere.obj";
-    std::string bunnyObj  = "../GameEngine/objects/bunny.obj";
-
-    solarSystem = new GameObject( "Solar System", nullptr ) ;
-    sun   = new GameObject( "Sun", sphereObj, QVector3D( 1., 1., 0. ), solarSystem);
-    MeshRenderer * sunRenderer = new MeshRenderer( &shader.getProgram(), sun->getMesh() );
-    sun->addComponent( sunRenderer );
-
-    earthOrbit  = new GameObject( "Earth Orbit", solarSystem ) ;
-    earth = new GameObject( "Earth", sphereObj, QVector3D( 0., 0., 1. ), earthOrbit );
-    MeshRenderer * earthRenderer = new MeshRenderer( &shader.getProgram(), earth->getMesh() );
-    earth->addComponent( earthRenderer );
-
-    moonOrbit   = new GameObject( " Moon Orbit ", earthOrbit ) ;
-    moon  = new GameObject( "Moon", sphereObj, QVector3D( 0.75, 0.75, 0.75 ), moonOrbit );
-    MeshRenderer * moonRenderer = new MeshRenderer( &shader.getProgram(), moon->getMesh() );
-    moon->addComponent( moonRenderer );
-
-    solarSystem->addChild( sun );
-    solarSystem->addChild( earthOrbit );
-
-    earthOrbit->addChild( earth );
-    earthOrbit->addChild( moonOrbit );
-
-    moonOrbit->addChild( moon );
-
-    sceneGraph = SceneGraph( solarSystem );
 }
 
 void Game::input( float time ){
@@ -75,8 +37,7 @@ void Game::update( float time ){
 }
 
 void Game::render( QMatrix4x4 projection ){
-    BasicShader& shader = BasicShader::getInstance();
-    this->sceneGraph.render( sceneGraph.getRoot(), camera.getViewMatrix() , projection, &shader.getProgram() );
+
 
 }
 
@@ -87,6 +48,8 @@ void Game::initTextures()
                                ":/textures/grass.png" ,
                                ":/textures/snowrocks.png",
                                ":/textures/heightmap-1024x1024.png" };
+
+
 }
 
 Camera &Game::getCamera()
@@ -97,5 +60,15 @@ Camera &Game::getCamera()
 void Game::setCamera(const Camera &newCamera)
 {
     camera = newCamera;
+}
+
+Player &Game::getPlayer()
+{
+    return player;
+}
+
+void Game::setPlayer(const Player &newPlayer)
+{
+    player = newPlayer;
 }
 

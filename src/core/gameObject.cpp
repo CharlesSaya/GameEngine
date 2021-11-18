@@ -1,21 +1,14 @@
 #include "headers/core/gameObject.h"
 
+
 GameObject::GameObject(){}
 
-GameObject::GameObject( std::string name, GameObject * parent){
+GameObject::GameObject( std::string name, GameObject * parent ){
     this->name = name;
     this->transform = Transform();
     this->parent = parent;
-    this->children = std::vector<GameObject *> ();
 }
 
-GameObject::GameObject( std::string name, std::string filename, QVector3D meshColor, GameObject * parent){
-    this->name = name;
-    this->transform = Transform();
-    this->parent = parent;
-    this->mesh = Mesh( filename, meshColor );
-    this->containsMesh = true;
-}
 
 const std::string &GameObject::getName() const
 {
@@ -26,7 +19,6 @@ void GameObject::setName(const std::string &newName)
 {
     name = newName;
 }
-
 
 void GameObject::addChild( GameObject *newChildren)
 {
@@ -47,16 +39,8 @@ void GameObject::setTransform(const Transform &newTransform)
     this->transform = newTransform;
 }
 
-void GameObject::setMesh( Mesh &mesh ){
-    this->mesh = mesh;
-}
-
-Mesh &GameObject::getMesh(){
-    return this->mesh;
-}
-
-bool GameObject::hasMesh(){
-    return this->containsMesh;
+QVector3D GameObject::getWorldPosition(){
+    return this->transform.getWorldPosition();
 }
 
 void GameObject::move( QVector3D translation ){
@@ -69,11 +53,6 @@ void GameObject::rotate( QVector3D axis, float angle ){
 
 void GameObject::scale( QVector3D scale ){
     this->transform.applyScale( scale );
-}
-
-void GameObject::drawMesh( QOpenGLShaderProgram * program  ){
-
-    this->mesh.drawMesh( program );
 }
 
 void GameObject::resetModelMatrix(){
@@ -102,7 +81,8 @@ void GameObject::update(){
         component->update();
 }
 
-void GameObject::render(){
+void GameObject::render( const QMatrix4x4 &model, const QMatrix4x4 &view, const QMatrix4x4 &projection, const QVector3D &cameraPosition ){
+
     Q_FOREACH( GameComponent * component, gameComponents )
-        component->render();
+        component->render( model, view, projection, cameraPosition );
 }

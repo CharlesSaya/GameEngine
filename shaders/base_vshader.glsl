@@ -1,25 +1,29 @@
 #version 140
 
-uniform mat4 mvp_matrix;
-uniform sampler2D heightMap;
-in vec4 a_position;
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
+
+in vec3 a_position;
+in vec3 a_normal;
 in vec2 a_texcoord;
 
+out vec3 v_pos;
+out vec3 v_normal;
 out vec2 v_texcoord;
-out float height;
 
 //! [0]
 void main()
 {
-    // Calculate vertex position in screen space
-    vec4 position = a_position;
-    vec4 h = texture2D( heightMap,a_texcoord );
-//    position += vec4(0.,0., - h.z*1.8,0.);
-    gl_Position = mvp_matrix * position;
+    vec4 position = vec4( a_position, 1.0);
 
-    // Pass texture coordinate to fragment shader
-    // Value will be automatically interpolated to fragments inside polygon faces
-    v_texcoord = a_texcoord;
-    height = h.z;
+    vec4 worldPosition = model * position;
+    vec4 nWorld = model * vec4( a_normal, 0.0);
+
+    gl_Position = projection * view * model * position;
+
+    v_pos = vec4(model *  position).xyz ;
+    v_texcoord  = a_texcoord;
+    v_normal  = nWorld.xyz ;
 }
 //! [0]

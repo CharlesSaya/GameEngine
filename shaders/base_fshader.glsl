@@ -1,28 +1,31 @@
 #version 140
+uniform sampler2D sphereTexture;
 
-uniform sampler2D rockTexture;
-uniform sampler2D grassTexture;
-uniform sampler2D snowTexture;
 uniform vec3 meshColor;
 
+uniform vec3 lightPosition;
+uniform vec3 cameraPosition;
+
+in vec3 v_pos;
+in vec3 v_normal;
 in vec2 v_texcoord;
-in float height;
+
 //! [0]
 void main()
 {
-    // Set fragment color from texture
-    vec4 rockColor  = texture2D( rockTexture, v_texcoord);
-    vec4 grassColor = texture2D( grassTexture, v_texcoord);
-    vec4 snowColor  = texture2D( snowTexture, v_texcoord);
+    vec4 color = texture2D( sphereTexture, v_texcoord );
 
-    if ( height <0.07)
-        gl_FragColor = grassColor;
-    else if(height>=0.07 && height < 0.3 )
-        gl_FragColor = rockColor;
-    else
-        gl_FragColor = snowColor;
+    vec3 lightVector = normalize( lightPosition - v_pos );
 
-    gl_FragColor = vec4( meshColor, 1.0);
+    vec3 lambertian =  0.4 * max( 0.0, dot( lightVector, normalize(v_normal)  ) ) * vec3( 1.0 ) ;
+
+    vec3 r = normalize( reflect ( -lightVector, normalize( v_normal ) ) );
+    vec3 v = normalize( cameraPosition - v_pos );
+    vec3 specular =  0.2 * pow( max( 0.0, dot( r, v ) ), 20.0 ) * vec3( 1.0 ) ;
+
+    vec3 ambient = 0.4 * color.xyz;
+
+    gl_FragColor = vec4( ambient + lambertian +  specular , 1.0);
 
 }
 //! [0]
