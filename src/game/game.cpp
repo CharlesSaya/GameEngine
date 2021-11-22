@@ -1,28 +1,22 @@
 #include "headers/game/game.h"
 
-Game::Game( ){
+Game::Game(){
 
+}
+
+Game::Game( Camera * camera ){
+    this->camera = camera;
 }
 
 void Game::initGame(){
 
     // Shaders & Lights  -------------------------------------------------------------------------------
-
     shader = new Shader( "../GameEngine/shaders/base_vshader.glsl", "../GameEngine/shaders/base_fshader.glsl" );
     terrainShader = new Shader(  "../GameEngine/shaders/terrain_vshader.vert", "../GameEngine/shaders/terrain_fshader.frag" );
 
     Light light( QVector3D( 5.0, 4.0, -5.0) );
     light.loadLight( shader );
     light.loadLight( terrainShader );
-
-    // Cameras  -------------------------------------------------------------------------------
-
-    QVector3D cameraPosition = QVector3D(2.0,2.0,1.);
-    QVector3D cameraTarget   = QVector3D(.0,.0,.0);
-
-    const qreal zNear = .01, zFar = 100.0, fov = 80.0;
-
-    camera = new Camera( cameraPosition, cameraTarget, fov, zNear, zFar );
 
     // Build scene graph  -------------------------------------------------------------------------------
 
@@ -66,7 +60,7 @@ void Game::initGame(){
 
     MoveComponent * playerMove = new MoveComponent( deltaTime, playerGO->getTransform(), terrain );
 
-    installEventFilter( playerMove );
+//    installEventFilter( playerMove );
 
     playerGO->addComponent( playerRenderer );
 
@@ -91,6 +85,16 @@ void Game::update( float time )
 
 void Game::render( ){
     this->sceneGraph.render( terrainGO, *camera );
+}
+
+Camera *Game::getCamera() const
+{
+    return camera;
+}
+
+void Game::setCamera(Camera *newCamera)
+{
+    camera = newCamera;
 }
 
 void Game::setProjection( float aspect ){

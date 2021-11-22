@@ -26,27 +26,29 @@ public slots:
     void setProjection( float aspect );
 
 public:
-    Game(  );
+    Game();
+    Game( Camera * camera );
     void initGame();
 
     void input( float time );
     void update( float time );
     void render();
 
-    Camera &getCamera();
-    void setCamera(const Camera &newCamera);
+
 
     Player &getPlayer();
     void setPlayer(const Player &newPlayer);
 
+    Camera *getCamera() const;
+    void setCamera(Camera *newCamera);
+
 private:
     float deltaTime;
-
+    Camera * camera;
     SceneGraph sceneGraph;
     Player player;
 
     Terrain terrain;
-    Camera * camera;
 
     GameObject * terrainGO ;
     GameObject * playerGO;

@@ -9,10 +9,10 @@ CoreEngine::CoreEngine(int frames, QScopedPointer<Game> &game, QWidget *parent) 
     QOpenGLWidget(parent),
     frames(frames)
 {
-    this->game.swap( game );
 
     this->grabMouse();
     this->grabKeyboard();
+    this->game.swap( game );
 
     this->setMouseTracking(true);
     this->setWindowTitle( QString   ( QString::number( frames ) ) + "FPS" );
@@ -41,7 +41,6 @@ void CoreEngine::mouseMoveEvent(QMouseEvent *e){
         hAngle *= sensitivity;
 
         mousePressPosition = QVector2D( e->localPos() );
-
     }
 
     yaw += hAngle;
@@ -125,8 +124,7 @@ void CoreEngine::initializeGL(){
     time.start();
     timer.start(1000/frames , this);
 
-//    initGame();
-    this->game.data()->initGame();
+    initGame();
 
 }
 
@@ -157,6 +155,9 @@ void CoreEngine::initGame(){
     const qreal zNear = .01, zFar = 100.0, fov = 80.0;
 
     camera = new Camera( cameraPosition, cameraTarget, fov, zNear, zFar );
+
+    this->game.data()->setCamera( camera );
+    this->game.data()->initGame();
 
     // Build scene graph  -------------------------------------------------------------------------------
 
