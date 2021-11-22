@@ -71,9 +71,9 @@ void GameObject::addComponent(GameComponent *component){
     this->gameComponents.push_back( component );
 }
 
-void GameObject::input(){
+void GameObject::input( QKeyEvent * key ){
     Q_FOREACH( GameComponent * component, gameComponents )
-        component->input();
+        component->input(  key );
 }
 
 void GameObject::update(){

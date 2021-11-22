@@ -1,74 +1,98 @@
 #include "headers/game/game.h"
 
+Game::Game( ){
 
-Game::Game(){
 }
 
 void Game::initGame(){
 
+    // Shaders & Lights  -------------------------------------------------------------------------------
+
+    shader = new Shader( "../GameEngine/shaders/base_vshader.glsl", "../GameEngine/shaders/base_fshader.glsl" );
+    terrainShader = new Shader(  "../GameEngine/shaders/terrain_vshader.vert", "../GameEngine/shaders/terrain_fshader.frag" );
+
+    Light light( QVector3D( 5.0, 4.0, -5.0) );
+    light.loadLight( shader );
+    light.loadLight( terrainShader );
+
+    // Cameras  -------------------------------------------------------------------------------
+
+    QVector3D cameraPosition = QVector3D(2.0,2.0,1.);
+    QVector3D cameraTarget   = QVector3D(.0,.0,.0);
+
+    const qreal zNear = .01, zFar = 100.0, fov = 80.0;
+
+    camera = new Camera( cameraPosition, cameraTarget, fov, zNear, zFar );
+
+    // Build scene graph  -------------------------------------------------------------------------------
+
+    std::string sphereObj = "../GameEngine/objects/sphere/";
+    std::string bunnyObj  = "../GameEngine/objects/bunny/";
+
+    Texture heightMap = Texture( "../GameEngine/textures/Heightmap_Rocky.png", "heightMap" );
+    Texture snow      = Texture( "../GameEngine/textures/snowrocks.png", "snow" );
+    Texture rock      = Texture( "../GameEngine/textures/rock.png", "rock" );
+    Texture grass     = Texture( "../GameEngine/textures/grass.png", "grass" );
+
+    // Terrain Game Object --------------------------------------------------------------------------
+
+    std::vector<Texture> terrainTextures;
+    terrainTextures.push_back( heightMap );
+    terrainTextures.push_back( snow );
+    terrainTextures.push_back( rock );
+    terrainTextures.push_back( grass );
+
+    terrain = Terrain( heightMap );
+    Mesh terrainMesh = Mesh( terrain, terrainTextures, terrainShader, white );
+
+    terrainGO = new GameObject( "Terrain" );
+
+    MeshRenderer * terrainRenderer = new MeshRenderer( terrainMesh, terrainGO->getTransform() );
+
+    terrainGO->addComponent( terrainRenderer );
+
+    // Player Game Object  -------------------------------------------------------------------------------
+
+
+    std::vector<Texture> bunnyTextures;
+    bunnyTextures.push_back( grass );
+
+    Mesh playerMesh = Mesh( sphereObj ,bunnyTextures, shader, white );
+
+    playerGO  = new GameObject( "Player", terrainGO );
+    playerGO->scale( QVector3D( 0.01, 0.01, 0.01 ) );
+
+    MeshRenderer * playerRenderer = new MeshRenderer( playerMesh, playerGO->getTransform() );
+
+    MoveComponent * playerMove = new MoveComponent( deltaTime, playerGO->getTransform(), terrain );
+
+    installEventFilter( playerMove );
+
+    playerGO->addComponent( playerRenderer );
+
+    this->player = Player( *playerGO );
+    this->player.setMesh( playerMesh );
+    this->player.move( QVector3D(0.0, 0.0, 0.0), terrain );
+
+    // Build hierarchy --------------------------------------------------------------------------
+
+    terrainGO->addChild( playerGO );
+
+    sceneGraph = SceneGraph( terrainGO );
 }
 
 void Game::input( float time ){
 
 }
-
-void Game::update( float time ){
-
-    sun->resetModelMatrix();
-    sun->rotate( QVector3D(0.,1.,0.), - 50. * time  );
-
-    earthOrbit->resetModelMatrix();
-    earthOrbit->rotate( QVector3D( 0.,1.,0. ), -20 * time );
-    earthOrbit->move( QVector3D( 3., 0.0, 0.0 ) );
-    earthOrbit->rotate( QVector3D( 0.,0.,1. ), -23.44  );
-
-    earth->resetModelMatrix();
-    earth->scale( QVector3D( .5, .5, .5 ) );
-    earth->rotate( QVector3D(0.,1.,0.), -20 * time );
-
-    moonOrbit->resetModelMatrix();
-    moonOrbit->rotate( QVector3D(0.,1.,0.), 10 * -20 * time );
-    moonOrbit->move(QVector3D( 1.0, 0.0, 0.0 ));
-
-    moon->resetModelMatrix();
-    moon->scale( QVector3D( .15, .15, .15) );
-    moon->rotate( QVector3D(0.,1.,0.), -10 * 20 * time );
-
-}
-
-void Game::render( QMatrix4x4 projection ){
-
-
-}
-
-
-void Game::initTextures()
+void Game::update( float time )
 {
-    std::string textures[4] = { ":/textures/rock.png",
-                               ":/textures/grass.png" ,
-                               ":/textures/snowrocks.png",
-                               ":/textures/heightmap-1024x1024.png" };
-
 
 }
 
-Camera &Game::getCamera()
-{
-    return camera;
+void Game::render( ){
+    this->sceneGraph.render( terrainGO, *camera );
 }
 
-void Game::setCamera(const Camera &newCamera)
-{
-    camera = newCamera;
+void Game::setProjection( float aspect ){
+    this->camera->setProjection( aspect );
 }
-
-Player &Game::getPlayer()
-{
-    return player;
-}
-
-void Game::setPlayer(const Player &newPlayer)
-{
-    player = newPlayer;
-}
-

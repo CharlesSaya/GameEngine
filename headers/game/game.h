@@ -9,23 +9,29 @@
 #include "headers/core/camera.h"
 #include "headers/core/gameObject.h"
 #include "headers/core/meshrenderer.h"
+#include "headers/core/moveComponent.h"
 #include "headers/core/gameComponent.h"
 
+#include "headers/render/light.h"
 #include "headers/render/shader.h"
 #include "headers/render/terrain.h"
 
 #include "sceneGraph.h"
 
-class Game{
+class Game : public QObject{
+    Q_OBJECT
+
+public slots:
+
+    void setProjection( float aspect );
 
 public:
-    Game();
+    Game(  );
     void initGame();
-    void initTextures();
 
     void input( float time );
     void update( float time );
-    void render( QMatrix4x4 projection );
+    void render();
 
     Camera &getCamera();
     void setCamera(const Camera &newCamera);
@@ -34,20 +40,21 @@ public:
     void setPlayer(const Player &newPlayer);
 
 private:
+    float deltaTime;
 
-    Camera camera;
     SceneGraph sceneGraph;
     Player player;
 
-    GameObject * sun ;
-    GameObject * moon ;
-    GameObject * earth ;
-    GameObject * plane ;
+    Terrain terrain;
+    Camera * camera;
 
-    GameObject * solarSystem ;
-    GameObject * moonOrbit ;
-    GameObject * earthOrbit ;
+    GameObject * terrainGO ;
+    GameObject * playerGO;
 
+    Shader * shader ;
+    Shader * terrainShader;
+
+    QVector3D white = QVector3D( 1., 0., 0.);
 };
 
 #endif // GAME_H

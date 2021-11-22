@@ -8,6 +8,8 @@
 
 #include "headers/render/shader.h"
 
+#include "headers/physics/physicsEngine.h"
+
 #include "transform.h"
 
 class GameObject{
@@ -39,7 +41,7 @@ public:
     void addComponent( GameComponent * component );
     void removeComponent( GameComponent * component);
 
-    void input();
+    void input( QKeyEvent * key );
     void update();
     void render( const QMatrix4x4 &model, const QMatrix4x4 &view, const QMatrix4x4 &projection, const QVector3D &cameraPosition );
 

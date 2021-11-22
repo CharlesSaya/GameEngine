@@ -13,13 +13,17 @@
 #include "headers/core/transform.h"
 #include "headers/core/gameComponent.h"
 
-class MeshRenderer : public QOpenGLFunctions_3_1, public GameComponent
+class MeshRenderer : public GameComponent, public QOpenGLFunctions_3_1
 {
+
+protected:
+    bool eventFilter( QObject * obj,  QEvent * event ) override;
+
 public:
     MeshRenderer();
     MeshRenderer( Mesh &mesh,  Transform & transform );
 
-    void input() override;
+    void input( QKeyEvent * key ) override;
     void update() override;
     void render( const QMatrix4x4& model, const QMatrix4x4& view, const QMatrix4x4& projection, const QVector3D& cameraPosition ) override;
 

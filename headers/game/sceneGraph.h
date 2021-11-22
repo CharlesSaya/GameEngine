@@ -23,7 +23,7 @@ public:
 
     void input();
     void update();
-    void render( GameObject * root,  Camera &camera , QMatrix4x4 &projection );
+    void render( GameObject * root,  Camera &camera );
 };
 
 #endif // SCENEGRAPH_H

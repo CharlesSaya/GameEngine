@@ -25,7 +25,7 @@ private:
 
 };
 
-template<typename T> void Shader::setUniformValue( std::string location, T value ){
+template<typename T> inline void Shader::setUniformValue( std::string location, T value ){
     this->program.setUniformValue( location.c_str(), value );
 }
 

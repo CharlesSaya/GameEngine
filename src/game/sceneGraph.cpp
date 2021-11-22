@@ -21,11 +21,11 @@ void SceneGraph::update(){
 
 }
 
-void SceneGraph::render( GameObject * gameObject, Camera &camera, QMatrix4x4 &projection ){
+void SceneGraph::render( GameObject * gameObject, Camera &camera){
 
-    gameObject->render( gameObject->getModel(), camera.getViewMatrix(), projection, camera.getCameraPosition() );
+    gameObject->render( gameObject->getModel(), camera.getViewMatrix(), camera.getProjection(), camera.getCameraPosition() );
 
     Q_FOREACH (GameObject * g , gameObject->getChildren() ){
-        render( g, camera, projection );
+        render( g, camera );
     }
 }

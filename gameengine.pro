@@ -4,6 +4,7 @@ TARGET = gameengine
 TEMPLATE = app
 
 SOURCES += src/game/main.cpp \
+    src/core/camera.cpp \
     src/core/coreEngine.cpp \
     src/core/moveComponent.cpp \
     src/core/objLoader.cpp \

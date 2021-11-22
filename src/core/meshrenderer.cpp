@@ -5,7 +5,12 @@ MeshRenderer::MeshRenderer( Mesh &_mesh,Transform & _transform ) :  transform(_t
     this->mesh = _mesh;
 }
 
-void MeshRenderer::input(  ){
+bool MeshRenderer::eventFilter( QObject * obj,  QEvent * event ){
+
+    return false;
+}
+
+void MeshRenderer::input( QKeyEvent * key  ){
 
 }
 

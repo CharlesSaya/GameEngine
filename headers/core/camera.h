@@ -8,12 +8,17 @@
 #include <QMatrix4x4>
 #include <QtMath>
 
-class Camera{
+class Camera : public QObject {
+    Q_OBJECT
+
+public slots:
+
+
+protected:
+    bool eventFilter( QObject * obj, QEvent * event );
 
 private:
-
-
-public:
+    float fov, zFar, zNear;
 
     QVector3D yAxis = QVector3D( 0., 1., 0.);
 
@@ -22,61 +27,33 @@ public:
 
     QVector3D cameraUp;
     QVector3D cameraForward ;
-    QVector3D cameraRight;
+    QVector3D right;
+    QVector3D left;
+
     QMatrix4x4 view;
+    QMatrix4x4 projection;
 
-    float fov, zNear, zFar;
+public:
 
-    Camera(){
-    }
+    Camera();
 
-    Camera(QVector3D cameraPosition, QVector3D cameraTarget ){
-        this->cameraPosition = cameraPosition;
-        this->cameraTarget = cameraTarget;
+    Camera(QVector3D cameraPosition, QVector3D cameraTarget, float fov, float zNear, float zFar );
 
-        this->cameraForward = (this->cameraTarget - this->cameraPosition).normalized();
-        this->cameraRight = QVector3D::crossProduct( this->yAxis ,this->cameraForward).normalized();
-        this->cameraUp = QVector3D::crossProduct( this->cameraForward, this->cameraRight );
+    void move( QVector3D axis );
 
-    }
+    void rotate( float pitch, float yaw );
 
-    QMatrix4x4 &getViewMatrix(){
-        view.setToIdentity();
-        view.lookAt(this->cameraPosition, this->cameraPosition + this->cameraForward, this->cameraUp);
-        return view;
+    const QMatrix4x4& getViewMatrix();
 
-    }
+    const QVector3D& getRight();
 
-    QVector3D getRight(){
-        return QVector3D::crossProduct( this->yAxis ,this->cameraForward ).normalized();
-    }
+    const QVector3D& getLeft();
 
-    QVector3D getLeft(){
+    const QVector3D& getCameraPosition();
 
-        return QVector3D::crossProduct( this->cameraForward,  this->yAxis ).normalized();
-
-    }
-
-    void move( QVector3D axis ){
-        this->cameraPosition += axis;
-        this->cameraTarget += axis;
-    }
-
-    void rotate( float pitch, float yaw ){
-
-        this->cameraForward.setX( cos(qDegreesToRadians(yaw)) * cos(qDegreesToRadians(pitch)) );
-        this->cameraForward.setY( sin(qDegreesToRadians(pitch)) );
-        this->cameraForward.setZ( sin(qDegreesToRadians(yaw)) * cos(qDegreesToRadians(pitch)) );
-        this->cameraForward.normalize();
-        this->cameraUp =  QVector3D::crossProduct( this->cameraForward, getRight() ).normalized();
-
-    }
-
-    QVector3D& getCameraPosition()
-    {
-        return cameraPosition;
-    }
-
+    const QVector3D& getCameraForward();
+    void setProjection(float aspect);
+    const QMatrix4x4 &getProjection() const;
 };
 
 

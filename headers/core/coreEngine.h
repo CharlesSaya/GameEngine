@@ -59,14 +59,14 @@
 #include "headers/render/light.h"
 #include "headers/render/terrain.h"
 
-//#include "headers/game/game.h"
+#include "headers/game/game.h"
 #include "headers/game/sceneGraph.h"
-
 
 
 #include "transform.h"
 #include "gameObject.h"
 #include "meshrenderer.h"
+#include "moveComponent.h"
 
 #include <QTime>
 #include <QBasicTimer>
@@ -89,21 +89,25 @@ class CoreEngine : public QOpenGLWidget, protected QOpenGLFunctions_3_1
 {
     Q_OBJECT
 
+private slots:
+
+
 public:
     explicit CoreEngine();
-    explicit CoreEngine(int frames, QWidget *parent = 0);
+    explicit CoreEngine(int frames, QScopedPointer<Game> &game, QWidget *parent = 0);
 
 protected:
 
     void initGame();
-
+    void initSignals();
     void mouseMoveEvent(QMouseEvent *e) override;
-    void keyPressEvent(QKeyEvent *key) override;
     void timerEvent(QTimerEvent *e) override;
+    void keyPressEvent(QKeyEvent *key) override;
 
     void initializeGL() override;
     void resizeGL(int w, int h) override;
     void paintGL() override;
+
 
 private:
 
@@ -123,11 +127,11 @@ private:
 
     QMatrix4x4 projection;
 
-//    Game game;
+    QScopedPointer<Game> game;
 
     SceneGraph sceneGraph;
     Terrain terrain;
-    Camera camera;
+    Camera * camera;
     Player player;
 
     GameObject * terrainGO ;

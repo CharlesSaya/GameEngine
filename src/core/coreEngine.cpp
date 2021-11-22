@@ -5,14 +5,11 @@ CoreEngine::CoreEngine(){
 
 }
 
-CoreEngine::CoreEngine(int frames, QWidget *parent) :
+CoreEngine::CoreEngine(int frames, QScopedPointer<Game> &game, QWidget *parent) :
     QOpenGLWidget(parent),
     frames(frames)
 {
-
-//    QCursor cursor(Qt::BlankCursor);
-//    QApplication::setOverrideCursor(cursor);
-//    QApplication::changeOverrideCursor(cursor);
+    this->game.swap( game );
 
     this->grabMouse();
     this->grabKeyboard();
@@ -32,15 +29,19 @@ void CoreEngine::mouseMoveEvent(QMouseEvent *e){
     vAngle *= sensitivity * 3.;
 
     if( e->localPos().x() > this->width() -10. || e->localPos().x() < 10. ){
+
         mousePressPosition = QVector2D( width()/2, e->localPos().y() );
         this->cursor().setPos( mapToGlobal( QPoint( mousePressPosition.x(), mousePressPosition.y() ) ) );
         return;
+
     }
     else{
+
         hAngle = e->localPos().x() -mousePressPosition.x() ;
         hAngle *= sensitivity;
 
         mousePressPosition = QVector2D( e->localPos() );
+
     }
 
     yaw += hAngle;
@@ -49,7 +50,7 @@ void CoreEngine::mouseMoveEvent(QMouseEvent *e){
     if( pitch > 89.0f) pitch = 89.0f;
     if( pitch < -89.0f) pitch = -89.0f;
 
-    this->camera.rotate( pitch, yaw );
+    this->camera->rotate( pitch, yaw );
 
 }
 
@@ -60,19 +61,19 @@ void CoreEngine::keyPressEvent(QKeyEvent *key){
     switch( key->key() ){
 
         case Qt::Key_Z:
-            camera.move( camera.cameraForward * movementSpeed * 2. );
+            camera->move( camera->getCameraForward() * movementSpeed * 2. );
             break;
 
         case Qt::Key_S:
-            camera.move( -camera.cameraForward * movementSpeed * 2. );
+            camera->move( -camera->getCameraForward() * movementSpeed * 2. );
             break;
 
         case Qt::Key_Q:
-            camera.move( camera.getRight() * movementSpeed * 2. );
+            camera->move( camera->getRight() * movementSpeed * 2. );
             break;
 
         case Qt::Key_D:
-            camera.move( camera.getLeft() * movementSpeed * 2. );
+            camera->move( camera->getLeft() * movementSpeed * 2. );
             break;
 
         case Qt::Key_Up:
@@ -102,8 +103,11 @@ void CoreEngine::keyPressEvent(QKeyEvent *key){
 
 }
 
+
+
 void CoreEngine::timerEvent(QTimerEvent *)
 {
+
     update();
 
 }
@@ -121,8 +125,8 @@ void CoreEngine::initializeGL(){
     time.start();
     timer.start(1000/frames , this);
 
-    initGame();
-//    game.initGame();
+//    initGame();
+    this->game.data()->initGame();
 
 }
 
@@ -130,10 +134,8 @@ void CoreEngine::resizeGL(int w, int h)
 {
     qreal aspect = qreal(w) / qreal(h ? h : 1);
 
-    const qreal zNear = .1, zFar = 100.0, fov = 80.0;
+    game->setProjection( aspect );
 
-    projection.setToIdentity();
-    projection.perspective(fov, aspect, zNear, zFar);
 }
 
 
@@ -152,8 +154,9 @@ void CoreEngine::initGame(){
 
     QVector3D cameraPosition = QVector3D(2.0,2.0,1.);
     QVector3D cameraTarget   = QVector3D(.0,.0,.0);
+    const qreal zNear = .01, zFar = 100.0, fov = 80.0;
 
-    camera = Camera( cameraPosition, cameraTarget );
+    camera = new Camera( cameraPosition, cameraTarget, fov, zNear, zFar );
 
     // Build scene graph  -------------------------------------------------------------------------------
 
@@ -195,6 +198,10 @@ void CoreEngine::initGame(){
 
     MeshRenderer * playerRenderer = new MeshRenderer( playerMesh, playerGO->getTransform() );
 
+    MoveComponent * playerMove = new MoveComponent( deltaTime, playerGO->getTransform(), terrain );
+
+//    installEventFilter( playerMove );
+
     playerGO->addComponent( playerRenderer );
 
     this->player = Player( *playerGO );
@@ -218,6 +225,6 @@ void CoreEngine::paintGL()
 
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-    this->sceneGraph.render( sceneGraph.getRoot(), camera , projection );
+    this->game.data()->render();
 
 }
