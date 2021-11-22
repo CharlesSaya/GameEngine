@@ -10,7 +10,7 @@ MoveComponent::MoveComponent( float deltaTime, Transform &transform, Terrain & t
 }
 
 bool MoveComponent::eventFilter( QObject * obj,  QEvent * event ){
-
+    qDebug() << "feeee";
     if( event->type() == QEvent::KeyPress ){
         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
         input(keyEvent);

@@ -141,12 +141,12 @@ void CoreEngine::initGame(){
 
     // Shaders & Lights  -------------------------------------------------------------------------------
 
-    shader = new Shader( "../GameEngine/shaders/base_vshader.glsl", "../GameEngine/shaders/base_fshader.glsl" );
-    terrainShader = new Shader(  "../GameEngine/shaders/terrain_vshader.vert", "../GameEngine/shaders/terrain_fshader.frag" );
+//    shader = new Shader( "../GameEngine/shaders/base_vshader.glsl", "../GameEngine/shaders/base_fshader.glsl" );
+//    terrainShader = new Shader(  "../GameEngine/shaders/terrain_vshader.vert", "../GameEngine/shaders/terrain_fshader.frag" );
 
-    Light light( QVector3D( 5.0, 4.0, -5.0) );
-    light.loadLight( shader );
-    light.loadLight( terrainShader );
+//    Light light( QVector3D( 5.0, 4.0, -5.0) );
+//    light.loadLight( shader );
+//    light.loadLight( terrainShader );
 
     // Cameras  -------------------------------------------------------------------------------
 
@@ -159,61 +159,61 @@ void CoreEngine::initGame(){
     this->game.data()->setCamera( camera );
     this->game.data()->initGame();
 
-    // Build scene graph  -------------------------------------------------------------------------------
+//    // Build scene graph  -------------------------------------------------------------------------------
 
-    std::string sphereObj = "../GameEngine/objects/sphere/";
-    std::string bunnyObj  = "../GameEngine/objects/bunny/";
+//    std::string sphereObj = "../GameEngine/objects/sphere/";
+//    std::string bunnyObj  = "../GameEngine/objects/bunny/";
 
-    Texture heightMap = Texture( "../GameEngine/textures/Heightmap_Rocky.png", "heightMap" );
-    Texture snow      = Texture( "../GameEngine/textures/snowrocks.png", "snow" );
-    Texture rock      = Texture( "../GameEngine/textures/rock.png", "rock" );
-    Texture grass     = Texture( "../GameEngine/textures/grass.png", "grass" );
+//    Texture heightMap = Texture( "../GameEngine/textures/Heightmap_Rocky.png", "heightMap" );
+//    Texture snow      = Texture( "../GameEngine/textures/snowrocks.png", "snow" );
+//    Texture rock      = Texture( "../GameEngine/textures/rock.png", "rock" );
+//    Texture grass     = Texture( "../GameEngine/textures/grass.png", "grass" );
 
-    // Terrain Game Object --------------------------------------------------------------------------
+//    // Terrain Game Object --------------------------------------------------------------------------
 
-    std::vector<Texture> terrainTextures;
-    terrainTextures.push_back( heightMap );
-    terrainTextures.push_back( snow );
-    terrainTextures.push_back( rock );
-    terrainTextures.push_back( grass );
+//    std::vector<Texture> terrainTextures;
+//    terrainTextures.push_back( heightMap );
+//    terrainTextures.push_back( snow );
+//    terrainTextures.push_back( rock );
+//    terrainTextures.push_back( grass );
 
-    terrain = Terrain( heightMap );
-    Mesh terrainMesh = Mesh( terrain, terrainTextures, terrainShader, white );
+//    terrain = Terrain( heightMap );
+//    Mesh terrainMesh = Mesh( terrain, terrainTextures, terrainShader, white );
 
-    terrainGO = new GameObject( "Terrain" );
+//    terrainGO = new GameObject( "Terrain" );
 
-    MeshRenderer * terrainRenderer = new MeshRenderer( terrainMesh, terrainGO->getTransform() );
+//    MeshRenderer * terrainRenderer = new MeshRenderer( terrainMesh, terrainGO->getTransform() );
 
-    terrainGO->addComponent( terrainRenderer );
+//    terrainGO->addComponent( terrainRenderer );
 
-    // Player Game Object  -------------------------------------------------------------------------------
+//    // Player Game Object  -------------------------------------------------------------------------------
 
 
-    std::vector<Texture> bunnyTextures;
-    bunnyTextures.push_back( grass );
+//    std::vector<Texture> bunnyTextures;
+//    bunnyTextures.push_back( grass );
 
-    Mesh playerMesh = Mesh( sphereObj ,bunnyTextures, shader, white );
+//    Mesh playerMesh = Mesh( sphereObj ,bunnyTextures, shader, white );
 
-    playerGO  = new GameObject( "Player", terrainGO );
-    playerGO->scale( QVector3D( 0.01, 0.01, 0.01 ) );
+//    playerGO  = new GameObject( "Player", terrainGO );
+//    playerGO->scale( QVector3D( 0.01, 0.01, 0.01 ) );
 
-    MeshRenderer * playerRenderer = new MeshRenderer( playerMesh, playerGO->getTransform() );
+//    MeshRenderer * playerRenderer = new MeshRenderer( playerMesh, playerGO->getTransform() );
 
-    MoveComponent * playerMove = new MoveComponent( deltaTime, playerGO->getTransform(), terrain );
+//    MoveComponent * playerMove = new MoveComponent( deltaTime, playerGO->getTransform(), terrain );
 
-//    installEventFilter( playerMove );
+////    installEventFilter( playerMove );
 
-    playerGO->addComponent( playerRenderer );
+//    playerGO->addComponent( playerRenderer );
 
-    this->player = Player( *playerGO );
-    this->player.setMesh( playerMesh );
-    this->player.move( QVector3D(0.0, 0.0, 0.0), terrain );
+//    this->player = Player( *playerGO );
+//    this->player.setMesh( playerMesh );
+//    this->player.move( QVector3D(0.0, 0.0, 0.0), terrain );
 
-    // Build hierarchy --------------------------------------------------------------------------
+//    // Build hierarchy --------------------------------------------------------------------------
 
-    terrainGO->addChild( playerGO );
+//    terrainGO->addChild( playerGO );
 
-    sceneGraph = SceneGraph( terrainGO );
+//    sceneGraph = SceneGraph( terrainGO );
 
 }
 

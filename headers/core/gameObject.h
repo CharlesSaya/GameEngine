@@ -8,8 +8,6 @@
 
 #include "headers/render/shader.h"
 
-#include "headers/physics/physicsEngine.h"
-
 #include "transform.h"
 
 class GameObject{

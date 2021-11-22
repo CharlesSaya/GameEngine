@@ -2,6 +2,7 @@
 
 PhysicsEngine::PhysicsEngine( float deltaTime ){
 
+    this->deltaTime = deltaTime;
 }
 
 
@@ -14,5 +15,9 @@ bool PhysicsEngine::intersectAABB( AABB &box1, AABB &box2 ){
 
 void PhysicsEngine::computeForces(){
 
+}
+
+void PhysicsEngine::update( SceneGraph &sceneGraph ){
+    sceneGraph.update( sceneGraph.getRoot() );
 }
 

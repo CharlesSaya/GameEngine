@@ -10,18 +10,15 @@ GameObject::GameObject( std::string name, GameObject * parent ){
 }
 
 
-const std::string &GameObject::getName() const
-{
+const std::string &GameObject::getName() const{
     return name;
 }
 
-void GameObject::setName(const std::string &newName)
-{
+void GameObject::setName(const std::string &newName){
     name = newName;
 }
 
-void GameObject::addChild( GameObject *newChildren)
-{
+void GameObject::addChild( GameObject *newChildren){
     this->children.push_back( newChildren );
 }
 
@@ -85,4 +82,7 @@ void GameObject::render( const QMatrix4x4 &model, const QMatrix4x4 &view, const 
 
     Q_FOREACH( GameComponent * component, gameComponents )
         component->render( model, view, projection, cameraPosition );
+
+    for( GameObject * child : this->children )
+        child->render( child->getModel(), view, projection, cameraPosition );
 }

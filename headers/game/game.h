@@ -30,8 +30,8 @@ public:
     Game( Camera * camera );
     void initGame();
 
-    void input( float time );
-    void update( float time );
+    void input( QKeyEvent * key, float deltaTime );
+    void update( float deltaTimetime );
     void render();
 
 

@@ -2,12 +2,14 @@
 #define PHYSICSENGINE_H
 
 #include "headers/render/AABB.h"
+#include "headers/game/sceneGraph.h"
 
 class PhysicsEngine
 {
 public:
     PhysicsEngine( float deltaTime );
     void computeForces();
+    void update( SceneGraph &sceneGraph);
     bool intersectAABB( AABB &box1, AABB &box2 );
 private:
 

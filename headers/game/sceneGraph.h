@@ -21,8 +21,8 @@ public:
 
     void initializeScene(  );
 
-    void input();
-    void update();
+    void input(  GameObject * root,  QKeyEvent * key, float deltaTime );
+    void update( GameObject * root );
     void render( GameObject * root,  Camera &camera );
 };
 

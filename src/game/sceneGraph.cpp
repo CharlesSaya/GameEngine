@@ -12,12 +12,11 @@ GameObject * SceneGraph::getRoot(){
     return this->root;
 }
 
-void  SceneGraph::input(){
-
+void  SceneGraph::input( GameObject * gameObject, QKeyEvent * key, float deltaTime ){
 
 }
 
-void SceneGraph::update(){
+void SceneGraph::update( GameObject * gameObject ){
 
 }
 
@@ -25,7 +24,4 @@ void SceneGraph::render( GameObject * gameObject, Camera &camera){
 
     gameObject->render( gameObject->getModel(), camera.getViewMatrix(), camera.getProjection(), camera.getCameraPosition() );
 
-    Q_FOREACH (GameObject * g , gameObject->getChildren() ){
-        render( g, camera );
-    }
 }

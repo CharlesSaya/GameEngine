@@ -60,13 +60,11 @@ void Game::initGame(){
 
     MoveComponent * playerMove = new MoveComponent( deltaTime, playerGO->getTransform(), terrain );
 
-//    installEventFilter( playerMove );
-
     playerGO->addComponent( playerRenderer );
 
     this->player = Player( *playerGO );
     this->player.setMesh( playerMesh );
-    this->player.move( QVector3D(0.0, 0.0, 0.0), terrain );
+    this->player.move( QVector3D(0.0, 0.0, 0.0), terrain ); // set initial height
 
     // Build hierarchy --------------------------------------------------------------------------
 
@@ -75,10 +73,11 @@ void Game::initGame(){
     sceneGraph = SceneGraph( terrainGO );
 }
 
-void Game::input( float time ){
+void Game::input( QKeyEvent * key, float deltaTime ){
+    this->sceneGraph.input( this->sceneGraph.getRoot(), key, deltaTime );
 
 }
-void Game::update( float time )
+void Game::update( float deltaTime )
 {
 
 }
