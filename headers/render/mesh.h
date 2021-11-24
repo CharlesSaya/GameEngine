@@ -11,17 +11,16 @@
 #include <QOpenGLBuffer>
 #include <QVector3D>
 
+#include "dirent.h"
+
 #include "headers/core/objloader.h"
 
 #include "headers/render/shader.h"
 #include "headers/render/terrain.h"
 #include "headers/render/vertexData.h"
 
-#include "AABB.h"
-#include "texture.h"
-#include "dirent.h"
-
-
+#include "headers/render/AABB.h"
+#include "headers/render/texture.h"
 
 class Mesh : protected QOpenGLFunctions_3_1{
 
@@ -47,7 +46,6 @@ class Mesh : protected QOpenGLFunctions_3_1{
     void loadGeometry( std::string filepath );
     void initBuffers( uint lod );
     void drawMesh( float distance );
-    void drawAABB( );
     uint getLod( float distance );
 
     const QVector3D &getMeshColor() const;

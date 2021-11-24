@@ -9,7 +9,6 @@ GameObject::GameObject( std::string name, GameObject * parent ){
     this->parent = parent;
 }
 
-
 const std::string &GameObject::getName() const{
     return name;
 }
@@ -63,6 +62,7 @@ QMatrix4x4 GameObject::getModel(){
     else
         return this->parent->getModel() * this->transform.getModel();
 }
+
 
 void GameObject::addComponent(GameComponent *component){
     this->gameComponents.push_back( component );

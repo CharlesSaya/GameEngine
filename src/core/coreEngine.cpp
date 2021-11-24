@@ -127,7 +127,6 @@ void CoreEngine::resizeGL(int w, int h)
 
 }
 
-
 void CoreEngine::initGame(){
 
     // Physics Engine  -----------------------------------------------------------------------

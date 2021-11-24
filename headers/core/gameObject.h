@@ -57,7 +57,17 @@ public:
 
     void resetModelMatrix();
 
+    template<typename T> GameComponent * getComponent(){
+        for( GameComponent * go : this->gameComponents ){
+            if( instanceof<T>( go ) )
+                return go;
+        }
+        return nullptr;
+    }
+
 };
+
+
 
 
 #endif // GAMEOBJECT_H

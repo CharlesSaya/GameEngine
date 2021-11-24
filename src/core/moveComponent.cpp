@@ -31,6 +31,9 @@ void MoveComponent::pressedInput(QKeyEvent * key){
         case Qt::Key_Right:
             emit move( right );
             break;
+        case Qt::Key_Shift:
+            // TODO : Run !
+            break;
     }
 }
 

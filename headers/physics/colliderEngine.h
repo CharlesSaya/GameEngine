@@ -8,8 +8,11 @@
 class ColliderEngine{
 
 public:
-private:
+    ColliderEngine( SceneGraph &sceneGraph );
+    void computeCollision();
 
+private:
+    SceneGraph & sceneGraph;
 };
 
 #endif // COLLIDERENGINE_H
