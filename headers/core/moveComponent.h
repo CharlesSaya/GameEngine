@@ -3,28 +3,36 @@
 
 #include "headers/render/terrain.h"
 
-#include "transform.h"
-#include "gameComponent.h"
+#include "headers/core/gameComponent.h"
 
 
 class MoveComponent : public GameComponent{
+    Q_OBJECT
 
-protected:
-    bool eventFilter( QObject * obj,  QEvent * event) override;
+public slots:
+    void pressedInput(QKeyEvent * event);
+    void releasedInput(QKeyEvent * event);
+
+signals:
+    void move( QVector3D movement );
+    void stop();
 
 public:
 
-    MoveComponent( float deltaTime, Transform &transform, Terrain & terrain );
+    MoveComponent( float deltaTime, Terrain & terrain );
     void input( QKeyEvent * key  ) override;
 
-    void update() override;
+    void update( float step ) override;
     void render( const QMatrix4x4& model, const QMatrix4x4& view, const QMatrix4x4& projection, const QVector3D& cameraPosition ) override;
 
 private:
+    float speed = .10;
+    QVector3D forward  = QVector3D( 0.0   , 0.0 , -speed  );
+    QVector3D backward = QVector3D( 0.0   , 0.0 , speed );
+    QVector3D right    = QVector3D( speed , 0.0 , 0.0    );
+    QVector3D left     = QVector3D( -speed, 0.0 , 0.0    );
     float deltaTime;
-    float movementSpeed = 0.1;
     Terrain terrain;
-    Transform &transform;
 };
 
 #endif // MOVECOMPONENT_H

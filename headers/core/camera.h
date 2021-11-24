@@ -52,6 +52,7 @@ public:
     const QVector3D& getCameraPosition();
 
     const QVector3D& getCameraForward();
+
     void setProjection(float aspect);
     const QMatrix4x4 &getProjection() const;
 };

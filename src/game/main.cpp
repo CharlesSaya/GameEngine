@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
     QScopedPointer<CoreEngine> coreEngine( new CoreEngine( 100, game, mainWindow ) );
     mainWindow->setWindowTitle( "Game" );
     mainWindow->setCentralWidget( coreEngine.data() );
-    mainWindow->showNormal() ;
+    mainWindow->showNormal();
 
 #else
     QLabel note("OpenGL Support required");

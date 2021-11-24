@@ -62,6 +62,7 @@
 #include "headers/game/game.h"
 #include "headers/game/sceneGraph.h"
 
+#include "headers/physics/physicsEngine.h"
 
 #include "transform.h"
 #include "gameObject.h"
@@ -89,12 +90,17 @@ class CoreEngine : public QOpenGLWidget, protected QOpenGLFunctions_3_1
 {
     Q_OBJECT
 
-private slots:
+signals:
+    void sendPressedInput( QKeyEvent * event );
+    void sendReleasedInput( QKeyEvent * event );
 
 
 public:
     explicit CoreEngine();
     explicit CoreEngine(int frames, QScopedPointer<Game> &game, QWidget *parent = 0);
+
+    const PhysicsEngine &getPhysicsEngine() const;
+    void setPhysicsEngine(const PhysicsEngine &newPhysicsEngine);
 
 protected:
 
@@ -103,18 +109,22 @@ protected:
     void mouseMoveEvent(QMouseEvent *e) override;
     void timerEvent(QTimerEvent *e) override;
     void keyPressEvent(QKeyEvent *key) override;
+    void keyReleaseEvent( QKeyEvent * key) override;
 
     void initializeGL() override;
     void resizeGL(int w, int h) override;
     void paintGL() override;
 
-
 private:
 
     int frames;
 
-    float deltaTime = 0.0f;
-    float lastFrame = 0.0f;
+    float fixedStep   = 0.01f;
+    float renderStep  = 0.0f;
+
+    float deltaTime   = 0.0f;
+    float lastFrame   = 0.0f;
+    float accumulator = 0.0f;
 
     float yaw = 90., pitch  =0.;
 
@@ -141,6 +151,8 @@ private:
     Shader * terrainShader;
 
     QVector3D white = QVector3D( 1., 0., 0.);
+
+    PhysicsEngine physicsEngine;
 };
 
 #endif // COREENGINE_H

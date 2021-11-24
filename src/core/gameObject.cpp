@@ -69,18 +69,25 @@ void GameObject::addComponent(GameComponent *component){
 }
 
 void GameObject::input( QKeyEvent * key ){
-    Q_FOREACH( GameComponent * component, gameComponents )
+    for( GameComponent * component : gameComponents )
         component->input(  key );
+
+    for( GameObject * child : this->children )
+        child->input( key );
 }
 
-void GameObject::update(){
-    Q_FOREACH( GameComponent * component, gameComponents )
-        component->update();
+void GameObject::update( float step ){
+    for( GameComponent * component : gameComponents )
+        component->update( step );
+
+    for( GameObject * child : this->children )
+        child->update( step );
+
 }
 
 void GameObject::render( const QMatrix4x4 &model, const QMatrix4x4 &view, const QMatrix4x4 &projection, const QVector3D &cameraPosition ){
 
-    Q_FOREACH( GameComponent * component, gameComponents )
+    for( GameComponent * component : gameComponents )
         component->render( model, view, projection, cameraPosition );
 
     for( GameObject * child : this->children )

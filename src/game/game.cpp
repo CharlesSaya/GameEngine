@@ -10,7 +10,7 @@ Game::Game( Camera * camera ){
 
 void Game::initGame(){
 
-    // Shaders & Lights  -------------------------------------------------------------------------------
+    // Shaders & Lights  --------------------------------------------------------------------------------
     shader = new Shader( "../GameEngine/shaders/base_vshader.glsl", "../GameEngine/shaders/base_fshader.glsl" );
     terrainShader = new Shader(  "../GameEngine/shaders/terrain_vshader.vert", "../GameEngine/shaders/terrain_fshader.frag" );
 
@@ -28,7 +28,7 @@ void Game::initGame(){
     Texture rock      = Texture( "../GameEngine/textures/rock.png", "rock" );
     Texture grass     = Texture( "../GameEngine/textures/grass.png", "grass" );
 
-    // Terrain Game Object --------------------------------------------------------------------------
+    // Terrain Game Object ------------------------------------------------------------------------------
 
     std::vector<Texture> terrainTextures;
     terrainTextures.push_back( heightMap );
@@ -45,7 +45,7 @@ void Game::initGame(){
 
     terrainGO->addComponent( terrainRenderer );
 
-    // Player Game Object  -------------------------------------------------------------------------------
+    // Player Game Object  ------------------------------------------------------------------------------
 
 
     std::vector<Texture> bunnyTextures;
@@ -57,43 +57,71 @@ void Game::initGame(){
     playerGO->scale( QVector3D( 0.01, 0.01, 0.01 ) );
 
     MeshRenderer * playerRenderer = new MeshRenderer( playerMesh, playerGO->getTransform() );
+    PhysicsComponent * playerPhysics = new PhysicsComponent( playerGO->getTransform(), physicsEngine );
+    MoveComponent * playerMove = new MoveComponent( deltaTime, terrain );
 
-    MoveComponent * playerMove = new MoveComponent( deltaTime, playerGO->getTransform(), terrain );
+    connect( playerMove,  &MoveComponent::move, playerPhysics, &PhysicsComponent::hasMoved );
+    connect( playerMove,  &MoveComponent::stop, playerPhysics, &PhysicsComponent::hasStopped );
+
+    connect( this, &Game::sendPressedKey, playerMove, &MoveComponent::pressedInput );
+    connect( this, &Game::sendreleasedKey, playerMove, &MoveComponent::releasedInput );
 
     playerGO->addComponent( playerRenderer );
+    playerGO->addComponent( playerMove );
+    playerGO->addComponent( playerPhysics );
 
     this->player = Player( *playerGO );
     this->player.setMesh( playerMesh );
     this->player.move( QVector3D(0.0, 0.0, 0.0), terrain ); // set initial height
 
-    // Build hierarchy --------------------------------------------------------------------------
+    // Build hierarchy ---------------------------------------------------------------------------------
 
     terrainGO->addChild( playerGO );
 
     sceneGraph = SceneGraph( terrainGO );
 }
 
-void Game::input( QKeyEvent * key, float deltaTime ){
-    this->sceneGraph.input( this->sceneGraph.getRoot(), key, deltaTime );
+void Game::input( QKeyEvent * key  ){
+    this->sceneGraph.input( key );
 
 }
-void Game::update( float deltaTime )
+void Game::update( float fixedStep )
 {
-
+    this->sceneGraph.update( fixedStep  );
 }
 
 void Game::render( ){
-    this->sceneGraph.render( terrainGO, *camera );
+    this->sceneGraph.render( *camera );
 }
 
-Camera *Game::getCamera() const
-{
+
+
+// SLOTS
+void Game::keyPressed( QKeyEvent * key ){
+    emit( this->sendPressedKey( key ) );
+}
+
+void Game::keyReleased( QKeyEvent * key ){
+    emit( this->sendreleasedKey( key ) );
+}
+
+// Getters & Setters
+
+Camera *Game::getCamera() const{
     return camera;
 }
 
-void Game::setCamera(Camera *newCamera)
-{
+
+void Game::setCamera(Camera *newCamera){
     camera = newCamera;
+}
+
+const PhysicsEngine &Game::getPhysicsEngine() const{
+    return physicsEngine;
+}
+
+void Game::setPhysicsEngine(const PhysicsEngine &newPhysicsEngine){
+    physicsEngine = newPhysicsEngine;
 }
 
 void Game::setProjection( float aspect ){

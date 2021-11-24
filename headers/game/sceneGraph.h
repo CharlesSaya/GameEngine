@@ -7,6 +7,8 @@
 #include "headers/core/camera.h"
 #include "headers/core/gameObject.h"
 #include "headers/render/shader.h"
+#include "headers/physics/physicsEngine.h"
+#include "headers/render/renderingEngine.h"
 
 class SceneGraph{
 private:
@@ -21,9 +23,9 @@ public:
 
     void initializeScene(  );
 
-    void input(  GameObject * root,  QKeyEvent * key, float deltaTime );
-    void update( GameObject * root );
-    void render( GameObject * root,  Camera &camera );
+    void input ( QKeyEvent * key );
+    void update( float fixedStep );
+    void render( Camera &camera  );
 };
 
 #endif // SCENEGRAPH_H

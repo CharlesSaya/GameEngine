@@ -1,20 +1,16 @@
 #include "headers/core/meshrenderer.h"
 
 
-MeshRenderer::MeshRenderer( Mesh &_mesh,Transform & _transform ) :  transform(_transform) {
-    this->mesh = _mesh;
+MeshRenderer::MeshRenderer( Mesh &mesh,Transform & transform ) :  transform(transform) {
+    this->mesh = mesh;
 }
 
-bool MeshRenderer::eventFilter( QObject * obj,  QEvent * event ){
-
-    return false;
-}
 
 void MeshRenderer::input( QKeyEvent * key  ){
 
 }
 
-void MeshRenderer::update(){
+void MeshRenderer::update( float step ){
 
 }
 

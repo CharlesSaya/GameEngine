@@ -22,6 +22,7 @@ private:
     std::vector<GameComponent * > gameComponents;
 
 public:
+
     GameObject();
     GameObject( std::string name, GameObject * parent = nullptr );
 
@@ -40,7 +41,7 @@ public:
     void removeComponent( GameComponent * component);
 
     void input( QKeyEvent * key );
-    void update();
+    void update( float step );
     void render( const QMatrix4x4 &model, const QMatrix4x4 &view, const QMatrix4x4 &projection, const QVector3D &cameraPosition );
 
     void move( QVector3D translation );

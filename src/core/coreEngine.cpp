@@ -9,7 +9,7 @@ CoreEngine::CoreEngine(int frames, QScopedPointer<Game> &game, QWidget *parent) 
     QOpenGLWidget(parent),
     frames(frames)
 {
-
+    this->renderStep = frames / 1000.f;
     this->grabMouse();
     this->grabKeyboard();
     this->game.swap( game );
@@ -20,7 +20,6 @@ CoreEngine::CoreEngine(int frames, QScopedPointer<Game> &game, QWidget *parent) 
     mousePressPosition =QVector2D( width()/2, height()/2 );
 
 }
-
 
 void CoreEngine::mouseMoveEvent(QMouseEvent *e){
     float hAngle = 0., vAngle = 0.;
@@ -56,6 +55,7 @@ void CoreEngine::mouseMoveEvent(QMouseEvent *e){
 
 void CoreEngine::keyPressEvent(QKeyEvent *key){
     float movementSpeed = deltaTime;
+    this->game->keyPressed( key );
 
     switch( key->key() ){
 
@@ -75,37 +75,29 @@ void CoreEngine::keyPressEvent(QKeyEvent *key){
             camera->move( camera->getLeft() * movementSpeed * 2. );
             break;
 
-        case Qt::Key_Up:
-
-            player.move( QVector3D( 0.,0.,-1. ) * movementSpeed, terrain );
-            update();
-            break;
-
-        case Qt::Key_Down:
-
-            player.move( QVector3D( 0.,0.,1. ) * movementSpeed, terrain );
-            update();
-            break;
-
-        case Qt::Key_Left:
-
-            player.move( QVector3D( -1.,0.,0. ) * movementSpeed, terrain );
-            update();
-            break;
-
-        case Qt::Key_Right:
-
-            player.move( QVector3D( 1.,0.,0. ) * movementSpeed, terrain );
-            update();
-            break;
     }
 
 }
 
+void CoreEngine::keyReleaseEvent(QKeyEvent *key){
+    this->game->keyReleased( key );
 
+    switch( key->key() ){
+
+
+
+    }
+}
 
 void CoreEngine::timerEvent(QTimerEvent *)
 {
+
+    accumulator += deltaTime;
+
+    while( accumulator > this->fixedStep ){
+        game->update( this->fixedStep );
+        accumulator -= this->fixedStep;
+    }
 
     update();
 
@@ -117,13 +109,12 @@ void CoreEngine::initializeGL(){
     glClearColor(0, 0, 0, 1);
 
     glEnable(GL_DEPTH_TEST);
-//    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
+    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
     glEnable(GL_CULL_FACE);
 
     //Start timer   -------------------------------------------------------------------------------
     time.start();
-    timer.start(1000/frames , this);
-
+    timer.start( this->renderStep, this );
     initGame();
 
 }
@@ -139,81 +130,22 @@ void CoreEngine::resizeGL(int w, int h)
 
 void CoreEngine::initGame(){
 
-    // Shaders & Lights  -------------------------------------------------------------------------------
+    // Physics Engine  -----------------------------------------------------------------------
+    PhysicsEngine physicsEngine = PhysicsEngine( this->fixedStep );
 
-//    shader = new Shader( "../GameEngine/shaders/base_vshader.glsl", "../GameEngine/shaders/base_fshader.glsl" );
-//    terrainShader = new Shader(  "../GameEngine/shaders/terrain_vshader.vert", "../GameEngine/shaders/terrain_fshader.frag" );
+    // Camera  -------------------------------------------------------------------------------
 
-//    Light light( QVector3D( 5.0, 4.0, -5.0) );
-//    light.loadLight( shader );
-//    light.loadLight( terrainShader );
-
-    // Cameras  -------------------------------------------------------------------------------
-
-    QVector3D cameraPosition = QVector3D(2.0,2.0,1.);
-    QVector3D cameraTarget   = QVector3D(.0,.0,.0);
+    QVector3D cameraPosition = QVector3D( 2.0, 2.0, 1. );
+    QVector3D cameraTarget   = QVector3D( .0, .0, .0 );
     const qreal zNear = .01, zFar = 100.0, fov = 80.0;
 
     camera = new Camera( cameraPosition, cameraTarget, fov, zNear, zFar );
 
+    // Game  --------------------------------------------------------------------------------
+
     this->game.data()->setCamera( camera );
+    this->game.data()->setPhysicsEngine( physicsEngine );
     this->game.data()->initGame();
-
-//    // Build scene graph  -------------------------------------------------------------------------------
-
-//    std::string sphereObj = "../GameEngine/objects/sphere/";
-//    std::string bunnyObj  = "../GameEngine/objects/bunny/";
-
-//    Texture heightMap = Texture( "../GameEngine/textures/Heightmap_Rocky.png", "heightMap" );
-//    Texture snow      = Texture( "../GameEngine/textures/snowrocks.png", "snow" );
-//    Texture rock      = Texture( "../GameEngine/textures/rock.png", "rock" );
-//    Texture grass     = Texture( "../GameEngine/textures/grass.png", "grass" );
-
-//    // Terrain Game Object --------------------------------------------------------------------------
-
-//    std::vector<Texture> terrainTextures;
-//    terrainTextures.push_back( heightMap );
-//    terrainTextures.push_back( snow );
-//    terrainTextures.push_back( rock );
-//    terrainTextures.push_back( grass );
-
-//    terrain = Terrain( heightMap );
-//    Mesh terrainMesh = Mesh( terrain, terrainTextures, terrainShader, white );
-
-//    terrainGO = new GameObject( "Terrain" );
-
-//    MeshRenderer * terrainRenderer = new MeshRenderer( terrainMesh, terrainGO->getTransform() );
-
-//    terrainGO->addComponent( terrainRenderer );
-
-//    // Player Game Object  -------------------------------------------------------------------------------
-
-
-//    std::vector<Texture> bunnyTextures;
-//    bunnyTextures.push_back( grass );
-
-//    Mesh playerMesh = Mesh( sphereObj ,bunnyTextures, shader, white );
-
-//    playerGO  = new GameObject( "Player", terrainGO );
-//    playerGO->scale( QVector3D( 0.01, 0.01, 0.01 ) );
-
-//    MeshRenderer * playerRenderer = new MeshRenderer( playerMesh, playerGO->getTransform() );
-
-//    MoveComponent * playerMove = new MoveComponent( deltaTime, playerGO->getTransform(), terrain );
-
-////    installEventFilter( playerMove );
-
-//    playerGO->addComponent( playerRenderer );
-
-//    this->player = Player( *playerGO );
-//    this->player.setMesh( playerMesh );
-//    this->player.move( QVector3D(0.0, 0.0, 0.0), terrain );
-
-//    // Build hierarchy --------------------------------------------------------------------------
-
-//    terrainGO->addChild( playerGO );
-
-//    sceneGraph = SceneGraph( terrainGO );
 
 }
 

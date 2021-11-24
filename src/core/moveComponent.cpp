@@ -2,66 +2,53 @@
 
 
 
-MoveComponent::MoveComponent( float deltaTime, Transform &transform, Terrain & terrain  ) : transform( transform ){
+MoveComponent::MoveComponent( float deltaTime, Terrain & terrain ){
 
-    this->deltaTime = deltaTime;
-    this->terrain   = terrain;
+    this->deltaTime      = deltaTime;
+    this->terrain          = terrain;
 
-}
-
-bool MoveComponent::eventFilter( QObject * obj,  QEvent * event ){
-    qDebug() << "feeee";
-    if( event->type() == QEvent::KeyPress ){
-        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-        input(keyEvent);
-        return true;
-
-    }
-    return false;
 }
 
 void MoveComponent::input( QKeyEvent * key ){
 
-    QVector3D worldPos;
-    float height;
+}
 
+
+void MoveComponent::pressedInput(QKeyEvent * key){
     switch( key->key() ){
         case Qt::Key_Up:
-
-            transform.applyTranslation( QVector3D( 0.,0.,-1. ) * movementSpeed );
-            worldPos = transform.getWorldPosition();
-            qDebug() << worldPos ;
-            height = terrain.getHeight( worldPos );
-            transform.getPosition().setY( height );
+            emit move( forward );
             break;
 
         case Qt::Key_Down:
-            transform.applyTranslation( QVector3D( 0.,0.,1. ) * movementSpeed );
-            worldPos = transform.getWorldPosition();
-            height = terrain.getHeight( worldPos );
-            transform.getPosition().setY( height );
+            emit move( backward );
             break;
 
         case Qt::Key_Left:
-
-            transform.applyTranslation( QVector3D( -1.,0.,0. ) * movementSpeed );
-            worldPos = transform.getWorldPosition();
-            height = terrain.getHeight( worldPos );
-            transform.getPosition().setY( height );
+            emit move( left );
             break;
 
         case Qt::Key_Right:
-
-            transform.applyTranslation( QVector3D( 1.,0.,0. ) * movementSpeed );
-            worldPos = transform.getWorldPosition();
-            height = terrain.getHeight( worldPos );
-            transform.getPosition().setY( height );
+            emit move( right );
             break;
     }
-
 }
 
-void MoveComponent::update(){
+void MoveComponent::releasedInput(QKeyEvent * key){
+    switch( key->key() ){
+        case Qt::Key_Up : case Qt::Key_Down : case Qt::Key_Left : case Qt::Key_Right :
+            emit stop();
+            break;
+    }
+}
+
+void MoveComponent::update( float step ){
+
+    QVector3D worldPos;
+    float height;
+    //            worldPos = transform.getWorldPosition();
+    //            height = terrain.getHeight( worldPos );
+    //            transform.getPosition().setY( height );
 
 }
 

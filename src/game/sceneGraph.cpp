@@ -12,16 +12,18 @@ GameObject * SceneGraph::getRoot(){
     return this->root;
 }
 
-void  SceneGraph::input( GameObject * gameObject, QKeyEvent * key, float deltaTime ){
-
+void  SceneGraph::input( QKeyEvent * key ){
+    this->root->input( key );
 }
 
-void SceneGraph::update( GameObject * gameObject ){
-
+void SceneGraph::update( float fixedStep ){
+    this->root->update( fixedStep );
 }
 
-void SceneGraph::render( GameObject * gameObject, Camera &camera){
-
-    gameObject->render( gameObject->getModel(), camera.getViewMatrix(), camera.getProjection(), camera.getCameraPosition() );
-
+void SceneGraph::render(  Camera &camera){
+    this->root->render( root->getModel(),
+                        camera.getViewMatrix(),
+                        camera.getProjection(),
+                        camera.getCameraPosition()
+                      );
 }

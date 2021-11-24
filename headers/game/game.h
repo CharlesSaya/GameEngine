@@ -11,6 +11,7 @@
 #include "headers/core/meshrenderer.h"
 #include "headers/core/moveComponent.h"
 #include "headers/core/gameComponent.h"
+#include "headers/core/physicsComponent.h"
 
 #include "headers/render/light.h"
 #include "headers/render/shader.h"
@@ -21,16 +22,20 @@
 class Game : public QObject{
     Q_OBJECT
 
-public slots:
+signals:
+    void sendPressedKey( QKeyEvent * event );
+    void sendreleasedKey( QKeyEvent * event );
 
-    void setProjection( float aspect );
+public slots:
+    void keyPressed( QKeyEvent * key );
+    void keyReleased( QKeyEvent * key );
 
 public:
     Game();
     Game( Camera * camera );
     void initGame();
 
-    void input( QKeyEvent * key, float deltaTime );
+    void input( QKeyEvent * key );
     void update( float deltaTimetime );
     void render();
 
@@ -41,6 +46,11 @@ public:
 
     Camera *getCamera() const;
     void setCamera(Camera *newCamera);
+
+    const PhysicsEngine &getPhysicsEngine() const;
+    void setPhysicsEngine(const PhysicsEngine &newPhysicsEngine);
+
+    void setProjection( float aspect );
 
 private:
     float deltaTime;
@@ -55,6 +65,8 @@ private:
 
     Shader * shader ;
     Shader * terrainShader;
+
+    PhysicsEngine physicsEngine;
 
     QVector3D white = QVector3D( 1., 0., 0.);
 };

@@ -76,23 +76,31 @@ void ObjLoader::loadObject( string file, vector<VertexData> & vertexDatas, vecto
     bool hasNormal = false, hasTexcoord = false;
 
     string line;
-
+    int i = 0 ;
     while(  getline( input, line )  ){
 
         if ( line.rfind( "vn ", 0 ) == 0 ){
             hasNormal = true;
             vector<string> splited = split( line, " " );
-            normals.push_back( QVector3D( atof( splited[1].c_str() ), atof( splited[2].c_str() ), atof( splited[3].c_str() ) ) );
-
+            QString normal1= QString::fromStdString(splited[1].c_str());
+            QString normal2 = QString::fromStdString(splited[2].c_str());
+            QString normal3 = QString::fromStdString(splited[3].c_str());
+            normals.push_back( QVector3D(normal1.toFloat(), normal2.toFloat() , normal2.toFloat()));
+//            qDebug("%f", vecteur.x());
         }else if ( line.rfind( "vt ", 0 ) == 0 ){
             hasTexcoord = true;
             vector<string> splited = split( line, " " );
-            textureCoords.push_back( QVector2D( atof( splited[1].c_str() ), atof( splited[2].c_str() ) ) );
+            QString texture1= QString::fromStdString(splited[1].c_str());
+            QString texture2 = QString::fromStdString(splited[2].c_str() );
+            textureCoords.push_back( QVector2D( texture1.toFloat(), texture2.toFloat() ) );
         }
         else if( line.rfind( "v ", 0 ) == 0 ){
 
                     vector<string> splited = split( line, " " );
-                    positions.push_back( QVector3D( atof( splited[1].c_str() ), atof( splited[2].c_str() ), atof( splited[3].c_str() ) ) );
+                    QString vertex1= QString::fromStdString(splited[1].c_str());
+                    QString vertex2 = QString::fromStdString(splited[2].c_str());
+                    QString vertex3 = QString::fromStdString(splited[3].c_str());
+                    positions.push_back( QVector3D( vertex1.toFloat(), vertex2.toFloat(), vertex3.toFloat() ) );
 
         }else if ( line.rfind( "f ", 0 ) == 0 ){
             break;
@@ -101,7 +109,7 @@ void ObjLoader::loadObject( string file, vector<VertexData> & vertexDatas, vecto
         else{
             continue;
         }
-
+        i++;
     }
 
     vertexDatas.resize( positions.size() );

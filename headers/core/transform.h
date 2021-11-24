@@ -3,7 +3,7 @@
 
 #include <QMatrix4x4>
 
-class   Transform{
+class Transform{
 
 private:
     QVector3D translation;

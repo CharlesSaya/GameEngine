@@ -3,6 +3,7 @@
 #include <fstream>
 #include <QVector2D>
 #include <QVector3D>
+#include <QString>
 
 #include "headers/render/vertexData.h"
 
