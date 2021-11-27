@@ -5,6 +5,7 @@
 #include <QVector3D>
 
 #include "headers/core/gameComponent.h"
+#include "headers/core/meshrenderer.h"
 
 #include "headers/render/shader.h"
 
@@ -26,17 +27,7 @@ public:
     GameObject();
     GameObject( std::string name, GameObject * parent = nullptr );
 
-    void setFaces( const std::vector< std::vector< int > > &faces );
-    const std::vector< std::vector< int > > getFaces();
-
     void addChild( GameObject * newChildren );
-    const std::vector<GameObject *> getChildren();
-
-    void setTransform(const Transform &newTransform);
-    Transform &getTransform();
-
-    QVector3D getWorldPosition();
-
     void addComponent( GameComponent * component );
     void removeComponent( GameComponent * component);
 
@@ -48,20 +39,26 @@ public:
     void rotate( QVector3D axis, float angle );
     void scale( QVector3D scale );
 
-    void applyTransformation( Transform &transform );
-
-    QMatrix4x4 getModel();
+    void resetModelMatrix();
 
     const std::string &getName() const;
     void setName(const std::string &newName);
 
-    void resetModelMatrix();
+    void setTransform(const Transform &newTransform);
+    Transform &getTransform();
+
+    QMatrix4x4 getModel();
+    QVector3D getWorldPosition();
+    const std::vector<GameObject *> getChildren();
+
 
     template<typename T> GameComponent * getComponent(){
+
         for( GameComponent * go : this->gameComponents ){
             if( instanceof<T>( go ) )
                 return go;
         }
+
         return nullptr;
     }
 

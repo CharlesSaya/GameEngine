@@ -1,15 +1,17 @@
 #ifndef AABB_H
 #define AABB_H
 
-#include<QOpenGLFunctions_3_1>
-#include<QOpenGLShaderProgram>
-#include<QOpenGLBuffer>
-#include<QVector3D>
+
 #include<vector>
 
+#include<QVector3D>
+#include<QOpenGLBuffer>
+#include<QOpenGLFunctions_3_1>
+
+#include "headers/render/shader.h"
 #include "headers/render/vertexData.h"
 
-class AABB{
+class AABB {
 
     private:
         int indexCount;
@@ -33,12 +35,15 @@ class AABB{
         const QVector3D &getMax() const;
         void setMax(const QVector3D &newMax);
 
+        void resizeAABB( AABB &box );
+
         float getHeight();
         float getWidth();
 
         void initBuffers();
-        void drawAABB( QOpenGLShaderProgram * program );
+        void drawAABB( Shader * shader );
 
+        void transformAABB( QMatrix4x4 model );
 };
 
 

@@ -15,13 +15,21 @@ void ColliderComponent::update( float step ){
 }
 
 void ColliderComponent::render( const QMatrix4x4& model, const QMatrix4x4& view, const QMatrix4x4& projection, const QVector3D& cameraPosition ){
-    // Maybe render AABB here ?
 
+//    Shader * shader = this->mesh.getShader();
+//    shader->useShaderProgram();
+
+//    shader->setUniformValue( "model", model );
+//    shader->setUniformValue( "view", view );
+//    shader->setUniformValue( "projection", projection );
+//    shader->setUniformValue( "cameraPosition", cameraPosition );
+
+//    this->mesh.getAABB().drawAABB( this->mesh.getShader() );
 }
 
 // Getters & Setters
 
-Mesh &ColliderComponent::getMesh() const
+Mesh &ColliderComponent::getMesh()
 {
     return mesh;
 }

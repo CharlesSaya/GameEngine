@@ -22,7 +22,6 @@ public:
     void update( float step ) override;
     void render( const QMatrix4x4& model, const QMatrix4x4& view, const QMatrix4x4& projection, const QVector3D& cameraPosition ) override;
 
-    virtual ~PhysicsComponent();
 
 private:
 

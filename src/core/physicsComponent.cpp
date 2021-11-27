@@ -30,9 +30,6 @@ void PhysicsComponent::render( const QMatrix4x4& model, const QMatrix4x4& view, 
 
 }
 
-PhysicsComponent::~PhysicsComponent(){
-
-}
 
 void PhysicsComponent::hasMoved( QVector3D movement ){
     velocity += movement;

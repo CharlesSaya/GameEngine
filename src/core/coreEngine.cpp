@@ -9,6 +9,8 @@ CoreEngine::CoreEngine(int frames, QScopedPointer<Game> &game, QWidget *parent) 
     QOpenGLWidget(parent),
     frames(frames)
 {
+    this->resize( 1366, 768 );
+
     this->renderStep = frames / 1000.f;
     this->grabMouse();
     this->grabKeyboard();
@@ -95,7 +97,7 @@ void CoreEngine::timerEvent(QTimerEvent *)
     accumulator += deltaTime;
 
     while( accumulator > this->fixedStep ){
-        game->update( this->fixedStep );
+//        game->update( this->fixedStep );
         accumulator -= this->fixedStep;
     }
 
@@ -109,7 +111,7 @@ void CoreEngine::initializeGL(){
     glClearColor(0, 0, 0, 1);
 
     glEnable(GL_DEPTH_TEST);
-    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
+//    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
     glEnable(GL_CULL_FACE);
 
     //Start timer   -------------------------------------------------------------------------------

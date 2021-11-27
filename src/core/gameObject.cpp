@@ -56,6 +56,7 @@ void GameObject::resetModelMatrix(){
 }
 
 QMatrix4x4 GameObject::getModel(){
+
     if( !parent ){
         return this->transform.getModel();
     }
@@ -86,7 +87,7 @@ void GameObject::update( float step ){
 }
 
 void GameObject::render( const QMatrix4x4 &model, const QMatrix4x4 &view, const QMatrix4x4 &projection, const QVector3D &cameraPosition ){
-
+    qDebug() << this->name.c_str();
     for( GameComponent * component : gameComponents )
         component->render( model, view, projection, cameraPosition );
 

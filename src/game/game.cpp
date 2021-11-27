@@ -11,6 +11,7 @@ Game::Game( Camera * camera ){
 void Game::initGame(){
 
     // Shaders & Lights  --------------------------------------------------------------------------------
+
     shader = new Shader( "../GameEngine/shaders/base_vshader.glsl", "../GameEngine/shaders/base_fshader.glsl" );
     terrainShader = new Shader(  "../GameEngine/shaders/terrain_vshader.vert", "../GameEngine/shaders/terrain_fshader.frag" );
 
@@ -42,23 +43,24 @@ void Game::initGame(){
     terrainGO = new GameObject( "Terrain" );
 
     MeshRenderer * terrainRenderer = new MeshRenderer( terrainMesh, terrainGO->getTransform() );
+    ColliderComponent * terrainCollider = new ColliderComponent( terrainMesh );
 
     terrainGO->addComponent( terrainRenderer );
+    terrainGO->addComponent( terrainCollider );
 
     // Player Game Object  ------------------------------------------------------------------------------
 
+    std::vector<Texture> playerTextures;
+    playerTextures.push_back( grass );
 
-    std::vector<Texture> bunnyTextures;
-    bunnyTextures.push_back( grass );
-
-    Mesh playerMesh = Mesh( sphereObj ,bunnyTextures, shader, white );
-
-    playerGO  = new GameObject( "Player", terrainGO );
+    Mesh playerMesh = Mesh( bunnyObj ,playerTextures, shader, white );
+    playerGO  = new GameObject( "Player" );
     playerGO->scale( QVector3D( 0.01, 0.01, 0.01 ) );
 
     MeshRenderer * playerRenderer = new MeshRenderer( playerMesh, playerGO->getTransform() );
     PhysicsComponent * playerPhysics = new PhysicsComponent( playerGO->getTransform(), physicsEngine );
     MoveComponent * playerMove = new MoveComponent( deltaTime, terrain );
+    ColliderComponent * playerCollider = new ColliderComponent( playerMesh );
 
     connect( playerMove,  &MoveComponent::move, playerPhysics, &PhysicsComponent::hasMoved );
     connect( playerMove,  &MoveComponent::stop, playerPhysics, &PhysicsComponent::hasStopped );
@@ -69,6 +71,7 @@ void Game::initGame(){
     playerGO->addComponent( playerRenderer );
     playerGO->addComponent( playerMove );
     playerGO->addComponent( playerPhysics );
+    playerGO->addComponent( playerCollider );
 
     this->player = Player( *playerGO );
     this->player.setMesh( playerMesh );
@@ -76,9 +79,11 @@ void Game::initGame(){
 
     // Build hierarchy ---------------------------------------------------------------------------------
 
-    terrainGO->addChild( playerGO );
 
-    sceneGraph = SceneGraph( terrainGO );
+    std::vector<GameObject *> baseGo = { terrainGO, playerGO };
+
+    sceneGraph = SceneGraph( baseGo );
+
 }
 
 void Game::input( QKeyEvent * key  ){
@@ -95,9 +100,9 @@ void Game::render( ){
 }
 
 
-
 // SLOTS
 void Game::keyPressed( QKeyEvent * key ){
+
     emit( this->sendPressedKey( key ) );
 }
 

@@ -21,8 +21,8 @@ private:
 
 };
 
-template<typename Base, typename T> inline bool instanceof(const T *ptr) {
-    return dynamic_cast<const Base*>(ptr) != nullptr;
+template<typename Base, typename T> inline bool instanceof( T *ptr) {
+    return dynamic_cast<Base*>(ptr) != nullptr;
 }
 
 #endif // GAMECOMPONENT_H

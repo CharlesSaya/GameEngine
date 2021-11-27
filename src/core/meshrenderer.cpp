@@ -31,3 +31,13 @@ void MeshRenderer::render( const QMatrix4x4& model, const QMatrix4x4& view, cons
     this->mesh.unbindTextures();
 
 }
+
+Mesh &MeshRenderer::getMesh()
+{
+    return mesh;
+}
+
+void MeshRenderer::setMesh(const Mesh &newMesh)
+{
+    mesh = newMesh;
+}

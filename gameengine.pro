@@ -7,6 +7,9 @@ SOURCES += src/game/main.cpp \
     src/core/camera.cpp \
     src/core/colliderComponent.cpp \
     src/core/coreEngine.cpp \
+    src/core/gameObjectCamera.cpp \
+    src/core/gameObjectMesh.cpp \
+    src/core/gameObjectPlayer.cpp \
     src/core/moveComponent.cpp \
     src/core/objLoader.cpp \
     src/core/physicsComponent.cpp \
@@ -33,6 +36,9 @@ HEADERS += \
     headers/core/colliderComponent.h \
     headers/core/componentManager.h \
     headers/core/coreEngine.h \
+    headers/core/gameObjectCamera.h \
+    headers/core/gameObjectMesh.h \
+    headers/core/gameObjectPlayer.h \
     headers/core/moveComponent.h \
     headers/core/objloader.h \
     headers/core/physicsComponent.h \
