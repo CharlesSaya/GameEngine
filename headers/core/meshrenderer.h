@@ -9,32 +9,27 @@
 
 #include "headers/core/camera.h"
 #include "headers/core/transform.h"
-#include "headers/core/gameComponent.h"
 
-class MeshRenderer : public GameComponent
+class MeshRenderer : public QObject
 {
+Q_OBJECT
 
+public slots:
+    void updateBBox( Transform * transform );
 
 public:
     MeshRenderer();
-    MeshRenderer( Mesh &mesh,  Transform & transform );
+    MeshRenderer( Mesh &mesh );
 
-    void input( QKeyEvent * key  ) override;
-
-    void update( float step ) override;
-    void render( const QMatrix4x4& model, const QMatrix4x4& view, const QMatrix4x4& projection, const QVector3D& cameraPosition ) override;
-
-    void renderAABB();
+    void renderMesh( Transform & transform, const QMatrix4x4& model, Camera & camera );
 
     Mesh &getMesh();
     void setMesh(const Mesh &newMesh);
 
 private:
     Mesh mesh;
-    Transform &transform;
     QOpenGLBuffer verticesBuffer, indexesBuffer;
 
-    int indexCount;
     bool renderBoundingBox = false;
 };
 

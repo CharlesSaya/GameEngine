@@ -5,15 +5,16 @@
 #include <QOpenGLShaderProgram>
 
 #include "headers/core/camera.h"
+
 #include "headers/core/gameObject.h"
-#include "headers/core/colliderComponent.h"
+#include "headers/core/gameObjectMesh.h"
+#include "headers/core/gameObjectPlayer.h"
+#include "headers/core/gameObjectCamera.h"
 
 #include "headers/render/shader.h"
-#include "headers/render/vertexData.h"
+#include "headers/render/renderingEngine.h"
 
 #include "headers/physics/physicsEngine.h"
-#include "headers/render/renderingEngine.h"
-#include "headers/render/renderingEngine.h"
 
 typedef struct Node{
 
@@ -34,11 +35,17 @@ class SceneGraph{
 
 private:
     Node * root;
+    std::vector<GameObject *> goList;
+    std::vector<GameObject *> goCollidable;
+    std::vector<GameObjectMesh *> goMeshes;
+    std::vector<GameObjectPlayer *> goPlayers;
+    std::vector<GameObjectCamera *> goCameras;
+
 
 public:
 
     SceneGraph();
-    SceneGraph( std::vector<GameObject *>& goList );
+    SceneGraph( std::vector<GameObject *>& goList, std::vector<GameObjectMesh *> &goMeshes, std::vector<GameObjectPlayer *> &goPlayers, std::vector<GameObjectCamera *> &goCameras );
 
     Node * getRoot();
 
@@ -50,7 +57,22 @@ public:
     void update( float fixedStep );
     void render( Camera &camera  );
 
-    void updateBBox( Node * node );
+    template<class Physics>
+    void updatePhysics( Physics * go, float step ){
+        go->getPhysicsComponent()->updatePhysics( step, *go->getTransform() );
+    }
+
+    template<class Renderable>
+    void renderMesh( Renderable * go, Camera & camera ){
+        go->getMeshRenderer()->renderMesh( *go->getTransform(), go->getModel(), camera );
+    }
+
+    template<class Movable>
+    void updateCollision( Movable * go, Camera & camera ){
+        go->getCollisionComponent()->computeCollision();
+    }
+
+    void updateBVH( Node * node );
 
 };
 

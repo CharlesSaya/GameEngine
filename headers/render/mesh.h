@@ -14,6 +14,7 @@
 #include "dirent.h"
 
 #include "headers/core/objloader.h"
+#include "headers/core/transform.h"
 
 #include "headers/render/shader.h"
 #include "headers/render/terrain.h"
@@ -47,6 +48,8 @@ class Mesh : protected QOpenGLFunctions_3_1{
     void initBuffers( uint lod );
     void drawMesh( float distance );
     uint getLod( float distance );
+
+    void updateBBox( Transform * transform );
 
     const QVector3D &getMeshColor() const;
     void setMeshColor(const QVector3D &newMeshColor);

@@ -1,10 +1,10 @@
 #include "headers/game/game.h"
 
-Game::Game(){
+Game::Game( QObject * parent ) : QObject(parent){
 
 }
 
-Game::Game( Camera * camera ){
+Game::Game( Camera * camera,  QObject * parent ) : QObject(parent){
     this->camera = camera;
 }
 
@@ -40,49 +40,57 @@ void Game::initGame(){
     terrain = Terrain( heightMap );
     Mesh terrainMesh = Mesh( terrain, terrainTextures, terrainShader, white );
 
-    terrainGO = new GameObject( "Terrain" );
+    MeshRenderer * terrainRenderer = new MeshRenderer( terrainMesh );
+    ColliderComponent * terrainCollider = new ColliderComponent();
 
-    MeshRenderer * terrainRenderer = new MeshRenderer( terrainMesh, terrainGO->getTransform() );
-    ColliderComponent * terrainCollider = new ColliderComponent( terrainMesh );
+    terrainGO = new GameObjectMesh( "Terrain", terrainRenderer, terrainCollider );
 
-    terrainGO->addComponent( terrainRenderer );
-    terrainGO->addComponent( terrainCollider );
+    this->goMeshes.push_back( terrainGO );
 
     // Player Game Object  ------------------------------------------------------------------------------
 
     std::vector<Texture> playerTextures;
     playerTextures.push_back( grass );
 
-    Mesh playerMesh = Mesh( bunnyObj ,playerTextures, shader, white );
-    playerGO  = new GameObject( "Player" );
-    playerGO->scale( QVector3D( 0.01, 0.01, 0.01 ) );
+    Mesh playerMesh = Mesh( bunnyObj ,playerTextures, shader, white );   
 
-    MeshRenderer * playerRenderer = new MeshRenderer( playerMesh, playerGO->getTransform() );
-    PhysicsComponent * playerPhysics = new PhysicsComponent( playerGO->getTransform(), physicsEngine );
-    MoveComponent * playerMove = new MoveComponent( deltaTime, terrain );
-    ColliderComponent * playerCollider = new ColliderComponent( playerMesh );
+    MeshRenderer * playerRenderer = new MeshRenderer( playerMesh );
+    PhysicsComponent * playerPhysics = new PhysicsComponent( physicsEngine, this );
 
-    connect( playerMove,  &MoveComponent::move, playerPhysics, &PhysicsComponent::hasMoved );
-    connect( playerMove,  &MoveComponent::stop, playerPhysics, &PhysicsComponent::hasStopped );
+    MoveComponent * playerMove = new MoveComponent( terrain );
+    ColliderComponent * playerCollider = new ColliderComponent();
 
     connect( this, &Game::sendPressedKey, playerMove, &MoveComponent::pressedInput );
     connect( this, &Game::sendreleasedKey, playerMove, &MoveComponent::releasedInput );
 
-    playerGO->addComponent( playerRenderer );
-    playerGO->addComponent( playerMove );
-    playerGO->addComponent( playerPhysics );
-    playerGO->addComponent( playerCollider );
+    playerGO  = new GameObjectPlayer( "Player" , playerRenderer, playerMove, playerPhysics, playerCollider );
+    playerGO->scale( QVector3D( 0.01, 0.01, 0.01 ) );
 
     this->player = Player( *playerGO );
     this->player.setMesh( playerMesh );
     this->player.move( QVector3D(0.0, 0.0, 0.0), terrain ); // set initial height
 
-    // Build hierarchy ---------------------------------------------------------------------------------
+    this->goPlayers.push_back( playerGO );
 
+    // Sphere
+
+    std::vector<Texture> sphereTextures;
+    playerTextures.push_back( grass );
+
+    Mesh sphereMesh = Mesh( sphereObj, sphereTextures, shader, white );
+    MeshRenderer * sphereRenderer = new MeshRenderer( sphereMesh );
+    ColliderComponent * sphereCollider = new ColliderComponent();
+
+    sphereGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider, playerGO );
+    sphereGO->move( QVector3D(0.0, 1.0, 0.0)  );
+
+    this->goMeshes.push_back( sphereGO );
+
+    // Build hierarchy ---------------------------------------------------------------------------------
 
     std::vector<GameObject *> baseGo = { terrainGO, playerGO };
 
-    sceneGraph = SceneGraph( baseGo );
+    sceneGraph = SceneGraph( baseGo, this->goMeshes, this->goPlayers, this->goCameras );
 
 }
 
@@ -90,6 +98,7 @@ void Game::input( QKeyEvent * key  ){
     this->sceneGraph.input( key );
 
 }
+
 void Game::update( float fixedStep )
 {
     this->sceneGraph.update( fixedStep  );
@@ -126,7 +135,9 @@ const PhysicsEngine &Game::getPhysicsEngine() const{
 }
 
 void Game::setPhysicsEngine(const PhysicsEngine &newPhysicsEngine){
+
     physicsEngine = newPhysicsEngine;
+
 }
 
 void Game::setProjection( float aspect ){

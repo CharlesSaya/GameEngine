@@ -97,7 +97,7 @@ signals:
 
 public:
     explicit CoreEngine();
-    explicit CoreEngine(int frames, QScopedPointer<Game> &game, QWidget *parent = 0);
+    explicit CoreEngine(int frames, QWidget *parent = 0);
 
     const PhysicsEngine &getPhysicsEngine() const;
     void setPhysicsEngine(const PhysicsEngine &newPhysicsEngine);
@@ -137,7 +137,7 @@ private:
 
     QMatrix4x4 projection;
 
-    QScopedPointer<Game> game;
+    Game * game;
 
     SceneGraph sceneGraph;
     Terrain terrain;

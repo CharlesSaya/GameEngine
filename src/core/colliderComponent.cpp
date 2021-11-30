@@ -1,13 +1,10 @@
 #include "headers/core/colliderComponent.h"
 
 
-ColliderComponent::ColliderComponent( Mesh & mesh ):mesh(mesh){
+ColliderComponent::ColliderComponent(){
 
 }
 
-void ColliderComponent::input( QKeyEvent * key  ){
-
-}
 
 void ColliderComponent::update( float step ){
 
@@ -29,15 +26,6 @@ void ColliderComponent::render( const QMatrix4x4& model, const QMatrix4x4& view,
 
 // Getters & Setters
 
-Mesh &ColliderComponent::getMesh()
-{
-    return mesh;
-}
-
-void ColliderComponent::setMesh(const Mesh &newMesh)
-{
-    mesh = newMesh;
-}
 
 boolean ColliderComponent::getMoveable() const
 {

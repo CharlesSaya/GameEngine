@@ -74,12 +74,11 @@ int main(int argc, char *argv[])
 
 #ifndef QT_NO_OPENGL
     //100 FPS
-    QScopedPointer<Game> game( new Game() );
-//    MainWindow * mainWindow = new MainWindow();
-    QScopedPointer<CoreEngine> coreEngine( new CoreEngine( 100, game ) );
-//    mainWindow->setWindowTitle( "Game" );
-//    mainWindow->setCentralWidget( coreEngine.data() );
-    coreEngine.data()->show();
+    MainWindow * mainWindow = new MainWindow();
+    CoreEngine *coreEngine =  new CoreEngine( 100, mainWindow );
+    mainWindow->setWindowTitle( "Game" );
+    mainWindow->setCentralWidget( coreEngine );
+    mainWindow->show();
 
 #else
     QLabel note("OpenGL Support required");

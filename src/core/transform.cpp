@@ -11,20 +11,32 @@ Transform::Transform( QVector3D &position ){
     this->position = position;
 }
 
+Transform::Transform( Transform & transform ){
+    this->translation = transform.translation;
+    this->rotation = transform.rotation;
+    this->scale = transform.scale;
+    this->position = transform.position;
+}
+
+
 void Transform::applyTranslation( QVector3D vector ){
     this->position += vector;
+    emit transformed( this );
 }
 
 void Transform::applyRotation( QQuaternion quaternion ){
     this->rotation  = quaternion;
+    emit transformed( this );
 }
 
 void Transform::applyScale( QVector3D vector ){
     this->scale = ( vector );
+    emit transformed( this );
 }
 
 void Transform::resetModel(){
     this->model.setToIdentity();
+    emit transformed( this );
 }
 
 QMatrix4x4 & Transform::getModel()

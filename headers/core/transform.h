@@ -3,7 +3,12 @@
 
 #include <QMatrix4x4>
 
-class Transform{
+class Transform : public QObject{
+
+Q_OBJECT
+
+signals:
+    void transformed( Transform * transform );
 
 private:
     QVector3D translation;
@@ -11,8 +16,10 @@ private:
     QVector3D scale;
     QMatrix4x4 model;
     QVector3D position;
+
 public:
     Transform();
+    Transform( Transform & transform );
     Transform( QVector3D &position );
 
     void resetModel();
@@ -20,8 +27,6 @@ public:
     void applyTranslation( QVector3D vector );
     void applyRotation( QQuaternion quaternion );
     void applyScale( QVector3D vector );
-
-    void applyRotationAroundParent( QVector3D vector );
 
     QVector3D &getPosition();
     void setPosition(const QVector3D &newPosition);

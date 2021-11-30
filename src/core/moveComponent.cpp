@@ -2,17 +2,11 @@
 
 
 
-MoveComponent::MoveComponent( float deltaTime, Terrain & terrain ){
+MoveComponent::MoveComponent( Terrain & terrain ){
 
-    this->deltaTime      = deltaTime;
-    this->terrain          = terrain;
-
-}
-
-void MoveComponent::input( QKeyEvent * key ){
+    this->terrain = terrain;
 
 }
-
 
 void MoveComponent::pressedInput(QKeyEvent * key){
     switch( key->key() ){
@@ -52,9 +46,5 @@ void MoveComponent::update( float step ){
     //            worldPos = transform.getWorldPosition();
     //            height = terrain.getHeight( worldPos );
     //            transform.getPosition().setY( height );
-
-}
-
-void MoveComponent::render( const QMatrix4x4& model, const QMatrix4x4& view, const QMatrix4x4& projection, const QVector3D& cameraPosition ){
 
 }

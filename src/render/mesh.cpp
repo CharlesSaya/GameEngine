@@ -63,6 +63,10 @@ std::vector<string> dirFiles( std::string dirName ){
     return files;
 }
 
+void Mesh::updateBBox( Transform * transform ){
+    this->bBox.transformAABB( transform->getModel() );
+}
+
 void Mesh::loadGeometry( std::string dirPath ){
 
     std::vector< string > files = dirFiles( dirPath );

@@ -34,7 +34,6 @@ SOURCES += src/game/main.cpp \
 HEADERS += \
     headers/core/camera.h \
     headers/core/colliderComponent.h \
-    headers/core/componentManager.h \
     headers/core/coreEngine.h \
     headers/core/gameObjectCamera.h \
     headers/core/gameObjectMesh.h \

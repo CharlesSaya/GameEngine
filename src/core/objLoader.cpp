@@ -86,7 +86,7 @@ void ObjLoader::loadObject( string file, vector<VertexData> & vertexDatas, vecto
             QString normal2 = QString::fromStdString(splited[2].c_str());
             QString normal3 = QString::fromStdString(splited[3].c_str());
             normals.push_back( QVector3D(normal1.toFloat(), normal2.toFloat() , normal2.toFloat()));
-//            qDebug("%f", vecteur.x());
+
         }else if ( line.rfind( "vt ", 0 ) == 0 ){
             hasTexcoord = true;
             vector<string> splited = split( line, " " );
@@ -96,11 +96,11 @@ void ObjLoader::loadObject( string file, vector<VertexData> & vertexDatas, vecto
         }
         else if( line.rfind( "v ", 0 ) == 0 ){
 
-                    vector<string> splited = split( line, " " );
-                    QString vertex1= QString::fromStdString(splited[1].c_str());
-                    QString vertex2 = QString::fromStdString(splited[2].c_str());
-                    QString vertex3 = QString::fromStdString(splited[3].c_str());
-                    positions.push_back( QVector3D( vertex1.toFloat(), vertex2.toFloat(), vertex3.toFloat() ) );
+            vector<string> splited = split( line, " " );
+            QString vertex1= QString::fromStdString(splited[1].c_str());
+            QString vertex2 = QString::fromStdString(splited[2].c_str());
+            QString vertex3 = QString::fromStdString(splited[3].c_str());
+            positions.push_back( QVector3D( vertex1.toFloat(), vertex2.toFloat(), vertex3.toFloat() ) );
 
         }else if ( line.rfind( "f ", 0 ) == 0 ){
             break;

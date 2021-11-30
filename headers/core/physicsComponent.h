@@ -6,8 +6,9 @@
 #include "headers/physics/physicsEngine.h"
 
 
-class PhysicsComponent : public GameComponent{
-Q_OBJECT
+class PhysicsComponent : public QObject{
+
+    Q_OBJECT
 
 public slots:
 
@@ -16,12 +17,11 @@ public slots:
 
 public:
 
-    PhysicsComponent( Transform &transform, PhysicsEngine &physicsEngine );
+    PhysicsComponent(  PhysicsEngine &physicsEngine, QObject * parent = 0 );
 
-    void input( QKeyEvent * key  ) override;
-    void update( float step ) override;
-    void render( const QMatrix4x4& model, const QMatrix4x4& view, const QMatrix4x4& projection, const QVector3D& cameraPosition ) override;
+    void updatePhysics( float step, Transform & transform );
 
+    PhysicsEngine &physicsEngine;
 
 private:
 
@@ -29,11 +29,9 @@ private:
     float friction = 1.0;
     float movementSpeed = 0.1;
     float maxSpeedWalk = 1.0;
-    PhysicsEngine physicsEngine;
 
     QVector3D velocity = QVector3D( 0.0, 0.0, 0.0 );
 
-    Transform &transform;
 };
 
 #endif // PHYSICSCOMPONENT_H

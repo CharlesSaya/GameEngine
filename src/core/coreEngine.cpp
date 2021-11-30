@@ -5,7 +5,7 @@ CoreEngine::CoreEngine(){
 
 }
 
-CoreEngine::CoreEngine(int frames, QScopedPointer<Game> &game, QWidget *parent) :
+CoreEngine::CoreEngine(int frames, QWidget *parent) :
     QOpenGLWidget(parent),
     frames(frames)
 {
@@ -14,7 +14,7 @@ CoreEngine::CoreEngine(int frames, QScopedPointer<Game> &game, QWidget *parent) 
     this->renderStep = frames / 1000.f;
     this->grabMouse();
     this->grabKeyboard();
-    this->game.swap( game );
+    this->game = new Game(this);
 
     this->setMouseTracking(true);
     this->setWindowTitle( QString   ( QString::number( frames ) ) + "FPS" );
@@ -97,7 +97,7 @@ void CoreEngine::timerEvent(QTimerEvent *)
     accumulator += deltaTime;
 
     while( accumulator > this->fixedStep ){
-//        game->update( this->fixedStep );
+        game->update( this->fixedStep );
         accumulator -= this->fixedStep;
     }
 
@@ -144,9 +144,9 @@ void CoreEngine::initGame(){
 
     // Game  --------------------------------------------------------------------------------
 
-    this->game.data()->setCamera( camera );
-    this->game.data()->setPhysicsEngine( physicsEngine );
-    this->game.data()->initGame();
+    this->game->setCamera( camera );
+    this->game->setPhysicsEngine( physicsEngine );
+    this->game->initGame();
 
 }
 
@@ -159,6 +159,6 @@ void CoreEngine::paintGL()
 
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-    this->game.data()->render();
+    this->game->render();
 
 }

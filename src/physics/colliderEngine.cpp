@@ -11,27 +11,5 @@ bool ColliderEngine::intersectAABB( AABB &box1, AABB &box2 ){
               || ( ( box1.getMin().z() < box2.getMax().z() ) && ( box1.getMax().z() > box2.getMin().z() ) ) );
 }
 
-void ColliderEngine::detectCollision( GameObject * go, Node * node ){
-    ColliderComponent * col =  static_cast<ColliderComponent *>( node->gameObject->getComponent<ColliderComponent>());
-
-    if ( !intersectAABB( col->getMesh().getAABB(), *node->nodeBoundingBox ) )
-        return;
-    else
-    {
-        for ( Node * childNode : node->children ){
-            if ( !childNode->children.empty() )
-                detectCollision( go, childNode );
-        }
-
-
-    }
-
-}
-
-void ColliderEngine::computeCollision(){
-
-
-}
-
 
 
