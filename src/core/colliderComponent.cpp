@@ -27,12 +27,12 @@ void ColliderComponent::render( const QMatrix4x4& model, const QMatrix4x4& view,
 // Getters & Setters
 
 
-boolean ColliderComponent::getMoveable() const
+bool ColliderComponent::getMoveable() const
 {
     return moveable;
 }
 
-void ColliderComponent::setMoveable(boolean newMoveable)
+void ColliderComponent::setMoveable(bool newMoveable)
 {
     moveable = newMoveable;
 }

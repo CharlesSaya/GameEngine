@@ -64,7 +64,7 @@ void Game::initGame(){
     connect( this, &Game::sendreleasedKey, playerMove, &MoveComponent::releasedInput );
 
     playerGO  = new GameObjectPlayer( "Player" , playerRenderer, playerMove, playerPhysics, playerCollider );
-//    playerGO->scale( QVector3D( 0.01, 0.01, 0.01 ) );
+    playerGO->scale( QVector3D( 0.01, 0.01, 0.01 ) );
 
     this->player = Player( *playerGO );
     this->player.setMesh( playerMesh );
@@ -77,14 +77,15 @@ void Game::initGame(){
     std::vector<Texture> sphereTextures;
     playerTextures.push_back( grass );
 
-    Mesh sphereMesh = Mesh( sphereObj, sphereTextures, shader, white );
+    Mesh sphereMesh = Mesh( sphereObj, sphereTextures, shader, white, true );
     MeshRenderer * sphereRenderer = new MeshRenderer( sphereMesh );
     ColliderComponent * sphereCollider = new ColliderComponent();
 
-//    sphereGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider, playerGO );
-//    sphereGO->move( QVector3D(0.0, 1.0, 0.0)  );
+    sphereGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider, playerGO );
+    sphereGO->move( QVector3D(0.0, 1.0, 0.0)  );
+//    sphereGO->scale( QVector3D(0.5, 0.5, 0.5)  );
 
-//    this->goMeshes.push_back( sphereGO );
+    this->goMeshes.push_back( sphereGO );
 
     // Build hierarchy ---------------------------------------------------------------------------------
 

@@ -10,7 +10,7 @@ class ColliderComponent{
 
 
 private:
-    boolean moveable;
+    bool moveable;
 
 public:
     ColliderComponent();
@@ -18,8 +18,8 @@ public:
     void update(float step);
     void render(const QMatrix4x4 &model, const QMatrix4x4 &view, const QMatrix4x4 &projection, const QVector3D &cameraPosition);
 
-    boolean getMoveable() const;
-    void setMoveable(boolean newMoveable);
+    bool getMoveable() const;
+    void setMoveable(bool newMoveable);
 };
 
 #endif // COLLIDERCOMPONENT_H
