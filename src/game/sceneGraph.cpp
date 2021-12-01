@@ -105,7 +105,6 @@ void SceneGraph::updateBVH( Node * node ){
         itB = find( goPlayers.begin(), goPlayers.end(), go);
         if ( itB != goPlayers.end()  ){
             node->nodeBoundingBox->resizeAABB( (*itB)->getMeshRenderer()->getMesh().getAABB() );
-            qDebug() << node->nodeBoundingBox->getMax();
             return;
         }
     }

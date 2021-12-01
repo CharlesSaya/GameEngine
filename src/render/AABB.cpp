@@ -3,7 +3,7 @@
 #include <vector>
 
 AABB::AABB(){
-
+    initBuffers();
 }
 
 AABB::AABB( std::vector<VertexData> &points ){
@@ -27,16 +27,8 @@ AABB::AABB( std::vector<VertexData> &points ){
         if (max.z() < points[i].position.z())
             max.setZ( points[i].position.z() );
     }
-
-
-    verticesBuffer =  QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
-    indexesBuffer  =  QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
-
-    verticesBuffer.create();
-    indexesBuffer.create();
-
-//    initializeOpenGLFunctions();
-//    initBuffers();
+    minDefault = min;
+    maxDefault = max;
 
 }
 
@@ -84,36 +76,8 @@ void AABB::resizeAABB( AABB &box ){
 
 
 void AABB::transformAABB( QMatrix4x4 model ){
-    this->max = model * this->max;
-    this->min = model * this->min;
-}
-
-float AABB::getHeight(){
-    return this->max.y() - this->min.y();
-}
-
-float AABB::getWidth(){
-    return this->max.x() - this->min.x();
-}
-
-const QVector3D &AABB::getMax() const
-{
-   return max;
-}
-
-void AABB::setMax(const QVector3D &newMax)
-{
-   max = newMax;
-}
-
-const QVector3D &AABB::getMin() const
-{
-   return min;
-}
-
-void AABB::setMin(const QVector3D &newMin)
-{
-    min = newMin;
+    this->max = model * this->maxDefault;
+    this->min = model * this->minDefault;
 }
 
 void AABB::initBuffers(){
@@ -125,19 +89,18 @@ void AABB::initBuffers(){
     float diffY = max.y() - min.y();
     float diffZ = max.z() - min.z();
 
+    vertices = {
+                min,
+                min + QVector3D( diffX, 0., 0.),
+                min + QVector3D( diffX, 0., diffZ),
+                min + QVector3D( 0., 0., diffZ),
 
-    std::vector<QVector3D> vertices = {
-                                        min,
-                                        min + QVector3D( diffX, 0., 0.),
-                                        min + QVector3D( diffX, 0., diffZ),
-                                        min + QVector3D( 0., 0., diffZ),
+                min + QVector3D( 0., diffY, 0.),
+                min + QVector3D( diffX,diffY, 0.),
+                min + QVector3D( diffX, diffY, diffZ),
+                min + QVector3D( 0., diffY, diffZ)
 
-                                        min + QVector3D( 0., diffY, 0.),
-                                        min + QVector3D( diffX,diffY, 0.),
-                                        min + QVector3D( diffX, diffY, diffZ),
-                                        min + QVector3D( 0., diffY, diffZ)
-
-                                     };
+             };
 
     lines = { 0, 1,
               1, 2,
@@ -152,29 +115,88 @@ void AABB::initBuffers(){
               4, 5,
               5, 6,
               6, 7,
-              7, 4 };
+              7, 4
+            };
 
     indexCount = lines.size() ;
 
-    verticesBuffer.bind();
-    verticesBuffer.allocate( vertices.data(), vertices.size() * sizeof( QVector3D ) );
 
-    indexesBuffer.bind();
-    indexesBuffer.allocate ( lines.data(), indexCount * sizeof( GLuint ) );
 }
 
-void AABB::drawAABB( Shader * shader ){
+//void AABB::drawAABB( Shader * shader ){
+//    this->initBuffers();
 
-    this->initBuffers();
-    verticesBuffer.bind();
-    indexesBuffer.bind();
+//    indexCount = this->getIndexCount();
 
-    quintptr offset = 0;
+//    AABBverticesBuffer.bind();
+//    AABBverticesBuffer.allocate( this->getVertices().data(), this->getVertices().size() * sizeof( QVector3D ) );
 
-    int vertexLocation = shader->getProgram().attributeLocation("a_position");
-    shader->getProgram().enableAttributeArray(vertexLocation);
-    shader->getProgram().setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(QVector3D));
+//    AABBindexesBuffer.bind();
+//    AABBindexesBuffer.allocate ( this->getLines().data(), indexCount * sizeof( GLuint ) );
 
-//        glDrawElements(GL_LINES, indexCount, GL_UNSIGNED_INT, 0);
+//    quintptr offset = 0;
+
+//    int vertexLocation = shader->getProgram().attributeLocation("a_position");
+//    shader->getProgram().enableAttributeArray(vertexLocation);
+//    shader->getProgram().setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(QVector3D));
+
+////    glDrawElements(GL_LINES, indexCount, GL_UNSIGNED_INT, 0);
+//}
+
+float AABB::getHeight(){
+    return this->max.y() - this->min.y();
 }
 
+float AABB::getWidth(){
+    return this->max.x() - this->min.x();
+}
+
+QVector3D &AABB::getMax()
+{
+   return max;
+}
+
+void AABB::setMax(const QVector3D &newMax)
+{
+   max = newMax;
+}
+
+QVector3D &AABB::getMin()
+{
+   return min;
+}
+
+void AABB::setMin(const QVector3D &newMin)
+{
+    min = newMin;
+}
+
+int AABB::getIndexCount() const
+{
+    return indexCount;
+}
+
+void AABB::setIndexCount(int newIndexCount)
+{
+    indexCount = newIndexCount;
+}
+
+const std::vector<QVector3D> &AABB::getVertices() const
+{
+    return vertices;
+}
+
+void AABB::setVertices(const std::vector<QVector3D> &newVertices)
+{
+    vertices = newVertices;
+}
+
+const std::vector<GLuint> &AABB::getLines() const
+{
+    return lines;
+}
+
+void AABB::setLines(const std::vector<GLuint> &newLines)
+{
+    lines = newLines;
+}

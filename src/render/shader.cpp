@@ -9,7 +9,6 @@ Shader::Shader(){
 
 Shader::Shader( std::string vertexShader, std::string fragmentShader ){
 
-
     if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, vertexShader.c_str()))
         exit(0);
 

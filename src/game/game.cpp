@@ -38,7 +38,7 @@ void Game::initGame(){
     terrainTextures.push_back( grass );
 
     terrain = Terrain( heightMap );
-    Mesh terrainMesh = Mesh( terrain, terrainTextures, terrainShader, white );
+    Mesh terrainMesh = Mesh( terrain, terrainTextures, terrainShader, white, true );
 
     MeshRenderer * terrainRenderer = new MeshRenderer( terrainMesh );
     ColliderComponent * terrainCollider = new ColliderComponent();
@@ -52,7 +52,7 @@ void Game::initGame(){
     std::vector<Texture> playerTextures;
     playerTextures.push_back( grass );
 
-    Mesh playerMesh = Mesh( bunnyObj ,playerTextures, shader, white );   
+    Mesh playerMesh = Mesh( bunnyObj ,playerTextures, shader, white, true );
 
     MeshRenderer * playerRenderer = new MeshRenderer( playerMesh );
     PhysicsComponent * playerPhysics = new PhysicsComponent( physicsEngine, this );
@@ -64,11 +64,11 @@ void Game::initGame(){
     connect( this, &Game::sendreleasedKey, playerMove, &MoveComponent::releasedInput );
 
     playerGO  = new GameObjectPlayer( "Player" , playerRenderer, playerMove, playerPhysics, playerCollider );
-    playerGO->scale( QVector3D( 0.01, 0.01, 0.01 ) );
+//    playerGO->scale( QVector3D( 0.01, 0.01, 0.01 ) );
 
     this->player = Player( *playerGO );
     this->player.setMesh( playerMesh );
-    this->player.move( QVector3D(0.0, 0.0, 0.0), terrain ); // set initial height
+//    this->player.move( QVector3D(0.0, 0.0, 0.0), terrain ); // set initial height
 
     this->goPlayers.push_back( playerGO );
 
@@ -81,10 +81,10 @@ void Game::initGame(){
     MeshRenderer * sphereRenderer = new MeshRenderer( sphereMesh );
     ColliderComponent * sphereCollider = new ColliderComponent();
 
-    sphereGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider, playerGO );
-    sphereGO->move( QVector3D(0.0, 1.0, 0.0)  );
+//    sphereGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider, playerGO );
+//    sphereGO->move( QVector3D(0.0, 1.0, 0.0)  );
 
-    this->goMeshes.push_back( sphereGO );
+//    this->goMeshes.push_back( sphereGO );
 
     // Build hierarchy ---------------------------------------------------------------------------------
 

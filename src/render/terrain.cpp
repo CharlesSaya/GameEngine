@@ -118,6 +118,18 @@ float Terrain::baricentricHeight(  QVector3D v0, QVector3D v1, QVector3D v2, QVe
          + ( l3 * v2.y() );
 }
 
+float Terrain::getMaximumHeight(){
+    float maxHeight = -__FLT_MAX__;
+    QImage &im = this->texture.getImage();
+    for( int i = 0; i < this->height; i++ ){
+        for( int j = 0; j < this->width; j++){
+            if( im.pixelColor( j, i ).blue() > maxHeight )
+                maxHeight = im.pixelColor( j, i ).blue() ;
+        }
+    }
+    return maxHeight/255.0;
+}
+
 std::vector<GLuint> &Terrain::getPlaneIndices()
 {
     return planeIndices;

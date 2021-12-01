@@ -34,19 +34,22 @@ class Mesh : protected QOpenGLFunctions_3_1{
     std::vector<GLuint> b;
 
     QOpenGLBuffer verticesBuffer, indexesBuffer;
+    QOpenGLBuffer AABBverticesBuffer, AABBindexesBuffer;
     std::vector<Texture>  textures;
     QVector3D meshColor;
     Shader * shader;
     AABB bBox;
+    bool renderAABB;
 
  public:
     Mesh();
-    Mesh( std::string filepath, std::vector<Texture> textures, Shader * shader, QVector3D meshColor );
-    Mesh( Terrain terrain, std::vector<Texture> textures, Shader * shader, QVector3D meshColor  );
+    Mesh( std::string filepath, std::vector<Texture> textures, Shader * shader, QVector3D meshColor, bool renderAABB = false );
+    Mesh( Terrain terrain, std::vector<Texture> textures, Shader * shader, QVector3D meshColor, bool renderAABB = false   );
 
     void loadGeometry( std::string filepath );
     void initBuffers( uint lod );
     void drawMesh( float distance );
+    void drawAABB();
     uint getLod( float distance );
 
     void updateBBox( Transform * transform );
@@ -63,6 +66,7 @@ class Mesh : protected QOpenGLFunctions_3_1{
     void unbindTextures();
 
     AABB &getAABB();
+    bool getRenderAABB() const;
 };
 
 #endif // MESH_H

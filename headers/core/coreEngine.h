@@ -144,12 +144,6 @@ private:
     Camera * camera;
     Player player;
 
-    GameObject * terrainGO ;
-    GameObject * playerGO;
-
-    Shader * shader ;
-    Shader * terrainShader;
-
     QVector3D white = QVector3D( 1., 0., 0.);
 
     PhysicsEngine physicsEngine;

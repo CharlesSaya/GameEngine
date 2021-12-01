@@ -19,6 +19,8 @@ void MeshRenderer::renderMesh( Transform & transform, const QMatrix4x4& model, C
 
     this->mesh.bindTextures();
     this->mesh.drawMesh( distance );
+    if( this->mesh.getRenderAABB())
+        this->mesh.drawAABB();
     this->mesh.unbindTextures();
 
 }

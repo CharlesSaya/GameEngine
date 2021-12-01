@@ -16,7 +16,7 @@ void Player::move( QVector3D translation,  Terrain & terrain ){
 
 
 void Player::setHeight( float height ){
-    this->player->getTransform()->getPosition().setY( height + this->mesh.getAABB().getHeight() * 0.01  / 2.);
+    this->player->getTransform()->getPosition().setY( height + this->mesh.getAABB().getHeight()  / 2.);
 }
 
 void Player::setMesh(const Mesh &newMesh)

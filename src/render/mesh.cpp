@@ -1,42 +1,52 @@
 #include "headers/render/mesh.h"
 
-Mesh::Mesh( std::string filepath, std::vector<Texture> textures, Shader * shader, QVector3D meshColor ){
+Mesh::Mesh( std::string filepath, std::vector<Texture> textures, Shader * shader, QVector3D meshColor, bool renderAABB ){
     this->meshColor = meshColor;
     this->textures = textures;
     this->shader = shader;
 
     this-> verticesBuffer =  QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
     this-> indexesBuffer  =  QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
+    this-> AABBverticesBuffer =  QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+    this-> AABBindexesBuffer  =  QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
 
     this->verticesBuffer.create();
     this->indexesBuffer.create();
+    this->AABBverticesBuffer.create();
+    this->AABBindexesBuffer.create();
 
     this-> loadGeometry( filepath );
 
     this->bBox = AABB( this->meshesVertexDatas[0] );
 
+    this->renderAABB = renderAABB;
     initializeOpenGLFunctions();
 
 }
 
-Mesh::Mesh( Terrain terrain, std::vector<Texture> textures, Shader * shader,  QVector3D meshColor ){
+Mesh::Mesh( Terrain terrain, std::vector<Texture> textures, Shader * shader,  QVector3D meshColor, bool renderAABB  ){
     this->meshColor = meshColor;
     this->textures = textures;
     this->shader = shader;
 
     this-> verticesBuffer =  QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
     this->indexesBuffer  =  QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
+    this-> AABBverticesBuffer =  QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+    this-> AABBindexesBuffer  =  QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
 
     this-> verticesBuffer.create();
     this-> indexesBuffer.create();
+    this->AABBverticesBuffer.create();
+    this->AABBindexesBuffer.create();
 
     this->meshesVertexDatas.push_back( terrain.getPlaneVertices() );
     this->meshesFaces.push_back( terrain.getPlaneIndices() );
 
     this->bBox = AABB( this->meshesVertexDatas[0] );
+    this->bBox.getMax().setY( terrain.getMaximumHeight() );
+    this->renderAABB = renderAABB;
 
     initializeOpenGLFunctions();
-
 
 }
 
@@ -56,7 +66,6 @@ std::vector<string> dirFiles( std::string dirName ){
         closedir (dir);
 
     } else {
-        /* could not open directory */
         perror ("");
         exit(0);
     }
@@ -128,12 +137,29 @@ void Mesh::unbindTextures(){
         texture.unbindTexture();
 }
 
+void Mesh::drawAABB(){
+    this->bBox.initBuffers();
+
+    indexCount = this->bBox.getIndexCount();
+
+    AABBverticesBuffer.bind();
+    AABBverticesBuffer.allocate( this->bBox.getVertices().data(), this->bBox.getVertices().size() * sizeof( QVector3D ) );
+
+    AABBindexesBuffer.bind();
+    AABBindexesBuffer.allocate ( this->bBox.getLines().data(), indexCount * sizeof( GLuint ) );
+
+
+    quintptr offset = 0;
+
+    int vertexLocation = shader->getProgram().attributeLocation("a_position");
+    this->shader->getProgram().enableAttributeArray(vertexLocation);
+    this->shader->getProgram().setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(QVector3D));
+
+    glDrawElements(GL_LINES, indexCount, GL_UNSIGNED_INT, 0);
+}
 
 void Mesh::drawMesh( float distance ){
     this->initBuffers( getLod(distance ));
-
-    this->verticesBuffer.bind();
-    this->indexesBuffer.bind();
 
     quintptr offset = 0;
 
@@ -192,6 +218,11 @@ void Mesh::setTextures(const std::vector<Texture> &newTextures)
 AABB &Mesh::getAABB()
 {
     return bBox;
+}
+
+bool Mesh::getRenderAABB() const
+{
+    return renderAABB;
 }
 
 Mesh::Mesh(){
