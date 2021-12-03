@@ -64,7 +64,8 @@ void Game::initGame(){
     connect( this, &Game::sendreleasedKey, playerMove, &MoveComponent::releasedInput );
 
     playerGO  = new GameObjectPlayer( "Player" , playerRenderer, playerMove, playerPhysics, playerCollider );
-    playerGO->scale( QVector3D( 0.01, 0.01, 0.01 ) );
+    playerGO->scale(QVector3D(0.5, 0.5, 0.5));
+    playerGO->move(QVector3D(0., 0.8, 0.5));
 
     this->player = Player( *playerGO );
     this->player.setMesh( playerMesh );
@@ -73,7 +74,6 @@ void Game::initGame(){
     this->goPlayers.push_back( playerGO );
 
     // Sphere
-
     std::vector<Texture> sphereTextures;
     playerTextures.push_back( grass );
 
@@ -81,17 +81,18 @@ void Game::initGame(){
     MeshRenderer * sphereRenderer = new MeshRenderer( sphereMesh );
     ColliderComponent * sphereCollider = new ColliderComponent();
 
-    sphereGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider, playerGO );
-    sphereGO->move( QVector3D(0.0, 1.0, 0.0)  );
-//    sphereGO->scale( QVector3D(0.5, 0.5, 0.5)  );
+//    sphereGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider, playerGO );
+//    sphereGO->scale( QVector3D(0.1, 0.1, 0.1) );
 
-    this->goMeshes.push_back( sphereGO );
+
+
+//    this->goMeshes.push_back( sphereGO );
 
     // Build hierarchy ---------------------------------------------------------------------------------
-
+//    this->playerGO->addChild( sphereGO );
     std::vector<GameObject *> baseGo = { terrainGO, playerGO };
 
-    sceneGraph = SceneGraph( baseGo, this->goMeshes, this->goPlayers, this->goCameras );
+    sceneGraph = SceneGraph( baseGo, this->goMeshes, this->goPlayers, this->goCameras, this->physicsEngine, this->colliderEngine );
 
 }
 
@@ -143,4 +144,14 @@ void Game::setPhysicsEngine(const PhysicsEngine &newPhysicsEngine){
 
 void Game::setProjection( float aspect ){
     this->camera->setProjection( aspect );
+}
+
+const ColliderEngine &Game::getColliderEngine() const
+{
+    return colliderEngine;
+}
+
+void Game::setColliderEngine(const ColliderEngine &newColliderEngine)
+{
+    colliderEngine = newColliderEngine;
 }

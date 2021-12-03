@@ -9,9 +9,6 @@ PhysicsEngine::PhysicsEngine( float deltaTime ){
     this->deltaTime = deltaTime;
 }
 
-
-
-
 const QVector3D &PhysicsEngine::getGravity() const
 {
     return gravity;

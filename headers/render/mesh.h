@@ -52,7 +52,7 @@ class Mesh : protected QOpenGLFunctions_3_1{
     void drawAABB();
     uint getLod( float distance );
 
-    void updateBBox( Transform * transform );
+    void updateAABB( const QMatrix4x4& model  ) ;
 
     const QVector3D &getMeshColor() const;
     void setMeshColor(const QVector3D &newMeshColor);

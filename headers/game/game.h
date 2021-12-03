@@ -16,7 +16,11 @@
 #include "headers/core/meshrenderer.h"
 #include "headers/core/moveComponent.h"
 #include "headers/core/gameComponent.h"
+#include "headers/core/colliderComponent.h"
 #include "headers/core/physicsComponent.h"
+
+#include "headers/physics/physicsEngine.h"
+#include "headers/physics/colliderEngine.h"
 
 #include "headers/render/light.h"
 #include "headers/render/shader.h"
@@ -58,6 +62,9 @@ public:
 
     void setProjection( float aspect );
 
+    const ColliderEngine &getColliderEngine() const;
+    void setColliderEngine(const ColliderEngine &newColliderEngine);
+
 private:
     float deltaTime;
     Camera * camera;
@@ -74,6 +81,7 @@ private:
     Shader * terrainShader;
 
     PhysicsEngine physicsEngine;
+    ColliderEngine colliderEngine;
 
     QVector3D white = QVector3D( 1., 0., 0.);
 

@@ -8,7 +8,7 @@ class Transform : public QObject{
 Q_OBJECT
 
 signals:
-    void transformed( Transform * transform );
+    void transformed();
 
 private:
     QVector3D translation;
@@ -18,7 +18,7 @@ private:
     QVector3D position;
 
 public:
-    Transform();
+    Transform( QObject * parent );
     Transform( Transform & transform );
     Transform( QVector3D &position );
 

@@ -8,6 +8,7 @@
 
 class GameObjectMesh : public GameObject{
 
+
 private:
 
     MeshRenderer * meshRenderer;
@@ -17,11 +18,7 @@ public :
     GameObjectMesh();
     GameObjectMesh( std::string name, MeshRenderer * meshRenderer, ColliderComponent * colliderComponent, GameObject * parent  = 0  );
 
-
     void initSignalsSlots();
-    void input(QKeyEvent *key) override;
-    void update(float step) override;
-    void render(const QMatrix4x4 &model, const QMatrix4x4 &view, const QMatrix4x4 &projection, const QVector3D &cameraPosition) override;
 
     MeshRenderer *getMeshRenderer() ;
     void setMeshRenderer(MeshRenderer *newMeshRenderer);

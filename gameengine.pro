@@ -45,6 +45,7 @@ HEADERS += \
     headers/dirent.h \
     headers/game/MainWindow.h \
     headers/game/game.h \
+    headers/game/node.h \
     headers/physics/colliderEngine.h \
     headers/render/AABB.h \
     headers/core/BasicIO.h \

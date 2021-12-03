@@ -19,7 +19,7 @@ out float height;
 void main()
 {
     vec4 h = texture2D( heightMap,a_texcoord );
-    vec4 position = vec4( a_position, 1.0);
+    vec4 position = vec4( a_position, 1.0) + vec4( h.z * a_normal , 0.);
 
     vec4 worldPosition = model * position;
     vec4 nWorld = model * vec4( a_normal, 0.0);

@@ -4,6 +4,8 @@
 #include <QVector3D>
 #include <QOpenGLShaderProgram>
 
+#include "headers/game/node.h"
+
 #include "headers/core/camera.h"
 
 #include "headers/core/gameObject.h"
@@ -15,21 +17,7 @@
 #include "headers/render/renderingEngine.h"
 
 #include "headers/physics/physicsEngine.h"
-
-typedef struct Node{
-
-    Node * parent = 0;
-    GameObject * gameObject = 0;
-    AABB * nodeBoundingBox = 0;
-
-    std::vector<Node *> children;
-
-    Node(){
-        this->nodeBoundingBox = new AABB();
-    }
-
-} Node;
-
+#include "headers/physics/colliderEngine.h"
 
 class SceneGraph{
 
@@ -41,16 +29,22 @@ private:
     std::vector<GameObjectPlayer *> goPlayers;
     std::vector<GameObjectCamera *> goCameras;
 
+    PhysicsEngine physicsEngine;
+    ColliderEngine colliderEngine;
 
 public:
 
     SceneGraph();
-    SceneGraph( std::vector<GameObject *>& goList, std::vector<GameObjectMesh *> &goMeshes, std::vector<GameObjectPlayer *> &goPlayers, std::vector<GameObjectCamera *> &goCameras );
+    SceneGraph( std::vector<GameObject *>& goList,
+                std::vector<GameObjectMesh *> &goMeshes,
+                std::vector<GameObjectPlayer *> &goPlayers,
+                std::vector<GameObjectCamera *> &goCameras,
+                PhysicsEngine & physicsEngine,
+                ColliderEngine & colliderEngine );
 
     Node * getRoot();
 
     Node * buildGraphScene( GameObject * go );
-    void transformBBox( Node * node );
     bool isLeaf( Node * node);
 
     void input ( QKeyEvent * key );
@@ -67,9 +61,9 @@ public:
         go->getMeshRenderer()->renderMesh( *go->getTransform(), go->getModel(), camera );
     }
 
-    template<class Movable>
-    void updateCollision( Movable * go, Camera & camera ){
-        go->getCollisionComponent()->computeCollision();
+    template<class Collidable>
+    void computeCollision( Collidable * go ){
+        colliderEngine.detectCollision( go, this->root );
     }
 
     void updateBVH( Node * node );

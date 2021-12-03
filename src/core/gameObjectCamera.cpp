@@ -8,19 +8,10 @@ GameObjectCamera::GameObjectCamera( std::string name, MoveComponent * moveCompon
     this->physicsComponent  = physicsComponent;
     this->colliderComponent = colliderComponent;
     this->parent = parent;
-    this->transform = new Transform();
+    this->transform = new Transform( this );
 
 }
 
-
-void GameObjectCamera::input( QKeyEvent * key ){
-
-}
-
-void GameObjectCamera::update( float step ){
-
-
-}
 
 
 MoveComponent *GameObjectCamera::getMoveComponent()

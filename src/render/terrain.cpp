@@ -130,6 +130,18 @@ float Terrain::getMaximumHeight(){
     return maxHeight/255.0;
 }
 
+float Terrain::getMinimumHeight(){
+    float minHeight = __FLT_MAX__;
+    QImage &im = this->texture.getImage();
+    for( int i = 0; i < this->height; i++ ){
+        for( int j = 0; j < this->width; j++){
+            if( im.pixelColor( j, i ).blue() < minHeight )
+                minHeight = im.pixelColor( j, i ).blue() ;
+        }
+    }
+    return minHeight/255.0;
+}
+
 std::vector<GLuint> &Terrain::getPlaneIndices()
 {
     return planeIndices;

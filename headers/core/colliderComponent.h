@@ -4,6 +4,7 @@
 #include <QOpenGLFunctions_3_1>
 
 #include "headers/render/mesh.h"
+#include "headers/render/mesh.h"
 #include "headers/core/gameComponent.h"
 
 class ColliderComponent{

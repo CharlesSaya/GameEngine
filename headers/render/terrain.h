@@ -74,6 +74,7 @@ public:
     std::vector<GLuint> &getPlaneIndices();
     void setPlaneIndices(const std::vector<GLuint> &newPlaneIndices);
 
+    float getMinimumHeight();
     float getMaximumHeight();
 
 private:

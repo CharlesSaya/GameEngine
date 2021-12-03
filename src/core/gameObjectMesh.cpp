@@ -6,30 +6,15 @@ GameObjectMesh::GameObjectMesh( std::string name, MeshRenderer * meshRenderer, C
     this->meshRenderer = meshRenderer;
     this->colliderComponent = colliderComponent;
     this->parent = parent;
-    this->transform = new Transform();
+    this->transform = new Transform( this );
     initSignalsSlots();
 
 }
 
 void GameObjectMesh::initSignalsSlots(){
 
-    connect( transform, &Transform::transformed, meshRenderer, &MeshRenderer::updateBBox );
-
 }
 
-void GameObjectMesh::input( QKeyEvent * key ){
-
-}
-
-void GameObjectMesh::update( float step ){
-
-
-}
-
-void GameObjectMesh::render( const QMatrix4x4 &model, const QMatrix4x4 &view, const QMatrix4x4 &projection, const QVector3D &cameraPosition ){
-
-
-}
 
 MeshRenderer *GameObjectMesh::getMeshRenderer()
 {

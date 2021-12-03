@@ -10,30 +10,22 @@ GameObjectPlayer::GameObjectPlayer( std::string name, MeshRenderer * meshRendere
     this->physicsComponent = physicsComponent;
     this->moveComponent = moveComponent;
     this->parent = parent;
-    this->transform = new Transform();
+    this->transform = new Transform( this );
     initSignalsSlots();
 }
 
 void GameObjectPlayer::initSignalsSlots(){
-
-    connect( transform, &Transform::transformed, meshRenderer, &MeshRenderer::updateBBox );
+    connect( transform, &Transform::transformed, this, &GameObjectPlayer::hasTransformed );
+    connect( this, &GameObjectPlayer::updateAABB, meshRenderer, &MeshRenderer::updateAABB );
     connect( moveComponent, &MoveComponent::move, physicsComponent, &PhysicsComponent::hasMoved );
     connect( moveComponent, &MoveComponent::stop, physicsComponent, &PhysicsComponent::hasStopped );
 
 }
 
-void GameObjectPlayer::input( QKeyEvent * key ){
-
+void GameObjectPlayer::hasTransformed(){
+    emit( updateAABB( getModel() ));
 }
 
-void GameObjectPlayer::update( float step ){
-
-
-}
-
-void GameObjectPlayer::render( const QMatrix4x4 &model, const QMatrix4x4 &view, const QMatrix4x4 &projection, const QVector3D &cameraPosition ){
-
-}
 
 MeshRenderer *GameObjectPlayer::getMeshRenderer()
 {

@@ -133,6 +133,7 @@ void CoreEngine::initGame(){
 
     // Physics Engine  -----------------------------------------------------------------------
     PhysicsEngine physicsEngine = PhysicsEngine( this->fixedStep );
+    ColliderEngine colliderEngine = ColliderEngine();
 
     // Camera  -------------------------------------------------------------------------------
 
@@ -146,6 +147,7 @@ void CoreEngine::initGame(){
 
     this->game->setCamera( camera );
     this->game->setPhysicsEngine( physicsEngine );
+    this->game->setColliderEngine( colliderEngine );
     this->game->initGame();
 
 }

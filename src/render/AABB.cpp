@@ -3,7 +3,6 @@
 #include <vector>
 
 AABB::AABB(){
-    initBuffers();
 }
 
 AABB::AABB( std::vector<VertexData> &points ){
@@ -32,73 +31,77 @@ AABB::AABB( std::vector<VertexData> &points ){
 
 }
 
-void AABB::resizeAABB( AABB &box ){
+void AABB::resizeAABB( AABB& bBox ){
 
+    if (min.x() > bBox.getMin().x())
+        min.setX( bBox.getMin().x() );
 
-    if (min.x() > box.getMin().x())
-        min.setX( box.getMin().x() );
+    if (min.y() > bBox.getMin().y())
+        min.setY( bBox.getMin().y() );
 
-    if (min.y() > box.getMin().y())
-        min.setY( box.getMin().y() );
+    if (min.z() > bBox.getMin().z())
+        min.setZ( bBox.getMin().z() );
 
-    if (min.z() > box.getMin().z())
-        min.setZ( box.getMin().z() );
+    if (max.x() < bBox.getMin().x())
+        max.setX( bBox.getMin().x() );
 
-    if (max.x() < box.getMin().x())
-        max.setX( box.getMin().x() );
+    if (max.y() < bBox.getMin().y())
+        max.setY( bBox.getMin().y() );
 
-    if (max.y() < box.getMin().y())
-        max.setY( box.getMin().y() );
+    if (max.z() < bBox.getMin().z())
+        max.setZ( bBox.getMin().z() );
 
-    if (max.z() < box.getMin().z())
-        max.setZ( box.getMin().z() );
+    if (min.x() > bBox.getMax().x())
+        min.setX( bBox.getMax().x() );
 
-    if (min.x() > box.getMax().x())
-        min.setX( box.getMax().x() );
+    if (min.y() > bBox.getMax().y())
+        min.setY( bBox.getMax().y() );
 
-    if (min.y() > box.getMax().y())
-        min.setY( box.getMax().y() );
+    if (min.z() > bBox.getMax().z())
+        min.setZ( bBox.getMax().z() );
 
-    if (min.z() > box.getMax().z())
-        min.setZ( box.getMax().z() );
+    if (max.x() < bBox.getMax().x())
+        max.setX( bBox.getMax().x() );
 
-    if (max.x() < box.getMax().x())
-        max.setX( box.getMax().x() );
+    if (max.y() < bBox.getMax().y())
+        max.setY( bBox.getMax().y() );
 
-    if (max.y() < box.getMax().y())
-        max.setY( box.getMax().y() );
+    if (max.z() < bBox.getMax().z())
+        max.setZ( bBox.getMax().z());
 
-    if (max.z() < box.getMax().z())
-        max.setZ( box.getMax().z() );
-
-
+    minDefault = min;
+    maxDefault = max;
 }
 
+void AABB::resetAABB(){
+    min = QVector3D();
+    max = QVector3D();
+}
 
-void AABB::transformAABB( QMatrix4x4 model ){
-    this->max = model * this->maxDefault;
-    this->min = model * this->minDefault;
+void AABB::updateAABB( const  QMatrix4x4 &model ) {
+    min = model * minDefault;
+    max = model * maxDefault;
 }
 
 void AABB::initBuffers(){
 
-    QVector3D min = this->getMin();
-    QVector3D max = this->getMax();
+    QVector3D minD = minDefault;
+    QVector3D maxD = maxDefault;
 
-    float diffX = max.x() - min.x();
-    float diffY = max.y() - min.y();
-    float diffZ = max.z() - min.z();
+    float diffX = maxD.x() - minD.x();
+    float diffY = maxD.y() - minD.y();
+    float diffZ = maxD.z() - minD.z();
 
     vertices = {
-                min,
-                min + QVector3D( diffX, 0., 0.),
-                min + QVector3D( diffX, 0., diffZ),
-                min + QVector3D( 0., 0., diffZ),
+                minD,
+                minD + QVector3D( diffX, 0., 0.),
+                minD + QVector3D( diffX, 0., diffZ),
+                minD + QVector3D( 0., 0., diffZ),
 
-                min + QVector3D( 0., diffY, 0.),
-                min + QVector3D( diffX,diffY, 0.),
-                min + QVector3D( diffX, diffY, diffZ),
-                min + QVector3D( 0., diffY, diffZ)
+                minD + QVector3D( 0., diffY, 0.),
+                minD + QVector3D( diffX,diffY, 0.),
+                minD + QVector3D( diffX, diffY, diffZ),
+                minD + QVector3D( 0., diffY, diffZ)
 
              };
 
@@ -140,7 +143,7 @@ void AABB::initBuffers(){
 //    shader->getProgram().enableAttributeArray(vertexLocation);
 //    shader->getProgram().setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(QVector3D));
 
-////    glDrawElements(GL_LINES, indexCount, GL_UNSIGNED_INT, 0);
+//       glDrawElements(GL_LINES, indexCount, GL_UNSIGNED_INT, 0);
 //}
 
 float AABB::getHeight(){

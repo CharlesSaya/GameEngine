@@ -37,7 +37,8 @@ class AABB {
         QVector3D &getMax();
         void setMax(const QVector3D &newMax);
 
-        void resizeAABB( AABB &box );
+        void resizeAABB( AABB& bBox  );
+        void resetAABB();
 
         float getHeight();
         float getWidth();
@@ -45,7 +46,7 @@ class AABB {
         void initBuffers();
         void drawAABB( Shader * shader );
 
-        void transformAABB( QMatrix4x4 model );
+        void updateAABB( const  QMatrix4x4 &model );
         int getIndexCount() const;
         void setIndexCount(int newIndexCount);
         const std::vector<QVector3D> &getVertices() const;

@@ -16,17 +16,18 @@ void MeshRenderer::renderMesh( Transform & transform, const QMatrix4x4& model, C
     shader->setUniformValue( "view", camera.getViewMatrix() );
     shader->setUniformValue( "projection", camera.getProjection() );
     shader->setUniformValue( "cameraPosition", camera.getCameraPosition() );
-
     this->mesh.bindTextures();
     this->mesh.drawMesh( distance );
+
     if( this->mesh.getRenderAABB())
         this->mesh.drawAABB();
+
     this->mesh.unbindTextures();
 
 }
 
-void MeshRenderer::updateBBox( Transform * transform ){
-    this->mesh.updateBBox( transform );
+void MeshRenderer::updateAABB( const QMatrix4x4& model )  {
+    this->mesh.updateAABB( model );
 }
 
 Mesh &MeshRenderer::getMesh()

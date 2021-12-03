@@ -15,13 +15,14 @@ class MeshRenderer : public QObject
 Q_OBJECT
 
 public slots:
-    void updateBBox( Transform * transform );
+    void updateAABB( const QMatrix4x4& model  ) ;
 
 public:
     MeshRenderer();
     MeshRenderer( Mesh &mesh );
 
     void renderMesh( Transform & transform, const QMatrix4x4& model, Camera & camera );
+
 
     Mesh &getMesh();
     void setMesh(const Mesh &newMesh);

@@ -63,6 +63,7 @@
 #include "headers/game/sceneGraph.h"
 
 #include "headers/physics/physicsEngine.h"
+#include "headers/physics/colliderEngine.h"
 
 #include "transform.h"
 #include "gameObject.h"
@@ -119,7 +120,7 @@ private:
 
     int frames;
 
-    float fixedStep   = 0.01f;
+    float   fixedStep   = 0.01f;
     float renderStep  = 0.0f;
 
     float deltaTime   = 0.0f;
@@ -147,6 +148,7 @@ private:
     QVector3D white = QVector3D( 1., 0., 0.);
 
     PhysicsEngine physicsEngine;
+    ColliderEngine colliderEngine;
 };
 
 #endif // COREENGINE_H

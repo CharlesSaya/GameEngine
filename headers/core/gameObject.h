@@ -28,10 +28,6 @@ public:
 
     void addChild( GameObject * newChildren );
 
-    virtual void input( QKeyEvent * key ) = 0;
-    virtual void update( float step ) = 0 ;
-    virtual void render( const QMatrix4x4 &model, const QMatrix4x4 &view, const QMatrix4x4 &projection, const QVector3D &cameraPosition ) = 0;
-
     void move( QVector3D translation );
     void rotate( QVector3D axis, float angle );
     void scale( QVector3D scale );
@@ -44,7 +40,7 @@ public:
     void setTransform( Transform * newTransform);
     Transform *getTransform();
 
-    QMatrix4x4 getModel();
+    const QMatrix4x4& getModel();
     QVector3D getWorldPosition();
     const std::vector<GameObject *> getChildren();
 

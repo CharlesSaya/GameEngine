@@ -19,9 +19,6 @@ public :
     GameObjectCamera();
     GameObjectCamera( std::string name, MoveComponent * moveComponent, PhysicsComponent * physicsComponent, ColliderComponent * colliderComponent, GameObject * parent  = 0  );
 
-    void input(QKeyEvent *key) override;
-    void update(float step) override;
-
     MoveComponent *getMoveComponent() ;
     void setMoveComponent(MoveComponent *newMoveComponent);
     PhysicsComponent *getPhysicsComponent() ;

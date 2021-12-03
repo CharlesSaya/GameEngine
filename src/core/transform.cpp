@@ -1,6 +1,6 @@
 #include "headers/core/transform.h"
 
-Transform::Transform(){
+Transform::Transform( QObject * parent ) : QObject(parent) {
     this->translation = QVector3D();
     this->rotation = QQuaternion();
     this->scale = QVector3D(1.,1.,1.);
@@ -21,22 +21,22 @@ Transform::Transform( Transform & transform ){
 
 void Transform::applyTranslation( QVector3D vector ){
     this->position += vector;
-    emit transformed( this );
+    emit transformed();
 }
 
 void Transform::applyRotation( QQuaternion quaternion ){
     this->rotation  = quaternion;
-    emit transformed( this );
+    emit transformed();
 }
 
 void Transform::applyScale( QVector3D vector ){
     this->scale = ( vector );
-    emit transformed( this );
+    emit transformed();
 }
 
 void Transform::resetModel(){
     this->model.setToIdentity();
-    emit transformed( this );
+    emit transformed();
 }
 
 QMatrix4x4 & Transform::getModel()

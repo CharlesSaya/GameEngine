@@ -1,6 +1,8 @@
 #ifndef GAMEOBJECTPLAYER_H
 #define GAMEOBJECTPLAYER_H
 
+#include <QSignalMapper>
+
 #include "headers/core/gameObject.h"
 
 #include "headers/core/meshrenderer.h"
@@ -8,8 +10,15 @@
 #include "headers/core/physicsComponent.h"
 #include "headers/core/colliderComponent.h"
 
-class   GameObjectPlayer : public GameObject{
+class GameObjectPlayer : public GameObject{
 
+    Q_OBJECT
+
+signals:
+    void updateAABB( const QMatrix4x4& model );
+
+public slots :
+    void hasTransformed();
 
 private:
 
@@ -23,9 +32,6 @@ public :
     GameObjectPlayer( std::string name, MeshRenderer * meshRenderer, MoveComponent * moveComponent, PhysicsComponent * physicsComponent, ColliderComponent * colliderComponent, GameObject * parent  = 0 );
 
     void initSignalsSlots();
-    void input(QKeyEvent *key) override;
-    void update(float step) override;
-    void render(const QMatrix4x4 &model, const QMatrix4x4 &view, const QMatrix4x4 &projection, const QVector3D &cameraPosition) override;
 
     MeshRenderer *getMeshRenderer() ;
     void setMeshRenderer(MeshRenderer *newMeshRenderer);
@@ -35,6 +41,9 @@ public :
     void setPhysicsComponent(PhysicsComponent *newPhysicsComponent);
     ColliderComponent *getColliderComponent() ;
     void setColliderComponent(ColliderComponent *newColliderComponent);
+
+
+
 };
 
 // MeshRenderer

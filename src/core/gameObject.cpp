@@ -5,7 +5,7 @@ GameObject::GameObject(){}
 
 GameObject::GameObject( std::string name, GameObject * parent ){
     this->name = name;
-    this->transform = new Transform();
+    this->transform = new Transform( this );
     this->parent = parent;
 }
 
@@ -57,7 +57,7 @@ QVector3D GameObject::getWorldPosition(){
     return this->transform->getWorldPosition();
 }
 
-QMatrix4x4 GameObject::getModel(){
+const QMatrix4x4& GameObject::getModel(){
 
     if( !parent ){
         return this->transform->getModel();

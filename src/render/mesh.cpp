@@ -44,6 +44,7 @@ Mesh::Mesh( Terrain terrain, std::vector<Texture> textures, Shader * shader,  QV
 
     this->bBox = AABB( this->meshesVertexDatas[0] );
     this->bBox.getMax().setY( terrain.getMaximumHeight() );
+    this->bBox.getMin().setY( terrain.getMinimumHeight() );
     this->renderAABB = renderAABB;
 
     initializeOpenGLFunctions();
@@ -72,8 +73,8 @@ std::vector<string> dirFiles( std::string dirName ){
     return files;
 }
 
-void Mesh::updateBBox( Transform * transform ){
-    this->bBox.transformAABB( transform->getModel() );
+void Mesh::updateAABB( const QMatrix4x4& model ) {
+    this->bBox.updateAABB( model );
 }
 
 void Mesh::loadGeometry( std::string dirPath ){
@@ -147,7 +148,6 @@ void Mesh::drawAABB(){
 
     AABBindexesBuffer.bind();
     AABBindexesBuffer.allocate ( this->bBox.getLines().data(), indexCount * sizeof( GLuint ) );
-
 
     quintptr offset = 0;
 
