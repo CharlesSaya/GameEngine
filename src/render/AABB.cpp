@@ -14,7 +14,7 @@ AABB::AABB( std::vector<VertexData> &points ){
         if (min.y() > points[i].position.y())
             min.setY( points[i].position.y() );
 
-        if (min.z() > points[i].position.z())
+        if (min.z() < points[i].position.z())
             min.setZ( points[i].position.z() );
 
         if (max.x() < points[i].position.x())
@@ -23,42 +23,24 @@ AABB::AABB( std::vector<VertexData> &points ){
         if (max.y() < points[i].position.y())
             max.setY( points[i].position.y() );
 
-        if (max.z() < points[i].position.z())
+        if (max.z() > points[i].position.z())
             max.setZ( points[i].position.z() );
     }
     minDefault = min;
     maxDefault = max;
-
+    lastMin = min;
+    lastMax = max;
 }
 
 void AABB::resizeAABB( AABB& bBox ){
-
     if (min.x() > bBox.getMin().x())
         min.setX( bBox.getMin().x() );
 
     if (min.y() > bBox.getMin().y())
         min.setY( bBox.getMin().y() );
 
-    if (min.z() > bBox.getMin().z())
+    if (min.z() < bBox.getMin().z())
         min.setZ( bBox.getMin().z() );
-
-    if (max.x() < bBox.getMin().x())
-        max.setX( bBox.getMin().x() );
-
-    if (max.y() < bBox.getMin().y())
-        max.setY( bBox.getMin().y() );
-
-    if (max.z() < bBox.getMin().z())
-        max.setZ( bBox.getMin().z() );
-
-    if (min.x() > bBox.getMax().x())
-        min.setX( bBox.getMax().x() );
-
-    if (min.y() > bBox.getMax().y())
-        min.setY( bBox.getMax().y() );
-
-    if (min.z() > bBox.getMax().z())
-        min.setZ( bBox.getMax().z() );
 
     if (max.x() < bBox.getMax().x())
         max.setX( bBox.getMax().x() );
@@ -66,19 +48,26 @@ void AABB::resizeAABB( AABB& bBox ){
     if (max.y() < bBox.getMax().y())
         max.setY( bBox.getMax().y() );
 
-    if (max.z() < bBox.getMax().z())
+    if (max.z() > bBox.getMax().z())
         max.setZ( bBox.getMax().z());
+
 
     minDefault = min;
     maxDefault = max;
+    lastMin = min;
+    lastMax = max;
 }
 
 void AABB::resetAABB(){
-    min = QVector3D();
-    max = QVector3D();
+    min  = QVector3D(__FLT_MAX__ ,__FLT_MAX__, -__FLT_MAX__) ;
+    max = QVector3D(-__FLT_MAX__ ,-__FLT_MAX__,__FLT_MAX__) ;
+    lastMin = QVector3D(__FLT_MAX__ ,__FLT_MAX__, -__FLT_MAX__) ;
+    lastMax = QVector3D(-__FLT_MAX__ ,-__FLT_MAX__,__FLT_MAX__) ;
 }
 
 void AABB::updateAABB( const  QMatrix4x4 &model ) {
+    lastMin = min;
+    lastMax = max;
     min = model * minDefault;
     max = model * maxDefault;
 }
@@ -154,6 +143,10 @@ float AABB::getWidth(){
     return this->max.x() - this->min.x();
 }
 
+float AABB::getDepth(){
+    return this->max.z() - this->min.z();
+}
+
 QVector3D &AABB::getMax()
 {
    return max;
@@ -202,4 +195,43 @@ const std::vector<GLuint> &AABB::getLines() const
 void AABB::setLines(const std::vector<GLuint> &newLines)
 {
     lines = newLines;
+}
+
+ QVector3D &AABB::getMinDefault()
+{
+    return minDefault;
+}
+
+void AABB::setMinDefault(const QVector3D &newMinDefault)
+{
+    minDefault = newMinDefault;
+}
+
+ QVector3D &AABB::getMaxDefault()
+{
+    return maxDefault;
+}
+
+void AABB::setMaxDefault(const QVector3D &newMaxDefault)
+{
+    maxDefault = newMaxDefault;
+}
+const QVector3D &AABB::getLastMin() const
+{
+    return lastMin;
+}
+
+void AABB::setLastMin(const QVector3D &newLastMin)
+{
+    lastMin = newLastMin;
+}
+
+const QVector3D &AABB::getLastMax() const
+{
+    return lastMax;
+}
+
+void AABB::setLastMax(const QVector3D &newLastMax)
+{
+    lastMax = newLastMax;
 }

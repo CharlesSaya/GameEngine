@@ -31,7 +31,7 @@ private:
     QVector3D gravity = QVector3D(0., -9.81, 0.);
 
     float deltaTime = 0.0f;
-    float damp      = .1f;
+    float damp      = .5f;
     float wind      = 1.0f;
     float friction  = 1.0f;
 

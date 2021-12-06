@@ -43,8 +43,10 @@ Mesh::Mesh( Terrain terrain, std::vector<Texture> textures, Shader * shader,  QV
     this->meshesFaces.push_back( terrain.getPlaneIndices() );
 
     this->bBox = AABB( this->meshesVertexDatas[0] );
-    this->bBox.getMax().setY( terrain.getMaximumHeight() );
-    this->bBox.getMin().setY( terrain.getMinimumHeight() );
+    this->bBox.getMaxDefault().setY( terrain.getMaximumHeight() );
+    this->bBox.getMinDefault().setY( terrain.getMinimumHeight() );
+    this->bBox.setMax( this->bBox.getMaxDefault() );
+    this->bBox.setMin( this->bBox.getMinDefault() );
     this->renderAABB = renderAABB;
 
     initializeOpenGLFunctions();

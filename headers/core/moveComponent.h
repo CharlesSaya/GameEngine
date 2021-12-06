@@ -26,7 +26,7 @@ public:
     void update( float step );
 
 private:
-    float speed = .10;
+    float speed = 10.;
 
     QVector3D forward  = QVector3D( 0.0   , 0.0 , -speed  );
     QVector3D backward = QVector3D( 0.0   , 0.0 , speed );

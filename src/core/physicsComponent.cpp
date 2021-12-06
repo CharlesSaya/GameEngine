@@ -8,7 +8,7 @@ PhysicsComponent::PhysicsComponent( PhysicsEngine &physicsEngine,  QObject * par
 
 void PhysicsComponent::updatePhysics( float step, Transform & transform ){
 
-    QVector3D acceleration = (- physicsEngine.getDamp() * velocity) / mass;
+    QVector3D acceleration = ( physicsEngine.getGravity() - physicsEngine.getDamp() * velocity) / mass;
 
     QVector3D newVelocity  = velocity + acceleration * step;
 
@@ -17,11 +17,47 @@ void PhysicsComponent::updatePhysics( float step, Transform & transform ){
     if( meanSpeed.length() > this->maxSpeedWalk )
         meanSpeed = this->maxSpeedWalk * meanSpeed.normalized();
 
-    if ( meanSpeed.length() != 0.0f )
-        transform.applyTranslation(meanSpeed * step);
+    if ( meanSpeed.length() != 0.0f ){
+        transform.applyTranslation( meanSpeed * step );
+    }
 
     velocity = newVelocity;
 
+}
+
+void PhysicsComponent::stop(){
+    velocity = QVector3D();
+
+}
+
+const QVector3D &PhysicsComponent::getVelocity() const
+{
+    return velocity;
+}
+
+void PhysicsComponent::setVelocity(const QVector3D &newVelocity)
+{
+    velocity = newVelocity;
+}
+
+float PhysicsComponent::getRestitution() const
+{
+    return restitution;
+}
+
+void PhysicsComponent::setRestitution(float newRestitution)
+{
+    restitution = newRestitution;
+}
+
+float PhysicsComponent::getFriction() const
+{
+    return friction;
+}
+
+void PhysicsComponent::setFriction(float newFriction)
+{
+    friction = newFriction;
 }
 
 void PhysicsComponent::hasMoved( QVector3D movement ){
@@ -29,7 +65,7 @@ void PhysicsComponent::hasMoved( QVector3D movement ){
 }
 
 void PhysicsComponent::hasStopped(){
-    velocity = QVector3D();
+    stop();
 }
 
 

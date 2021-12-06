@@ -1,10 +1,10 @@
 #include "headers/core/transform.h"
 
 Transform::Transform( QObject * parent ) : QObject(parent) {
-    this->translation = QVector3D();
     this->rotation = QQuaternion();
     this->scale = QVector3D(1.,1.,1.);
     this->position = QVector3D();
+    this->lastWorldPosition = QVector3D();
 }
 
 Transform::Transform( QVector3D &position ){
@@ -12,30 +12,34 @@ Transform::Transform( QVector3D &position ){
 }
 
 Transform::Transform( Transform & transform ){
-    this->translation = transform.translation;
     this->rotation = transform.rotation;
     this->scale = transform.scale;
     this->position = transform.position;
+    this->lastWorldPosition = transform.position;
 }
 
 
 void Transform::applyTranslation( QVector3D vector ){
+    this->lastWorldPosition = this->getWorldPosition();
     this->position += vector;
     emit transformed();
 }
 
 void Transform::applyRotation( QQuaternion quaternion ){
+    this->lastWorldPosition = this->getWorldPosition();
     this->rotation  = quaternion;
     emit transformed();
 }
 
 void Transform::applyScale( QVector3D vector ){
+    this->lastWorldPosition = this->getWorldPosition();
     this->scale = ( vector );
     emit transformed();
 }
 
 void Transform::resetModel(){
     this->model.setToIdentity();
+    this->lastWorldPosition = this->getWorldPosition();
     emit transformed();
 }
 
@@ -48,6 +52,7 @@ QMatrix4x4 & Transform::getModel()
     this->model = tr * rt * sc;
     return this->model;
 }
+
 
 QVector3D &Transform::getPosition()
 {

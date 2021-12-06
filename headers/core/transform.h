@@ -11,11 +11,11 @@ signals:
     void transformed();
 
 private:
-    QVector3D translation;
     QQuaternion rotation;
     QVector3D scale;
     QMatrix4x4 model;
     QVector3D position;
+    QVector3D lastWorldPosition;
 
 public:
     Transform( QObject * parent );
@@ -31,6 +31,7 @@ public:
     QVector3D &getPosition();
     void setPosition(const QVector3D &newPosition);
 
+    void setLastWorldPosition();
     QVector3D getWorldPosition();
 
     QMatrix4x4 &getModel();

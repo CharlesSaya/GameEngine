@@ -65,7 +65,7 @@ void Game::initGame(){
 
     playerGO  = new GameObjectPlayer( "Player" , playerRenderer, playerMove, playerPhysics, playerCollider );
     playerGO->scale(QVector3D(0.5, 0.5, 0.5));
-    playerGO->move(QVector3D(0., 0.8, 0.5));
+    playerGO->move(QVector3D(2., 15., -5.));
 
     this->player = Player( *playerGO );
     this->player.setMesh( playerMesh );
@@ -83,8 +83,6 @@ void Game::initGame(){
 
 //    sphereGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider, playerGO );
 //    sphereGO->scale( QVector3D(0.1, 0.1, 0.1) );
-
-
 
 //    this->goMeshes.push_back( sphereGO );
 

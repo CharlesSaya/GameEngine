@@ -95,7 +95,7 @@ void SceneGraph::update( float fixedStep ){
 
     // compute collision
     for( GameObjectPlayer * go : this->goPlayers){
-//        this->computeCollision( go );
+        this->computeCollision( go );
     }
 
 }
@@ -134,6 +134,7 @@ void SceneGraph::updateBVH( Node * node ){
     }
 
     else{
+
         for( Node * childNode : node->children ){
             updateBVH( childNode );
             node->nodeBoundingBox.resizeAABB( (*node).children.back()->nodeBoundingBox );

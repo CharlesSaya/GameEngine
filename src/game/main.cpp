@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
 #ifndef QT_NO_OPENGL
     //100 FPS
     MainWindow * mainWindow = new MainWindow();
-    CoreEngine *coreEngine =  new CoreEngine( 100, mainWindow );
+    CoreEngine *coreEngine =  new CoreEngine( 60, mainWindow );
     mainWindow->setWindowTitle( "Game" );
     mainWindow->setCentralWidget( coreEngine );
     mainWindow->show();
