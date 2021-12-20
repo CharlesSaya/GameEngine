@@ -25,6 +25,7 @@ AABB& ColliderEngine::buildBroadPhaseBox( AABB &broadPhaseBox, QVector3D velocit
     broadPhaseBox.getMax().setX( velocity.x()>0.0 ? box1.getMax().x() : box1.getMin().x() );
     broadPhaseBox.getMax().setY( velocity.y()>0.0 ? box1.getMax().y() : box1.getMin().y() );
     broadPhaseBox.getMax().setZ( velocity.z()>0.0 ? box1.getMax().z() : box1.getMin().z() );
+
     qDebug() << "BroadPhaseBox" << broadPhaseBox.getMin() << broadPhaseBox.getMax();
 
     return broadPhaseBox;
@@ -102,27 +103,24 @@ float ColliderEngine::sweptAABB( QVector3D velocity, AABB& box1, AABB& box2, QVe
 
         return -1.0f;
 
-    qDebug() << xEntryTime << yEntryTime << zEntryTime;
-    qDebug() << entryTime << exitTime;
-
-    if( entryTime == xEntryTime )
+    if( entryTime == xEntryTime ){
         if( velocity.x() > 0 )
             normal = QVector3D( -1., 0., 0. );
         else
             normal = QVector3D( 1., 0., 0. );
-
-    else if( entryTime == yEntryTime )
+    }
+    else if( entryTime == yEntryTime ){
         if( velocity.y() > 0 )
             normal = QVector3D( 0., -1., 0. );
         else
             normal = QVector3D( 0., 1., 0. );
-
-    else
+    }
+    else{
         if( velocity.z() > 0 )
             normal = QVector3D( 0., 0., 1. );
         else
             normal = QVector3D( 0., 0., -1. );
-
+    }
     return entryTime;
 }
 

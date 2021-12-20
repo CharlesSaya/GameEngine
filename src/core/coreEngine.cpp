@@ -95,7 +95,7 @@ void CoreEngine::timerEvent(QTimerEvent *)
 {
 
     accumulator += deltaTime;
-
+    int cpt = 0;
     while( accumulator > this->fixedStep ){
         game->update( this->fixedStep );
         accumulator -= this->fixedStep;

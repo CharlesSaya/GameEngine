@@ -18,8 +18,8 @@ Terrain::Terrain( Texture &texture )
 {
     this->texture = texture;
 
-    this->width = 128;
-    this->height = 128;
+    this->width = 512;
+    this->height = 512;
 
     this->gridSquareSize = gridSize / float( width - 1) ;
     this->gridNumber = gridSize / gridSquareSize ;

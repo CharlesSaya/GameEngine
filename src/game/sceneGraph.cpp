@@ -22,8 +22,6 @@ SceneGraph::SceneGraph( std::vector<GameObject *>& goList,
 
     // set root AABB
     for( Node * childNode : this->root->children ){
-
-
         this->root->nodeBoundingBox.resizeAABB( childNode->nodeBoundingBox );
     }
 

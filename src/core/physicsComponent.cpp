@@ -5,10 +5,15 @@ PhysicsComponent::PhysicsComponent( PhysicsEngine &physicsEngine,  QObject * par
 }
 
 
-
 void PhysicsComponent::updatePhysics( float step, Transform & transform ){
 
-    QVector3D acceleration = ( physicsEngine.getGravity() - physicsEngine.getDamp() * velocity) / mass;
+    move();
+
+    acceleration = - physicsEngine.getDamp() * velocity;
+
+    acceleration += physicsEngine.getGravity();
+
+    acceleration /= mass;
 
     QVector3D newVelocity  = velocity + acceleration * step;
 
@@ -22,12 +27,74 @@ void PhysicsComponent::updatePhysics( float step, Transform & transform ){
     }
 
     velocity = newVelocity;
-
 }
 
-void PhysicsComponent::stop(){
-    velocity = QVector3D();
 
+bool PhysicsComponent::restin( QVector3D& normal, float distance ){
+    QVector3D vn = QVector3D::dotProduct( velocity, normal ) * normal;
+    QVector3D vt = velocity  - vn;
+
+    if (this->velocity.length() < 0.5 && distance < 0.01 && QVector3D::dotProduct( acceleration, normal ) < 0.001 && vt.length() < this->friction * vn.length()  )
+        return true;
+
+    return false;
+}
+
+void PhysicsComponent::move(){
+    for( uint i : inputs ){
+        switch( i ){
+            case 0 :
+                velocity += forward;
+                break;
+
+            case 1 :
+                velocity += backward;
+                break;
+
+            case 2 :
+                velocity += left;
+                break;
+
+            case 3 :
+                velocity += right;
+                break;
+
+            case 4 :
+                velocity += jump;
+                break;
+        }
+    }
+}
+
+bool PhysicsComponent::atRest(){
+    return resting;
+}
+
+void PhysicsComponent::stop()
+{
+    velocity = QVector3D();
+}
+
+// Getters & Setters
+
+const QVector3D &PhysicsComponent::getAcceleration() const
+{
+    return acceleration;
+}
+
+void PhysicsComponent::setAcceleration(const QVector3D &newAcceleration)
+{
+    acceleration = newAcceleration;
+}
+
+bool PhysicsComponent::getResting() const
+{
+    return resting;
+}
+
+void PhysicsComponent::setResting(bool newResting)
+{
+    resting = newResting;
 }
 
 const QVector3D &PhysicsComponent::getVelocity() const
@@ -60,11 +127,13 @@ void PhysicsComponent::setFriction(float newFriction)
     friction = newFriction;
 }
 
-void PhysicsComponent::hasMoved( QVector3D movement ){
-    velocity += movement;
+void PhysicsComponent::hasMoved( QSet<uint> inputs ){
+    this->inputs = inputs;
+    resting = false;
 }
 
-void PhysicsComponent::hasStopped(){
+void PhysicsComponent::hasStopped( QSet<uint> inputs ){
+    this->inputs = inputs;
     stop();
 }
 

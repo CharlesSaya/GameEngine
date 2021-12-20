@@ -64,8 +64,8 @@ void Game::initGame(){
     connect( this, &Game::sendreleasedKey, playerMove, &MoveComponent::releasedInput );
 
     playerGO  = new GameObjectPlayer( "Player" , playerRenderer, playerMove, playerPhysics, playerCollider );
-    playerGO->scale(QVector3D(0.5, 0.5, 0.5));
-    playerGO->move(QVector3D(2., 15., -5.));
+    playerGO->scale( QVector3D(0.1, 0.1, 0.1) );
+    playerGO->move(  QVector3D(2., 1., -5.) );
 
     this->player = Player( *playerGO );
     this->player.setMesh( playerMesh );
@@ -111,12 +111,14 @@ void Game::render( ){
 
 // SLOTS
 void Game::keyPressed( QKeyEvent * key ){
-
-    emit( this->sendPressedKey( key ) );
+    emit this->sendPressedKey( key ) ;
 }
 
 void Game::keyReleased( QKeyEvent * key ){
-    emit( this->sendreleasedKey( key ) );
+    if( key->isAutoRepeat() )
+        key->ignore();
+    else
+        emit this->sendreleasedKey( key ) ;
 }
 
 // Getters & Setters

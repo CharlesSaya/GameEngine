@@ -15,7 +15,6 @@ void GameObjectMesh::initSignalsSlots(){
 
 }
 
-
 MeshRenderer *GameObjectMesh::getMeshRenderer()
 {
     return meshRenderer;

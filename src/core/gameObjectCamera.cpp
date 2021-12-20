@@ -12,8 +12,6 @@ GameObjectCamera::GameObjectCamera( std::string name, MoveComponent * moveCompon
 
 }
 
-
-
 MoveComponent *GameObjectCamera::getMoveComponent()
 {
     return moveComponent;

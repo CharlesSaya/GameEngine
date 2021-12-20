@@ -51,8 +51,8 @@ public:
     void update( float fixedStep );
     void render( Camera &camera  );
 
-    template<class Physics>
-    void updatePhysics( Physics * go, float step ){
+    template<class Movable>
+    void updatePhysics( Movable * go, float step ){
         go->getPhysicsComponent()->updatePhysics( step, *go->getTransform() );
     }
 
@@ -64,6 +64,11 @@ public:
     template<class Collidable>
     void computeCollision( Collidable * go ){
         colliderEngine.detectCollision( go, this->root );
+    }
+
+    template<class Collidable>
+    void checkRestingCondition( Collidable * go ){
+
     }
 
     void updateBVH( Node * node );
