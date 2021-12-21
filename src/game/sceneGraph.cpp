@@ -77,6 +77,13 @@ void SceneGraph::input(QKeyEvent *key){
 void SceneGraph::update( float fixedStep ){
     for( GameObjectPlayer * go : this->goPlayers){
         this->updatePhysics( go, fixedStep );
+
+    }
+
+    for( GameObjectCamera * go : this->goCameras){
+        //this->updatePhysics( go, fixedStep );
+        go->updateCameraPosition();
+        qDebug() << "camera position" << go->getWorldPosition();
     }
 
     // update children AABB
@@ -98,7 +105,7 @@ void SceneGraph::update( float fixedStep ){
 
 }
 
-void SceneGraph::render( Camera &camera  ){
+void SceneGraph::render( CameraComponent &camera  ){
     for( GameObjectMesh * go : this->goMeshes)
         this->renderMesh( go, camera );
 

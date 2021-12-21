@@ -28,6 +28,7 @@ public:
 private:
     float speed = 1.;
 
+
     QVector3D forward  = QVector3D( 0.0   , 0.0 , -speed  );
     QVector3D backward = QVector3D( 0.0   , 0.0 , speed );
     QVector3D right    = QVector3D( speed , 0.0 , 0.0    );

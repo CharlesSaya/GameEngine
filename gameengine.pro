@@ -4,7 +4,7 @@ TARGET = gameengine
 TEMPLATE = app
 
 SOURCES += src/game/main.cpp \
-    src/core/camera.cpp \
+    src/core/cameraComponent.cpp \
     src/core/colliderComponent.cpp \
     src/core/coreEngine.cpp \
     src/core/gameObjectCamera.cpp \
@@ -32,7 +32,7 @@ SOURCES += src/game/main.cpp \
 
 
 HEADERS += \
-    headers/core/camera.h \
+    headers/core/cameraComponent.h \
     headers/core/colliderComponent.h \
     headers/core/coreEngine.h \
     headers/core/gameObjectCamera.h \

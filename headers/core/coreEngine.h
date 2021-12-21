@@ -54,7 +54,7 @@
 #include <math.h>
 
 #include "headers/core/player.h"
-#include "headers/core/camera.h"
+#include "headers/core/cameraComponent.h"
 
 #include "headers/render/light.h"
 #include "headers/render/terrain.h"
@@ -142,7 +142,7 @@ private:
 
     SceneGraph sceneGraph;
     Terrain terrain;
-    Camera * camera;
+    CameraComponent * camera;
     Player player;
 
     QVector3D white = QVector3D( 1., 0., 0.);

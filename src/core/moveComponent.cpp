@@ -43,6 +43,8 @@ void MoveComponent::pressedInput(QKeyEvent * key){
     }
 }
 
+
+
 void MoveComponent::releasedInput(QKeyEvent * key){
     switch( key->key() ){
 

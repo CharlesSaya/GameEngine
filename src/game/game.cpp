@@ -4,11 +4,13 @@ Game::Game( QObject * parent ) : QObject(parent){
 
 }
 
-Game::Game( Camera * camera,  QObject * parent ) : QObject(parent){
+Game::Game( CameraComponent * camera,  QObject * parent ) : QObject(parent){
     this->camera = camera;
 }
 
 void Game::initGame(){
+
+
 
     // Shaders & Lights  --------------------------------------------------------------------------------
 
@@ -47,6 +49,8 @@ void Game::initGame(){
 
     this->goMeshes.push_back( terrainGO );
 
+
+
     // Player Game Object  ------------------------------------------------------------------------------
 
     std::vector<Texture> playerTextures;
@@ -62,6 +66,7 @@ void Game::initGame(){
 
     connect( this, &Game::sendPressedKey, playerMove, &MoveComponent::pressedInput );
     connect( this, &Game::sendreleasedKey, playerMove, &MoveComponent::releasedInput );
+
 
     playerGO  = new GameObjectPlayer( "Player" , playerRenderer, playerMove, playerPhysics, playerCollider );
     playerGO->scale( QVector3D(0.1, 0.1, 0.1) );
@@ -85,6 +90,21 @@ void Game::initGame(){
 //    sphereGO->scale( QVector3D(0.1, 0.1, 0.1) );
 
 //    this->goMeshes.push_back( sphereGO );
+
+    // Camera  -------------------------------------------------------------------------------
+
+    QVector3D cameraPosition = playerGO->getWorldPosition();
+    QVector3D cameraTarget   = QVector3D( .0, .0, .0 );
+    const qreal zNear = .01, zFar = 100.0, fov = 80.0;
+    camera = new CameraComponent( cameraPosition, cameraTarget, fov, zNear, zFar );
+
+    MoveComponent * cameraMove = new MoveComponent( terrain );
+    PhysicsComponent * cameraPhysics = new PhysicsComponent( physicsEngine, this );
+    ColliderComponent * cameraCollider = new ColliderComponent();
+
+    GameObjectCamera *mainCameraGO = new GameObjectCamera("Main camera",camera,cameraMove,cameraPhysics,cameraCollider, playerGO  );
+
+    this->goCameras.push_back(mainCameraGO);
 
     // Build hierarchy ---------------------------------------------------------------------------------
 //    this->playerGO->addChild( sphereGO );
@@ -123,12 +143,12 @@ void Game::keyReleased( QKeyEvent * key ){
 
 // Getters & Setters
 
-Camera *Game::getCamera() const{
+CameraComponent *Game::getCamera() const{
     return camera;
 }
 
 
-void Game::setCamera(Camera *newCamera){
+void Game::setCamera(CameraComponent *newCamera){
     camera = newCamera;
 }
 

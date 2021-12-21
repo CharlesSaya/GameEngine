@@ -5,7 +5,7 @@ MeshRenderer::MeshRenderer( Mesh &mesh ) {
     this->mesh = mesh;
 }
 
-void MeshRenderer::renderMesh( Transform & transform, const QMatrix4x4& model, Camera& camera) {
+void MeshRenderer::renderMesh( Transform & transform, const QMatrix4x4& model, CameraComponent& camera) {
 
     float distance = ( camera.getCameraPosition() - transform.getWorldPosition()).length();
 

@@ -28,10 +28,10 @@ public:
         AABB broadPhaseBox;
 //        buildBroadPhaseBox( broadPhaseBox, objectVel, go->getMeshRenderer()->getMesh().getAABB());
 
-
         bool collision = intersectAABB( go->getMeshRenderer()->getMesh().getAABB(), node->nodeBoundingBox );
 
         if( node->children.empty() && collision ){
+//            qDebug() << "Collision detected between " << go->getName().c_str() << node->gameObject->getName().c_str();
             QVector3D normal;
             float time = sweptAABB( objectVel, go->getMeshRenderer()->getMesh().getAABB(), node->nodeBoundingBox, normal );
             float distance = __FLT_MAX__;

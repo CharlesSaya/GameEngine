@@ -50,7 +50,7 @@ void CoreEngine::mouseMoveEvent(QMouseEvent *e){
     if( pitch > 89.0f) pitch = 89.0f;
     if( pitch < -89.0f) pitch = -89.0f;
 
-    this->camera->rotate( pitch, yaw );
+    this->game->getCamera()->rotate( pitch, yaw );
 
 }
 
@@ -62,19 +62,19 @@ void CoreEngine::keyPressEvent(QKeyEvent *key){
     switch( key->key() ){
 
         case Qt::Key_Z:
-            camera->move( camera->getCameraForward() * movementSpeed * 2. );
+            this->game->getCamera()->move( this->game->getCamera()->getCameraForward() * movementSpeed * 2. );
             break;
 
         case Qt::Key_S:
-            camera->move( -camera->getCameraForward() * movementSpeed * 2. );
+            this->game->getCamera()->move( -this->game->getCamera()->getCameraForward() * movementSpeed * 2. );
             break;
 
         case Qt::Key_Q:
-            camera->move( camera->getRight() * movementSpeed * 2. );
+            this->game->getCamera()->move( this->game->getCamera()->getRight() * movementSpeed * 2. );
             break;
 
         case Qt::Key_D:
-            camera->move( camera->getLeft() * movementSpeed * 2. );
+            this->game->getCamera()->move( this->game->getCamera()->getLeft() * movementSpeed * 2. );
             break;
 
     }
@@ -135,13 +135,6 @@ void CoreEngine::initGame(){
     PhysicsEngine physicsEngine = PhysicsEngine( this->fixedStep );
     ColliderEngine colliderEngine = ColliderEngine( this->fixedStep );
 
-    // Camera  -------------------------------------------------------------------------------
-
-    QVector3D cameraPosition = QVector3D( 2.0, 2.0, 1. );
-    QVector3D cameraTarget   = QVector3D( .0, .0, .0 );
-    const qreal zNear = .01, zFar = 100.0, fov = 80.0;
-
-    camera = new Camera( cameraPosition, cameraTarget, fov, zNear, zFar );
 
     // Game  --------------------------------------------------------------------------------
 

@@ -6,7 +6,7 @@
 #include <QOpenGLShaderProgram>
 
 #include "headers/core/player.h"
-#include "headers/core/camera.h"
+#include "headers/core/cameraComponent.h"
 
 #include "headers/core/gameObject.h"
 #include "headers/core/gameObjectMesh.h"
@@ -41,7 +41,7 @@ public slots:
 
 public:
     Game(   QObject * parent = 0  );
-    Game( Camera * camera, QObject * parent = 0 );
+    Game( CameraComponent * camera, QObject * parent = 0 );
     void initGame();
 
     void input( QKeyEvent * key );
@@ -54,8 +54,8 @@ public:
     Player &getPlayer();
     void setPlayer(const Player &newPlayer);
 
-    Camera *getCamera() const;
-    void setCamera(Camera *newCamera);
+    CameraComponent *getCamera() const;
+    void setCamera(CameraComponent *newCamera);
 
     const PhysicsEngine &getPhysicsEngine() const;
     void setPhysicsEngine(const PhysicsEngine &newPhysicsEngine);
@@ -67,7 +67,7 @@ public:
 
 private:
     float deltaTime;
-    Camera * camera;
+    CameraComponent * camera;
     SceneGraph sceneGraph;
     Player player;
 

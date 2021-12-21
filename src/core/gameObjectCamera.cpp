@@ -1,9 +1,11 @@
 #include "headers/core/gameObjectCamera.h"
 
 
-GameObjectCamera::GameObjectCamera( std::string name, MoveComponent * moveComponent, PhysicsComponent * physicsComponent, ColliderComponent * colliderComponent, GameObject * parent  ){
+
+GameObjectCamera::GameObjectCamera( std::string name, CameraComponent *cameraComponent ,MoveComponent * moveComponent, PhysicsComponent * physicsComponent, ColliderComponent * colliderComponent, GameObject * parent  ){
 
     this->name = name;
+    this->cameraComponent = cameraComponent;
     this->moveComponent     = moveComponent;
     this->physicsComponent  = physicsComponent;
     this->colliderComponent = colliderComponent;
@@ -40,4 +42,20 @@ ColliderComponent *GameObjectCamera::getColliderComponent()
 void GameObjectCamera::setColliderComponent(ColliderComponent *newColliderComponent)
 {
     colliderComponent = newColliderComponent;
+}
+
+
+CameraComponent *GameObjectCamera::getCameraComponent() const
+{
+    return cameraComponent;
+}
+
+void GameObjectCamera::setCameraComponent(CameraComponent *newCameraComponent)
+{
+    cameraComponent = newCameraComponent;
+}
+
+void GameObjectCamera::updateCameraPosition()
+{
+    this->cameraComponent->updatePosition(*this->transform);
 }

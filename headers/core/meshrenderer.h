@@ -7,7 +7,7 @@
 
 #include "headers/render/mesh.h"
 
-#include "headers/core/camera.h"
+#include "headers/core/cameraComponent.h"
 #include "headers/core/transform.h"
 
 class MeshRenderer : public QObject
@@ -21,7 +21,7 @@ public:
     MeshRenderer();
     MeshRenderer( Mesh &mesh );
 
-    void renderMesh( Transform & transform, const QMatrix4x4& model, Camera & camera );
+    void renderMesh( Transform & transform, const QMatrix4x4& model, CameraComponent & camera );
 
 
     Mesh &getMesh();

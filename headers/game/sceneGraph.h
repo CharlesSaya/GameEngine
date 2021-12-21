@@ -6,7 +6,7 @@
 
 #include "headers/game/node.h"
 
-#include "headers/core/camera.h"
+#include "headers/core/cameraComponent.h"
 
 #include "headers/core/gameObject.h"
 #include "headers/core/gameObjectMesh.h"
@@ -49,7 +49,7 @@ public:
 
     void input ( QKeyEvent * key );
     void update( float fixedStep );
-    void render( Camera &camera  );
+    void render( CameraComponent &camera  );
 
     template<class Movable>
     void updatePhysics( Movable * go, float step ){
@@ -57,7 +57,7 @@ public:
     }
 
     template<class Renderable>
-    void renderMesh( Renderable * go, Camera & camera ){
+    void renderMesh( Renderable * go, CameraComponent & camera ){
         go->getMeshRenderer()->renderMesh( *go->getTransform(), go->getModel(), camera );
     }
 

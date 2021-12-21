@@ -1,5 +1,5 @@
-#ifndef CAMERA_H
-#define CAMERA_H
+#ifndef CAMERACOMPONENT_H
+#define CAMERACOMPONENT_H
 
 #include <QOpenGLWidget>
 
@@ -7,8 +7,9 @@
 #include <QVector3D>
 #include <QMatrix4x4>
 #include <QtMath>
+#include "headers/core/transform.h"
 
-class Camera : public QObject {
+class CameraComponent : public QObject {
     Q_OBJECT
 
 public slots:
@@ -35,9 +36,11 @@ private:
 
 public:
 
-    Camera();
+    CameraComponent();
 
-    Camera(QVector3D cameraPosition, QVector3D cameraTarget, float fov, float zNear, float zFar );
+    CameraComponent(QVector3D cameraPosition, QVector3D cameraTarget, float fov, float zNear, float zFar );
+
+    void updatePosition(Transform & transform);
 
     void move( QVector3D axis );
 
@@ -58,4 +61,4 @@ public:
 };
 
 
-#endif // CAMERA_H
+#endif // CAMERACOMPONENT_H
