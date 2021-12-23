@@ -40,9 +40,10 @@ public:
     void setTransform( Transform * newTransform);
     Transform *getTransform();
 
-    const QMatrix4x4& getModel();
+    const QMatrix4x4 getModel();
     QVector3D getWorldPosition();
     const std::vector<GameObject *> getChildren();
+    GameObject * getParent();
 
 };
 

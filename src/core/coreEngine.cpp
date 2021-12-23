@@ -51,7 +51,6 @@ void CoreEngine::mouseMoveEvent(QMouseEvent *e){
     if( pitch < -89.0f) pitch = -89.0f;
 
     this->game->getCamera()->rotate( pitch, yaw );
-
 }
 
 
@@ -102,7 +101,6 @@ void CoreEngine::timerEvent(QTimerEvent *)
     }
 
     update();
-
 }
 
 void CoreEngine::initializeGL(){

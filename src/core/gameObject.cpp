@@ -43,6 +43,11 @@ const std::vector<GameObject *> GameObject::getChildren(){
     return this->children;
 }
 
+GameObject *GameObject::getParent()
+{
+    return parent;
+}
+
 Transform *GameObject::getTransform()
 {
     return this->transform;
@@ -57,12 +62,14 @@ QVector3D GameObject::getWorldPosition(){
     return this->transform->getWorldPosition();
 }
 
-const QMatrix4x4& GameObject::getModel(){
+const QMatrix4x4 GameObject::getModel(){
 
     if( !parent ){
         return this->transform->getModel();
     }
     else
-        return this->parent->getModel() * this->transform->getModel();
+         return this->parent->getModel() * this->transform->getModel();
+
+
 }
 

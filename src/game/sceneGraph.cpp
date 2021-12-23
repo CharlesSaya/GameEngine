@@ -77,13 +77,14 @@ void SceneGraph::input(QKeyEvent *key){
 void SceneGraph::update( float fixedStep ){
     for( GameObjectPlayer * go : this->goPlayers){
         this->updatePhysics( go, fixedStep );
-
+//         qDebug() << "lapin position" << go->getModel();
     }
 
-    for( GameObjectCamera * go : this->goCameras){
-        //this->updatePhysics( go, fixedStep );
-        go->updateCameraPosition();
-        qDebug() << "camera position" << go->getWorldPosition();
+    for( GameObjectCamera * goC : this->goCameras){
+//        this->updatePhysics( goC, fixedStep );
+        goC->updateCameraPosition();
+//         qDebug() << "camera position" << goC->getModel();
+
     }
 
     // update children AABB
@@ -120,7 +121,6 @@ void SceneGraph::updateBVH( Node * node ){
     std::vector<GameObjectCamera *>::iterator itC;
 
     GameObject * go = node->gameObject;
-
     node->nodeBoundingBox.resetAABB();
 
     if( go->getChildren().empty() ){
@@ -137,16 +137,13 @@ void SceneGraph::updateBVH( Node * node ){
             return;
         }
     }
-
     else{
 
         for( Node * childNode : node->children ){
             updateBVH( childNode );
             node->nodeBoundingBox.resizeAABB( (*node).children.back()->nodeBoundingBox );
         }
-
     }
-
 }
 
 bool SceneGraph::isLeaf( Node * node ){

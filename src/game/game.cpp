@@ -70,7 +70,7 @@ void Game::initGame(){
 
     playerGO  = new GameObjectPlayer( "Player" , playerRenderer, playerMove, playerPhysics, playerCollider );
     playerGO->scale( QVector3D(0.1, 0.1, 0.1) );
-    playerGO->move(  QVector3D(2., 1., -5.) );
+    playerGO->move(  QVector3D(2., 2., -5.) );
 
     this->player = Player( *playerGO );
     this->player.setMesh( playerMesh );
@@ -93,17 +93,16 @@ void Game::initGame(){
 
     // Camera  -------------------------------------------------------------------------------
 
-    QVector3D cameraPosition = playerGO->getWorldPosition();
-    QVector3D cameraTarget   = QVector3D( .0, .0, .0 );
+    QVector3D cameraPosition = playerGO->getTransform()->getPosition() ;
+    QVector3D cameraTarget   = playerGO->getTransform()->getPosition();
     const qreal zNear = .01, zFar = 100.0, fov = 80.0;
     camera = new CameraComponent( cameraPosition, cameraTarget, fov, zNear, zFar );
 
     MoveComponent * cameraMove = new MoveComponent( terrain );
     PhysicsComponent * cameraPhysics = new PhysicsComponent( physicsEngine, this );
     ColliderComponent * cameraCollider = new ColliderComponent();
-
-    GameObjectCamera *mainCameraGO = new GameObjectCamera("Main camera",camera,cameraMove,cameraPhysics,cameraCollider, playerGO  );
-
+    GameObjectCamera *mainCameraGO = new GameObjectCamera("Main camera",camera,cameraMove,cameraPhysics,cameraCollider, playerGO);
+    mainCameraGO->getTransform()->applyTranslation(QVector3D(5.0f,1.0f,0.0));
     this->goCameras.push_back(mainCameraGO);
 
     // Build hierarchy ---------------------------------------------------------------------------------

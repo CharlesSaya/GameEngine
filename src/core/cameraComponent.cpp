@@ -18,9 +18,12 @@ CameraComponent::CameraComponent(QVector3D cameraPosition, QVector3D cameraTarge
 
 }
 
-void CameraComponent::updatePosition(Transform & transform )
+void CameraComponent::updatePosition(const QMatrix4x4& model)
 {
-    this->cameraPosition =this->cameraPosition * transform.getModel();
+//    qDebug() << "here" ;
+
+    this->cameraPosition = model * QVector3D(1.0f,1.0f,1.0f);  ;
+
 }
 
 bool CameraComponent::eventFilter(QObject *obj, QEvent *event){
