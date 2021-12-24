@@ -31,7 +31,7 @@ private:
 
     PhysicsEngine physicsEngine;
     ColliderEngine colliderEngine;
-
+    QVector3D test = QVector3D(1.0f,1.0f,1.0f);
 public:
 
     SceneGraph();

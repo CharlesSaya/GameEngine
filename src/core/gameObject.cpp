@@ -17,8 +17,14 @@ void GameObject::move( QVector3D translation ){
     this->transform->applyTranslation( translation );
 }
 
+void GameObject::move( float x, float y , float z ){
+    this->transform->applyTranslation( QVector3D(x,y,z) );
+}
+
+
 void GameObject::rotate( QVector3D axis, float angle ){
     this->transform->applyRotation( QQuaternion::fromAxisAndAngle( axis, angle ) );
+
 }
 
 void GameObject::scale( QVector3D scale ){

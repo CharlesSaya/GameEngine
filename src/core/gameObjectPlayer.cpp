@@ -19,6 +19,8 @@ void GameObjectPlayer::initSignalsSlots(){
     connect( this, &GameObjectPlayer::updateAABB, meshRenderer, &MeshRenderer::updateAABB );
     connect( moveComponent, &MoveComponent::move, physicsComponent, &PhysicsComponent::hasMoved );
     connect( moveComponent, &MoveComponent::stop, physicsComponent, &PhysicsComponent::hasStopped );
+    connect( moveComponent, &MoveComponent::rotateX, physicsComponent, &PhysicsComponent::hasRotatedX );
+    connect( moveComponent, &MoveComponent::rotateY, physicsComponent, &PhysicsComponent::hasRotatedY );
 
 }
 

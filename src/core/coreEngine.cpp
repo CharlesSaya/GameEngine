@@ -20,37 +20,36 @@ CoreEngine::CoreEngine(int frames, QWidget *parent) :
     this->setWindowTitle( QString   ( QString::number( frames ) ) + "FPS" );
 
     mousePressPosition =QVector2D( width()/2, height()/2 );
-
 }
 
 void CoreEngine::mouseMoveEvent(QMouseEvent *e){
-    float hAngle = 0., vAngle = 0.;
-    float sensitivity = 0.1f;
-    vAngle = mousePressPosition.y() -  e->localPos().y() ;
-    vAngle *= sensitivity * 3.;
+    this->game->mouseMoved(e);
+//    float hAngle = 0., vAngle = 0.;
+//    float sensitivity = 0.1f;
+//    vAngle = mousePressPosition.y() -  e->localPos().y() ;
+//    vAngle *= sensitivity * 3.;
 
-    if( e->localPos().x() > this->width() -10. || e->localPos().x() < 10. ){
+//    if( e->localPos().x() > this->width() -10. || e->localPos().x() < 10. ){
 
-        mousePressPosition = QVector2D( width()/2, e->localPos().y() );
-        this->cursor().setPos( mapToGlobal( QPoint( mousePressPosition.x(), mousePressPosition.y() ) ) );
-        return;
+//        mousePressPosition = QVector2D( width()/2, e->localPos().y() );
+//        this->cursor().setPos( mapToGlobal( QPoint( mousePressPosition.x(), mousePressPosition.y() ) ) );
+//        return;
 
-    }
-    else{
+//    }
+//    else
+//    {
+//        hAngle = e->localPos().x() -mousePressPosition.x() ;
+//        hAngle *= sensitivity;
+//        mousePressPosition = QVector2D( e->localPos() );
+//    }
 
-        hAngle = e->localPos().x() -mousePressPosition.x() ;
-        hAngle *= sensitivity;
+//    yaw += hAngle;
+//    pitch += vAngle;
 
-        mousePressPosition = QVector2D( e->localPos() );
-    }
+//    if( pitch > 89.0f) pitch = 89.0f;
+//    if( pitch < -89.0f) pitch = -89.0f;
 
-    yaw += hAngle;
-    pitch += vAngle;
-
-    if( pitch > 89.0f) pitch = 89.0f;
-    if( pitch < -89.0f) pitch = -89.0f;
-
-    this->game->getCamera()->rotate( pitch, yaw );
+//    this->game->getCamera()->rotate( pitch, yaw );
 }
 
 

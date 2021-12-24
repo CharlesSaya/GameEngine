@@ -40,11 +40,13 @@ public:
 
     CameraComponent(QVector3D cameraPosition, QVector3D cameraTarget, float fov, float zNear, float zFar );
 
+
     void updatePosition(const QMatrix4x4& model);
 
     void move( QVector3D axis );
 
     void rotate( float pitch, float yaw );
+    void setCameraTarget(QVector3D cameraTarget);
 
     const QMatrix4x4& getViewMatrix();
 
@@ -53,6 +55,7 @@ public:
     const QVector3D& getLeft();
 
     const QVector3D& getCameraPosition();
+    const QVector3D& getCameraTarget();
 
     const QVector3D& getCameraForward();
 

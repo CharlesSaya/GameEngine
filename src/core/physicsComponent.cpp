@@ -7,11 +7,14 @@ PhysicsComponent::PhysicsComponent( PhysicsEngine &physicsEngine,  QObject * par
 
 void PhysicsComponent::updatePhysics( float step, Transform & transform ){
 
+    rotate();
+    transform.applyRotation(this->rotation);
+
     move();
 
     acceleration = - physicsEngine.getDamp() * velocity;
 
-    acceleration += physicsEngine.getGravity();
+//    acceleration += physicsEngine.getGravity();
 
     acceleration /= mass;
 
@@ -19,16 +22,16 @@ void PhysicsComponent::updatePhysics( float step, Transform & transform ){
 
     QVector3D meanSpeed = (velocity + newVelocity) / 2.0 ;
 
+
     if( meanSpeed.length() > this->maxSpeedWalk )
         meanSpeed = this->maxSpeedWalk * meanSpeed.normalized();
 
     if ( meanSpeed.length() != 0.0f ){
         transform.applyTranslation( meanSpeed * step );
     }
-
     velocity = newVelocity;
-}
 
+}
 
 bool PhysicsComponent::restin( QVector3D& normal, float distance ){
     QVector3D vn = QVector3D::dotProduct( velocity, normal ) * normal;
@@ -41,7 +44,7 @@ bool PhysicsComponent::restin( QVector3D& normal, float distance ){
 }
 
 void PhysicsComponent::move(){
-    for( uint i : inputs ){
+    for( uint i : inputsMoves ){
         switch( i ){
             case 0 :
                 velocity += forward;
@@ -64,6 +67,21 @@ void PhysicsComponent::move(){
                 break;
         }
     }
+}
+
+void PhysicsComponent::rotate(){
+
+    rotationAxis[0] += inputsRotationX;
+    rotationAxis[1] += inputsRotationY ;
+    if(rotationAxis[0]>60) rotationAxis[0] = 60.0f;
+    if(rotationAxis[0]<-60) rotationAxis[0] = -60.0f;
+    rotationX =  QQuaternion::fromAxisAndAngle( QVector3D(360.0f,0.0f,0.0f),  rotationAxis[0]);
+    rotationY =  QQuaternion::fromAxisAndAngle( QVector3D(0.0f,360.0f,0.0f),  rotationAxis[1]);
+
+    rotation =  rotationX * rotationY   ;
+
+    inputsRotationY = 0.0f;
+    inputsRotationY = 0.0f;
 }
 
 bool PhysicsComponent::atRest(){
@@ -127,14 +145,23 @@ void PhysicsComponent::setFriction(float newFriction)
     friction = newFriction;
 }
 
-void PhysicsComponent::hasMoved( QSet<uint> inputs ){
-    this->inputs = inputs;
+void PhysicsComponent::hasMoved( QSet<uint> inputsMoves ){
+    this->inputsMoves = inputsMoves;
     resting = false;
 }
 
-void PhysicsComponent::hasStopped( QSet<uint> inputs ){
-    this->inputs = inputs;
+void PhysicsComponent::hasStopped( QSet<uint> inputsMoves ){
+    this->inputsMoves = inputsMoves;
     stop();
 }
 
+void PhysicsComponent::hasRotatedX( float inputsRotation ){
+    this->inputsRotationX = -inputsRotation;
+    rotationAngle+=inputsRotation;
+}
+
+void PhysicsComponent::hasRotatedY( float inputsRotation ){
+    this->inputsRotationY = -inputsRotation;
+    rotationAngle+=inputsRotation;
+}
 

@@ -91,9 +91,9 @@ class CoreEngine : public QOpenGLWidget, protected QOpenGLFunctions_3_1
 {
     Q_OBJECT
 
+public slots:
+
 signals:
-    void sendPressedInput( QKeyEvent * event );
-    void sendReleasedInput( QKeyEvent * event );
 
 
 public:
@@ -107,11 +107,11 @@ protected:
 
     void initGame();
     void initSignals();
-    void mouseMoveEvent(QMouseEvent *e) override;
+
     void timerEvent(QTimerEvent *e) override;
     void keyPressEvent(QKeyEvent *key) override;
     void keyReleaseEvent( QKeyEvent * key) override;
-
+    void mouseMoveEvent(QMouseEvent *event);
     void initializeGL() override;
     void resizeGL(int w, int h) override;
     void paintGL() override;
@@ -147,6 +147,7 @@ private:
 
     QVector3D white = QVector3D( 1., 0., 0.);
 
+    QSet<uint> inputs;
     PhysicsEngine physicsEngine;
     ColliderEngine colliderEngine;
 };

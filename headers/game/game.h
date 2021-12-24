@@ -33,11 +33,13 @@ class Game : public QObject{
 
 signals:
     void sendPressedKey( QKeyEvent * event );
-    void sendreleasedKey( QKeyEvent * event );
+    void sendReleasedKey( QKeyEvent * event );
+    void sendMouseMoved( QMouseEvent * event );
 
 public slots:
     void keyPressed( QKeyEvent * key );
     void keyReleased( QKeyEvent * key );
+    void mouseMoved( QMouseEvent * key );
 
 public:
     Game(   QObject * parent = 0  );

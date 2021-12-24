@@ -20,9 +20,7 @@ CameraComponent::CameraComponent(QVector3D cameraPosition, QVector3D cameraTarge
 
 void CameraComponent::updatePosition(const QMatrix4x4& model)
 {
-//    qDebug() << "here" ;
-
-    this->cameraPosition = model * QVector3D(1.0f,1.0f,1.0f);  ;
+    this->cameraPosition = model * QVector3D(1.0f,1.0f,1.0f);
 
 }
 
@@ -71,7 +69,14 @@ void CameraComponent::rotate( float pitch, float yaw ){
     this->cameraForward.setZ( sin(qDegreesToRadians(yaw)) * cos(qDegreesToRadians(pitch)) );
     this->cameraForward.normalize();
     this->cameraUp =  QVector3D::crossProduct( this->cameraForward, getRight() ).normalized();
+}
 
+void CameraComponent::setCameraTarget(QVector3D cameraTarget)
+{
+    this->cameraForward = (cameraTarget - this->cameraPosition).normalized();
+//    qDebug() << "cameraTarget" <<this->cameraTarget;
+//    qDebug() << "cameraPosition" <<this->cameraPosition;
+//    qDebug() << "cameraForward" <<this->cameraForward <<"\n";
 }
 
 const QVector3D& CameraComponent::getCameraForward()
@@ -82,5 +87,10 @@ const QVector3D& CameraComponent::getCameraForward()
 const QVector3D& CameraComponent::getCameraPosition()
 {
     return cameraPosition;
+}
+
+const QVector3D& CameraComponent::getCameraTarget()
+{
+    return cameraTarget;
 }
 

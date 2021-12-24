@@ -59,31 +59,26 @@ Node * SceneGraph::buildGraphScene( GameObject * go ){
         return node;
 
     }else{
-
         for( GameObject * child : go->getChildren() ){
             node->children.push_back( buildGraphScene( child ) );
             node->nodeBoundingBox.resizeAABB( (*node).children.back()->nodeBoundingBox );
         }
-
     }
-
     return node;
 }
 
 void SceneGraph::input(QKeyEvent *key){
-
 }
 
 void SceneGraph::update( float fixedStep ){
     for( GameObjectPlayer * go : this->goPlayers){
         this->updatePhysics( go, fixedStep );
-//         qDebug() << "lapin position" << go->getModel();
+//         qDebug() << "lapin position" << go->getWorldPosition();
     }
 
     for( GameObjectCamera * goC : this->goCameras){
-//        this->updatePhysics( goC, fixedStep );
         goC->updateCameraPosition();
-//         qDebug() << "camera position" << goC->getModel();
+        goC->getCameraComponent()->setCameraTarget(goC->getParent()->getTransform()->getPosition());
 
     }
 
@@ -103,7 +98,6 @@ void SceneGraph::update( float fixedStep ){
     for( GameObjectPlayer * go : this->goPlayers){
         this->computeCollision( go );
     }
-
 }
 
 void SceneGraph::render( CameraComponent &camera  ){

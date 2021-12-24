@@ -25,6 +25,7 @@ public:
     void resetModel();
 
     void applyTranslation( QVector3D vector );
+    void applyTranslation( float x, float y , float z ) ;
     void applyRotation( QQuaternion quaternion );
     void applyScale( QVector3D vector );
 

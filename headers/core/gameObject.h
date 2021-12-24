@@ -29,6 +29,7 @@ public:
     void addChild( GameObject * newChildren );
 
     void move( QVector3D translation );
+    void move( float x, float y , float z );
     void rotate( QVector3D axis, float angle );
     void scale( QVector3D scale );
 

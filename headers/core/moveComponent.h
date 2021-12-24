@@ -13,10 +13,13 @@ public slots:
 
     void pressedInput(QKeyEvent * event);
     void releasedInput(QKeyEvent * event);
+    void mouseMoveEvent(QMouseEvent *event);
 
 signals:
     void move( QSet<uint> inputs );
     void stop( QSet<uint> inputs );
+    void rotateX(float inputs);
+    void rotateY(float inputs);
 
 public:
 
@@ -27,7 +30,9 @@ public:
 
 private:
     float speed = 1.;
+    float rotation  =0.;
 
+    QVector2D mousePressPosition;
 
     QVector3D forward  = QVector3D( 0.0   , 0.0 , -speed  );
     QVector3D backward = QVector3D( 0.0   , 0.0 , speed );
@@ -36,6 +41,7 @@ private:
     QVector3D jump     = QVector3D( 0.0, speed , 0.0    );
 
     QSet<uint> inputs;
+    float inputsX;
 
     Terrain terrain;
 };

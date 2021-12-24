@@ -42,8 +42,6 @@ public :
     ColliderComponent *getColliderComponent() ;
     void setColliderComponent(ColliderComponent *newColliderComponent);
 
-
-
 };
 
 // MeshRenderer

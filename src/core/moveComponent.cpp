@@ -14,26 +14,22 @@ void MoveComponent::pressedInput(QKeyEvent * key){
         case Qt::Key_Up:
             inputs.insert( 0 );
             move( inputs ) ;
-
             break;
 
         case Qt::Key_Down:
 
             inputs.insert( 1 );
             move( inputs ) ;
-
             break;
 
         case Qt::Key_Left:
             inputs.insert( 2 );
             move( inputs ) ;
-
             break;
 
         case Qt::Key_Right:
             inputs.insert( 3 );
             move( inputs ) ;
-
             break;
 
         case Qt::Key_Space:
@@ -42,7 +38,6 @@ void MoveComponent::pressedInput(QKeyEvent * key){
             break;
     }
 }
-
 
 
 void MoveComponent::releasedInput(QKeyEvent * key){
@@ -74,6 +69,29 @@ void MoveComponent::releasedInput(QKeyEvent * key){
             break;
     }
 }
+
+void MoveComponent::mouseMoveEvent(QMouseEvent *key){
+
+    float hAngle = 0., vAngle = 0.;
+    float sensitivity = 0.05f;
+    vAngle = mousePressPosition.y() -  key->localPos().y() ;
+    vAngle *= sensitivity * 3.;
+
+    hAngle = key->localPos().x() -mousePressPosition.x() ;
+    hAngle *= sensitivity *6;
+
+    mousePressPosition = QVector2D( key->localPos() );
+
+    float yaw = hAngle;
+    float pitch = vAngle;
+
+    if( abs(yaw) > 360.0f) yaw = 0.0f;
+    if( abs(pitch) > 360.0f) pitch = 0.0f;
+
+    rotateX(pitch);
+    rotateY(yaw);
+}
+
 
 void MoveComponent::update( float step ){
 

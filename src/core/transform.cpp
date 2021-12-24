@@ -25,6 +25,13 @@ void Transform::applyTranslation( QVector3D vector ){
     emit transformed();
 }
 
+void Transform::applyTranslation( float x, float y, float z ){
+    this->lastWorldPosition = this->getWorldPosition();
+    this->position += QVector3D(x,y,z);
+    emit transformed();
+}
+
+
 void Transform::applyRotation( QQuaternion quaternion ){
     this->lastWorldPosition = this->getWorldPosition();
     this->rotation  = quaternion;
