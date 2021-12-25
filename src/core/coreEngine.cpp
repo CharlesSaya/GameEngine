@@ -38,7 +38,13 @@ void CoreEngine::wheelEvent(QWheelEvent *event){
 }
 
 void CoreEngine::mouseMoveEvent(QMouseEvent *e){
-    this->game->mouseMoved(e);
+    if( e->localPos().x() > this->width() -10. || e->localPos().x() < 10. ){
+        this->cursor().setPos( mapToGlobal( QPoint( mousePressPosition.x(), mousePressPosition.y() ) ) );
+        this->game->mouseMoved( QVector2D( this->cursor().pos() ), true);
+    }
+    else
+        this->game->mouseMoved( QVector2D( e->localPos() ), false);
+
 //    float hAngle = 0., vAngle = 0.;
 //    float sensitivity = 0.1f;
 //    vAngle = mousePressPosition.y() -  e->localPos().y() ;

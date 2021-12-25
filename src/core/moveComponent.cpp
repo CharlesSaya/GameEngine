@@ -70,17 +70,19 @@ void MoveComponent::releasedInput(QKeyEvent * key){
     }
 }
 
-void MoveComponent::mouseMoveEvent(QMouseEvent *key){
+void MoveComponent::mouseMoveEvent(QVector2D pos, bool reset){
 
     float hAngle = 0., vAngle = 0.;
     float sensitivity = 0.05f;
-    vAngle = mousePressPosition.y() -  key->localPos().y() ;
+    vAngle = mousePressPosition.y() -  pos.y() ;
     vAngle *= sensitivity * 3.;
 
-    hAngle = key->localPos().x() -mousePressPosition.x() ;
-    hAngle *= sensitivity *6;
+    if( !reset ){
+        hAngle = pos.x() -mousePressPosition.x() ;
+        hAngle *= sensitivity *6;
+    }
 
-    mousePressPosition = QVector2D( key->localPos() );
+    mousePressPosition = pos;
 
     float yaw = hAngle;
     float pitch = vAngle;
@@ -88,8 +90,10 @@ void MoveComponent::mouseMoveEvent(QMouseEvent *key){
     if( abs(yaw) > 360.0f) yaw = 0.0f;
     if( abs(pitch) > 360.0f) pitch = 0.0f;
 
-    rotateX(pitch);
-    rotateY(yaw);
+    if( !reset )
+        emit rotateX(pitch);
+
+    emit rotateY(yaw);
 }
 
 

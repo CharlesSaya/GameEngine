@@ -113,8 +113,8 @@ void Game::initGame(){
     ColliderComponent * cameraCollider = new ColliderComponent( this );
 
     mainCameraGO = new GameObjectCamera("Main camera",camera,cameraMove,cameraPhysics,cameraCollider, playerGO  );
-
     mainCameraGO->updateCameraPosition();
+
     this->goCameras.push_back(mainCameraGO);
 
     // Build hierarchy ---------------------------------------------------------------------------------
@@ -126,7 +126,6 @@ void Game::initGame(){
 
 void Game::input( QKeyEvent * key  ){
     this->sceneGraph.input( key );
-
 }
 
 void Game::update( float fixedStep )
@@ -166,8 +165,8 @@ void Game::mouseWheel( QWheelEvent * event ){
 
 }
 
-void Game::mouseMoved( QMouseEvent * key ){
-    emit this->sendMouseMoved(key)  ;
+void Game::mouseMoved( QVector2D pos, bool reset ){
+    emit this->sendMouseMoved(pos, reset )  ;
 }
 // Getters & Setters
 

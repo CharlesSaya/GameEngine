@@ -32,7 +32,7 @@ public:
     Ray & castRay();
 
     template< class Collidable >
-    Ray & telekinesis( Collidable * go ){
+    void telekinesis( Collidable * go ){
         if (leftMousePressed ){
 
         }
