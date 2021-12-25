@@ -67,11 +67,13 @@ void Game::initGame(){
 
     playerGO  = new GameObjectPlayer( "Player" , playerRenderer, playerMove, playerPhysics, playerCollider );
 
-    playerGO->move(  QVector3D(2., 1., -5.) );
+    playerGO->move(  QVector3D(5., 10., -5.) );
+//    playerGO->rotate(QVector3D(0.0f,360.0f,360.0f), 360);
     playerGO->scale( QVector3D(0.1, 0.1, 0.1) );
+
     this->player = Player( *playerGO );
     this->player.setMesh( playerMesh );
-//    this->player.move( QVector3D(0.0, 0.0, 0.0), terrain ); // set initial height
+    this->player.move( QVector3D(0.0, 0.0, 0.0), terrain ); // set initial height
     this->goPlayers.push_back( playerGO );
 
     // Sphere
@@ -98,7 +100,7 @@ void Game::initGame(){
     PhysicsComponent * cameraPhysics = new PhysicsComponent( physicsEngine, this );
     ColliderComponent * cameraCollider = new ColliderComponent();
     GameObjectCamera *mainCameraGO = new GameObjectCamera("Main camera",camera,cameraMove,cameraPhysics,cameraCollider, playerGO);
-    mainCameraGO->getTransform()->setPosition(QVector3D(1.0f,1.0f,1.0f));
+    mainCameraGO->getTransform()->setPosition(QVector3D(-2., 2., 2.));
 
     mainCameraGO->updateCameraPosition();
     this->goCameras.push_back(mainCameraGO);
@@ -108,7 +110,6 @@ void Game::initGame(){
     std::vector<GameObject *> baseGo = { terrainGO, playerGO };
 
     sceneGraph = SceneGraph( baseGo, this->goMeshes, this->goPlayers, this->goCameras, this->physicsEngine, this->colliderEngine );
-
 }
 
 void Game::input( QKeyEvent * key  ){

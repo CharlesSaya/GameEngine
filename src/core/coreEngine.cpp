@@ -57,25 +57,25 @@ void CoreEngine::keyPressEvent(QKeyEvent *key){
     float movementSpeed = deltaTime;
     this->game->keyPressed( key );
 
-    switch( key->key() ){
+//    switch( key->key() ){
 
-        case Qt::Key_Z:
-            this->game->getCamera()->move( this->game->getCamera()->getCameraForward() * movementSpeed * 2. );
-            break;
+//        case Qt::Key_Z:
+//            this->game->getCamera()->move( this->game->getCamera()->getCameraForward() * movementSpeed * 2. );
+//            break;
 
-        case Qt::Key_S:
-            this->game->getCamera()->move( -this->game->getCamera()->getCameraForward() * movementSpeed * 2. );
-            break;
+//        case Qt::Key_S:
+//            this->game->getCamera()->move( -this->game->getCamera()->getCameraForward() * movementSpeed * 2. );
+//            break;
 
-        case Qt::Key_Q:
-            this->game->getCamera()->move( this->game->getCamera()->getRight() * movementSpeed * 2. );
-            break;
+//        case Qt::Key_Q:
+//            this->game->getCamera()->move( this->game->getCamera()->getRight() * movementSpeed * 2. );
+//            break;
 
-        case Qt::Key_D:
-            this->game->getCamera()->move( this->game->getCamera()->getLeft() * movementSpeed * 2. );
-            break;
+//        case Qt::Key_D:
+//            this->game->getCamera()->move( this->game->getCamera()->getLeft() * movementSpeed * 2. );
+//            break;
 
-    }
+//    }
 
 }
 

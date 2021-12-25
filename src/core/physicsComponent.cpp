@@ -14,7 +14,7 @@ void PhysicsComponent::updatePhysics( float step, Transform & transform ){
 
     acceleration = - physicsEngine.getDamp() * velocity;
 
-//    acceleration += physicsEngine.getGravity();
+    acceleration += physicsEngine.getGravity();
 
     acceleration /= mass;
 
@@ -47,19 +47,19 @@ void PhysicsComponent::move(){
     for( uint i : inputsMoves ){
         switch( i ){
             case 0 :
-                velocity += forward;
+                velocity += rotation *forward  ;
                 break;
 
             case 1 :
-                velocity += backward;
+                velocity += rotation * backward;
                 break;
 
             case 2 :
-                velocity += left;
+                velocity += rotation * left;
                 break;
 
             case 3 :
-                velocity += right;
+                velocity += rotation * right;
                 break;
 
             case 4 :
@@ -75,12 +75,12 @@ void PhysicsComponent::rotate(){
     rotationAxis[1] += inputsRotationY ;
     if(rotationAxis[0]>60) rotationAxis[0] = 60.0f;
     if(rotationAxis[0]<-60) rotationAxis[0] = -60.0f;
-    rotationX =  QQuaternion::fromAxisAndAngle( QVector3D(360.0f,0.0f,0.0f),  rotationAxis[0]);
+//    rotationX =  QQuaternion::fromAxisAndAngle( QVector3D(360.0f,0.0f,0.0f),  rotationAxis[0]);
     rotationY =  QQuaternion::fromAxisAndAngle( QVector3D(0.0f,360.0f,0.0f),  rotationAxis[1]);
 
     rotation =  rotationX * rotationY   ;
 
-    inputsRotationY = 0.0f;
+    inputsRotationX = 0.0f;
     inputsRotationY = 0.0f;
 }
 

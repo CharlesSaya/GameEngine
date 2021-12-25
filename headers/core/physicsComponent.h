@@ -64,9 +64,6 @@ private:
     float inputsRotationY;
 
 
-
-
-
     QVector3D acceleration = QVector3D( 0.0, 0.0, 0.0 );
     QVector3D velocity     = QVector3D( 0.0, 0.0, 0.0 );
 

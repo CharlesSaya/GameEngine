@@ -38,6 +38,7 @@ void Transform::applyRotation( QQuaternion quaternion ){
     emit transformed();
 }
 
+
 void Transform::applyScale( QVector3D vector ){
     this->lastWorldPosition = this->getWorldPosition();
     this->scale = ( vector );

@@ -11,23 +11,23 @@ MoveComponent::MoveComponent( Terrain & terrain ){
 void MoveComponent::pressedInput(QKeyEvent * key){
     switch( key->key() ){
 
-        case Qt::Key_Up:
+        case Qt::Key_Z:
             inputs.insert( 0 );
             move( inputs ) ;
             break;
 
-        case Qt::Key_Down:
+        case Qt::Key_S:
 
             inputs.insert( 1 );
             move( inputs ) ;
             break;
 
-        case Qt::Key_Left:
+        case Qt::Key_Q:
             inputs.insert( 2 );
             move( inputs ) ;
             break;
 
-        case Qt::Key_Right:
+        case Qt::Key_D:
             inputs.insert( 3 );
             move( inputs ) ;
             break;
