@@ -107,11 +107,13 @@ protected:
 
     void initGame();
     void initSignals();
-
+    void mousePressEvent( QMouseEvent *event) override;
+    void mouseReleaseEvent( QMouseEvent *event) override;
+    void wheelEvent(QWheelEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *e) override;
     void timerEvent(QTimerEvent *e) override;
     void keyPressEvent(QKeyEvent *key) override;
     void keyReleaseEvent( QKeyEvent * key) override;
-    void mouseMoveEvent(QMouseEvent *event);
     void initializeGL() override;
     void resizeGL(int w, int h) override;
     void paintGL() override;

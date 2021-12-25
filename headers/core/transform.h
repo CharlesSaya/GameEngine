@@ -16,6 +16,7 @@ private:
     QMatrix4x4 model;
     QVector3D position;
     QVector3D lastWorldPosition;
+    QVector3D worldPosition;
 
 public:
     Transform( QObject * parent );
@@ -33,7 +34,7 @@ public:
     void setPosition(const QVector3D &newPosition);
 
     void setLastWorldPosition();
-    QVector3D getWorldPosition();
+    QVector3D& getWorldPosition();
 
     QMatrix4x4 &getModel();
 

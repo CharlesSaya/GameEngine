@@ -22,7 +22,7 @@ void main()
 
     gl_Position = projection * view * model * position;
 
-    v_pos = vec4(model *  position).xyz ;
+    v_pos = worldPosition.xyz ;
     v_texcoord  = a_texcoord;
     v_normal  = nWorld.xyz ;
 }

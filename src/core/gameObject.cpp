@@ -64,8 +64,9 @@ void GameObject::setTransform( Transform *newTransform)
     this->transform = newTransform;
 }
 
-QVector3D GameObject::getWorldPosition(){
-    return this->transform->getWorldPosition();
+QVector3D& GameObject::getWorldPosition(){
+    worldPosition = this->transform->getModel() * QVector3D( 0.0, 0.0, 0.0 );
+    return worldPosition;
 }
 
 const QMatrix4x4 GameObject::getModel(){

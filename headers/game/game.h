@@ -5,9 +5,6 @@
 
 #include <QOpenGLShaderProgram>
 
-#include "headers/core/player.h"
-#include "headers/core/cameraComponent.h"
-
 #include "headers/core/gameObject.h"
 #include "headers/core/gameObjectMesh.h"
 #include "headers/core/gameObjectPlayer.h"
@@ -16,8 +13,10 @@
 #include "headers/core/meshrenderer.h"
 #include "headers/core/moveComponent.h"
 #include "headers/core/gameComponent.h"
-#include "headers/core/colliderComponent.h"
+#include "headers/core/cameraComponent.h"
+#include "headers/core/playerComponent.h"
 #include "headers/core/physicsComponent.h"
+#include "headers/core/colliderComponent.h"
 
 #include "headers/physics/physicsEngine.h"
 #include "headers/physics/colliderEngine.h"
@@ -25,6 +24,7 @@
 #include "headers/render/light.h"
 #include "headers/render/shader.h"
 #include "headers/render/terrain.h"
+#include "headers/render/cubemap.h"
 
 #include "sceneGraph.h"
 
@@ -36,10 +36,21 @@ signals:
     void sendReleasedKey( QKeyEvent * event );
     void sendMouseMoved( QMouseEvent * event );
 
+    void sendPressedMouse( QMouseEvent * event );
+    void sendreleasedMouse( QMouseEvent * event );
+
+    void sendMouseWheel( QWheelEvent * event );
+
 public slots:
     void keyPressed( QKeyEvent * key );
     void keyReleased( QKeyEvent * key );
     void mouseMoved( QMouseEvent * key );
+
+    void pressedMouse( QMouseEvent * event );
+    void releasedMouse( QMouseEvent * event );
+
+    void mouseWheel( QWheelEvent * event );
+
 
 public:
     Game(   QObject * parent = 0  );
@@ -52,9 +63,6 @@ public:
 
     void updatePosition();
     void updateCollision();
-
-    Player &getPlayer();
-    void setPlayer(const Player &newPlayer);
 
     CameraComponent *getCamera() const;
     void setCamera(CameraComponent *newCamera);
@@ -71,16 +79,19 @@ private:
     float deltaTime;
     CameraComponent * camera;
     SceneGraph sceneGraph;
-    Player player;
 
     Terrain terrain;
 
     GameObjectMesh * terrainGO ;
     GameObjectMesh * sphereGO ;
     GameObjectPlayer * playerGO;
+    GameObjectCamera *mainCameraGO ;
 
     Shader * shader ;
     Shader * terrainShader;
+    Shader * skyboxShader;
+
+    CubeMap cubemap;
 
     PhysicsEngine physicsEngine;
     ColliderEngine colliderEngine;

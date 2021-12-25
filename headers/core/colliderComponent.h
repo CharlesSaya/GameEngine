@@ -14,7 +14,7 @@ private:
     bool moveable;
 
 public:
-    ColliderComponent();
+    ColliderComponent(  QObject * parent = 0 );
 
     void update(float step);
     void render(const QMatrix4x4 &model, const QMatrix4x4 &view, const QMatrix4x4 &projection, const QVector3D &cameraPosition);

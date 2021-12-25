@@ -4,9 +4,21 @@
         <file>textures/Heightmap_Mountain.png</file>
         <file>textures/rock.png</file>
         <file>textures/grass.png</file>
-	<file>textures/forest.jpg</file>
+        <file>textures/forest.jpg</file>
         <file>textures/snowrocks.png</file>
         <file>textures/heightmap-1024x1024.png</file>
         <file>textures/Heightmap_Rocky.png</file>
+        <file>textures/skybox/Cathedral/nx.png</file>
+        <file>textures/skybox/Cathedral/ny.png</file>
+        <file>textures/skybox/Cathedral/nz.png</file>
+        <file>textures/skybox/Cathedral/px.png</file>
+        <file>textures/skybox/Cathedral/py.png</file>
+        <file>textures/skybox/Cathedral/pz.png</file>
+        <file>textures/skybox/MusicHall/nx.png</file>
+        <file>textures/skybox/MusicHall/ny.png</file>
+        <file>textures/skybox/MusicHall/nz.png</file>
+        <file>textures/skybox/MusicHall/px.png</file>
+        <file>textures/skybox/MusicHall/py.png</file>
+        <file>textures/skybox/MusicHall/pz.png</file>
     </qresource>
 </RCC>

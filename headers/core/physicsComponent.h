@@ -48,7 +48,7 @@ public:
     void setResting(bool newResting);
 
 private:
-    float speed = 0.15;
+    float speed = 0.1;
 
     float mass = 1.0;
     float friction = 1.0;

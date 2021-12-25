@@ -23,7 +23,7 @@ signals:
 
 public:
 
-    MoveComponent( Terrain & terrain );
+    MoveComponent( Terrain & terrain, QObject * parent = 0  );
 
     void input( QKeyEvent * key  );
     void update( float step );

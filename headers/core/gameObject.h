@@ -20,7 +20,7 @@ protected:
     GameObject * parent;
 
     std::vector<GameObject *> children;
-
+    QVector3D worldPosition;
 public:
 
     GameObject();
@@ -42,7 +42,7 @@ public:
     Transform *getTransform();
 
     const QMatrix4x4 getModel();
-    QVector3D getWorldPosition();
+    QVector3D& getWorldPosition();
     const std::vector<GameObject *> getChildren();
     GameObject * getParent();
 

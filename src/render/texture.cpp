@@ -30,7 +30,6 @@ void Texture::unbindTexture(){
     this->texture->release();
 }
 
-
 QOpenGLTexture * Texture::getTexture()
 {
     return this->texture;

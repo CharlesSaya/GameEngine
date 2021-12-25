@@ -14,16 +14,19 @@ SOURCES += src/game/main.cpp \
     src/core/objLoader.cpp \
     src/core/physicsComponent.cpp \
     src/core/player.cpp \
+    src/core/playerComponent.cpp \
     src/game/MainWindow.cpp \
     src/game/game.cpp \
     src/physics/colliderEngine.cpp \
     src/render/AABB.cpp \
     src/core/gameObject.cpp \
+    src/render/cubemap.cpp \
     src/render/light.cpp \
     src/render/mesh.cpp \
     src/core/meshrenderer.cpp \
     src/game/sceneGraph.cpp \
     src/core/transform.cpp \
+    src/render/ray.cpp \
     src/render/renderingEngine.cpp \
     src/physics/physicsEngine.cpp \
     src/render/shader.cpp \
@@ -42,6 +45,7 @@ HEADERS += \
     headers/core/objloader.h \
     headers/core/physicsComponent.h \
     headers/core/player.h \
+    headers/core/playerComponent.h \
     headers/dirent.h \
     headers/game/MainWindow.h \
     headers/game/game.h \
@@ -51,12 +55,14 @@ HEADERS += \
     headers/core/BasicIO.h \
     headers/core/gameComponent.h \
     headers/core/gameObject.h \
+    headers/render/cubemap.h \
     headers/render/light.h \
     headers/render/mesh.h \
     headers/render/mesh.h \
     headers/core/meshrenderer.h \
     headers/game/sceneGraph.h \
     headers/core/transform.h \
+    headers/render/ray.h \
     headers/render/renderingEngine.h \
     headers/physics/physicsEngine.h \
     headers/render/shader.h \

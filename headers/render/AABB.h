@@ -7,6 +7,7 @@
 #include<QVector3D>
 #include<QOpenGLBuffer>
 
+#include "headers/render/ray.h"
 #include "headers/render/shader.h"
 #include "headers/render/vertexData.h"
 
@@ -51,7 +52,7 @@ class AABB {
         void drawAABB( Shader * shader );
 
         void updateAABB( const  QMatrix4x4 &model );
-
+        bool intersect(const Ray & ray);
         // Getters & setters
 
         int getIndexCount() const;

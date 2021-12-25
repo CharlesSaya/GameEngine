@@ -19,7 +19,7 @@ public slots:
 
 public:
     MeshRenderer();
-    MeshRenderer( Mesh &mesh );
+    MeshRenderer( Mesh &mesh, QObject * parent = 0  );
 
     void renderMesh( Transform & transform, const QMatrix4x4& model, CameraComponent & camera );
 

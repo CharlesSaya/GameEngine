@@ -115,6 +115,51 @@ void AABB::initBuffers(){
 
 }
 
+bool AABB::intersect(const Ray & ray) {
+
+    QVector3D rayDirection = ray.getDirection();
+    QVector3D rayOrigin = ray.getOrigin();
+
+    float t0x = (min.x() - rayOrigin.x()) / rayDirection.x();
+    float t1x = (max.x() - rayOrigin.x()) / rayDirection.x();
+
+    if (t0x > t1x)
+        std::swap(t0x, t1x);
+
+    float tMin = t0x;
+    float tMax = t1x;
+
+    float t0y = (min.y() - rayOrigin.y()) / rayDirection.y();
+    float t1y = (max.y() - rayOrigin.y()) / rayDirection.y();
+
+    if (t0y > t1y)
+        std::swap(t0y, t1y);
+
+    if (tMin > t1y || tMax > t1x)
+        return false;
+
+    tMin = (t0x > t0y) ? t0x : t0y;
+    tMax = (t1x > t1y) ? t1y : t1x;
+
+    float t0z = (min.z() - rayOrigin.z()) / rayDirection.z();
+    float t1z = (max.z() - rayOrigin.z()) / rayDirection.z();
+
+    if (t0z > t1z)
+        std::swap(t0z, t1z);
+
+    if (tMin > t1z || t0z > tMax)
+        return false;
+
+    if (t0z > tMin)
+        tMin = t0z;
+
+    if (t1z < tMax)
+        tMax = t1z;
+
+    return true;
+
+}
+
 //void AABB::drawAABB( Shader * shader ){
 //    this->initBuffers();
 

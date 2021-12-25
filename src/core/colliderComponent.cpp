@@ -1,7 +1,7 @@
 #include "headers/core/colliderComponent.h"
 
 
-ColliderComponent::ColliderComponent(){
+ColliderComponent::ColliderComponent(  QObject * parent ){
 
 }
 

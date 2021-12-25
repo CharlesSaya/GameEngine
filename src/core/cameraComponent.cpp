@@ -4,7 +4,7 @@
 CameraComponent::CameraComponent(){
 }
 
-CameraComponent::CameraComponent(QVector3D cameraPosition, QVector3D cameraTarget, float fov, float zNear, float zFar ){
+CameraComponent::CameraComponent(QVector3D cameraPosition, QVector3D cameraTarget, float fov, float zNear, float zFar, QObject * parent ){
     this->cameraPosition = cameraPosition;
     this->cameraTarget = cameraTarget;
 
@@ -21,7 +21,6 @@ CameraComponent::CameraComponent(QVector3D cameraPosition, QVector3D cameraTarge
 void CameraComponent::updatePosition(const QMatrix4x4& model)
 {
     this->cameraPosition = model * QVector3D(1.0f,1.0f,1.0f);
-
 }
 
 bool CameraComponent::eventFilter(QObject *obj, QEvent *event){

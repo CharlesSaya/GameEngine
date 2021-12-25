@@ -13,11 +13,13 @@ void Game::initGame(){
     // Shaders & Lights  --------------------------------------------------------------------------------
 
     shader = new Shader( "../GameEngine/shaders/base_vshader.glsl", "../GameEngine/shaders/base_fshader.glsl" );
-    terrainShader = new Shader(  "../GameEngine/shaders/terrain_vshader.vert", "../GameEngine/shaders/terrain_fshader.frag" );
+    terrainShader = new Shader(  "../GameEngine/shaders/terrain_vshader.glsl", "../GameEngine/shaders/terrain_fshader.glsl" );
+    skyboxShader = new Shader(  "../GameEngine/shaders/skybox_vshader.glsl", "../GameEngine/shaders/skybox_fshader.glsl" );
 
     Light light( QVector3D( 5.0, 4.0, -5.0) );
     light.loadLight( shader );
     light.loadLight( terrainShader );
+    light.loadLight( skyboxShader );
 
     // Build scene graph  -------------------------------------------------------------------------------
 
@@ -29,6 +31,18 @@ void Game::initGame(){
     Texture rock      = Texture( "../GameEngine/textures/rock.png", "rock" );
     Texture grass     = Texture( "../GameEngine/textures/grass.png", "grass" );
 
+    Texture skyboxBottom = Texture( "../GameEngine/textures/skybox/MusicHall/py.png", "skyboxBottom" );
+    Texture skyboxTop    = Texture( "../GameEngine/textures/skybox/MusicHall/ny.png", "skyboxTop" );
+    Texture skyboxRight  = Texture( "../GameEngine/textures/skybox/MusicHall/px.png", "skyboxRight" );
+    Texture skyboxLeft   = Texture( "../GameEngine/textures/skybox/MusicHall/nx.png", "skyboxLeft" );
+    Texture skyboxFront  = Texture( "../GameEngine/textures/skybox/MusicHall/nz.png", "skyboxFront" );
+    Texture skyboxBack   = Texture( "../GameEngine/textures/skybox/MusicHall/pz.png", "skyboxBack" );
+
+    // Environment
+
+    std::vector<Texture> skyboxTextures = { skyboxRight, skyboxBottom, skyboxFront, skyboxLeft, skyboxTop, skyboxBack };
+    cubemap = CubeMap( 50, skyboxShader, skyboxTextures );
+
     // Terrain Game Object ------------------------------------------------------------------------------
 
     std::vector<Texture> terrainTextures;
@@ -39,13 +53,13 @@ void Game::initGame(){
 
     terrain = Terrain( heightMap );
     Mesh terrainMesh = Mesh( terrain, terrainTextures, terrainShader, white, true );
-
-    MeshRenderer * terrainRenderer = new MeshRenderer( terrainMesh );
-    ColliderComponent * terrainCollider = new ColliderComponent();
+    MeshRenderer * terrainRenderer = new MeshRenderer( terrainMesh, this );
+    ColliderComponent * terrainCollider = new ColliderComponent( this );
 
     terrainGO = new GameObjectMesh( "Terrain", terrainRenderer, terrainCollider );
-
     this->goMeshes.push_back( terrainGO );
+
+
 
     // Player Game Object  ------------------------------------------------------------------------------
 
@@ -54,26 +68,24 @@ void Game::initGame(){
 
     Mesh playerMesh = Mesh( bunnyObj ,playerTextures, shader, white, true );
 
-    MeshRenderer * playerRenderer = new MeshRenderer( playerMesh );
-    PhysicsComponent * playerPhysics = new PhysicsComponent( physicsEngine, this );
-
-    MoveComponent * playerMove = new MoveComponent( terrain );
-    ColliderComponent * playerCollider = new ColliderComponent();
+    MeshRenderer * playerRenderer      = new MeshRenderer( playerMesh, this );
+    MoveComponent * playerMove         = new MoveComponent( terrain, this );
+    ColliderComponent * playerCollider = new ColliderComponent( this );
+    PlayerComponent * playerComponent  = new PlayerComponent( shader, this );
+    PhysicsComponent * playerPhysics   = new PhysicsComponent( physicsEngine, this );
 
     connect( this, &Game::sendPressedKey, playerMove, &MoveComponent::pressedInput );
     connect( this, &Game::sendReleasedKey, playerMove, &MoveComponent::releasedInput );
     connect( this, &Game::sendMouseMoved, playerMove, &MoveComponent::mouseMoveEvent );
 
+    connect( this, &Game::sendPressedMouse, playerComponent, &PlayerComponent::pressedInput );
+    connect( this, &Game::sendreleasedMouse, playerComponent, &PlayerComponent::releasedInput );
+    connect( this, &Game::sendMouseWheel, playerComponent, &PlayerComponent::wheelScrolled );
 
-    playerGO  = new GameObjectPlayer( "Player" , playerRenderer, playerMove, playerPhysics, playerCollider );
-
-    playerGO->move(  QVector3D(5., 10., -5.) );
-//    playerGO->rotate(QVector3D(0.0f,360.0f,360.0f), 360);
+    playerGO  = new GameObjectPlayer( "Player" , playerRenderer, playerMove, playerPhysics, playerCollider, playerComponent );
     playerGO->scale( QVector3D(0.1, 0.1, 0.1) );
+    playerGO->move(  QVector3D(2., 2., -5.) );
 
-    this->player = Player( *playerGO );
-    this->player.setMesh( playerMesh );
-    this->player.move( QVector3D(0.0, 0.0, 0.0), terrain ); // set initial height
     this->goPlayers.push_back( playerGO );
 
     // Sphere
@@ -81,13 +93,13 @@ void Game::initGame(){
     playerTextures.push_back( grass );
 
     Mesh sphereMesh = Mesh( sphereObj, sphereTextures, shader, white, true );
-    MeshRenderer * sphereRenderer = new MeshRenderer( sphereMesh );
-    ColliderComponent * sphereCollider = new ColliderComponent();
+    MeshRenderer * sphereRenderer = new MeshRenderer( sphereMesh, this  );
+    ColliderComponent * sphereCollider = new ColliderComponent( this );
 
-//    sphereGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider, playerGO );
-//    sphereGO->scale( QVector3D(0.1, 0.1, 0.1) );
+    sphereGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider, playerGO );
+    sphereGO->scale( QVector3D(0.1, 0.1, 0.1) );
 
-//    this->goMeshes.push_back( sphereGO );
+    this->goMeshes.push_back( sphereGO );
 
     // Camera  -------------------------------------------------------------------------------
 
@@ -96,11 +108,11 @@ void Game::initGame(){
     const qreal zNear = .01, zFar = 100.0, fov = 80.0;
     camera = new CameraComponent( cameraPosition, cameraTarget, fov, zNear, zFar );
 
-    MoveComponent * cameraMove = new MoveComponent( terrain );
+    MoveComponent * cameraMove = new MoveComponent( terrain, this );
     PhysicsComponent * cameraPhysics = new PhysicsComponent( physicsEngine, this );
-    ColliderComponent * cameraCollider = new ColliderComponent();
-    GameObjectCamera *mainCameraGO = new GameObjectCamera("Main camera",camera,cameraMove,cameraPhysics,cameraCollider, playerGO);
-    mainCameraGO->getTransform()->setPosition(QVector3D(-2., 2., 2.));
+    ColliderComponent * cameraCollider = new ColliderComponent( this );
+
+    mainCameraGO = new GameObjectCamera("Main camera",camera,cameraMove,cameraPhysics,cameraCollider, playerGO  );
 
     mainCameraGO->updateCameraPosition();
     this->goCameras.push_back(mainCameraGO);
@@ -123,6 +135,7 @@ void Game::update( float fixedStep )
 }
 
 void Game::render( ){
+    cubemap.render( mainCameraGO, QMatrix4x4() );
     this->sceneGraph.render( *camera );
 }
 
@@ -136,6 +149,21 @@ void Game::keyReleased( QKeyEvent * key ){
         key->ignore();
     else
         emit this->sendReleasedKey( key ) ;
+}
+
+void Game::pressedMouse( QMouseEvent * event ){
+    emit this->sendPressedMouse( event );
+}
+
+void Game::releasedMouse( QMouseEvent * event ){
+
+    emit this->sendreleasedMouse( event );
+
+}
+
+void Game::mouseWheel( QWheelEvent * event ){
+    emit this->sendMouseWheel( event );
+
 }
 
 void Game::mouseMoved( QMouseEvent * key ){

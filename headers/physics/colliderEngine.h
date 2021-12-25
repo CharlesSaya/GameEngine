@@ -81,7 +81,6 @@ public:
 
     }
 
-
     template<class Collidable>
     void resting( Collidable * go, QVector3D& normal, float distance ){
         QVector3D objectVel =  go->getPhysicsComponent()->getVelocity();

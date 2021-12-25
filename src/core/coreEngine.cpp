@@ -22,6 +22,21 @@ CoreEngine::CoreEngine(int frames, QWidget *parent) :
     mousePressPosition =QVector2D( width()/2, height()/2 );
 }
 
+void CoreEngine::mousePressEvent( QMouseEvent *event){
+
+    this->game->pressedMouse( event );
+
+}
+
+void CoreEngine::mouseReleaseEvent( QMouseEvent *event){
+    this->game->releasedMouse( event );
+
+}
+
+void CoreEngine::wheelEvent(QWheelEvent *event){
+    this->game->mouseWheel( event );
+}
+
 void CoreEngine::mouseMoveEvent(QMouseEvent *e){
     this->game->mouseMoved(e);
 //    float hAngle = 0., vAngle = 0.;
@@ -82,11 +97,6 @@ void CoreEngine::keyPressEvent(QKeyEvent *key){
 void CoreEngine::keyReleaseEvent(QKeyEvent *key){
     this->game->keyReleased( key );
 
-    switch( key->key() ){
-
-
-
-    }
 }
 
 void CoreEngine::timerEvent(QTimerEvent *)
@@ -109,7 +119,7 @@ void CoreEngine::initializeGL(){
 
     glEnable(GL_DEPTH_TEST);
 //    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
-    glEnable(GL_CULL_FACE);
+//    glEnable(GL_CULL_FACE);
 
     //Start timer   -------------------------------------------------------------------------------
     time.start();

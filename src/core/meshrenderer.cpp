@@ -1,7 +1,7 @@
 #include "headers/core/meshrenderer.h"
 
 
-MeshRenderer::MeshRenderer( Mesh &mesh ) {
+MeshRenderer::MeshRenderer( Mesh &mesh, QObject * parent ) {
     this->mesh = mesh;
 }
 
@@ -16,6 +16,7 @@ void MeshRenderer::renderMesh( Transform & transform, const QMatrix4x4& model, C
     shader->setUniformValue( "view", camera.getViewMatrix() );
     shader->setUniformValue( "projection", camera.getProjection() );
     shader->setUniformValue( "cameraPosition", camera.getCameraPosition() );
+
     this->mesh.bindTextures();
     this->mesh.drawMesh( distance );
 

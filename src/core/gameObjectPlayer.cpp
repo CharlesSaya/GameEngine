@@ -2,30 +2,46 @@
 
 
 
-GameObjectPlayer::GameObjectPlayer( std::string name, MeshRenderer * meshRenderer, MoveComponent * moveComponent, PhysicsComponent * physicsComponent, ColliderComponent * colliderComponent, GameObject * parent ){
+GameObjectPlayer::GameObjectPlayer( std::string name, MeshRenderer * meshRenderer, MoveComponent * moveComponent, PhysicsComponent * physicsComponent, ColliderComponent * colliderComponent,PlayerComponent * playerComponent,  GameObject * parent ){
 
     this->name = name;
     this->meshRenderer = meshRenderer;
     this->colliderComponent = colliderComponent;
     this->physicsComponent = physicsComponent;
     this->moveComponent = moveComponent;
+    this->playerComponent = playerComponent;
     this->parent = parent;
     this->transform = new Transform( this );
     initSignalsSlots();
 }
 
 void GameObjectPlayer::initSignalsSlots(){
-    connect( transform, &Transform::transformed, this, &GameObjectPlayer::hasTransformed );
-    connect( this, &GameObjectPlayer::updateAABB, meshRenderer, &MeshRenderer::updateAABB );
+
     connect( moveComponent, &MoveComponent::move, physicsComponent, &PhysicsComponent::hasMoved );
     connect( moveComponent, &MoveComponent::stop, physicsComponent, &PhysicsComponent::hasStopped );
     connect( moveComponent, &MoveComponent::rotateX, physicsComponent, &PhysicsComponent::hasRotatedX );
     connect( moveComponent, &MoveComponent::rotateY, physicsComponent, &PhysicsComponent::hasRotatedY );
 
+    connect( transform, &Transform::transformed, this, &GameObjectPlayer::hasTransformed );
+    connect( this, &GameObjectPlayer::updateAABB, meshRenderer, &MeshRenderer::updateAABB );
+
+    connect( this, &GameObjectPlayer::updatePlayerComponent, playerComponent, &PlayerComponent::update );
+
 }
 
 void GameObjectPlayer::hasTransformed(){
-    emit( updateAABB( getModel() ));
+    emit updateAABB( getModel() );
+    emit updatePlayerComponent( this->getWorldPosition(), direction );
+}
+
+PlayerComponent *GameObjectPlayer::getPlayerComponent() const
+{
+    return playerComponent;
+}
+
+void GameObjectPlayer::setPlayerComponent(PlayerComponent *newPlayerComponent)
+{
+    playerComponent = newPlayerComponent;
 }
 
 

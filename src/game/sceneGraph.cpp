@@ -104,8 +104,10 @@ void SceneGraph::render( CameraComponent &camera  ){
     for( GameObjectMesh * go : this->goMeshes)
         this->renderMesh( go, camera );
 
-    for( GameObjectPlayer * go : this->goPlayers)
+    for( GameObjectPlayer * go : this->goPlayers){
         this->renderMesh( go, camera );
+        go->getPlayerComponent()->drawRay( camera.getViewMatrix(), camera.getProjection() );
+    }
 }
 
 void SceneGraph::updateBVH( Node * node ){

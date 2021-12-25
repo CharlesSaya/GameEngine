@@ -1,4 +1,3 @@
-#version 140
 uniform sampler2D sphereTexture;
 
 uniform vec3 meshColor;

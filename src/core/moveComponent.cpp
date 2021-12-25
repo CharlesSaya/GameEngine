@@ -2,7 +2,7 @@
 
 
 
-MoveComponent::MoveComponent( Terrain & terrain ){
+MoveComponent::MoveComponent( Terrain & terrain, QObject * parent){
 
     this->terrain = terrain;
 

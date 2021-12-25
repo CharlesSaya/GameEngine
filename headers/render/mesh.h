@@ -4,12 +4,9 @@
 #include <vector>
 #include <iostream>
 
-#include <QOpenGLFunctions_3_1>
-#include <QOpenGLShaderProgram>
-#include <QOpenGLTexture>
-
-#include <QOpenGLBuffer>
 #include <QVector3D>
+#include <QOpenGLBuffer>
+#include <QOpenGLFunctions_3_1>
 
 #include "dirent.h"
 

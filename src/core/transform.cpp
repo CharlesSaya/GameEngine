@@ -61,7 +61,6 @@ QMatrix4x4 & Transform::getModel()
     return this->model;
 }
 
-
 QVector3D &Transform::getPosition()
 {
     return position;
@@ -72,6 +71,7 @@ void Transform::setPosition(const QVector3D &newPosition)
     position = newPosition;
 }
 
-QVector3D Transform::getWorldPosition(){
-    return this->getModel() * this->position;
+QVector3D& Transform::getWorldPosition(){
+    worldPosition =  this->getModel() * QVector3D( 0.0, 0.0, 0.0 );
+    return worldPosition;
 }
