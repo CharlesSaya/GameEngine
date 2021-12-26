@@ -66,6 +66,16 @@ QVector3D &Transform::getPosition()
     return position;
 }
 
+QQuaternion &Transform::getRotation()
+{
+    return rotation;
+}
+
+QVector3D &Transform::getScale()
+{
+    return scale;
+}
+
 void Transform::setPosition(const QVector3D &newPosition)
 {
     position = newPosition;

@@ -4,6 +4,7 @@
 #include "headers/render/terrain.h"
 
 #include "headers/core/gameComponent.h"
+#include "headers/core/transform.h"
 
 
 class MoveComponent : public QObject{
@@ -18,8 +19,6 @@ public slots:
 signals:
     void move( QSet<uint> inputs );
     void stop( QSet<uint> inputs );
-    void rotateX(float inputs);
-    void rotateY(float inputs);
 
 public:
 
@@ -27,10 +26,18 @@ public:
 
     void input( QKeyEvent * key  );
     void update( float step );
+    void aplyRotate();
+    void updateRotation(Transform & transform);
 
 private:
     float speed = 1.;
-    float rotation  =0.;
+
+    float yaw ;
+    float pitch;
+    QQuaternion rotation;
+    QQuaternion rotationX;
+    QQuaternion rotationY;
+    QVector3D rotationAxis;
 
     QVector2D mousePressPosition;
 

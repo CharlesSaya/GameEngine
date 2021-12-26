@@ -73,6 +73,7 @@ void SceneGraph::input(QKeyEvent *key){
 void SceneGraph::update( float fixedStep ){
     for( GameObjectPlayer * go : this->goPlayers){
         this->updatePhysics( go, fixedStep );
+        go->getMoveComponent()->updateRotation(*go->getTransform());
 //         qDebug() << "lapin position" << go->getWorldPosition();
     }
 

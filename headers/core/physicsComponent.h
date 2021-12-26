@@ -14,8 +14,6 @@ public slots:
 
     void hasMoved( QSet<uint> inputs );
     void hasStopped( QSet<uint> inputs );
-    void hasRotatedX( float inputs );
-    void hasRotatedY( float inputs );
 
 public:
 
@@ -25,11 +23,10 @@ public:
     void stop();
     PhysicsEngine &physicsEngine;
 
-    void move();
+    void move(Transform & transform);
     void rotate();
 
     bool atRest();
-    bool restin( QVector3D& normal, float distance );
     // Getters & Setters
 
     const QVector3D &getVelocity() const;
@@ -48,6 +45,7 @@ public:
     void setResting(bool newResting);
 
 private:
+
     float speed = 0.1;
 
     float mass = 1.0;
@@ -59,26 +57,17 @@ private:
 
     QSet<uint> inputsMoves;
 
-
     float inputsRotationX;
     float inputsRotationY;
 
-
     QVector3D acceleration = QVector3D( 0.0, 0.0, 0.0 );
     QVector3D velocity     = QVector3D( 0.0, 0.0, 0.0 );
-
 
     QVector3D forward  = QVector3D( 0.0   , 0.0 , -speed  );
     QVector3D backward = QVector3D( 0.0   , 0.0 , speed );
     QVector3D right    = QVector3D( speed , 0.0 , 0.0    );
     QVector3D left     = QVector3D( -speed, 0.0 , 0.0    );
     QVector3D jump     = QVector3D( 0.0, speed , 0.0    );
-
-    QQuaternion rotation;
-    QQuaternion rotationX;
-    QQuaternion rotationY;
-    QVector3D rotationAxis;
-    float rotationAngle;
 
 };
 

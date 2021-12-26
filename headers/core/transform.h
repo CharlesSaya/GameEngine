@@ -31,6 +31,8 @@ public:
     void applyScale( QVector3D vector );
 
     QVector3D &getPosition();
+    QQuaternion &getRotation();
+    QVector3D &getScale();
     void setPosition(const QVector3D &newPosition);
 
     void setLastWorldPosition();
