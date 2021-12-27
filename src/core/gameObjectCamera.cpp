@@ -12,6 +12,9 @@ GameObjectCamera::GameObjectCamera( std::string name, CameraComponent *cameraCom
     this->parent = parent;
     this->transform = new Transform( this );
 
+    if ( parent != nullptr )
+        parent->addChild( this );
+
 }
 
 MoveComponent *GameObjectCamera::getMoveComponent()

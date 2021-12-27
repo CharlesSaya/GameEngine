@@ -5,17 +5,17 @@ MeshRenderer::MeshRenderer( Mesh &mesh, QObject * parent ) {
     this->mesh = mesh;
 }
 
-void MeshRenderer::renderMesh( Transform & transform, const QMatrix4x4& model, CameraComponent& camera) {
+void MeshRenderer::renderMesh( Transform & transform, const QMatrix4x4& model, CameraComponent * camera) {
 
-    float distance = ( camera.getCameraPosition() - transform.getWorldPosition()).length();
+    float distance = ( camera->getCameraPosition() - transform.getWorldPosition()).length();
 
     Shader * shader = this->mesh.getShader();
     shader->useShaderProgram();
 
     shader->setUniformValue( "model", model );
-    shader->setUniformValue( "view", camera.getViewMatrix() );
-    shader->setUniformValue( "projection", camera.getProjection() );
-    shader->setUniformValue( "cameraPosition", camera.getCameraPosition() );
+    shader->setUniformValue( "view", camera->getViewMatrix() );
+    shader->setUniformValue( "projection", camera->getProjection() );
+    shader->setUniformValue( "cameraPosition", camera->getCameraPosition() );
 
     this->mesh.bindTextures();
     this->mesh.drawMesh( distance );

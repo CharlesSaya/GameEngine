@@ -22,11 +22,11 @@ class AABB {
         QVector3D min = QVector3D(__FLT_MAX__ ,__FLT_MAX__, -__FLT_MAX__) ;
         QVector3D max = QVector3D(-__FLT_MAX__ ,-__FLT_MAX__,__FLT_MAX__) ;
 
-        QVector3D lastMin = QVector3D(__FLT_MAX__ ,__FLT_MAX__, __FLT_MAX__) ;
-        QVector3D lastMax = QVector3D(-__FLT_MAX__ ,-__FLT_MAX__,-__FLT_MAX__) ;
+        QVector3D lastMin = QVector3D(__FLT_MAX__ ,__FLT_MAX__, -__FLT_MAX__) ;
+        QVector3D lastMax = QVector3D(-__FLT_MAX__ ,-__FLT_MAX__,__FLT_MAX__) ;
 
-        QVector3D minDefault = QVector3D(__FLT_MAX__ ,__FLT_MAX__, __FLT_MAX__) ;
-        QVector3D maxDefault = QVector3D(-__FLT_MAX__ ,-__FLT_MAX__,-__FLT_MAX__) ;
+        QVector3D minDefault = QVector3D(__FLT_MAX__ ,__FLT_MAX__, -__FLT_MAX__) ;
+        QVector3D maxDefault = QVector3D(-__FLT_MAX__ ,-__FLT_MAX__,__FLT_MAX__) ;
         QOpenGLBuffer AABBverticesBuffer, AABBindexesBuffer;
 
     public:

@@ -28,7 +28,6 @@ public:
     PlayerComponent( Shader * shader, QObject * parent = 0 );
     PlayerComponent( QVector3D &playerPosition, QVector3D &playerDirection, Shader * shader, QObject * parent = 0  );
 
-
     Ray & castRay();
 
     template< class Collidable >
@@ -38,8 +37,12 @@ public:
         }
     }
 
+    bool telekinesisActivated();
 
     void drawRay( const QMatrix4x4& view, const QMatrix4x4& projection );
+
+    const Ray &getRay() const;
+    void setRay(const Ray &newRay);
 
 private:
 

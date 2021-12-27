@@ -58,6 +58,7 @@
 
 #include "headers/render/light.h"
 #include "headers/render/terrain.h"
+#include "headers/render/renderingEngine.h"
 
 #include "headers/game/game.h"
 #include "headers/game/sceneGraph.h"
@@ -99,9 +100,6 @@ signals:
 public:
     explicit CoreEngine();
     explicit CoreEngine(int frames, QWidget *parent = 0);
-
-    const PhysicsEngine &getPhysicsEngine() const;
-    void setPhysicsEngine(const PhysicsEngine &newPhysicsEngine);
 
 protected:
 

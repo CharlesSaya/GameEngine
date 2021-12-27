@@ -26,6 +26,11 @@ Ray & PlayerComponent::castRay(){
     return ray;
 }
 
+bool PlayerComponent::telekinesisActivated(){
+    return this->rightMousePressed;
+}
+
+
 void PlayerComponent::pressedInput( QMouseEvent * key ){
     if( key->button() == Qt::RightButton ){
         rightMousePressed = true;
@@ -76,4 +81,14 @@ void PlayerComponent::drawRay( const QMatrix4x4& view, const QMatrix4x4& project
 
         ray.drawRay( shader, view, projection );
 
+}
+
+const Ray &PlayerComponent::getRay() const
+{
+    return ray;
+}
+
+void PlayerComponent::setRay(const Ray &newRay)
+{
+    ray = newRay;
 }

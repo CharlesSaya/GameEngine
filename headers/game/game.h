@@ -25,6 +25,7 @@
 #include "headers/render/shader.h"
 #include "headers/render/terrain.h"
 #include "headers/render/cubemap.h"
+#include "headers/render/renderingEngine.h"
 
 #include "sceneGraph.h"
 
@@ -75,6 +76,9 @@ public:
     const ColliderEngine &getColliderEngine() const;
     void setColliderEngine(const ColliderEngine &newColliderEngine);
 
+    const RenderingEngine &getRenderingEngine() const;
+    void setRenderingEngine(const RenderingEngine &newRenderingEngine);
+
 private:
     float deltaTime;
     CameraComponent * camera;
@@ -95,6 +99,7 @@ private:
 
     PhysicsEngine physicsEngine;
     ColliderEngine colliderEngine;
+    RenderingEngine renderingEngine;
 
     QVector3D white = QVector3D( 1., 0., 0.);
 

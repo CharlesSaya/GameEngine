@@ -120,12 +120,8 @@ void CoreEngine::timerEvent(QTimerEvent *)
 
 void CoreEngine::initializeGL(){
     initializeOpenGLFunctions();
-
     glClearColor(0, 0, 0, 1);
-
-    glEnable(GL_DEPTH_TEST);
-//    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
-//    glEnable(GL_CULL_FACE);
+        glEnable(GL_DEPTH_TEST);
 
     //Start timer   -------------------------------------------------------------------------------
     time.start();
@@ -147,25 +143,26 @@ void CoreEngine::initGame(){
     // Physics Engine  -----------------------------------------------------------------------
     PhysicsEngine physicsEngine = PhysicsEngine( this->fixedStep );
     ColliderEngine colliderEngine = ColliderEngine( this->fixedStep );
-
+    RenderingEngine renderingEngine = RenderingEngine( this->renderStep );
 
     // Game  --------------------------------------------------------------------------------
 
     this->game->setCamera( camera );
     this->game->setPhysicsEngine( physicsEngine );
     this->game->setColliderEngine( colliderEngine );
+    this->game->setRenderingEngine( renderingEngine );
     this->game->initGame();
 
 }
 
 void CoreEngine::paintGL()
 {
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
     float currentFrame = time.elapsed()/1000.;
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
 
-    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
     this->game->render();
 
