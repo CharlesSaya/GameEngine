@@ -13,6 +13,9 @@ GameObjectPlayer::GameObjectPlayer( std::string name, MeshRenderer * meshRendere
     this->parent = parent;
     this->transform = new Transform( this );
     initSignalsSlots();
+
+    if ( parent != nullptr )
+        parent->addChild( this );
 }
 
 void GameObjectPlayer::initSignalsSlots(){

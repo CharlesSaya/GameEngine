@@ -14,7 +14,6 @@
 #include "headers/core/gameObjectCamera.h"
 
 #include "headers/render/shader.h"
-#include "headers/render/renderingEngine.h"
 
 #include "headers/physics/physicsEngine.h"
 #include "headers/physics/colliderEngine.h"
@@ -28,7 +27,7 @@ private:
     std::vector<GameObjectMesh *> goMeshes;
     std::vector<GameObjectPlayer *> goPlayers;
     std::vector<GameObjectCamera *> goCameras;
-
+    GameObjectCamera * mainCamera;
     PhysicsEngine physicsEngine;
     ColliderEngine colliderEngine;
     QVector3D test = QVector3D(1.0f,1.0f,1.0f);
@@ -49,7 +48,7 @@ public:
 
     void input ( QKeyEvent * key );
     void update( float fixedStep );
-    void render( CameraComponent &camera  );
+    void render( GameObjectCamera * camera  );
 
     template<class Movable>
     void updatePhysics( Movable * go, float step ){
@@ -57,8 +56,8 @@ public:
     }
 
     template<class Renderable>
-    void renderMesh( Renderable * go, CameraComponent & camera ){
-        go->getMeshRenderer()->renderMesh( *go->getTransform(), go->getModel(), camera );
+    void renderMesh( Renderable * go,  GameObjectCamera * camera ){
+        go->getMeshRenderer()->renderMesh( *go->getTransform(), go->getModel(), camera->getCameraComponent() );
     }
 
     template<class Collidable>
@@ -72,7 +71,8 @@ public:
     }
 
     void updateBVH( Node * node );
-
+    void updateALLBVH();
+    void rayBVHCollision( GameObjectPlayer * playerGO, Node * node );
 };
 
 #endif // SCENEGRAPH_H

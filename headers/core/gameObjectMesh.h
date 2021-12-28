@@ -8,6 +8,13 @@
 
 class GameObjectMesh : public GameObject{
 
+    Q_OBJECT
+
+signals:
+    void updateAABB( const QMatrix4x4& model );
+
+public slots :
+    void hasTransformed();
 
 private:
 

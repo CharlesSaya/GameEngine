@@ -23,6 +23,7 @@ public:
 
     template< class Collidable>
     void detectCollision( Collidable * go, Node * node ){
+
         QVector3D objectVel =  go->getPhysicsComponent()->getVelocity();
 
         AABB broadPhaseBox;

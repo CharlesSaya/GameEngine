@@ -9,10 +9,17 @@ GameObjectMesh::GameObjectMesh( std::string name, MeshRenderer * meshRenderer, C
     this->transform = new Transform( this );
     initSignalsSlots();
 
+    if ( parent != nullptr )
+        parent->addChild( this );
 }
 
 void GameObjectMesh::initSignalsSlots(){
+    connect( transform, &Transform::transformed, this, &GameObjectMesh::hasTransformed );
+    connect( this, &GameObjectMesh::updateAABB, meshRenderer, &MeshRenderer::updateAABB );
+}
 
+void GameObjectMesh::hasTransformed(){
+    emit updateAABB( getModel() );
 }
 
 MeshRenderer *GameObjectMesh::getMeshRenderer()

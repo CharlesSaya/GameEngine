@@ -42,6 +42,7 @@ void Game::initGame(){
 
     std::vector<Texture> skyboxTextures = { skyboxRight, skyboxBottom, skyboxFront, skyboxLeft, skyboxTop, skyboxBack };
     cubemap = CubeMap( 50, skyboxShader, skyboxTextures );
+    renderingEngine.setSkybox( cubemap );
 
     // Terrain Game Object ------------------------------------------------------------------------------
 
@@ -58,8 +59,6 @@ void Game::initGame(){
 
     terrainGO = new GameObjectMesh( "Terrain", terrainRenderer, terrainCollider );
     this->goMeshes.push_back( terrainGO );
-
-
 
     // Player Game Object  ------------------------------------------------------------------------------
 
@@ -96,8 +95,9 @@ void Game::initGame(){
     MeshRenderer * sphereRenderer = new MeshRenderer( sphereMesh, this  );
     ColliderComponent * sphereCollider = new ColliderComponent( this );
 
-    sphereGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider, playerGO );
-    sphereGO->scale( QVector3D(0.1, 0.1, 0.1) );
+    sphereGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider, terrainGO );
+    sphereGO->scale( QVector3D(0.2, 0.2, 0.2) );
+    sphereGO->move( QVector3D(0., 2., -5.) );
 
     this->goMeshes.push_back( sphereGO );
 
@@ -107,7 +107,6 @@ void Game::initGame(){
     QVector3D cameraTarget   = QVector3D(0.0,0.0f,0.0f);
     const qreal zNear = .01, zFar = 100.0, fov = 80.0;
     camera = new CameraComponent( cameraPosition, cameraTarget, fov, zNear, zFar );
-
     MoveComponent * cameraMove = new MoveComponent( terrain, this );
     PhysicsComponent * cameraPhysics = new PhysicsComponent( physicsEngine, this );
     ColliderComponent * cameraCollider = new ColliderComponent( this );
@@ -116,6 +115,8 @@ void Game::initGame(){
     mainCameraGO->move(-2.0f,0.0f,0.0f);
     mainCameraGO->updateCameraPosition();
     this->goCameras.push_back(mainCameraGO);
+
+    renderingEngine.setMainCamera( mainCameraGO );
 
     // Build hierarchy ---------------------------------------------------------------------------------
 //    this->playerGO->addChild( sphereGO );
@@ -134,8 +135,7 @@ void Game::update( float fixedStep )
 }
 
 void Game::render( ){
-    cubemap.render( mainCameraGO, QMatrix4x4() );
-    this->sceneGraph.render( *camera );
+    renderingEngine.renderScene( this->sceneGraph );
 }
 
 // SLOTS
@@ -200,4 +200,14 @@ const ColliderEngine &Game::getColliderEngine() const
 void Game::setColliderEngine(const ColliderEngine &newColliderEngine)
 {
     colliderEngine = newColliderEngine;
+}
+
+const RenderingEngine &Game::getRenderingEngine() const
+{
+    return renderingEngine;
+}
+
+void Game::setRenderingEngine(const RenderingEngine &newRenderingEngine)
+{
+    renderingEngine = newRenderingEngine;
 }
