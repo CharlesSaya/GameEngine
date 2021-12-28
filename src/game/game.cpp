@@ -104,17 +104,17 @@ void Game::initGame(){
     // Camera  -------------------------------------------------------------------------------
 
     QVector3D cameraPosition = QVector3D();
-    QVector3D cameraTarget   = playerGO->getWorldPosition();
+    QVector3D cameraTarget   = QVector3D(0.0,0.0f,0.0f);
     const qreal zNear = .01, zFar = 100.0, fov = 80.0;
     camera = new CameraComponent( cameraPosition, cameraTarget, fov, zNear, zFar );
 
     MoveComponent * cameraMove = new MoveComponent( terrain, this );
     PhysicsComponent * cameraPhysics = new PhysicsComponent( physicsEngine, this );
     ColliderComponent * cameraCollider = new ColliderComponent( this );
-
+    connect( this, &Game::sendMouseMoved, cameraMove, &MoveComponent::mouseMoveEvent );
     mainCameraGO = new GameObjectCamera("Main camera",camera,cameraMove,cameraPhysics,cameraCollider, playerGO  );
+    mainCameraGO->move(-2.0f,0.0f,0.0f);
     mainCameraGO->updateCameraPosition();
-
     this->goCameras.push_back(mainCameraGO);
 
     // Build hierarchy ---------------------------------------------------------------------------------

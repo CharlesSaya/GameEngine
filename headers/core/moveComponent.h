@@ -27,16 +27,16 @@ public:
     void input( QKeyEvent * key  );
     void update( float step );
     void aplyRotate();
-    void updateRotation(Transform & transform);
+    QQuaternion getRotationY();
+    QQuaternion getRotationX();
 
 private:
     float speed = 1.;
 
     float yaw ;
     float pitch;
-    QQuaternion rotation;
-    QQuaternion rotationX;
-    QQuaternion rotationY;
+    QQuaternion rotationX = QQuaternion();
+    QQuaternion rotationY = QQuaternion();
     QVector3D rotationAxis;
 
     QVector2D mousePressPosition;

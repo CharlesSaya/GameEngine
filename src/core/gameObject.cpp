@@ -27,6 +27,15 @@ void GameObject::rotate( QVector3D axis, float angle ){
 
 }
 
+void GameObject::rotate( QQuaternion rotation ){
+    this->transform->applyRotation(rotation);
+}
+
+void GameObject::addRotate( QQuaternion rotation ){
+    this->transform->addRotation(rotation);
+}
+
+
 void GameObject::scale( QVector3D scale ){
     this->transform->applyScale( scale );
 }

@@ -73,14 +73,19 @@ void SceneGraph::input(QKeyEvent *key){
 void SceneGraph::update( float fixedStep ){
     for( GameObjectPlayer * go : this->goPlayers){
         this->updatePhysics( go, fixedStep );
-        go->getMoveComponent()->updateRotation(*go->getTransform());
-//         qDebug() << "lapin position" << go->getWorldPosition();
+        go->rotate(go->getMoveComponent()->getRotationY());
+
     }
 
     for( GameObjectCamera * goC : this->goCameras){
-        goC->updateCameraPosition();
-        goC->getCameraComponent()->setCameraTarget(goC->getParent()->getTransform()->getPosition());
+        float angleX = goC->getMoveComponent()->getRotationX().toEulerAngles()[0];
 
+        QQuaternion parentRotation = dynamic_cast<GameObjectPlayer*>(goC->getParent())->getMoveComponent()->getRotationY();
+        float angleY = parentRotation.toEulerAngles()[1];
+        float calibration = 90.0f;
+
+        goC->getCameraComponent()->rotate(-angleX,-angleY -calibration);
+        goC->updateCameraPosition();
     }
 
     // update children AABB

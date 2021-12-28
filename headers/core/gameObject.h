@@ -31,6 +31,8 @@ public:
     void move( QVector3D translation );
     void move( float x, float y , float z );
     void rotate( QVector3D axis, float angle );
+    void rotate( QQuaternion rotate );
+    void addRotate( QQuaternion rotate );
     void scale( QVector3D scale );
 
     void resetModelMatrix();

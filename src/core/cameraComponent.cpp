@@ -72,7 +72,7 @@ void CameraComponent::rotate( float pitch, float yaw ){
 
 void CameraComponent::setCameraTarget(QVector3D cameraTarget)
 {
-    this->cameraForward = (cameraTarget - this->cameraPosition).normalized();
+    this->cameraForward =( cameraTarget - this->cameraPosition).normalized();
 //    qDebug() << "cameraTarget" <<this->cameraTarget;
 //    qDebug() << "cameraPosition" <<this->cameraPosition;
 //    qDebug() << "cameraForward" <<this->cameraForward <<"\n";

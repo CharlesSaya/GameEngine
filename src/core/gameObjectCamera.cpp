@@ -55,6 +55,7 @@ void GameObjectCamera::setCameraComponent(CameraComponent *newCameraComponent)
     cameraComponent = newCameraComponent;
 }
 
+
 void GameObjectCamera::updateCameraPosition()
 {
 

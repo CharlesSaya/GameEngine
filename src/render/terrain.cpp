@@ -51,7 +51,7 @@ void Terrain::initGeometry()
 
             planeIndices.push_back( GLuint(j + i * width) );
             ind.push_back( GLuint(j + i * width) );
-            planeIndices.push_back( GLuint(j + 1 + i * width ) );
+            planeIndices.push_back( GLuint(j + 1  + i * width ) );
             ind.push_back( GLuint(j + 1 + i * width ) );
             planeIndices.push_back( GLuint(j + ( i + 1 ) * width ) );
             ind.push_back( GLuint(j + ( i + 1 ) * width ) );

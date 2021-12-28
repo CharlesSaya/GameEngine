@@ -12,6 +12,7 @@ signals:
 
 private:
     QQuaternion rotation;
+    QQuaternion defaultRotation;
     QVector3D scale;
     QMatrix4x4 model;
     QVector3D position;
@@ -28,6 +29,7 @@ public:
     void applyTranslation( QVector3D vector );
     void applyTranslation( float x, float y , float z ) ;
     void applyRotation( QQuaternion quaternion );
+    void addRotation( QQuaternion quaternion );
     void applyScale( QVector3D vector );
 
     QVector3D &getPosition();

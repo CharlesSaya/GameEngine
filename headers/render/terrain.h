@@ -81,7 +81,7 @@ private:
     void initGeometry();
 
     int width, height;
-    float gridSize = 10.f;
+    float gridSize = 30.f;
     float gridSquareSize, gridNumber;
 
 

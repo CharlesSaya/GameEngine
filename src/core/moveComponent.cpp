@@ -39,10 +39,17 @@ void MoveComponent::pressedInput(QKeyEvent * key){
     }
 }
 
-void MoveComponent::updateRotation(Transform &transform)
+QQuaternion MoveComponent::getRotationY()
 {
-    transform.applyRotation(rotation);
+    return rotationY;
 }
+
+QQuaternion MoveComponent::getRotationX()
+{
+//    qDebug() << "rotationX" <<rotationX;
+    return rotationX;
+}
+
 
 void MoveComponent::releasedInput(QKeyEvent * key){
     switch( key->key() ){
@@ -94,9 +101,8 @@ void MoveComponent::mouseMoveEvent(QVector2D pos, bool reset){
     rotationAxis[1] -= yaw ;
     if(rotationAxis[0]>60) rotationAxis[0] = 60.0f;
     if(rotationAxis[0]<-60) rotationAxis[0] = -60.0f;
-//    rotationX =  QQuaternion::fromAxisAndAngle( QVector3D(360.0f,0.0f,0.0f),  rotationAxis[0]);
+    rotationX =  QQuaternion::fromAxisAndAngle( QVector3D(360.0f,0.0f,0.0f),  rotationAxis[0]);
     rotationY =  QQuaternion::fromAxisAndAngle( QVector3D(0.0f,360.0f,0.0f),  rotationAxis[1]);
-    rotation =  rotationY   ;
 
     yaw = 0.0f;
     pitch = 0.0f;

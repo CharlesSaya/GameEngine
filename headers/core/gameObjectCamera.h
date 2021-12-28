@@ -28,7 +28,6 @@ public :
     ColliderComponent *getColliderComponent() ;
     void setColliderComponent(ColliderComponent *newColliderComponent);
     void updateCameraPosition();
-
     CameraComponent *getCameraComponent() const;
     void setCameraComponent(CameraComponent *newCameraComponent);
 };
