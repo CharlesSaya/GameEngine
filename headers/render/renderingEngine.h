@@ -54,6 +54,7 @@ public:
     const CubeMap &getSkybox() const;
     void setSkybox(const CubeMap &newSkybox);
     Light getLight();
+    uint shadowMapTex() const;
 };
 
 #endif // RENDERINGENGINE_H

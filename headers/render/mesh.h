@@ -60,6 +60,7 @@ class Mesh : protected QOpenGLFunctions_3_1{
     const std::vector<Texture> &getTextures() const;
     void setTextures(const std::vector<Texture> &newTextures);
     void bindTextures();
+    void bindShadowTexture(uint m_shadowMapTex);
     void unbindTextures();
 
     AABB &getAABB();

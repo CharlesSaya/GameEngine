@@ -2,6 +2,8 @@
 
 
 
+
+
 RenderingEngine::RenderingEngine(){
 
 }
@@ -11,12 +13,10 @@ RenderingEngine::RenderingEngine( QOpenGLContext * context, float renderStep ){
     this->mainCamera = mainCamera;
     light = Light(QVector3D( 5.0, 4.0, -5.0));
     shadowShader = new Shader(  "../GameEngine/shaders/shadow_vshader.glsl", "../GameEngine/shaders/shadow_fshader.glsl" );
-    cameraOrtho = new CameraComponent(light.getLightPosition(), QVector3D(0.0f,0.0f,0.0f),-10.0f,10.0f,-10.0f,10.0f,1.0f,7.5f);
+    cameraOrtho = new CameraComponent(light.getLightPosition(), QVector3D(0.0f,0.0f,0.0f),-10.0f,10.0f,-10.0f,10.0f,0.0f,10.5f);
     cameraOrthoGO = new GameObjectCamera("camera ortho", cameraOrtho);
     this->context = context;
     initializeOpenGLFunctions();
-
-
 
 }
 
@@ -76,11 +76,11 @@ void RenderingEngine::renderToShadowMap(SceneGraph sceneGraph)
 
 void RenderingEngine::renderScene( SceneGraph sceneGraph ){
     GLint drawFboId = 0, readFboId = 0;
-    renderToShadowMap(sceneGraph);
+//    renderToShadowMap(sceneGraph);
 
-    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+//    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-    skybox.render( this->mainCamera, QMatrix4x4() );
+    skybox.render( this->mainCamera, QMatrix4x4());
     sceneGraph.render( this->mainCamera);
 }
 
@@ -92,6 +92,11 @@ GameObjectCamera *RenderingEngine::getMainCamera() const
 void RenderingEngine::setMainCamera(GameObjectCamera *newMainCamera)
 {
     mainCamera = newMainCamera;
+}
+
+uint RenderingEngine::shadowMapTex() const
+{
+    return m_shadowMapTex;
 }
 
 
