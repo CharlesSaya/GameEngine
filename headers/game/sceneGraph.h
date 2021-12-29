@@ -48,7 +48,7 @@ public:
 
     void input ( QKeyEvent * key );
     void update( float fixedStep );
-    void render( GameObjectCamera * camera  );
+    void render( GameObjectCamera * camera, Shader * shader = 0 );
 
     template<class Movable>
     void updatePhysics( Movable * go, float step ){
@@ -56,8 +56,8 @@ public:
     }
 
     template<class Renderable>
-    void renderMesh( Renderable * go,  GameObjectCamera * camera ){
-        go->getMeshRenderer()->renderMesh( *go->getTransform(), go->getModel(), camera->getCameraComponent() );
+    void renderMesh( Renderable * go,  GameObjectCamera * camera, Shader * shader ){
+         go->getMeshRenderer()->renderMesh( *go->getTransform(), go->getModel(), camera->getCameraComponent(), shader  );
     }
 
     template<class Collidable>

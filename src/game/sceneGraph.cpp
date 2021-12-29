@@ -103,15 +103,18 @@ void SceneGraph::update( float fixedStep ){
     }
 }
 
-void SceneGraph::render( GameObjectCamera * camera  ){
-    for( GameObjectMesh * go : this->goMeshes)
-        this->renderMesh( go, camera );
 
-    for( GameObjectPlayer * go : this->goPlayers){
-        this->renderMesh( go, camera );
-        go->getPlayerComponent()->drawRay( camera->getCameraComponent()->getViewMatrix(), camera->getCameraComponent()->getProjection() );
+void SceneGraph::render( GameObjectCamera * camera, Shader * shader  ){
+    for( GameObjectMesh * go : this->goMeshes){
+         this->renderMesh( go, camera, shader );
     }
+
+//    for( GameObjectPlayer * go : this->goPlayers){
+//        this->renderMesh( go, camera, shader );
+//        go->getPlayerComponent()->drawRay( camera->getCameraComponent()->getViewMatrix(), camera->getCameraComponent()->getProjection() );
+//    }
 }
+
 
 
 void SceneGraph::updateBVH( Node * node ){

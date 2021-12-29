@@ -8,7 +8,12 @@
 
 #include "headers/game/sceneGraph.h"
 
-#include "headers/core/gameObjectCamera.h"
+#include "headers/core/cameraComponent.h"
+
+#include "headers/render/light.h"
+
+#include "headers/render/shader.h"
+
 
 class RenderingEngine : protected QOpenGLFunctions_3_1{
 
@@ -16,6 +21,19 @@ private:
     float step;
     CubeMap skybox;
     GameObjectCamera * mainCamera;
+    CameraComponent *cameraOrtho;
+    GameObjectCamera * cameraOrthoGO;
+
+    uint SHADOW_WIDTH = 1024;
+    uint SHADOW_HEIGHT = 1024 ;
+
+    uint m_shadowMapFBO;
+    uint m_shadowMapTex;
+    QMatrix4x4 m_lightPositionMatrix;
+    QMatrix4x4 m_lightViewMatrix;
+    Light light;
+
+    Shader * shadowShader;
 public:
     RenderingEngine();
     RenderingEngine( float renderStep );
@@ -26,10 +44,14 @@ public:
     void renderShadow();
     void renderOutline();
 
+    void renderToShadowMap(SceneGraph sceneGraph);
+    void initDepthMap();
+
     GameObjectCamera *getMainCamera() const;
     void setMainCamera(GameObjectCamera *newMainCamera);
     const CubeMap &getSkybox() const;
     void setSkybox(const CubeMap &newSkybox);
+    Light getLight();
 };
 
 #endif // RENDERINGENGINE_H

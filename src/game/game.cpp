@@ -16,10 +16,9 @@ void Game::initGame(){
     terrainShader = new Shader(  "../GameEngine/shaders/terrain_vshader.glsl", "../GameEngine/shaders/terrain_fshader.glsl" );
     skyboxShader = new Shader(  "../GameEngine/shaders/skybox_vshader.glsl", "../GameEngine/shaders/skybox_fshader.glsl" );
 
-    Light light( QVector3D( 5.0, 4.0, -5.0) );
-    light.loadLight( shader );
-    light.loadLight( terrainShader );
-    light.loadLight( skyboxShader );
+    renderingEngine.getLight().loadLight(shader);
+    renderingEngine.getLight().loadLight(terrainShader);
+    renderingEngine.getLight().loadLight(skyboxShader);
 
     // Build scene graph  -------------------------------------------------------------------------------
 
@@ -189,7 +188,7 @@ void Game::setPhysicsEngine(const PhysicsEngine &newPhysicsEngine){
 }
 
 void Game::setProjection( float aspect ){
-    this->camera->setProjection( aspect );
+    this->camera->setProjectionPersp(aspect );
 }
 
 const ColliderEngine &Game::getColliderEngine() const

@@ -1,5 +1,5 @@
-#ifndef CAMERACOMPONENT_H
-#define CAMERACOMPONENT_H
+#ifndef CAMERAORTHOCOMPONENT_H
+#define CAMERAORTHOCOMPONENT_H
 
 #include <QOpenGLWidget>
 
@@ -9,23 +9,11 @@
 #include <QtMath>
 #include "headers/core/transform.h"
 
-class CameraComponent : public QObject {
+class CameraOrthoComponent : public QObject {
     Q_OBJECT
-
-public slots:
-
-
-protected:
-    bool eventFilter( QObject * obj, QEvent * event );
 
 private:
     float fov, zFar, zNear;
-
-    //Orthogonal
-    float right_O;
-    float left_O;
-    float top_O;
-    float bottom_O;
 
     QVector3D yAxis = QVector3D( 0., 1., 0.);
 
@@ -34,19 +22,18 @@ private:
 
     QVector3D cameraUp;
     QVector3D cameraForward ;
-    QVector3D right;
-    QVector3D left;
+
+
 
     QMatrix4x4 view;
     QMatrix4x4 projection;
 
 public:
 
-    CameraComponent();
+    CameraOrthoComponent();
 
-    CameraComponent(QVector3D cameraPosition, QVector3D cameraTarget, float fov, float zNear, float zFar, QObject * parent = 0  );
-    CameraComponent(QVector3D cameraPosition, QVector3D cameraTarget,float right, float left, float top, float bottom ,
-                    float zNear, float zFar, QObject * parent = 0  );
+    CameraOrthoComponent(QVector3D cameraPosition, QVector3D cameraTarget,float right, float left, float top, float bottom ,
+                         float zNear, float zFar, QObject * parent = 0  );
 
 
     void updatePosition(const QMatrix4x4& model);
@@ -67,10 +54,10 @@ public:
 
     const QVector3D& getCameraForward();
 
-    void setProjectionPersp(float aspect);
-    void setProjectionOrtho();
+    void setProjection();
     const QMatrix4x4 &getProjection() const;
 };
 
 
-#endif // CAMERACOMPONENT_H
+
+#endif // CAMERAORTHOCOMPONENT_H

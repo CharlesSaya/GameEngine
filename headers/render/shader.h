@@ -14,6 +14,7 @@ public:
 
     void useShaderProgram();
     void updateUniforms();
+    bool isEmpty();
 
     QOpenGLShaderProgram &getProgram();
 
@@ -22,6 +23,7 @@ public:
 
 private:
     QOpenGLShaderProgram program;
+    bool empty = true;
 
 };
 

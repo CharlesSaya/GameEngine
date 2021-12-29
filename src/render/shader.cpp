@@ -18,12 +18,21 @@ Shader::Shader( std::string vertexShader, std::string fragmentShader ){
     if (!program.link())
         exit(0);
 
+      this->empty = false;
 }
 
 void Shader::useShaderProgram(){
 
     if (!program.bind())
         exit(0);
+}
+
+bool Shader::isEmpty()
+{
+     qDebug() << "here" ;
+    qDebug() <<"isEmpty?: " <<empty ;
+    qDebug() << "here" ;
+    return empty;
 }
 
 QOpenGLShaderProgram &Shader::getProgram()

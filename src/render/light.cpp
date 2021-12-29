@@ -12,3 +12,9 @@ void Light::loadLight( Shader * shader ){
     shader->useShaderProgram();
     shader->setUniformValue( "lightPosition", this->lightPosition );
 }
+
+const QVector3D &Light::getLightPosition() const
+{
+    return lightPosition;
+}
+

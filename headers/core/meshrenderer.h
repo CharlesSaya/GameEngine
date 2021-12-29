@@ -7,7 +7,7 @@
 
 #include "headers/render/mesh.h"
 
-#include "headers/core/cameraComponent.h"
+#include "headers/core/gameObjectCamera.h"
 #include "headers/core/transform.h"
 
 class MeshRenderer : public QObject
@@ -21,7 +21,7 @@ public:
     MeshRenderer();
     MeshRenderer( Mesh &mesh, QObject * parent = 0  );
 
-    void renderMesh( Transform & transform, const QMatrix4x4& model, CameraComponent * camera );
+    void renderMesh( Transform & transform, const QMatrix4x4& model, CameraComponent * camera,Shader *shaderDepth );
 
 
     Mesh &getMesh();
@@ -30,7 +30,7 @@ public:
 private:
     Mesh mesh;
     QOpenGLBuffer verticesBuffer, indexesBuffer;
-
+    Shader * shader;
     bool renderBoundingBox = false;
 };
 

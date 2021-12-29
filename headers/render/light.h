@@ -11,6 +11,8 @@ public:
     Light(  QVector3D lightPosition );
     void loadLight( Shader * shader );
 
+    const QVector3D &getLightPosition() const;
+
 private:
     QVector3D lightPosition;
     Shader * shader;

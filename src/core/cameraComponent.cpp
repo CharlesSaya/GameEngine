@@ -15,8 +15,27 @@ CameraComponent::CameraComponent(QVector3D cameraPosition, QVector3D cameraTarge
     this->cameraForward = (this->cameraTarget - this->cameraPosition).normalized();
     this->right = QVector3D::crossProduct( this->yAxis ,this->cameraForward).normalized();
     this->cameraUp = QVector3D::crossProduct( this->cameraForward, this->right );
+}
+
+CameraComponent::CameraComponent(QVector3D cameraPosition, QVector3D cameraTarget,float right, float left, float top, float bottom ,
+                     float zNear, float zFar, QObject * parent){
+    this->cameraPosition = cameraPosition;
+    this->cameraTarget = cameraTarget;
+
+    this->zNear = zNear;
+    this->zFar  = zFar;
+
+    this->right_O = right;
+    this->left_O = left;
+    this->top_O = top;
+    this->bottom_O = bottom;
+
+    this->cameraForward = (this->cameraTarget - this->cameraPosition).normalized();
+    this->right = QVector3D::crossProduct( this->yAxis ,this->cameraForward).normalized();
+    this->cameraUp = QVector3D::crossProduct( this->cameraForward, this->right );
 
 }
+
 
 void CameraComponent::updatePosition(const QMatrix4x4& model)
 {
@@ -32,12 +51,17 @@ const QMatrix4x4 &CameraComponent::getProjection() const
     return projection;
 }
 
-void CameraComponent::setProjection( float aspect )
+void CameraComponent::setProjectionPersp( float aspect )
 {
     this->projection.setToIdentity();
     this->projection.perspective( fov, aspect, zNear, zFar );
 }
 
+void CameraComponent::setProjectionOrtho()
+{
+    this->projection.setToIdentity();
+    this->projection.ortho(this->left_O,this->right_O,this->bottom_O,this->top_O,this->zNear,this->zFar);
+}
 const QMatrix4x4& CameraComponent::getViewMatrix(){
     view.setToIdentity();
     view.lookAt(this->cameraPosition, this->cameraPosition + this->cameraForward, this->cameraUp);

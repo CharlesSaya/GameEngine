@@ -20,6 +20,7 @@ private:
 public :
     GameObjectCamera();
     GameObjectCamera( std::string name, CameraComponent *cameraComponent ,MoveComponent * moveComponent, PhysicsComponent * physicsComponent, ColliderComponent * colliderComponent, GameObject * parent  = 0  );
+    GameObjectCamera( std::string name, CameraComponent *cameraComponent  );
 
     MoveComponent *getMoveComponent() ;
     void setMoveComponent(MoveComponent *newMoveComponent);
