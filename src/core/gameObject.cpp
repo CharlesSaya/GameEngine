@@ -1,16 +1,25 @@
 #include "headers/core/gameObject.h"
 
-
 GameObject::GameObject(){}
 
 GameObject::GameObject( std::string name, GameObject * parent ){
     this->name = name;
     this->transform = new Transform( this );
+    this->lastParent = parent;
     this->parent = parent;
 }
 
-void GameObject::addChild( GameObject *newChildren){
+void GameObject::addChild( GameObject *newChildren ){
     this->children.push_back( newChildren );
+}
+
+void GameObject::removeChild( GameObject *go ){
+    std::vector<GameObject *>::iterator itA;
+    itA = find( children.begin(), children.end(), go);
+    if ( itA != children.end()  )
+        children.erase( itA );
+    else
+        qDebug() << "not";
 }
 
 void GameObject::move( QVector3D translation ){
@@ -40,7 +49,7 @@ void GameObject::scale( QVector3D scale ){
     this->transform->applyScale( scale );
 }
 
-void GameObject::resetModelMatrix(){
+void GameObject::resetTransform(){
     this->transform->resetModel();
 }
 
@@ -63,6 +72,45 @@ GameObject *GameObject::getParent()
     return parent;
 }
 
+void GameObject::setParent(GameObject *newParent){
+
+    qDebug() << "sphere world position" << this->getWorldPosition();
+    qDebug() << "parent" << newParent->getWorldPosition();
+    qDebug() << "sphere - parent" <<  ( getWorldPosition() - newParent->getWorldPosition() );
+
+    QVector3D trans = ( getWorldPosition() - newParent->getWorldPosition() );
+
+    this->transform->setPosition( trans );
+
+    qDebug() << "sphere world position" << getWorldPosition();
+
+    newParent->addChild(this);
+    parent->removeChild( this );
+    lastParent = parent;
+    parent = newParent;
+
+}
+
+void GameObject::setLastParent(){
+
+    qDebug() << "sphere relative to bunny" << this->getWorldPosition();
+    qDebug() << "Direction Bunny -> Sphere" <<  ( getWorldPosition() - parent->getWorldPosition() );
+
+    qDebug() << "sphere relative after translate " << this->getWorldPosition();
+
+    QVector3D trans = ( getWorldPosition() - lastParent->getWorldPosition() );
+
+    this->transform->setPosition( trans );
+    qDebug() << "sphere world position" << getWorldPosition();
+
+    parent->removeChild( this );
+    lastParent->addChild( this );
+    parent = lastParent;
+
+    lastParent = nullptr;
+
+}
+
 Transform *GameObject::getTransform()
 {
     return this->transform;
@@ -74,7 +122,7 @@ void GameObject::setTransform( Transform *newTransform)
 }
 
 QVector3D& GameObject::getWorldPosition(){
-    worldPosition = this->transform->getModel() * QVector3D( 0.0, 0.0, 0.0 );
+    worldPosition = this->getModel() * QVector3D( 0.0, 0.0, 0.0 );
     return worldPosition;
 }
 

@@ -18,6 +18,7 @@ protected:
     std::string name;
     Transform * transform;
     GameObject * parent;
+    GameObject * lastParent;
 
     std::vector<GameObject *> children;
     QVector3D worldPosition;
@@ -27,6 +28,7 @@ public:
     GameObject( std::string name, GameObject * parent = nullptr );
 
     void addChild( GameObject * newChildren );
+    void removeChild( GameObject *newChildren );
 
     void move( QVector3D translation );
     void move( float x, float y , float z );
@@ -35,7 +37,7 @@ public:
     void addRotate( QQuaternion rotate );
     void scale( QVector3D scale );
 
-    void resetModelMatrix();
+    void resetTransform();
 
     const std::string &getName() const;
     void setName(const std::string &newName);
@@ -44,10 +46,14 @@ public:
     Transform *getTransform();
 
     const QMatrix4x4 getModel();
+
     QVector3D& getWorldPosition();
     const std::vector<GameObject *> getChildren();
-    GameObject * getParent();
 
+    GameObject * getParent();
+    void setParent(GameObject *newParent);
+
+    void setLastParent();
 };
 
 

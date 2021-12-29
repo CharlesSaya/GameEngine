@@ -5,12 +5,12 @@ MeshRenderer::MeshRenderer( Mesh &mesh, QObject * parent ) {
     this->mesh = mesh;
 }
 
-void MeshRenderer::renderMesh( Transform & transform, const QMatrix4x4& model, CameraComponent * camera, Shader *shaderDepth) {
+void MeshRenderer::renderMesh( Transform & transform, const QMatrix4x4& model, CameraComponent * camera, Shader *shaderDepth ) {
 
     float distance = ( camera->getCameraPosition() - transform.getWorldPosition()).length();
 
     if(shaderDepth != nullptr)
-        shader =  shaderDepth;
+        shader = shaderDepth;
     else
         shader = this->mesh.getShader();
 

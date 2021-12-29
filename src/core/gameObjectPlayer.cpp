@@ -22,15 +22,20 @@ void GameObjectPlayer::initSignalsSlots(){
 
     connect( moveComponent, &MoveComponent::move, physicsComponent, &PhysicsComponent::hasMoved );
     connect( moveComponent, &MoveComponent::stop, physicsComponent, &PhysicsComponent::hasStopped );
+
     connect( transform, &Transform::transformed, this, &GameObjectPlayer::hasTransformed );
+
     connect( this, &GameObjectPlayer::updateAABB, meshRenderer, &MeshRenderer::updateAABB );
     connect( this, &GameObjectPlayer::updatePlayerComponent, playerComponent, &PlayerComponent::update );
 
 }
 
 void GameObjectPlayer::hasTransformed(){
-    emit updateAABB( getModel() );
-    emit updatePlayerComponent( this->getWorldPosition(), direction );
+    QMatrix4x4 tr, rt, sc;
+    tr.translate( this->transform->getPosition() );
+    sc.scale( this->transform->getScale());
+    emit updateAABB(  tr * sc );
+    emit updatePlayerComponent( this->getWorldPosition(), this->getTransform()->getRotation() * direction );
 }
 
 PlayerComponent *GameObjectPlayer::getPlayerComponent() const

@@ -3,6 +3,7 @@
 
 
 #include <QOpenGLFunctions_3_1>
+#include <QOpenGLContext>
 
 #include "headers/render/cubemap.h"
 
@@ -27,16 +28,17 @@ private:
     uint SHADOW_WIDTH = 1024;
     uint SHADOW_HEIGHT = 1024 ;
 
-    uint m_shadowMapFBO;
-    uint m_shadowMapTex;
+    uint m_shadowMapFBO = 0;
+    uint m_shadowMapTex = 0;
     QMatrix4x4 m_lightPositionMatrix;
     QMatrix4x4 m_lightViewMatrix;
     Light light;
 
     Shader * shadowShader;
+    QOpenGLContext * context;
 public:
     RenderingEngine();
-    RenderingEngine( float renderStep );
+    RenderingEngine( QOpenGLContext * context, float renderStep );
 
     void initializeGL();
 

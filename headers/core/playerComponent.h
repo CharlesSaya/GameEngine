@@ -7,6 +7,8 @@
 #include <QKeyEvent>
 #include <QScrollEvent>
 
+#include "headers/core/gameObject.h"
+
 #include "headers/render/ray.h"
 #include "headers/render/shader.h"
 #include "headers/render/shader.h"
@@ -21,7 +23,7 @@ public slots:
     void releasedInput( QMouseEvent * key );
     void wheelScrolled( QWheelEvent * scroll );
     void deactivateWheel();
-    void update( QVector3D &playerPosition, QVector3D &playerDirection );
+    void update( QVector3D &playerPosition, QVector3D playerDirection );
 
 public:
 
@@ -30,12 +32,7 @@ public:
 
     Ray & castRay();
 
-    template< class Collidable >
-    void telekinesis( Collidable * go ){
-        if (leftMousePressed ){
-
-        }
-    }
+    void telekinesis(  GameObject * player, GameObject * go );
 
     bool telekinesisActivated();
 
@@ -52,7 +49,9 @@ private:
     int wheelTimer = 300;
 
     QVector3D playerPosition;
-    QVector3D playerDirection = QVector3D( 0.0, 0.0, 1.0);
+    QVector3D playerDirection = QVector3D( 0.0, 0.0, -1.0);
+
+    GameObject * linkedGO = nullptr ;
 
     bool leftMousePressed = false;
     bool rightMousePressed = false;

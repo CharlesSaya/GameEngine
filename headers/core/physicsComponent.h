@@ -68,6 +68,7 @@ private:
     QVector3D right    = QVector3D( speed , 0.0 , 0.0    );
     QVector3D left     = QVector3D( -speed, 0.0 , 0.0    );
     QVector3D jump     = QVector3D( 0.0, speed , 0.0    );
+    QVector3D dive     = QVector3D( 0.0, -speed , 0.0    );
 
 };
 

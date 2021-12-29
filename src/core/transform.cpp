@@ -34,13 +34,13 @@ void Transform::applyTranslation( float x, float y, float z ){
 
 void Transform::applyRotation( QQuaternion quaternion ){
     this->lastWorldPosition = this->getWorldPosition();
-    this->rotation  = quaternion;
+    this->rotation = quaternion;
     emit transformed();
 }
 
 void Transform::addRotation( QQuaternion quaternion ){
     this->lastWorldPosition = this->getWorldPosition();
-    this->rotation  = quaternion;
+    this->rotation = quaternion;
     emit transformed();
 }
 
@@ -53,6 +53,9 @@ void Transform::applyScale( QVector3D vector ){
 
 void Transform::resetModel(){
     this->model.setToIdentity();
+    this->rotation = QQuaternion();
+    this->scale = QVector3D(1.,1.,1.);
+    this->position = QVector3D();
     this->lastWorldPosition = this->getWorldPosition();
     emit transformed();
 }
@@ -84,10 +87,13 @@ QVector3D &Transform::getScale()
 
 void Transform::setPosition(const QVector3D &newPosition)
 {
-    position = newPosition;
+    this->position = newPosition;
+    emit transformed();
+
 }
 
 QVector3D& Transform::getWorldPosition(){
-    worldPosition =  this->getModel() * QVector3D( 0.0, 0.0, 0.0 );
+
+    worldPosition =  this->getModel() * QVector3D(0.0, 0.0, 0.0);
     return worldPosition;
 }

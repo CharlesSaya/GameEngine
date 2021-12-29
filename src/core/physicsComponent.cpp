@@ -52,6 +52,10 @@ void PhysicsComponent::move(Transform & transform){
             case 4 :
                 velocity += transform.getRotation() * jump;
                 break;
+
+            case 5 :
+                velocity += transform.getRotation() * dive;
+                break;
         }
     }
 }

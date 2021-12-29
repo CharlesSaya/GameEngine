@@ -15,7 +15,7 @@ PlayerComponent::PlayerComponent( QVector3D &playerPosition, QVector3D &playerDi
     this->timer->start( wheelTimer );
 }
 
-void PlayerComponent::update( QVector3D &playerPosition, QVector3D &playerDirection ){
+void PlayerComponent::update( QVector3D &playerPosition, QVector3D playerDirection ){
     this->playerPosition  = playerPosition;
     this->playerDirection = playerDirection;
 
@@ -30,11 +30,20 @@ bool PlayerComponent::telekinesisActivated(){
     return this->rightMousePressed;
 }
 
+void PlayerComponent::telekinesis(  GameObject * player, GameObject * go ){
+    if ( leftMousePressed ){
+
+        linkedGO = go;
+
+        if( go->getParent()->getName() != player->getName() )
+            go->setParent( player );
+    }
+}
 
 void PlayerComponent::pressedInput( QMouseEvent * key ){
     if( key->button() == Qt::RightButton ){
         rightMousePressed = true;
-        castRay();
+//        castRay();
     }
 
     if ( rightMousePressed && key->button() == Qt::LeftButton ){
@@ -44,17 +53,21 @@ void PlayerComponent::pressedInput( QMouseEvent * key ){
 
 void PlayerComponent::releasedInput( QMouseEvent * key ){
 
-    if ( key->button() == Qt::LeftButton ){
-        leftMousePressed = false;
-    }
-
     if( key->button() == Qt::RightButton ){
         rightMousePressed = false;
     }
+
+    if ( key->button() == Qt::LeftButton ){
+        leftMousePressed = false;
+        if( linkedGO != nullptr ){
+            linkedGO->setLastParent();
+            linkedGO = nullptr;
+        }
+    }
+
 }
 
 void PlayerComponent::wheelScrolled( QWheelEvent * scroll ){
-    qDebug() << scroll->delta();
 
     timer->stop();
     if( leftMousePressed ){

@@ -48,7 +48,6 @@ public:
     CameraComponent(QVector3D cameraPosition, QVector3D cameraTarget,float right, float left, float top, float bottom ,
                     float zNear, float zFar, QObject * parent = 0  );
 
-
     void updatePosition(const QMatrix4x4& model);
 
     void move( QVector3D axis );

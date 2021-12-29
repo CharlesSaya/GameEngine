@@ -121,7 +121,8 @@ void CoreEngine::timerEvent(QTimerEvent *)
 void CoreEngine::initializeGL(){
     initializeOpenGLFunctions();
     glClearColor(0, 0, 0, 1);
-        glEnable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST);
+
 
     //Start timer   -------------------------------------------------------------------------------
     time.start();
@@ -143,7 +144,7 @@ void CoreEngine::initGame(){
     // Physics Engine  -----------------------------------------------------------------------
     PhysicsEngine physicsEngine = PhysicsEngine( this->fixedStep );
     ColliderEngine colliderEngine = ColliderEngine( this->fixedStep );
-    RenderingEngine renderingEngine = RenderingEngine( this->renderStep );
+    RenderingEngine renderingEngine = RenderingEngine( this->context(), this->renderStep );
 
     // Game  --------------------------------------------------------------------------------
 

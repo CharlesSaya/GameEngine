@@ -81,7 +81,7 @@ void Game::initGame(){
     connect( this, &Game::sendMouseWheel, playerComponent, &PlayerComponent::wheelScrolled );
 
     playerGO  = new GameObjectPlayer( "Player" , playerRenderer, playerMove, playerPhysics, playerCollider, playerComponent );
-    playerGO->scale( QVector3D(0.1, 0.1, 0.1) );
+    playerGO->scale( QVector3D(1, 1, 1)  );
     playerGO->move(  QVector3D(2., 2., -5.) );
 
     this->goPlayers.push_back( playerGO );
@@ -95,16 +95,16 @@ void Game::initGame(){
     ColliderComponent * sphereCollider = new ColliderComponent( this );
 
     sphereGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider, terrainGO );
-    sphereGO->scale( QVector3D(0.2, 0.2, 0.2) );
-    sphereGO->move( QVector3D(0., 2., -5.) );
+    sphereGO->scale( QVector3D(1, 1, 1) );
+    sphereGO->move( QVector3D(0., 2., -0.) );
 
     this->goMeshes.push_back( sphereGO );
 
     // Camera  -------------------------------------------------------------------------------
 
     QVector3D cameraPosition = QVector3D();
-    QVector3D cameraTarget   = QVector3D(0.0,0.0f,0.0f);
-    const qreal zNear = .01, zFar = 100.0, fov = 80.0;
+    QVector3D cameraTarget   = playerGO->getWorldPosition();
+    const qreal zNear = .01, zFar = 1000.0, fov = 80.0;
     camera = new CameraComponent( cameraPosition, cameraTarget, fov, zNear, zFar );
     MoveComponent * cameraMove = new MoveComponent( terrain, this );
     PhysicsComponent * cameraPhysics = new PhysicsComponent( physicsEngine, this );

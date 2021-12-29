@@ -1,7 +1,6 @@
 #include "headers/core/moveComponent.h"
 
 
-
 MoveComponent::MoveComponent( Terrain & terrain, QObject * parent){
 
     this->terrain = terrain;
@@ -13,28 +12,33 @@ void MoveComponent::pressedInput(QKeyEvent * key){
 
         case Qt::Key_Z:
             inputs.insert( 0 );
-            move( inputs ) ;
+            emit move( inputs ) ;
             break;
 
         case Qt::Key_S:
 
             inputs.insert( 1 );
-            move( inputs ) ;
+            emit move( inputs ) ;
             break;
 
         case Qt::Key_Q:
             inputs.insert( 2 );
-            move( inputs ) ;
+            emit move( inputs ) ;
             break;
 
         case Qt::Key_D:
             inputs.insert( 3 );
-            move( inputs ) ;
+            emit move( inputs ) ;
             break;
 
         case Qt::Key_Space:
             inputs.insert( 4 );
-            move( inputs ) ;
+            emit move( inputs ) ;
+            break;
+
+        case Qt::Key_Control :
+            inputs.insert( 5 );
+            emit move( inputs );
             break;
     }
 }
@@ -46,7 +50,6 @@ QQuaternion MoveComponent::getRotationY()
 
 QQuaternion MoveComponent::getRotationX()
 {
-//    qDebug() << "rotationX" <<rotationX;
     return rotationX;
 }
 
@@ -56,27 +59,32 @@ void MoveComponent::releasedInput(QKeyEvent * key){
 
         case Qt::Key_Z :
             inputs.remove( 0 );
-            stop( inputs );
+            emit stop( inputs );
             break;
 
         case Qt::Key_S :
             inputs.remove( 1 );
-            stop( inputs );
+            emit stop( inputs );
             break;
 
         case Qt::Key_Q :
             inputs.remove( 2 );
-            stop( inputs );
+            emit stop( inputs );
             break;
 
         case Qt::Key_D :
             inputs.remove( 3 );
-            stop( inputs );
+            emit stop( inputs );
             break;
 
         case Qt::Key_Space :
             inputs.remove( 4 );
-            stop( inputs );
+            emit stop( inputs );
+            break;
+
+        case Qt::Key_Control :
+            inputs.remove( 5 );
+            emit stop( inputs );
             break;
     }
 }
@@ -94,8 +102,8 @@ void MoveComponent::mouseMoveEvent(QVector2D pos, bool reset){
 
     mousePressPosition = pos;
 
-     yaw = hAngle;
-     pitch = vAngle;
+    yaw = hAngle;
+    pitch = vAngle;
 
     rotationAxis[0] -= pitch;
     rotationAxis[1] -= yaw ;
@@ -111,8 +119,8 @@ void MoveComponent::mouseMoveEvent(QVector2D pos, bool reset){
 
 void MoveComponent::update( float step ){
 
-    float height;
-    QVector3D worldPos;
+//    float height;
+//    QVector3D worldPos;
 
 //      worldPos = transform.getWorldPosition();
 //      height = terrain.getHeight( worldPos );

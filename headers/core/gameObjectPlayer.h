@@ -17,7 +17,7 @@ class GameObjectPlayer : public GameObject{
 
 signals:
     void updateAABB( const QMatrix4x4& model );
-    void updatePlayerComponent( QVector3D &position, QVector3D &direction );
+    void updatePlayerComponent( QVector3D &position, QVector3D direction );
 
 public slots :
     void hasTransformed();
@@ -30,7 +30,7 @@ private:
     PhysicsComponent * physicsComponent;
     ColliderComponent * colliderComponent;
 
-    QVector3D direction = QVector3D(0.0, 0.0, 1.0);
+    QVector3D direction = QVector3D(0.0, 0.0, -1.0);
 
 public :
     GameObjectPlayer();

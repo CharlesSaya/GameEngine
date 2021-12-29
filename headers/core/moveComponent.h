@@ -26,7 +26,7 @@ public:
 
     void input( QKeyEvent * key  );
     void update( float step );
-    void aplyRotate();
+
     QQuaternion getRotationY();
     QQuaternion getRotationX();
 

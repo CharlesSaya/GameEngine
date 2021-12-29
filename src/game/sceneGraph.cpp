@@ -11,6 +11,7 @@ SceneGraph::SceneGraph( std::vector<GameObject *>& goList,
                         PhysicsEngine& physicsEngine,
                         ColliderEngine & colliderEngine  ){
 
+    this->goList = goList;
     this->goMeshes = goMeshes;
     this->goPlayers = goPlayers;
     this->goCameras = goCameras;
@@ -82,7 +83,7 @@ void SceneGraph::update( float fixedStep ){
         float angleY = parentRotation.toEulerAngles()[1];
         float calibration = 90.0f;
 
-        goC->getCameraComponent()->rotate(-angleX,-angleY -calibration);
+        goC->getCameraComponent()->rotate(-angleX, -angleY - calibration);
         goC->updateCameraPosition();
     }
 
@@ -94,6 +95,7 @@ void SceneGraph::update( float fixedStep ){
         if( ! go->getPlayerComponent()->telekinesisActivated() )
             continue;
 
+        go->getPlayerComponent()->castRay();
         rayBVHCollision( go, this->getRoot() );
     }
 
@@ -155,14 +157,13 @@ void SceneGraph::updateBVH( Node * node ){
 
 void SceneGraph::updateALLBVH(){
     // update children AABB
-    for( Node * childNode : this->root->children ){
-        this->updateBVH(childNode);
+    this->root = new Node();
+    for( GameObject * go : goList){
+        this->root->children.push_back( buildGraphScene( go ) );
     }
 
-    // update root AABB
-    this->root->nodeBoundingBox.resetAABB();
+    // set root AABB
     for( Node * childNode : this->root->children ){
-
         this->root->nodeBoundingBox.resizeAABB( childNode->nodeBoundingBox );
     }
 
@@ -172,7 +173,7 @@ void SceneGraph::rayBVHCollision( GameObjectPlayer * playerGO, Node * node ){
     bool collision = node->nodeBoundingBox.intersect( playerGO->getPlayerComponent()->getRay() );
 
     if( node->children.empty() && collision ){
-        playerGO->getPlayerComponent()->telekinesis( node->gameObject );
+        playerGO->getPlayerComponent()->telekinesis( playerGO, node->gameObject );
     }
 
     else if(collision){
@@ -182,19 +183,12 @@ void SceneGraph::rayBVHCollision( GameObjectPlayer * playerGO, Node * node ){
                 continue;
 
             bool collision = childNode->nodeBoundingBox.intersect( playerGO->getPlayerComponent()->getRay() );
-            qDebug()  << "collision" << playerGO->getPlayerComponent()->getRay().getOrigin() << playerGO->getPlayerComponent()->getRay().getDirection() << childNode->nodeBoundingBox.getMin() << childNode->nodeBoundingBox.getMax()  <<  childNode->gameObject->getName().c_str();
-
             if( collision ){
-                qDebug()  << childNode->gameObject->getName().c_str();
 
                 rayBVHCollision( playerGO, childNode );
             }
-
         }
-
     }
-
-
 }
 
 bool SceneGraph::isLeaf( Node * node ){

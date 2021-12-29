@@ -116,7 +116,7 @@ void AABB::initBuffers(){
 }
 
 bool AABB::intersect(const Ray & ray) {
-
+    float t;
     QVector3D rayDirection = ray.getDirection();
     QVector3D rayOrigin = ray.getOrigin();
 
@@ -155,6 +155,13 @@ bool AABB::intersect(const Ray & ray) {
 
     if (t1z < tMax)
         tMax = t1z;
+
+    t = tMin;
+
+    if (t < 0) {
+       t = tMax;
+       if (t < 0) return false;
+    }
 
     return true;
 

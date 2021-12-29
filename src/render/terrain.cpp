@@ -36,8 +36,8 @@ Terrain::~Terrain()
 void Terrain::initGeometry()
 {
 
-    for( int i =0; i<height; i++){
-        for (int j = 0; j<width; j++ ){
+    for( int i =-height/2; i<height/2; i++){
+        for (int j = -width/2; j<width/2; j++ ){
             planeVertices.push_back( { QVector3D( (float(j)/(float(width)-1.0)) * gridSize, 0.0, - (float(i)/(float(height)-1.0)) * gridSize ),
                                        QVector3D( 0., 1., 0.),
                                        QVector2D( float(j)/float(width-1), float(i)/float(height-1))

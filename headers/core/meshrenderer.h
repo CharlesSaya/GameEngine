@@ -21,7 +21,7 @@ public:
     MeshRenderer();
     MeshRenderer( Mesh &mesh, QObject * parent = 0  );
 
-    void renderMesh( Transform & transform, const QMatrix4x4& model, CameraComponent * camera,Shader *shaderDepth );
+    void renderMesh( Transform & transform, const QMatrix4x4& model, CameraComponent * camera, Shader *shaderDepth = 0 );
 
 
     Mesh &getMesh();
