@@ -33,11 +33,11 @@ class Mesh : protected QOpenGLFunctions_3_1{
     QOpenGLBuffer verticesBuffer, indexesBuffer;
     QOpenGLBuffer AABBverticesBuffer, AABBindexesBuffer;
     std::vector<Texture>  textures;
+    uint m_shadowMapTex;
     QVector3D meshColor;
     Shader * shader;
     AABB bBox;
     bool renderAABB;
-
  public:
     Mesh();
     Mesh( std::string filepath, std::vector<Texture> textures, Shader * shader, QVector3D meshColor, bool renderAABB = false );
@@ -59,12 +59,16 @@ class Mesh : protected QOpenGLFunctions_3_1{
 
     const std::vector<Texture> &getTextures() const;
     void setTextures(const std::vector<Texture> &newTextures);
+
     void bindTextures();
-    void bindShadowTexture(uint m_shadowMapTex);
+    void bindShadowTexture();
     void unbindTextures();
 
     AABB &getAABB();
     bool getRenderAABB() const;
+
+    void setShadowTexture(uint m_shadowMapTex);
+
 };
 
 #endif // MESH_H

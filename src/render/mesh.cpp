@@ -133,6 +133,13 @@ void Mesh::initBuffers( uint lod ){
 void Mesh::bindTextures(){
     for ( uint u = 0; u < this->textures.size() ; u++ )
         this->textures[u].bindTexture( u, this->shader );
+    bindShadowTexture();
+}
+
+void Mesh::bindShadowTexture(){
+    glActiveTexture( GL_TEXTURE0 + this->textures.size() );
+    glBindTexture( GL_TEXTURE_2D, m_shadowMapTex );
+    shader->setUniformValue( "shadowTexture", uint(this->textures.size()));
 }
 
 void Mesh::unbindTextures(){
@@ -141,6 +148,7 @@ void Mesh::unbindTextures(){
 }
 
 void Mesh::drawAABB(){
+
     this->bBox.initBuffers();
 
     indexCount = this->bBox.getIndexCount();
@@ -183,6 +191,10 @@ void Mesh::drawMesh( float distance ){
 
     glDrawElements(GL_TRIANGLES, this->indexCount, GL_UNSIGNED_INT, 0);
 
+}
+
+void Mesh::setShadowTexture(uint m_shadowMapTex){
+    this->m_shadowMapTex = m_shadowMapTex;
 }
 
 const QVector3D &Mesh::getMeshColor() const

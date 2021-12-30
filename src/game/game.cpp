@@ -64,7 +64,7 @@ void Game::initGame(){
     std::vector<Texture> playerTextures;
     playerTextures.push_back( grass );
 
-    Mesh playerMesh = Mesh( bunnyObj ,playerTextures, shader, white, true );
+    Mesh playerMesh = Mesh( sphereObj ,playerTextures, shader, white, true );
 
     MeshRenderer * playerRenderer      = new MeshRenderer( playerMesh, this );
     MoveComponent * playerMove         = new MoveComponent( terrain, this );
@@ -81,14 +81,13 @@ void Game::initGame(){
     connect( this, &Game::sendMouseWheel, playerComponent, &PlayerComponent::wheelScrolled );
 
     playerGO  = new GameObjectPlayer( "Player" , playerRenderer, playerMove, playerPhysics, playerCollider, playerComponent );
-    playerGO->scale( QVector3D(1, 1, 1)  );
-    playerGO->move(  QVector3D(2., 2., -5.) );
+    playerGO->move(  QVector3D(2., 5., -5.) );
 
     this->goPlayers.push_back( playerGO );
 
     // Sphere
     std::vector<Texture> sphereTextures;
-    playerTextures.push_back( grass );
+    sphereTextures.push_back( grass );
 
     Mesh sphereMesh = Mesh( sphereObj, sphereTextures, shader, white, true );
     MeshRenderer * sphereRenderer = new MeshRenderer( sphereMesh, this  );
@@ -99,6 +98,14 @@ void Game::initGame(){
     sphereGO->move( QVector3D(0., 2., -0.) );
 
     this->goMeshes.push_back( sphereGO );
+
+//    // Light
+//    sphereTextures.push_back( grass );
+//    sphereLightGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider, terrainGO );
+//    sphereLightGO->move( renderingEngine.getLight().getLightPosition() );
+//    sphereLightGO->move(  QVector3D(0., -4., 0.) );
+
+//    this->goMeshes.push_back( sphereLightGO );
 
     // Camera  -------------------------------------------------------------------------------
 
@@ -111,7 +118,7 @@ void Game::initGame(){
     ColliderComponent * cameraCollider = new ColliderComponent( this );
     connect( this, &Game::sendMouseMoved, cameraMove, &MoveComponent::mouseMoveEvent );
     mainCameraGO = new GameObjectCamera("Main camera",camera,cameraMove,cameraPhysics,cameraCollider, playerGO  );
-    mainCameraGO->move(-0.0f,2.0f,3.0f);
+    mainCameraGO->move(0.0f,0.0f,0.0f);
     mainCameraGO->updateCameraPosition();
     this->goCameras.push_back(mainCameraGO);
 

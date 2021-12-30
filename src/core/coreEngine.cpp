@@ -122,6 +122,7 @@ void CoreEngine::initializeGL(){
     initializeOpenGLFunctions();
     glClearColor(0, 0, 0, 1);
     glEnable(GL_DEPTH_TEST);
+    //    glEnable(GL_CULL_FACE);
 
 
     //Start timer   -------------------------------------------------------------------------------
@@ -158,12 +159,11 @@ void CoreEngine::initGame(){
 
 void CoreEngine::paintGL()
 {
-    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
     float currentFrame = time.elapsed()/1000.;
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
-
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
     this->game->render();
 

@@ -57,7 +57,7 @@ public:
 
     template<class Renderable>
     void renderMesh( Renderable * go,  GameObjectCamera * camera, Shader * shader ){
-         go->getMeshRenderer()->renderMesh( *go->getTransform(), go->getModel(), camera->getCameraComponent(), shader  );
+         go->getMeshRenderer()->renderMesh( *go->getTransform(), go->getModel(), camera->getCameraComponent(), shader );
     }
 
     template<class Collidable>
@@ -73,6 +73,8 @@ public:
     void updateBVH( Node * node );
     void updateALLBVH();
     void rayBVHCollision( GameObjectPlayer * playerGO, Node * node );
+    const std::vector<GameObjectMesh *> &getGoMeshes() const;
+    const std::vector<GameObjectPlayer *> &getGoPlayers() const;
 };
 
 #endif // SCENEGRAPH_H

@@ -17,8 +17,9 @@ CameraComponent::CameraComponent(QVector3D cameraPosition, QVector3D cameraTarge
     this->cameraUp = QVector3D::crossProduct( this->cameraForward, this->right );
 }
 
-CameraComponent::CameraComponent(QVector3D cameraPosition, QVector3D cameraTarget,float right, float left, float top, float bottom ,
+CameraComponent::CameraComponent(QVector3D cameraPosition, QVector3D cameraTarget,float left, float right, float bottom, float top ,
                      float zNear, float zFar, QObject * parent){
+
     this->cameraPosition = cameraPosition;
     this->cameraTarget = cameraTarget;
 
@@ -39,7 +40,7 @@ CameraComponent::CameraComponent(QVector3D cameraPosition, QVector3D cameraTarge
 
 void CameraComponent::updatePosition(const QMatrix4x4& model)
 {
-    this->cameraPosition = model * QVector3D(0.0f,0.0f,0.0f);
+    this->cameraPosition = model * QVector3D(0.0f,3.0f,3.0f);
 }
 bool CameraComponent::eventFilter(QObject *obj, QEvent *event){
     return false;

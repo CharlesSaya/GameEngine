@@ -25,8 +25,8 @@ private:
     CameraComponent *cameraOrtho;
     GameObjectCamera * cameraOrthoGO;
 
-    uint SHADOW_WIDTH = 1024;
-    uint SHADOW_HEIGHT = 1024 ;
+    uint SHADOW_WIDTH = 2048;
+    uint SHADOW_HEIGHT = 2048 ;
 
     uint m_shadowMapFBO = 0;
     uint m_shadowMapTex = 0;
@@ -42,11 +42,12 @@ public:
 
     void initializeGL();
 
-    void renderScene( SceneGraph  sceneGraph );
-    void renderShadow();
+    void configureUniforms(SceneGraph &sceneGraph);
+
+    void renderScene( SceneGraph &sceneGraph );
     void renderOutline();
 
-    void renderToShadowMap(SceneGraph sceneGraph);
+    void renderToShadowMap(SceneGraph &sceneGraph);
     void initDepthMap();
 
     GameObjectCamera *getMainCamera() const;

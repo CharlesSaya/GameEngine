@@ -1,10 +1,12 @@
-#extension GL_ARB_bindless_texture : enable
+#version 330 core
+
 uniform samplerCube skybox;
+uniform sampler2D shadowTexture;
 
 in vec2 texCoord;
 in vec3 pos;
 
 void main(void)
 {
-    gl_FragColor = textureCube( skybox, pos );
+    gl_FragColor = texture( skybox, pos );
 }

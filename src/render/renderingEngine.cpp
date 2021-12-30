@@ -11,11 +11,14 @@ RenderingEngine::RenderingEngine(){
 RenderingEngine::RenderingEngine( QOpenGLContext * context, float renderStep ){
     this->step = renderStep;
     this->mainCamera = mainCamera;
-    light = Light(QVector3D( 5.0, 4.0, -5.0));
-    shadowShader = new Shader(  "../GameEngine/shaders/shadow_vshader.glsl", "../GameEngine/shaders/shadow_fshader.glsl" );
-    cameraOrtho = new CameraComponent(light.getLightPosition(), QVector3D(0.0f,0.0f,0.0f),-10.0f,10.0f,-10.0f,10.0f,0.0f,10.5f);
-    cameraOrthoGO = new GameObjectCamera("camera ortho", cameraOrtho);
     this->context = context;
+
+    light = Light(QVector3D( 10.0, 70.0, -5.0));
+    shadowShader = new Shader(  "../GameEngine/shaders/shadow_vshader.glsl", "../GameEngine/shaders/shadow_fshader.glsl" );
+    cameraOrtho  = new CameraComponent(light.getLightPosition(), QVector3D(0.0f,0.0f,0.0f),-50.0f,50.0f,-50.0f,50.0f,0.01f,100.f);
+    cameraOrtho->setProjectionOrtho();
+    cameraOrthoGO = new GameObjectCamera("camera ortho", cameraOrtho);
+
     initializeOpenGLFunctions();
 
 }
@@ -28,9 +31,21 @@ void RenderingEngine::initializeGL(){
 }
 
 
+void RenderingEngine::configureUniforms( SceneGraph &sceneGraph ){
+    for( GameObjectMesh * go : sceneGraph.getGoMeshes()){
+        go->getMeshRenderer()->getMesh().setShadowTexture( m_shadowMapTex );
+        go->getMeshRenderer()->setLightSpaceMatrix( cameraOrtho->getProjection() * cameraOrtho->getViewMatrix() );
+    }
+
+    for( GameObjectPlayer * go : sceneGraph.getGoPlayers()){
+        go->getMeshRenderer()->getMesh().setShadowTexture( m_shadowMapTex );
+        go->getMeshRenderer()->setLightSpaceMatrix( cameraOrtho->getProjection() * cameraOrtho->getViewMatrix() );
+    }
+
+}
+
 void RenderingEngine::initDepthMap()
 {
-    // Refer http://learnopengl.com/#!Advanced-Lighting/Shadows/Shadow-Mapping
     if(m_shadowMapFBO != 0)
         return;
 
@@ -53,16 +68,18 @@ void RenderingEngine::initDepthMap()
 
     // Let OpenGL know that we are not interested in colors for this buffer
     glDrawBuffer(GL_NONE);
-    glReadBuffer(GL_NONE);
 
     // Cleanup for now.
     glBindFramebuffer(GL_FRAMEBUFFER, context->defaultFramebufferObject());
+
 }
 
-
-void RenderingEngine::renderToShadowMap(SceneGraph sceneGraph)
+void RenderingEngine::renderToShadowMap(SceneGraph &sceneGraph)
 {
-    initDepthMap();
+    initDepthMap( );
+    configureUniforms( sceneGraph );
+
+    shadowShader->useShaderProgram();
 
     // Render into the depth framebuffer
     glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
@@ -74,11 +91,10 @@ void RenderingEngine::renderToShadowMap(SceneGraph sceneGraph)
 
 }
 
-void RenderingEngine::renderScene( SceneGraph sceneGraph ){
-    GLint drawFboId = 0, readFboId = 0;
-//    renderToShadowMap(sceneGraph);
+void RenderingEngine::renderScene( SceneGraph &sceneGraph ){
+    renderToShadowMap(sceneGraph);
 
-//    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
     skybox.render( this->mainCamera, QMatrix4x4());
     sceneGraph.render( this->mainCamera);

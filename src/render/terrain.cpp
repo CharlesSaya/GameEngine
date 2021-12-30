@@ -18,8 +18,8 @@ Terrain::Terrain( Texture &texture )
 {
     this->texture = texture;
 
-    this->width = 512;
-    this->height = 512;
+    this->width = 32;
+    this->height = 32;
 
     this->gridSquareSize = gridSize / float( width - 1) ;
     this->gridNumber = gridSize / gridSquareSize ;
@@ -36,14 +36,14 @@ Terrain::~Terrain()
 void Terrain::initGeometry()
 {
 
-    for( int i =-height/2; i<height/2; i++){
-        for (int j = -width/2; j<width/2; j++ ){
-            planeVertices.push_back( { QVector3D( (float(j)/(float(width)-1.0)) * gridSize, 0.0, - (float(i)/(float(height)-1.0)) * gridSize ),
-                                       QVector3D( 0., 1., 0.),
-                                       QVector2D( float(j)/float(width-1), float(i)/float(height-1))
-                                     } );
-        }
-    }
+    for( int i =0; i<height; i++){
+       for (int j = 0; j<width; j++ ){
+           planeVertices.push_back( { QVector3D( (float(j)/(float(width)-1.0)  - 0.5 ) * gridSize, 0.0, - (float(i)/(float(height)-1.0)  - 0.5 ) * gridSize ),
+                                      QVector3D( 0., 1., 0.),
+                                      QVector2D( float(j)/float(width-1), float(i)/float(height-1))
+                                    } );
+       }
+   }
 
     for ( int i =0; i < height - 1; i++ ){
         for (int j = 0 ; j< width - 1; j++){

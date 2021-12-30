@@ -1,5 +1,15 @@
 #include "headers/game/sceneGraph.h"
 
+const std::vector<GameObjectMesh *> &SceneGraph::getGoMeshes() const
+{
+    return goMeshes;
+}
+
+const std::vector<GameObjectPlayer *> &SceneGraph::getGoPlayers() const
+{
+    return goPlayers;
+}
+
 SceneGraph::SceneGraph(){
 
 }
@@ -36,7 +46,6 @@ Node * SceneGraph::buildGraphScene( GameObject * go ){
 
     std::vector<GameObjectMesh *>::iterator itA;
     std::vector<GameObjectPlayer *>::iterator itB;
-    std::vector<GameObjectCamera *>::iterator itC;
 
     AABB bbox;
     itA = find( goMeshes.begin(), goMeshes.end(), go);
@@ -108,11 +117,13 @@ void SceneGraph::update( float fixedStep ){
 
 void SceneGraph::render( GameObjectCamera * camera, Shader * shader  ){
     for( GameObjectMesh * go : this->goMeshes){
+        qDebug() << go->getName().c_str();
          this->renderMesh( go, camera, shader );
-
     }
 
     for( GameObjectPlayer * go : this->goPlayers){
+        qDebug() << go->getName().c_str();
+
         this->renderMesh( go, camera, shader );
         go->getPlayerComponent()->drawRay( camera->getCameraComponent()->getViewMatrix(), camera->getCameraComponent()->getProjection() );
     }

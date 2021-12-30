@@ -1,8 +1,9 @@
-#version 140
+#version 330 core
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
+uniform mat4 lightSpaceMatrix;
 
 uniform sampler2D heightMap;
 
@@ -13,22 +14,26 @@ in vec2 a_texcoord;
 out vec3 v_pos;
 out vec3 v_normal;
 out vec2 v_texcoord;
+out vec4 v_lightSpacePos;
+
 out float height;
 
 //! [0]
 void main()
 {
-    vec4 h = texture2D( heightMap,a_texcoord );
-    vec4 position = vec4( a_position, 1.0) + vec4( h.z * a_normal , 0.);
+    vec4 h = texture( heightMap, a_texcoord );
 
+    vec4 position = vec4( a_position, 1.0) + vec4( 0.0, h.z, 0.0,  0.0 ) ;
     vec4 worldPosition = model * position;
-    vec4 nWorld = model * vec4( a_normal, 0.0);
 
-    gl_Position = projection * view * model * position;
+    //out
+    v_pos           = worldPosition.xyz;
+    v_normal        = transpose(inverse(mat3(model))) *  a_normal;
+    v_texcoord      = a_texcoord;
+    v_lightSpacePos = lightSpaceMatrix * worldPosition;
+    height          = h.z;
 
-    v_pos = vec4(model *  position).xyz ;
-    v_texcoord  = a_texcoord;
-    v_normal  = nWorld.xyz ;
-    height = h.z;
+    gl_Position     = projection * view * worldPosition;
+
 }
 //! [0]

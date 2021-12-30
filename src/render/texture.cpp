@@ -13,7 +13,6 @@ Texture::Texture(  std::string file, std::string location ){
 
 void Texture::initTexture(){
     this->texture = new QOpenGLTexture( this->image );
-
     this->texture->setWrapMode( QOpenGLTexture::Repeat );
     this->texture->setMinMagFilters( QOpenGLTexture::LinearMipMapNearest, QOpenGLTexture::LinearMipMapLinear );
 
@@ -21,7 +20,6 @@ void Texture::initTexture(){
 }
 
 void Texture::bindTexture( uint textureUnit, Shader * shader ){
-
     this->texture->bind( textureUnit );
     shader->setUniformValue( this->location, textureUnit );
 }

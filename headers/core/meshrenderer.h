@@ -26,11 +26,13 @@ public:
 
     Mesh &getMesh();
     void setMesh(const Mesh &newMesh);
+    void setLightSpaceMatrix(const QMatrix4x4 & lightSpaceMatrix);
 
 private:
     Mesh mesh;
     QOpenGLBuffer verticesBuffer, indexesBuffer;
     Shader * shader;
+    QMatrix4x4 lightSpaceMatrix;
     bool renderBoundingBox = false;
 };
 
