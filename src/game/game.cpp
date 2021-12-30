@@ -111,7 +111,7 @@ void Game::initGame(){
     ColliderComponent * cameraCollider = new ColliderComponent( this );
     connect( this, &Game::sendMouseMoved, cameraMove, &MoveComponent::mouseMoveEvent );
     mainCameraGO = new GameObjectCamera("Main camera",camera,cameraMove,cameraPhysics,cameraCollider, playerGO  );
-    mainCameraGO->move(-2.0f,0.0f,0.0f);
+    mainCameraGO->move(-0.0f,2.0f,3.0f);
     mainCameraGO->updateCameraPosition();
     this->goCameras.push_back(mainCameraGO);
 

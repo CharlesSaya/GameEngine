@@ -52,8 +52,9 @@ public:
 
     GameObject * getParent();
     void setParent(GameObject *newParent);
-
     void setLastParent();
+    void attract(float speed);
+    void push(float speed);
 };
 
 

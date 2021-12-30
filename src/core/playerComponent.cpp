@@ -40,6 +40,18 @@ void PlayerComponent::telekinesis(  GameObject * player, GameObject * go ){
     }
 }
 
+void PlayerComponent::attractAndPush(GameObject * go ){
+    if ( leftMousePressed ){
+        GameObject * child = go->getChildren()[go->getChildren().size()-1];
+           if(wheelDown && go->getWorldPosition().z()-2 > child->getWorldPosition().z() ){
+               child->attract(0.05f);
+           }
+           else if(wheelUp){
+               child->push(0.05f);
+           }
+    }
+}
+
 void PlayerComponent::pressedInput( QMouseEvent * key ){
     if( key->button() == Qt::RightButton ){
         rightMousePressed = true;
@@ -70,6 +82,7 @@ void PlayerComponent::releasedInput( QMouseEvent * key ){
 void PlayerComponent::wheelScrolled( QWheelEvent * scroll ){
 
     timer->stop();
+
     if( leftMousePressed ){
         if( scroll->delta() > 0 ){
             wheelUp = true;

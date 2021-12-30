@@ -175,6 +175,7 @@ void SceneGraph::rayBVHCollision( GameObjectPlayer * playerGO, Node * node ){
 
     if( node->children.empty() && collision ){
         playerGO->getPlayerComponent()->telekinesis( playerGO, node->gameObject );
+
     }
 
     else if(collision){
@@ -185,9 +186,9 @@ void SceneGraph::rayBVHCollision( GameObjectPlayer * playerGO, Node * node ){
 
             bool collision = childNode->nodeBoundingBox.intersect( playerGO->getPlayerComponent()->getRay() );
             if( collision ){
-
                 rayBVHCollision( playerGO, childNode );
             }
+             playerGO->getPlayerComponent()->attractAndPush(playerGO);
         }
     }
 }

@@ -37,7 +37,7 @@ public:
     bool telekinesisActivated();
 
     void drawRay( const QMatrix4x4& view, const QMatrix4x4& projection );
-
+    void attractAndPush( GameObject * go  );
     const Ray &getRay() const;
     void setRay(const Ray &newRay);
 
@@ -46,7 +46,7 @@ private:
     Ray ray;
     QTimer * timer;
     Shader * shader;
-    int wheelTimer = 300;
+    int wheelTimer = 200;
 
     QVector3D playerPosition;
     QVector3D playerDirection = QVector3D( 0.0, 0.0, -1.0);
