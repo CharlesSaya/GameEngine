@@ -74,47 +74,24 @@ GameObject *GameObject::getParent()
 
 void GameObject::setParent(GameObject *newParent){
 
-    qDebug() << "sphere world position" << this->getWorldPosition();
-    qDebug() << "parent" << newParent->getWorldPosition();
-    qDebug() << "sphere - parent" <<  ( getWorldPosition() - newParent->getWorldPosition());
-
-
+    QVector3D diff = getWorldPosition();
+    QVector3D trans = diff;
     newParent->addChild(this);
     parent->removeChild( this );
     lastParent = parent;
     parent = newParent;
-
-    qDebug() << "sphere world position after parent affectation" << getWorldPosition();
-    QVector3D trans = ( getWorldPosition() - newParent->getWorldPosition() );
-    qDebug() << "trans" <<  trans  ;
-    qDebug() << "trans with invert model" << newParent->getModel().inverted() * trans  ;
-    getTransform()->setPosition(newParent->getModel().inverted() * trans );
-
-    qDebug() << "sphere world position" << getWorldPosition()<< "\n";
-
-    //    qDebug()<< this->getModel()<<"\n";
+    QVector3D invertTrans = newParent->getModel().inverted() * trans ;
+    getTransform()->setPosition(invertTrans);
 
 }
 
 void GameObject::setLastParent(){
-
-//    qDebug() << "sphere relative to bunny" << this->getWorldPosition();
-//    qDebug() << "Direction Bunny -> Sphere" <<  ( getWorldPosition() - parent->getWorldPosition() );
-
-//    qDebug() << "sphere relative after translate " << this->getWorldPosition();
-
     QVector3D trans = ( getWorldPosition() - lastParent->getWorldPosition() );
-
     parent->removeChild( this );
     lastParent->addChild( this );
     parent = lastParent;
-
     this->transform->setPosition( trans );
-//    qDebug() << "sphere world position" << getWorldPosition() << "\n";
-
-
     lastParent = nullptr;
-
 }
 
 void GameObject::attract(float speed){
