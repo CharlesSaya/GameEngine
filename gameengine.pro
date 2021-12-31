@@ -21,11 +21,13 @@ SOURCES += src/game/main.cpp \
     src/render/AABB.cpp \
     src/core/gameObject.cpp \
     src/render/cubemap.cpp \
+    src/render/directionalLight.cpp \
     src/render/light.cpp \
     src/render/mesh.cpp \
     src/core/meshrenderer.cpp \
     src/game/sceneGraph.cpp \
     src/core/transform.cpp \
+    src/render/pointLight.cpp \
     src/render/ray.cpp \
     src/render/renderingEngine.cpp \
     src/physics/physicsEngine.cpp \
@@ -56,16 +58,19 @@ HEADERS += \
     headers/core/gameComponent.h \
     headers/core/gameObject.h \
     headers/render/cubemap.h \
+    headers/render/directionalLight.h \
     headers/render/light.h \
     headers/render/mesh.h \
     headers/render/mesh.h \
     headers/core/meshrenderer.h \
     headers/game/sceneGraph.h \
     headers/core/transform.h \
+    headers/render/pointLight.h \
     headers/render/ray.h \
     headers/render/renderingEngine.h \
     headers/physics/physicsEngine.h \
     headers/render/shader.h \
+    headers/render/spotLight.h \
     headers/render/terrain.h \
     headers/render/texture.h \
     headers/render/vertexData.h

@@ -3,19 +3,22 @@
 
 #include <QVector3D>
 
-#include "headers/render/shader.h"
 
 class Light{
+
 public:
-    Light();
-    Light(  QVector3D lightPosition );
-    void loadLight( Shader * shader );
 
     const QVector3D &getLightPosition() const;
 
-private:
+    const QVector3D &getAmbient() const;
+    const QVector3D &getDiffuse() const;
+    const QVector3D &getSpecular() const;
+
+protected:
     QVector3D lightPosition;
-    Shader * shader;
+    QVector3D ambient;
+    QVector3D diffuse;
+    QVector3D specular;
 };
 
 #endif // LIGHT_H

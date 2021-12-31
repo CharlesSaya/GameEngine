@@ -95,6 +95,7 @@ private:
     Shader * shader ;
     Shader * terrainShader;
     Shader * skyboxShader;
+    Shader * postProcessShader;
 
     CubeMap cubemap;
 
@@ -102,7 +103,7 @@ private:
     ColliderEngine colliderEngine;
     RenderingEngine renderingEngine;
 
-    QVector3D white = QVector3D( 1., 0., 0.);
+    QVector3D white = QVector3D( 1., 1., 1.);
 
     std::vector< GameObjectMesh *> goMeshes;
     std::vector< GameObjectPlayer *> goPlayers;

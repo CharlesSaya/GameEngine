@@ -114,7 +114,6 @@ uint Mesh::getLod( float distance ){
 
 void Mesh::initBuffers( uint lod ){
 
-
     if ( lod >= this->meshesVertexDatas.size() )
         lod = this->meshesVertexDatas.size() - 1;
 
@@ -130,9 +129,9 @@ void Mesh::initBuffers( uint lod ){
 
 }
 
-void Mesh::bindTextures(){
+void Mesh::bindTextures( Shader * shader ){
     for ( uint u = 0; u < this->textures.size() ; u++ )
-        this->textures[u].bindTexture( u, this->shader );
+        this->textures[u].bindTexture( u,  shader );
     bindShadowTexture();
 }
 
@@ -147,7 +146,7 @@ void Mesh::unbindTextures(){
         texture.unbindTexture();
 }
 
-void Mesh::drawAABB(){
+void Mesh::drawAABB( Shader * shader ){
 
     this->bBox.initBuffers();
 
@@ -162,32 +161,33 @@ void Mesh::drawAABB(){
     quintptr offset = 0;
 
     int vertexLocation = shader->getProgram().attributeLocation("a_position");
-    this->shader->getProgram().enableAttributeArray(vertexLocation);
-    this->shader->getProgram().setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(QVector3D));
+    shader->getProgram().enableAttributeArray(vertexLocation);
+    shader->getProgram().setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(QVector3D));
 
     glDrawElements(GL_LINES, indexCount, GL_UNSIGNED_INT, 0);
 }
 
-void Mesh::drawMesh( float distance ){
+void Mesh::drawMesh( float distance, Shader * shader ){
+
     this->initBuffers( getLod(distance ));
 
     quintptr offset = 0;
 
-    int vertexLocation = this->shader->getProgram().attributeLocation("a_position");
-    this->shader->getProgram().enableAttributeArray(vertexLocation);
-    this->shader->getProgram().setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(VertexData));
+    int vertexLocation = shader->getProgram().attributeLocation("a_position");
+    shader->getProgram().enableAttributeArray(vertexLocation);
+    shader->getProgram().setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(VertexData));
 
     offset += sizeof(QVector3D);
 
-    int normalLocation = this->shader->getProgram().attributeLocation("a_normal");
-    this->shader->getProgram().enableAttributeArray(normalLocation);
-    this->shader->getProgram().setAttributeBuffer(normalLocation, GL_FLOAT, offset , 3, sizeof(VertexData));
+    int normalLocation = shader->getProgram().attributeLocation("a_normal");
+    shader->getProgram().enableAttributeArray(normalLocation);
+    shader->getProgram().setAttributeBuffer(normalLocation, GL_FLOAT, offset , 3, sizeof(VertexData));
 
     offset += sizeof(QVector3D);
 
-    int texcoordLocation = this->shader->getProgram().attributeLocation("a_texcoord");
-    this->shader->getProgram().enableAttributeArray(texcoordLocation);
-    this->shader->getProgram().setAttributeBuffer(texcoordLocation, GL_FLOAT, offset , 2, sizeof(VertexData));
+    int texcoordLocation = shader->getProgram().attributeLocation("a_texcoord");
+    shader->getProgram().enableAttributeArray(texcoordLocation);
+    shader->getProgram().setAttributeBuffer(texcoordLocation, GL_FLOAT, offset , 2, sizeof(VertexData));
 
     glDrawElements(GL_TRIANGLES, this->indexCount, GL_UNSIGNED_INT, 0);
 

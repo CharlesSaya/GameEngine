@@ -2,16 +2,39 @@
 
 uniform vec3 meshColor;
 
-uniform sampler2D sphereTexture;
+uniform sampler2D texture0;
 uniform sampler2D shadowTexture;
 
-uniform vec3 lightPosition;
 uniform vec3 cameraPosition;
 
 in vec3 v_pos;
 in vec3 v_normal;
 in vec2 v_texcoord;
 in vec4 v_lightSpacePos;
+
+struct DirectionalLight {
+    vec3 direction;
+
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};
+
+struct PointLight {
+    vec3 position;
+
+    float constant;
+    float linear;
+    float quadratic;
+
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};
+
+uniform PointLight pointLights[1];
+uniform DirectionalLight directionalLight;
+
 
 float shadowCalculation(vec4 fragPosLightSpace)
 {
@@ -22,7 +45,7 @@ float shadowCalculation(vec4 fragPosLightSpace)
     float currentDepth = projCoords.z;
 
     vec3 normal = normalize(v_normal);
-    vec3 lightDir = normalize(lightPosition - v_pos);
+    vec3 lightDir = normalize(-directionalLight.direction);
     float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
 
     float shadow = 0.0;
@@ -46,13 +69,13 @@ float shadowCalculation(vec4 fragPosLightSpace)
 //! [0]
 void main()
 {
-    vec4 color = texture( sphereTexture, v_texcoord );
+    vec4 color = texture( texture0, v_texcoord );
 
-    vec3 lightVector = normalize( lightPosition - v_pos );
+    vec3 lightDir = normalize(-directionalLight.direction);
 
-    vec3 lambertian =  0.4 * max( 0.0, dot( lightVector, normalize(v_normal)  ) ) * vec3( 1.0 ) ;
+    vec3 lambertian =  0.4 * max( 0.0, dot( lightDir, normalize(v_normal)  ) ) * vec3( 1.0 ) ;
 
-    vec3 r = normalize( reflect ( -lightVector, normalize( v_normal ) ) );
+    vec3 r = normalize( reflect ( -lightDir, normalize( v_normal ) ) );
     vec3 v = normalize( cameraPosition - v_pos );
     vec3 specular =  0.2 * pow( max( 0.0, dot( r, v ) ), 20.0 ) * vec3( 1.0 ) ;
 

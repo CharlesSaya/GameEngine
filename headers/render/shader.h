@@ -4,6 +4,8 @@
 #include <string>
 #include <QOpenGLShaderProgram>
 
+#include "headers/render/pointLight.h"
+#include "headers/render/directionalLight.h"
 
 class Shader{
 
@@ -14,6 +16,9 @@ public:
 
     void useShaderProgram();
     void updateUniforms();
+
+    void loadDirectionalLight( DirectionalLight light );
+    void loadPointLights( std::vector<PointLight> lights );
 
     QOpenGLShaderProgram &getProgram();
 

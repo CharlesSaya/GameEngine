@@ -7,7 +7,11 @@
         <file>shaders/skybox_fshader.glsl</file>
         <file>shaders/skybox_vshader.glsl</file>
         <file>shaders/outline_fshader.glsl</file>
-        <file>shaders/shadow_fshader.glsl</file>
-        <file>shaders/shadow_vshader.glsl</file>
+        <file>shaders/depth_fshader.glsl</file>
+        <file>shaders/depth_vshader.glsl</file>
+        <file>shaders/postProcess_fshader.glsl</file>
+        <file>shaders/gBuffer_fshader.glsl</file>
+        <file>shaders/gBuffer_vshader.glsl</file>
+        <file>shaders/postProcess_vshader.glsl</file>
     </qresource>
 </RCC>

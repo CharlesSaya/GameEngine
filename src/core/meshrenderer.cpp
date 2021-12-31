@@ -23,11 +23,11 @@ void MeshRenderer::renderMesh( Transform & transform, const QMatrix4x4& model, C
     shader->setUniformValue( "cameraPosition", camera->getCameraPosition() );
     shader->setUniformValue( "lightSpaceMatrix", lightSpaceMatrix );
 
-    this->mesh.bindTextures();
-    this->mesh.drawMesh( distance );
+    this->mesh.bindTextures( shader );
+    this->mesh.drawMesh( distance, shader );
 
     if( this->mesh.getRenderAABB() )
-        this->mesh.drawAABB();
+        this->mesh.drawAABB( shader );
 
     this->mesh.unbindTextures();
    }

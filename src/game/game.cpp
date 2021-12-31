@@ -15,10 +15,7 @@ void Game::initGame(){
     shader = new Shader( "../GameEngine/shaders/base_vshader.glsl", "../GameEngine/shaders/base_fshader.glsl" );
     terrainShader = new Shader(  "../GameEngine/shaders/terrain_vshader.glsl", "../GameEngine/shaders/terrain_fshader.glsl" );
     skyboxShader = new Shader(  "../GameEngine/shaders/skybox_vshader.glsl", "../GameEngine/shaders/skybox_fshader.glsl" );
-
-    renderingEngine.getLight().loadLight(shader);
-    renderingEngine.getLight().loadLight(terrainShader);
-    renderingEngine.getLight().loadLight(skyboxShader);
+    postProcessShader = new Shader(  "../GameEngine/shaders/base_vshader.glsl", "../GameEngine/shaders/postProcess_fshader.glsl" );
 
     // Build scene graph  -------------------------------------------------------------------------------
 
@@ -26,9 +23,10 @@ void Game::initGame(){
     std::string bunnyObj  = "../GameEngine/objects/bunny/";
 
     Texture heightMap = Texture( "../GameEngine/textures/Heightmap_Rocky.png", "heightMap" );
-    Texture snow      = Texture( "../GameEngine/textures/snowrocks.png", "snow" );
-    Texture rock      = Texture( "../GameEngine/textures/rock.png", "rock" );
-    Texture grass     = Texture( "../GameEngine/textures/grass.png", "grass" );
+    Texture snow      = Texture( "../GameEngine/textures/snowrocks.png", "texture2" );
+    Texture rock      = Texture( "../GameEngine/textures/rock.png", "texture1" );
+    Texture rock2      = Texture( "../GameEngine/textures/rock.png", "texture0" );
+    Texture grass     = Texture( "../GameEngine/textures/grass.png", "texture0" );
 
     Texture skyboxBottom = Texture( "../GameEngine/textures/skybox/MusicHall/py.png", "skyboxBottom" );
     Texture skyboxTop    = Texture( "../GameEngine/textures/skybox/MusicHall/ny.png", "skyboxTop" );
@@ -46,9 +44,6 @@ void Game::initGame(){
     // Terrain Game Object ------------------------------------------------------------------------------
 
     std::vector<Texture> terrainTextures;
-    terrainTextures.push_back( heightMap );
-    terrainTextures.push_back( snow );
-    terrainTextures.push_back( rock );
     terrainTextures.push_back( grass );
 
     terrain = Terrain( heightMap );
