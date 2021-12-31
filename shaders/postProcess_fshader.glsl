@@ -121,11 +121,14 @@ void main()
     vec3 normal        = normalize(texture( normalTexture, v_texcoord.xy ).rgb);
     vec3 pos           = texture( positionTexture, v_texcoord.xy ).rgb;
     vec4 lightSpacePos = lightSpaceMatrix * texture( positionTexture, v_texcoord.xy );
+    vec3 viewDir = normalize( cameraPosition - pos);
 
     vec3 color = CalcDirLight( directionalLight, normal, pos, lightSpacePos );
+    for(int i = 0; i < 1; i++)
+        color += CalcPointLight( pointLights[i], normal, pos, lightSpacePos);
     vec4 a = texture( diffuseTexture, v_texcoord );
 
-    gl_FragColor = vec4( a.rgb , 1.0 );
+    gl_FragColor = vec4( color , 1.0 );
 
 }
 //! [0]

@@ -34,9 +34,9 @@ void RenderingEngine::initPointLights(){
     {
         // calculate slightly random offsets
         float xPos = ((rand() % 100) / 100.0) * 6.0 - 3.0;
-        float yPos = ((rand() % 100) / 100.0) * 6.0 - 4.0;
+        float yPos = 5.;
         float zPos = ((rand() % 100) / 100.0) * 6.0 - 3.0;
-        pointLights.push_back( PointLight( 0.1, 0.1, 0.1, QVector3D( xPos, yPos, zPos), white, white, white) );
+        pointLights.push_back( PointLight( 1.0, 0.1, 0.032, QVector3D( xPos, yPos, zPos), white, white, white) );
 
     }
 }

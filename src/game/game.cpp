@@ -59,7 +59,7 @@ void Game::initGame(){
     std::vector<Texture> playerTextures;
     playerTextures.push_back( grass );
 
-    Mesh playerMesh = Mesh( sphereObj ,playerTextures, shader, white, true );
+    Mesh playerMesh = Mesh( bunnyObj ,playerTextures, shader, white, true );
 
     MeshRenderer * playerRenderer      = new MeshRenderer( playerMesh, this );
     MoveComponent * playerMove         = new MoveComponent( terrain, this );
