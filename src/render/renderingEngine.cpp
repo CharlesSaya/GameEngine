@@ -225,7 +225,7 @@ void RenderingEngine::renderScene( SceneGraph &sceneGraph,  float deltaTime ){
     glBindFramebuffer(GL_READ_FRAMEBUFFER, gFBO);
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, context->defaultFramebufferObject()); // write to default framebuffer
     glBlitFramebuffer( 0, 0, SCR_WIDTH, SCR_HEIGHT, 0, 0, SCR_WIDTH, SCR_HEIGHT, GL_DEPTH_BUFFER_BIT, GL_NEAREST );
-//    skybox.render( mainCamera, QMatrix4x4() );
+    skybox.render( mainCamera, QMatrix4x4() );
 
     particleGenerator.update( deltaTime );
     particleGenerator.render( particleShader );

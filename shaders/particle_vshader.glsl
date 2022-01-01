@@ -1,11 +1,11 @@
 #version 330 core
 
-in vec3 a_position;
-in vec3 a_normal;
-in vec2 a_texCoord;
+layout (location = 0) in vec3 a_position;
+layout (location = 1) in vec3 a_normal;
+layout (location = 2) in vec2 a_texCoord;
+layout (location = 3) in vec4 xyzs;
+layout (location = 4) in vec4 color;
 
-in vec4 xyzs;
-in vec4 color;
 
 uniform vec3 cameraRight_W;
 uniform vec3 cameraUp_W;

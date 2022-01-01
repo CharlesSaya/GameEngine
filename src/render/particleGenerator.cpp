@@ -113,7 +113,8 @@ void ParticleGenerator::update( float dt ){
             if (p.life > 0.0f){
 
                 // Simulate simple physics : gravity only, no collisions
-                p.speed +=  QVector3D(0.0f,-9.81f, 0.0f) * (float)dt * 0.5f;
+                p.speed +=  QVector3D(0.0f,-9.81f, 0.0f) * dt * 0.5f;
+                p.position +=  p.speed * dt;
                 QVector3D view = p.position - camera->getCameraComponent()->getCameraPosition();
                 p.cameradistance = view.lengthSquared();
                 //ParticlesContainer[i].pos += glm::vec3(0.0f,10.0f, 0.0f) * (float)delta;
@@ -182,6 +183,12 @@ void ParticleGenerator::render( Shader * shader ){
     int colorLocation = shader->getProgram().attributeLocation("color");
     shader->getProgram().enableAttributeArray(colorLocation);
     shader->getProgram().setAttributeBuffer(colorLocation, GL_FLOAT, 0 , 2, sizeof(QVector4D));
+
+    glFuncs->glVertexAttribDivisor(0, 0);
+    glFuncs->glVertexAttribDivisor(1, 0);
+    glFuncs->glVertexAttribDivisor(2, 0);
+    glFuncs->glVertexAttribDivisor(3, 1);
+    glFuncs->glVertexAttribDivisor(4, 1);
 
     glFuncs->glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, number);
 
