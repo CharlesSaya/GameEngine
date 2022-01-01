@@ -38,7 +38,6 @@ public:
     void scale( QVector3D scale );
     void scale( float scale );
 
-    void resetTransform();
 
     const std::string &getName() const;
     void setName(const std::string &newName);

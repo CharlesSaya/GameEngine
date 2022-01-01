@@ -88,7 +88,6 @@ private:
 
     GameObjectMesh * terrainGO ;
     GameObjectMesh * sphereGO ;
-    GameObjectMesh * treeGO ;
     GameObjectMesh * sphereLightGO ;
     GameObjectPlayer * playerGO;
     GameObjectCamera *mainCameraGO ;

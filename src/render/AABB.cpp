@@ -36,8 +36,8 @@ AABB::AABB( std::vector<VertexData> &points ){
     }
     minDefault = min;
     maxDefault = max;
-    lastMin = min;
-    lastMax = max;
+    lastMin = QVector3D( min);
+    lastMax = QVector3D( max);
 
     this->context = QOpenGLContext::currentContext();
     glFuncs = this->context->versionFunctions<QOpenGLFunctions_3_3_Core>();
@@ -70,8 +70,8 @@ void AABB::resizeAABB( AABB& bBox ){
 
     minDefault = min;
     maxDefault = max;
-    lastMin = min;
-    lastMax = max;
+    lastMin = QVector3D( min);
+    lastMax = QVector3D( max);
 
 }
 
@@ -83,10 +83,12 @@ void AABB::resetAABB(){
 }
 
 void AABB::updateAABB( const  QMatrix4x4 &model ) {
-    lastMin = min;
-    lastMax = max;
+    lastMin = QVector3D( min);
+    lastMax = QVector3D( max);
     min = model * minDefault;
     max = model * maxDefault;
+    qDebug() << lastMin << lastMax << min <<max;
+
 }
 
 void AABB::initBuffers(){
@@ -128,7 +130,6 @@ void AABB::initBuffers(){
             };
 
     indexCount = lines.size() ;
-
 
 }
 

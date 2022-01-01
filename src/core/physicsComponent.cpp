@@ -11,7 +11,7 @@ void PhysicsComponent::updatePhysics( float step, Transform & transform ){
     acceleration = - physicsEngine.getDamp() * velocity;
 
     if ( !resting )
-//        acceleration += physicsEngine.getGravity();
+        acceleration += physicsEngine.getGravity();
 
     acceleration /= mass;
 

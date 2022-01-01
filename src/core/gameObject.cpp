@@ -33,28 +33,19 @@ void GameObject::move( float x, float y , float z ){
 
 void GameObject::rotate( QVector3D axis, float angle ){
     this->transform->applyRotation( QQuaternion::fromAxisAndAngle( axis, angle ) );
-
 }
 
 void GameObject::rotate( QQuaternion rotation ){
     this->transform->applyRotation(rotation);
 }
 
-void GameObject::addRotate( QQuaternion rotation ){
-    this->transform->addRotation(rotation);
-}
-
-
 void GameObject::scale( QVector3D scale ){
     this->transform->applyScale( scale );
 }
 
 void GameObject::scale( float scale ){
-    this->transform->applyScale( scale );
-}
+    this->transform->applyScale(scale);
 
-void GameObject::resetTransform(){
-    this->transform->resetModel();
 }
 
 //Getters & Setters

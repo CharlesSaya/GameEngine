@@ -4,14 +4,14 @@
 #include "headers/game/node.h"
 
 #include "headers/core/gameObject.h"
-#include "headers/core/gameComponent.h"
+#include "headers/core/gameObjectMesh.h"
 #include "headers/core/colliderComponent.h"
 
 class ColliderEngine{
 
 private:
     float deltaTime;
-
+    Terrain terrain;
 public:
 
     ColliderEngine();
@@ -36,7 +36,7 @@ public:
             QVector3D normal;
             float time = sweptAABB( objectVel, go->getMeshRenderer()->getMesh().getAABB(), node->nodeBoundingBox, normal );
             float distance = __FLT_MAX__;
-
+//            qDebug() <<time;
             if( time >= 0.){
                 if (node->gameObject->getName() == "Terrain")
                     distance = distanceToTerrain( go->getMeshRenderer()->getMesh().getAABB().getMin(), node->nodeBoundingBox.getMax(), normal  );
@@ -46,13 +46,29 @@ public:
         }
 
         else if(collision){
+
+
             for( Node * childNode : node->children ){
                 if( ( childNode->gameObject->getName() == go->getName() ) )
                     continue;
 
                 bool collision = intersectAABB( go->getMeshRenderer()->getMesh().getAABB(), childNode->nodeBoundingBox );
-                if( collision )
+                if( collision ){
+//                    if ( childNode->gameObject->getName() == "Terrain"){
+//                        qDebug() << childNode->gameObject->getName().c_str();
+//                        bool collision = intersectAABB( go->getMeshRenderer()->getMesh().getAABB(), dynamic_cast<GameObjectMesh*>(childNode->gameObject)->getMeshRenderer()->getMesh().getAABB());
+//                        if( collision ){
+//                            float height;
+//                            QVector3D worldPos;
+
+//                              worldPos = go->getWorldPosition();
+//                              height = terrain.getHeight( worldPos );
+//                              qDebug() << height ;
+//                        }
+//
                     detectCollision( go, childNode );
+
+                }
 
             }
 
@@ -94,6 +110,9 @@ public:
 
     }
 
+
+    const Terrain &getTerrain() const;
+    void setTerrain(const Terrain &newTerrain);
 
 private:
 

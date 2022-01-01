@@ -20,7 +20,10 @@ void GameObjectMesh::initSignalsSlots(){
 }
 
 void GameObjectMesh::hasTransformed(){
-    emit updateAABB( getModel() );
+    QMatrix4x4 tr, rt, sc;
+    tr.translate( this->transform->getPosition() );
+    sc.scale( this->transform->getScale());
+    emit updateAABB(  tr * sc );
 }
 
 bool GameObjectMesh::getIsMovable() const

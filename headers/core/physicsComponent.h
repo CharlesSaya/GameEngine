@@ -46,12 +46,12 @@ public:
 
 private:
 
-    float speed = 0.5;
+    float speed = 1.5;
 
     float mass = 1.0;
     float friction = 1.0;
     float restitution = .0;
-    float maxSpeedWalk = 5.0;
+    float maxSpeedWalk = 10.0;
 
     bool resting = false;
 

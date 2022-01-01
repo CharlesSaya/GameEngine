@@ -50,19 +50,19 @@ void Game::initGame(){
     terrainTextures.push_back( grass );
 
     terrain = Terrain( heightMap );
-    Mesh terrainMesh = Mesh( terrain, terrainTextures, terrainShader, white, true );
+    Mesh terrainMesh = Mesh( terrain, terrainTextures, terrainShader, white, false );
     MeshRenderer * terrainRenderer = new MeshRenderer( terrainMesh, this );
     ColliderComponent * terrainCollider = new ColliderComponent( this );
 
     terrainGO = new GameObjectMesh( "Terrain", terrainRenderer, terrainCollider, false );
     this->goMeshes.push_back( terrainGO );
-
+    colliderEngine.setTerrain( terrain );
     // Player Game Object  ------------------------------------------------------------------------------
 
     std::vector<Texture> playerTextures;
     playerTextures.push_back( rock2 );
 
-    Mesh playerMesh = Mesh( bunnyObj ,playerTextures, shader, white, true );
+    Mesh playerMesh = Mesh( bunnyObj ,playerTextures, shader, white, false );
 
     MeshRenderer * playerRenderer      = new MeshRenderer( playerMesh, this );
     MoveComponent * playerMove         = new MoveComponent( terrain, this );
@@ -79,7 +79,7 @@ void Game::initGame(){
     connect( this, &Game::sendMouseWheel, playerComponent, &PlayerComponent::wheelScrolled );
 
     playerGO  = new GameObjectPlayer( "Player" , playerRenderer, playerMove, playerPhysics, playerCollider, playerComponent );
-    playerGO->move(  QVector3D(2., 5., -5.) );
+    playerGO->move(  QVector3D(0., 100., -0. ) );
 
     this->goPlayers.push_back( playerGO );
 
@@ -87,7 +87,7 @@ void Game::initGame(){
     std::vector<Texture> sphereTextures;
     sphereTextures.push_back( grass );
 
-    Mesh sphereMesh = Mesh( sphereObj, sphereTextures, shader, white, true );
+    Mesh sphereMesh = Mesh( sphereObj, sphereTextures, shader, white, false );
     MeshRenderer * sphereRenderer = new MeshRenderer( sphereMesh, this  );
     ColliderComponent * sphereCollider = new ColliderComponent( this );
 
@@ -116,11 +116,9 @@ void Game::initGame(){
     }
 
     for(int i = 0 ;i<numberTree;i++ ){
-        Mesh treeMesh =Mesh( treeObj, treeTextures, shader, white, true );
-//        MeshRenderer * treeRenderer = ;
-//        ColliderComponent * treeCollider = new ColliderComponent( this );
-        treeGO = new GameObjectMesh( "Tree" + std::to_string(i), new MeshRenderer( treeMesh, this  ), new ColliderComponent( this ), false, terrainGO );
-        treeGO->scale( scalesTree[i]);
+        Mesh treeMesh =Mesh( treeObj, treeTextures, shader, white, false );
+        GameObjectMesh * treeGO = new GameObjectMesh( "Tree" + std::to_string(i), new MeshRenderer( treeMesh, this  ), new ColliderComponent( this ), false, terrainGO );
+        treeGO->scale( scalesTree[i] );
         treeGO->move( positionsTree[i] );
         listTree.push_back(treeGO);
         this->goMeshes.push_back( treeGO );

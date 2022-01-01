@@ -132,13 +132,12 @@ void SceneGraph::renderBVH( Node * node, Shader * shader ){
     node->nodeBoundingBox.drawAABB(shader);
 
     if( isLeaf( node )){
-
         return;
 
     }else{
 
         for( Node * childNode : node->children ){
-            childNode->nodeBoundingBox.drawAABB(shader);
+            renderBVH( childNode, shader );
         }
     }
 }

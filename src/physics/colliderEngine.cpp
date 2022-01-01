@@ -1,8 +1,5 @@
 #include "headers/physics/colliderEngine.h"
 
-ColliderEngine::ColliderEngine(){
-
-}
 
 ColliderEngine::ColliderEngine( float deltaTime ){
     this->deltaTime = deltaTime;
@@ -32,6 +29,7 @@ AABB& ColliderEngine::buildBroadPhaseBox( AABB &broadPhaseBox, QVector3D velocit
 }
 
 float ColliderEngine::sweptAABB( QVector3D velocity, AABB& box1, AABB& box2, QVector3D& normal ){
+
     float dxEntry, dyEntry, dzEntry;
     float dxExit, dyExit, dzExit;
 
@@ -39,6 +37,8 @@ float ColliderEngine::sweptAABB( QVector3D velocity, AABB& box1, AABB& box2, QVe
     QVector3D box1LastMaxPosition = box1.getLastMax();
     QVector3D box2MinPosition = box2.getMin();
     QVector3D box2MaxPosition = box2.getMax();
+    qDebug() << "Box1"  << box1.getLastMin() << box1.getLastMax() << box1.getMin() << box1.getMax() ;
+    qDebug() << "Box2"  << box2.getMin() << box2.getMax();
 
     if( velocity.x() > 0. ){
         dxEntry = box2MinPosition.x() - box1LastMaxPosition.x();
@@ -48,21 +48,23 @@ float ColliderEngine::sweptAABB( QVector3D velocity, AABB& box1, AABB& box2, QVe
         dxEntry = box2MaxPosition.x() - box1LastMinPosition.x();
         dxExit  = box2MinPosition.x() - box1LastMaxPosition.x();
     }
+
     if( velocity.y()> 0. ){
-        dyEntry = box2MinPosition.y()- box1LastMaxPosition.y();
-        dyExit  = box2MaxPosition.y()- box1LastMinPosition.y();
+        dyEntry = box2MinPosition.y() - box1LastMaxPosition.y();
+        dyExit  = box2MaxPosition.y() - box1LastMinPosition.y();
     }
     else{
-        dyEntry = box2MaxPosition.y()- box1LastMinPosition.y();
-        dyExit  = box2MinPosition.y()- box1LastMaxPosition.y();
+        dyEntry = box2MaxPosition.y() - box1LastMinPosition.y();
+        dyExit  = box2MinPosition.y() - box1LastMaxPosition.y();
     }
+
     if( velocity.z()< 0. ){
-        dzEntry = box2MinPosition.z()- box1LastMaxPosition.z();
-        dzExit  = box2MaxPosition.z()- box1LastMinPosition.z();
+        dzEntry = box2MinPosition.z() - box1LastMaxPosition.z();
+        dzExit  = box2MaxPosition.z() - box1LastMinPosition.z();
     }
     else{
-        dzEntry = box2MaxPosition.z()- box1LastMinPosition.z();
-        dzExit  = box2MinPosition.z()- box1LastMaxPosition.z();
+        dzEntry = box2MaxPosition.z() - box1LastMinPosition.z();
+        dzExit  = box2MinPosition.z() - box1LastMaxPosition.z();
     }
     float xEntryTime, yEntryTime, zEntryTime;
     float xExitTime, yExitTime, zExitTime;
@@ -96,7 +98,10 @@ float ColliderEngine::sweptAABB( QVector3D velocity, AABB& box1, AABB& box2, QVe
 
     float entryTime = max(xEntryTime, max( yEntryTime, zEntryTime ) );
     float exitTime = min(xExitTime, min( yExitTime, zExitTime ) );
-
+    qDebug() << xEntryTime << yEntryTime << zEntryTime;
+    qDebug() << ( entryTime > exitTime );
+    qDebug() <<  ( xEntryTime < 0.0 && yEntryTime < 0.0 && zEntryTime < 0.0 );
+    qDebug() <<  (xEntryTime > 1.0 || yEntryTime > 1.0|| zEntryTime > 1.0 );
     if(  entryTime > exitTime
      || ( xEntryTime < 0.0 && yEntryTime < 0.0 && zEntryTime < 0.0 )
      ||   xEntryTime > 1.0 || yEntryTime > 1.0|| zEntryTime > 1.0 )
@@ -125,3 +130,17 @@ float ColliderEngine::sweptAABB( QVector3D velocity, AABB& box1, AABB& box2, QVe
 }
 
 
+
+const Terrain &ColliderEngine::getTerrain() const
+{
+    return terrain;
+}
+
+void ColliderEngine::setTerrain(const Terrain &newTerrain)
+{
+    terrain = newTerrain;
+}
+
+ColliderEngine::ColliderEngine(){
+
+}
