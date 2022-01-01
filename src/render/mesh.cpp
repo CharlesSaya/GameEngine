@@ -15,7 +15,7 @@ Mesh::Mesh( std::string filepath, std::vector<Texture> textures, Shader * shader
     this->AABBverticesBuffer.create();
     this->AABBindexesBuffer.create();
 
-    this-> loadGeometry( filepath );
+    this->loadGeometry( filepath );
 
     this->bBox = AABB( this->meshesVertexDatas[0] );
 

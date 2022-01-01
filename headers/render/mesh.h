@@ -6,7 +6,7 @@
 
 #include <QVector3D>
 #include <QOpenGLBuffer>
-#include <QOpenGLFunctions_3_1>
+#include <QOpenGLFunctions_3_3_Core>
 
 #include "dirent.h"
 
@@ -20,7 +20,7 @@
 #include "headers/render/AABB.h"
 #include "headers/render/texture.h"
 
-class Mesh : protected QOpenGLFunctions_3_1{
+class Mesh : protected QOpenGLFunctions_3_3_Core{
 
  private:
     int indexCount;

@@ -27,6 +27,7 @@ SOURCES += src/game/main.cpp \
     src/core/meshrenderer.cpp \
     src/game/sceneGraph.cpp \
     src/core/transform.cpp \
+    src/render/particleGenerator.cpp \
     src/render/pointLight.cpp \
     src/render/ray.cpp \
     src/render/renderingEngine.cpp \
@@ -65,6 +66,7 @@ HEADERS += \
     headers/core/meshrenderer.h \
     headers/game/sceneGraph.h \
     headers/core/transform.h \
+    headers/render/particleGenerator.h \
     headers/render/pointLight.h \
     headers/render/ray.h \
     headers/render/renderingEngine.h \

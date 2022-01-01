@@ -60,7 +60,7 @@ public:
 
     void input( QKeyEvent * key );
     void update( float deltaTimetime );
-    void render();
+    void render( float deltaTime );
 
     void updatePosition();
     void updateCollision();

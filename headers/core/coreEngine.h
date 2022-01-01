@@ -84,11 +84,11 @@
 #include <QOpenGLWidget>
 #include <QOpenGLTexture>
 #include <QOpenGLShaderProgram>
-#include <QOpenGLFunctions_3_1>
+#include <QOpenGLFunctions_3_3_Core>
 
 
 
-class CoreEngine : public QOpenGLWidget, protected QOpenGLFunctions_3_1
+class CoreEngine : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
 {
     Q_OBJECT
 

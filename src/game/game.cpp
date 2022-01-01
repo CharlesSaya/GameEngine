@@ -29,11 +29,11 @@ void Game::initGame(){
     Texture grass     = Texture( "../GameEngine/textures/grass.png", "texture0" );
 
     Texture skyboxBottom = Texture( "../GameEngine/textures/skybox/MusicHall/py.png", "skyboxBottom" );
-    Texture skyboxTop    = Texture( "../GameEngine/textures/skybox/MusicHall/ny.png", "skyboxTop" );
-    Texture skyboxRight  = Texture( "../GameEngine/textures/skybox/MusicHall/px.png", "skyboxRight" );
-    Texture skyboxLeft   = Texture( "../GameEngine/textures/skybox/MusicHall/nx.png", "skyboxLeft" );
-    Texture skyboxFront  = Texture( "../GameEngine/textures/skybox/MusicHall/nz.png", "skyboxFront" );
-    Texture skyboxBack   = Texture( "../GameEngine/textures/skybox/MusicHall/pz.png", "skyboxBack" );
+    Texture skyboxTop    = Texture( "../GameEngine/textures/skybox/MusicHall/ny.png", "skyboxTop"    );
+    Texture skyboxRight  = Texture( "../GameEngine/textures/skybox/MusicHall/px.png", "skyboxRight"  );
+    Texture skyboxLeft   = Texture( "../GameEngine/textures/skybox/MusicHall/nx.png", "skyboxLeft"   );
+    Texture skyboxFront  = Texture( "../GameEngine/textures/skybox/MusicHall/nz.png", "skyboxFront"  );
+    Texture skyboxBack   = Texture( "../GameEngine/textures/skybox/MusicHall/pz.png", "skyboxBack"   );
 
     // Environment
 
@@ -135,8 +135,8 @@ void Game::update( float fixedStep )
     this->sceneGraph.update( fixedStep  );
 }
 
-void Game::render( ){
-    renderingEngine.renderScene( this->sceneGraph );
+void Game::render(  float deltaTime ){
+    renderingEngine.renderScene( this->sceneGraph, deltaTime );
 }
 
 // SLOTS

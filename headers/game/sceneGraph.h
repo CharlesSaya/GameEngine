@@ -6,7 +6,6 @@
 
 #include "headers/game/node.h"
 
-#include "headers/core/cameraComponent.h"
 
 #include "headers/core/gameObject.h"
 #include "headers/core/gameObjectMesh.h"

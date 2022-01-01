@@ -69,6 +69,7 @@ public:
     void setProjectionPersp(float aspect);
     void setProjectionOrtho();
     const QMatrix4x4 &getProjection() const;
+    const QVector3D &getCameraUp() const;
 };
 
 

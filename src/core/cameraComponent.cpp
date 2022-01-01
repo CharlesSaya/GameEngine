@@ -46,6 +46,11 @@ bool CameraComponent::eventFilter(QObject *obj, QEvent *event){
     return false;
 }
 
+const QVector3D &CameraComponent::getCameraUp() const
+{
+    return cameraUp;
+}
+
 const QMatrix4x4 &CameraComponent::getProjection() const
 {
     return projection;

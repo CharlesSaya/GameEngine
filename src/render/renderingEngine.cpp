@@ -4,20 +4,22 @@ RenderingEngine::RenderingEngine(){
 
 }
 
-RenderingEngine::RenderingEngine( QOpenGLContext * context, float renderStep ){
+RenderingEngine::RenderingEngine( float renderStep ){
     this->step = renderStep;
     this->mainCamera = mainCamera;
-    this->context = context;
+    this->context = QOpenGLContext::currentContext();
 
     directionalLight = DirectionalLight(QVector3D( 10.0, 70.0, -5.0), white, white, white);
     initPointLights();
     shadowShader = new Shader(  "../GameEngine/shaders/depth_vshader.glsl", "../GameEngine/shaders/depth_fshader.glsl" );
     gBufferShader = new Shader(  "../GameEngine/shaders/gBuffer_vshader.glsl", "../GameEngine/shaders/gBuffer_fshader.glsl" );
     postProcessShader = new Shader(  "../GameEngine/shaders/postProcess_vshader.glsl", "../GameEngine/shaders/postProcess_fshader.glsl" );
+    particleShader = new Shader(  "../GameEngine/shaders/particle_vshader.glsl", "../GameEngine/shaders/particle_fshader.glsl" );
 
     cameraOrtho  = new CameraComponent( directionalLight.getLightPosition(), QVector3D(0.0f,0.0f,0.0f),-50.0f,50.0f,-50.0f,50.0f,0.01f,100.f );
     cameraOrtho->setProjectionOrtho();
     cameraOrthoGO = new GameObjectCamera("camera ortho", cameraOrtho);
+
 
     initializeOpenGLFunctions();
 
@@ -211,7 +213,7 @@ void RenderingEngine::renderPostProcess()
     glBindVertexArray(0);
 }
 
-void RenderingEngine::renderScene( SceneGraph &sceneGraph ){
+void RenderingEngine::renderScene( SceneGraph &sceneGraph,  float deltaTime ){
 
     renderShadowMap(sceneGraph);
     renderGeometryData(sceneGraph);
@@ -223,7 +225,10 @@ void RenderingEngine::renderScene( SceneGraph &sceneGraph ){
     glBindFramebuffer(GL_READ_FRAMEBUFFER, gFBO);
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, context->defaultFramebufferObject()); // write to default framebuffer
     glBlitFramebuffer( 0, 0, SCR_WIDTH, SCR_HEIGHT, 0, 0, SCR_WIDTH, SCR_HEIGHT, GL_DEPTH_BUFFER_BIT, GL_NEAREST );
-    skybox.render( mainCamera, QMatrix4x4() );
+//    skybox.render( mainCamera, QMatrix4x4() );
+
+    particleGenerator.update( deltaTime );
+    particleGenerator.render( particleShader );
 }
 
 
@@ -253,6 +258,10 @@ GameObjectCamera *RenderingEngine::getMainCamera() const
 void RenderingEngine::setMainCamera(GameObjectCamera *newMainCamera)
 {
     mainCamera = newMainCamera;
+
+    Texture sprite = Texture( "../GameEngine/textures/skybox/MusicHall/py.png", "sprite" );
+
+    particleGenerator = ParticleGenerator( 1000, sprite, mainCamera );
 }
 
 uint RenderingEngine::shadowMapTex() const

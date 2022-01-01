@@ -1,24 +1,25 @@
 #ifndef RENDERINGENGINE_H
 #define RENDERINGENGINE_H
 
-
-#include <QOpenGLFunctions_3_1>
+#include <QOpenGLFunctions>
+#include <QOpenGLFunctions_3_3_Core>
 #include <QOpenGLContext>
 
 #include "headers/render/cubemap.h"
 
 #include "headers/game/sceneGraph.h"
 
-#include "headers/core/cameraComponent.h"
+#include "headers/core/gameObjectCamera.h"
 
 #include "headers/render/directionalLight.h"
+#include "headers/render/particleGenerator.h"
 #include "headers/render/pointLight.h"
 
 
 #include "headers/render/shader.h"
 
 
-class RenderingEngine : protected QOpenGLFunctions_3_1{
+class RenderingEngine : protected QOpenGLFunctions_3_3_Core{
 
 private:
     float step;
@@ -37,6 +38,7 @@ private:
 
     CubeMap skybox;
     GameObjectCamera * mainCamera;
+
     CameraComponent *cameraOrtho;
     GameObjectCamera * cameraOrthoGO;
 
@@ -46,16 +48,18 @@ private:
     std::vector<PointLight> pointLights;
     DirectionalLight directionalLight;
 
-    Shader * shadowShader, * gBufferShader, *postProcessShader;
+    Shader * shadowShader, * gBufferShader, * particleShader, *postProcessShader;
 
     QOpenGLContext * context;
 
     QVector3D white = QVector3D( 1., 1., 1.);
 
+    ParticleGenerator particleGenerator;
+
 public:
 
     RenderingEngine();
-    RenderingEngine( QOpenGLContext * context, float renderStep );
+    RenderingEngine( float renderStep );
 
     void initGBufferFBO();
     void initializeGL();
@@ -65,7 +69,7 @@ public:
 
     void configureUniforms(SceneGraph &sceneGraph);
 
-    void renderScene( SceneGraph &sceneGraph );
+    void renderScene( SceneGraph &sceneGraph, float deltaTime );
     void renderOutline();
 
     void renderShadowMap(SceneGraph &sceneGraph);
