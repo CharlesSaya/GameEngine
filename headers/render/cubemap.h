@@ -24,6 +24,7 @@ public:
     void render( GameObjectCamera * camera, QMatrix4x4 model );
 
 private:
+    unsigned int textureID = 0;
 
     int size, indicesCount = 36 ;
     std::vector< Texture> textures;

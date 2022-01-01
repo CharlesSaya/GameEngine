@@ -168,41 +168,74 @@ void CubeMap::initGeometry(){
 }
 
 void CubeMap::initTextures(){
-    this->skyboxTexture = new QOpenGLTexture( QOpenGLTexture::TargetCubeMap );
-    this->skyboxTexture->create();
-    this->skyboxTexture->setSize(2048, 2048);
-    this->skyboxTexture->setFormat(QOpenGLTexture::RGBAFormat);
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 
-    this->skyboxTexture->allocateStorage();
+    glTexImage2D(
+           QOpenGLTexture::CubeMapNegativeX ,
+           0, GL_RGBA, 2048, 2048, 0, GL_RGBA, GL_UNSIGNED_BYTE, textures[0].getImage().mirrored().constBits());
 
+    glTexImage2D(
+           QOpenGLTexture::CubeMapNegativeY ,
+           0, GL_RGBA, 2048, 2048, 0, GL_RGBA, GL_UNSIGNED_BYTE, textures[4].getImage().mirrored(true, false).constBits());
 
-    this->skyboxTexture->setData( 0, 0, QOpenGLTexture::CubeMapNegativeX, QOpenGLTexture::RGBA, QOpenGLTexture::UInt8,
-                                  textures[0].getImage().mirrored().constBits());
+    glTexImage2D(
+           QOpenGLTexture::CubeMapNegativeZ ,
+           0, GL_RGBA, 2048, 2048, 0, GL_RGBA, GL_UNSIGNED_BYTE, textures[5].getImage().mirrored().constBits());
 
-    this->skyboxTexture->setData( 0, 0, QOpenGLTexture::CubeMapNegativeY, QOpenGLTexture::RGBA, QOpenGLTexture::UInt8,
-                                  textures[4].getImage().mirrored( true, false ).constBits());
+    glTexImage2D(
+           QOpenGLTexture::CubeMapPositiveX ,
+           0, GL_RGBA, 2048, 2048, 0, GL_RGBA, GL_UNSIGNED_BYTE, textures[3].getImage().mirrored().constBits());
 
-    this->skyboxTexture->setData( 0, 0, QOpenGLTexture::CubeMapNegativeZ, QOpenGLTexture::RGBA, QOpenGLTexture::UInt8,
-                                  textures[5].getImage().mirrored().constBits());
+    glTexImage2D(
+           QOpenGLTexture::CubeMapPositiveY ,
+           0, GL_RGBA, 2048, 2048, 0, GL_RGBA, GL_UNSIGNED_BYTE, textures[1].getImage().mirrored(true, false).constBits());
 
-    this->skyboxTexture->setData( 0, 0, QOpenGLTexture::CubeMapPositiveX, QOpenGLTexture::RGBA, QOpenGLTexture::UInt8,
-                                  textures[3].getImage().mirrored().constBits());
+    glTexImage2D(
+           QOpenGLTexture::CubeMapPositiveZ ,
+           0, GL_RGBA, 2048, 2048, 0, GL_RGBA, GL_UNSIGNED_BYTE, textures[2].getImage().mirrored().constBits());
 
-    this->skyboxTexture->setData( 0, 0, QOpenGLTexture::CubeMapPositiveY, QOpenGLTexture::RGBA, QOpenGLTexture::UInt8,
-                                  textures[1].getImage().mirrored(true, false).constBits());
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-    this->skyboxTexture->setData( 0, 0, QOpenGLTexture::CubeMapPositiveZ, QOpenGLTexture::RGBA, QOpenGLTexture::UInt8,
-                                  textures[2].getImage().mirrored().constBits());
+//    this->skyboxTexture = new QOpenGLTexture( QOpenGLTexture::TargetCubeMap );
+//    this->skyboxTexture->create();
+//    this->skyboxTexture->setSize(2048, 2048);
+//    this->skyboxTexture->setFormat(QOpenGLTexture::RGBAFormat);
 
-    this->skyboxTexture->setWrapMode(QOpenGLTexture::ClampToEdge);
-    this->skyboxTexture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
-    this->skyboxTexture->setMagnificationFilter(QOpenGLTexture::LinearMipMapLinear);
-    this->skyboxTexture->generateMipMaps();
+//    this->skyboxTexture->allocateStorage();
+
+//    this->skyboxTexture->setData( 0, 0, QOpenGLTexture::CubeMapNegativeX, QOpenGLTexture::RGBA, QOpenGLTexture::UInt8,
+//                                  textures[0].getImage().mirrored().constBits());
+
+//    this->skyboxTexture->setData( 0, 0, QOpenGLTexture::CubeMapNegativeY, QOpenGLTexture::RGBA, QOpenGLTexture::UInt8,
+//                                  textures[4].getImage().mirrored( true, false ).constBits());
+
+//    this->skyboxTexture->setData( 0, 0, QOpenGLTexture::CubeMapNegativeZ, QOpenGLTexture::RGBA, QOpenGLTexture::UInt8,
+//                                  textures[5].getImage().mirrored().constBits());
+
+//    this->skyboxTexture->setData( 0, 0, QOpenGLTexture::CubeMapPositiveX, QOpenGLTexture::RGBA, QOpenGLTexture::UInt8,
+//                                  textures[3].getImage().mirrored().constBits());
+
+//    this->skyboxTexture->setData( 0, 0, QOpenGLTexture::CubeMapPositiveY, QOpenGLTexture::RGBA, QOpenGLTexture::UInt8,
+//                                  textures[1].getImage().mirrored(true, false).constBits());
+
+//    this->skyboxTexture->setData( 0, 0, QOpenGLTexture::CubeMapPositiveZ, QOpenGLTexture::RGBA, QOpenGLTexture::UInt8,
+//                                  textures[2].getImage().mirrored().constBits());
+
+//    this->skyboxTexture->setWrapMode(QOpenGLTexture::ClampToEdge);
+//    this->skyboxTexture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
+//    this->skyboxTexture->setMagnificationFilter(QOpenGLTexture::LinearMipMapLinear);
+//    this->skyboxTexture->generateMipMaps();
 }
 
 void CubeMap::bindTexture( uint textureUnit ){
 
-    this->skyboxTexture->bind( textureUnit );
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
     shader->setUniformValue( "skybox", textureUnit );
 }
 
@@ -242,6 +275,6 @@ void CubeMap::render( GameObjectCamera * camera, QMatrix4x4 model ){
 
     glDrawElements(GL_TRIANGLES, 36 , GL_UNSIGNED_INT, 0);
 
-    this->unbindTexture();
+//    this->unbindTexture();
 
 }
