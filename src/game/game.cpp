@@ -55,7 +55,7 @@ void Game::initGame(){
     MeshRenderer * terrainRenderer = new MeshRenderer( terrainMesh, this );
     ColliderComponent * terrainCollider = new ColliderComponent( this );
 
-    terrainGO = new GameObjectMesh( "Terrain", terrainRenderer, terrainCollider );
+    terrainGO = new GameObjectMesh( "Terrain", terrainRenderer, terrainCollider, false );
     this->goMeshes.push_back( terrainGO );
 
     // Player Game Object  ------------------------------------------------------------------------------
@@ -92,7 +92,7 @@ void Game::initGame(){
     MeshRenderer * sphereRenderer = new MeshRenderer( sphereMesh, this  );
     ColliderComponent * sphereCollider = new ColliderComponent( this );
 
-    sphereGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider, terrainGO );
+    sphereGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider,true, terrainGO );
     sphereGO->scale( 1 );
     sphereGO->move( QVector3D(2., 2., -0.) );
 
@@ -118,29 +118,12 @@ void Game::initGame(){
 
     for(int i = 0 ;i<numberTree;i++ ){
         Mesh treeMesh =Mesh( treeObj, treeTextures, shader, white, true );
-//        MeshRenderer * treeRenderer = ;
-//        ColliderComponent * treeCollider = new ColliderComponent( this );
-        treeGO = new GameObjectMesh( "Tree" + i, new MeshRenderer( treeMesh, this  ), new ColliderComponent( this ), terrainGO );
+        treeGO = new GameObjectMesh( "Tree" + i, new MeshRenderer( treeMesh, this  ), new ColliderComponent( this ),false ,terrainGO );
         treeGO->scale( scalesTree[i]);
         treeGO->move( positionsTree[i] );
         listTree.push_back(treeGO);
         this->goMeshes.push_back( treeGO );
-    }
-
-;
-
-
-
-
-
-    // Light
-//    sphereTextures.push_back( grass );
-//    sphereLightGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider, terrainGO );
-//    sphereLightGO->move( renderingEngine.getLight().getLightPosition() );
-//    sphereLightGO->move(  QVector3D(0., -4., 0.) );
-
-//    this->goMeshes.push_back( sphereLightGO );
-
+    };
     // Camera  -------------------------------------------------------------------------------
 
     QVector3D cameraPosition = QVector3D();
@@ -155,7 +138,6 @@ void Game::initGame(){
     mainCameraGO->move(0.0f,0.0f,0.0f);
     mainCameraGO->updateCameraPosition();
     this->goCameras.push_back(mainCameraGO);
-
     renderingEngine.setMainCamera( mainCameraGO );
 
     // Build hierarchy ---------------------------------------------------------------------------------

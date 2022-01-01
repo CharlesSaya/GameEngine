@@ -20,10 +20,11 @@ private:
 
     MeshRenderer * meshRenderer;
     ColliderComponent * colliderComponent;
+    bool isMovable;
 
 public :
     GameObjectMesh();
-    GameObjectMesh( std::string name, MeshRenderer * meshRenderer, ColliderComponent * colliderComponent, GameObject * parent  = 0  );
+    GameObjectMesh( std::string name, MeshRenderer * meshRenderer, ColliderComponent * colliderComponent,bool isMovable , GameObject * parent  = 0);
 
     void initSignalsSlots();
 
@@ -31,6 +32,7 @@ public :
     void setMeshRenderer(MeshRenderer *newMeshRenderer);
     ColliderComponent *getColliderComponent() ;
     void setColliderComponent(ColliderComponent *newColliderComponent);
+    bool getIsMovable() const;
 };
 // MeshRenderer
 

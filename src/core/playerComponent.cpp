@@ -32,11 +32,13 @@ bool PlayerComponent::telekinesisActivated(){
 
 void PlayerComponent::telekinesis(  GameObject * player, GameObject * go ){
     if ( leftMousePressed ){
-
-        linkedGO = go;
-
-        if( go->getParent()->getName() != player->getName() )
-            go->setParent( player );
+        if(!useTelekinesis && dynamic_cast<GameObjectMesh *>(go)->getIsMovable()){
+            linkedGO = go;
+            useTelekinesis = true;
+            if( go->getParent()->getName() != player->getName()){
+                go->setParent( player );
+            }
+        }
     }
 }
 
@@ -55,7 +57,6 @@ void PlayerComponent::attractAndPush(GameObject * go ){
 void PlayerComponent::pressedInput( QMouseEvent * key ){
     if( key->button() == Qt::RightButton ){
         rightMousePressed = true;
-//        castRay();
     }
 
     if ( rightMousePressed && key->button() == Qt::LeftButton ){
@@ -71,6 +72,7 @@ void PlayerComponent::releasedInput( QMouseEvent * key ){
 
     if ( key->button() == Qt::LeftButton ){
         leftMousePressed = false;
+        useTelekinesis = false;
         if( linkedGO != nullptr ){
             linkedGO->setLastParent();
             linkedGO = nullptr;

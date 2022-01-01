@@ -8,6 +8,7 @@
 #include <QScrollEvent>
 
 #include "headers/core/gameObject.h"
+#include "headers/core/gameObjectMesh.h"
 
 #include "headers/render/ray.h"
 #include "headers/render/shader.h"
@@ -53,8 +54,10 @@ private:
 
     GameObject * linkedGO = nullptr ;
 
+
     bool leftMousePressed = false;
     bool rightMousePressed = false;
+    bool useTelekinesis = false ;
 
     bool wheelUp = false;
     bool wheelDown = false;
