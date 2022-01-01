@@ -31,6 +31,7 @@ public:
     void applyRotation( QQuaternion quaternion );
     void addRotation( QQuaternion quaternion );
     void applyScale( QVector3D vector );
+    void applyScale( float scale );
 
     QVector3D &getPosition();
     QQuaternion &getRotation();

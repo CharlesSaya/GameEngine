@@ -2,10 +2,10 @@
     <qresource prefix="/">
         <file>objects/bunny/bunnyLOD1.obj</file>
         <file>objects/bunny/bunnyLOD2.obj</file>
-	<file>objects/bunny/bunnyLOD3.obj</file>
-
+        <file>objects/bunny/bunnyLOD3.obj</file>
         <file>objects/sphere/sphereLOD1.obj</file>
         <file>objects/sphere/sphereLOD2.obj</file>
-	<file>objects/sphere/sphereLOD3.obj</file>
-    </qresource>	
+        <file>objects/sphere/sphereLOD3.obj</file>
+        <file>objects/tree/Tree001.obj</file>
+    </qresource>
 </RCC>

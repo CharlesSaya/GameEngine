@@ -51,6 +51,12 @@ void Transform::applyScale( QVector3D vector ){
     emit transformed();
 }
 
+void Transform::applyScale( float scale ){
+    this->lastWorldPosition = this->getWorldPosition();
+    this->scale = QVector3D(scale,scale,scale);
+    emit transformed();
+}
+
 void Transform::resetModel(){
     this->model.setToIdentity();
     this->rotation = QQuaternion();

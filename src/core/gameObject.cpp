@@ -49,6 +49,10 @@ void GameObject::scale( QVector3D scale ){
     this->transform->applyScale( scale );
 }
 
+void GameObject::scale( float scale ){
+    this->transform->applyScale( scale );
+}
+
 void GameObject::resetTransform(){
     this->transform->resetModel();
 }

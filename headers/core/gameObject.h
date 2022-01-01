@@ -36,6 +36,7 @@ public:
     void rotate( QQuaternion rotate );
     void addRotate( QQuaternion rotate );
     void scale( QVector3D scale );
+    void scale( float scale );
 
     void resetTransform();
 

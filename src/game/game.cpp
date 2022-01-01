@@ -24,6 +24,7 @@ void Game::initGame(){
 
     std::string sphereObj = "../GameEngine/objects/sphere/";
     std::string bunnyObj  = "../GameEngine/objects/bunny/";
+    std::string treeObj  = "../GameEngine/objects/tree/";
 
     Texture heightMap = Texture( "../GameEngine/textures/Heightmap_Rocky.png", "heightMap" );
     Texture snow      = Texture( "../GameEngine/textures/snowrocks.png", "snow" );
@@ -36,6 +37,9 @@ void Game::initGame(){
     Texture skyboxLeft   = Texture( "../GameEngine/textures/skybox/MusicHall/nx.png", "skyboxLeft" );
     Texture skyboxFront  = Texture( "../GameEngine/textures/skybox/MusicHall/nz.png", "skyboxFront" );
     Texture skyboxBack   = Texture( "../GameEngine/textures/skybox/MusicHall/pz.png", "skyboxBack" );
+
+
+    Texture treeSnow   = Texture( "../GameEngine/textures/T_Tree_winter", "snowTree" );
 
     // Environment
 
@@ -94,18 +98,53 @@ void Game::initGame(){
     ColliderComponent * sphereCollider = new ColliderComponent( this );
 
     sphereGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider, terrainGO );
-    sphereGO->scale( QVector3D(1, 1, 1) );
-    sphereGO->move( QVector3D(0., 2., -0.) );
+    sphereGO->scale( 1 );
+    sphereGO->move( QVector3D(2., 2., -0.) );
 
     this->goMeshes.push_back( sphereGO );
 
-//    // Light
-//    sphereTextures.push_back( grass );
-//    sphereLightGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider, terrainGO );
-//    sphereLightGO->move( renderingEngine.getLight().getLightPosition() );
-//    sphereLightGO->move(  QVector3D(0., -4., 0.) );
+    //Tree
+    std::vector<Texture> treeTextures;
+    treeTextures.push_back( treeSnow );
 
-//    this->goMeshes.push_back( sphereLightGO );
+    QVector<QVector3D> positionsTree;
+    QVector<float> scalesTree;
+    QVector<GameObjectMesh*> listTree;
+    int numberTree = 10;
+    float x = -40.0f;
+    for(int i =0 ; i< numberTree; i++){
+        positionsTree.push_back(QVector3D(x,0.0f,0.0f));
+        x+=8.0f;
+    }
+
+    for(int i = 0 ;i<numberTree;i++ ){
+        scalesTree.push_back(1);
+    }
+
+    for(int i = 0 ;i<numberTree;i++ ){
+        Mesh treeMesh =Mesh( treeObj, treeTextures, shader, white, true );
+//        MeshRenderer * treeRenderer = ;
+//        ColliderComponent * treeCollider = new ColliderComponent( this );
+        treeGO = new GameObjectMesh( "Tree" + i, new MeshRenderer( treeMesh, this  ), new ColliderComponent( this ), terrainGO );
+        treeGO->scale( scalesTree[i]);
+        treeGO->move( positionsTree[i] );
+        listTree.push_back(treeGO);
+        this->goMeshes.push_back( treeGO );
+    }
+
+;
+
+
+
+
+
+    // Light
+    sphereTextures.push_back( grass );
+    sphereLightGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider, terrainGO );
+    sphereLightGO->move( renderingEngine.getLight().getLightPosition() );
+    sphereLightGO->move(  QVector3D(0., -4., 0.) );
+
+    this->goMeshes.push_back( sphereLightGO );
 
     // Camera  -------------------------------------------------------------------------------
 

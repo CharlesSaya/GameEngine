@@ -20,5 +20,6 @@
         <file>textures/skybox/MusicHall/px.png</file>
         <file>textures/skybox/MusicHall/py.png</file>
         <file>textures/skybox/MusicHall/pz.png</file>
+        <file>textures/T_Tree_winter.png</file>
     </qresource>
 </RCC>

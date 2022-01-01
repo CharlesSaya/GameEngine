@@ -1,3 +1,4 @@
+#version 330 core
 
 in vec3 a_position;
 in vec3 a_normal;
