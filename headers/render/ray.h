@@ -3,11 +3,11 @@
 
 #include <QVector3D>
 #include <QOpenGLBuffer>
-#include <QOpenGLFunctions_3_1>
+#include <QOpenGLFunctions_3_3_Core>
 
 #include "headers/render/shader.h"
 
-class Ray :  protected QOpenGLFunctions_3_1{
+class Ray :  protected QOpenGLFunctions_3_3_Core{
 
 public:
 

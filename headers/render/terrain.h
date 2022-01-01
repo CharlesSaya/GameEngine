@@ -51,7 +51,7 @@
 #ifndef TERRAIN_H
 #define TERRAIN_H
 
-#include <QOpenGLFunctions_3_1>
+#include <QOpenGLFunctions_3_3_Core>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLBuffer>
 #include <QtMath>

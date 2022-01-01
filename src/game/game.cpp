@@ -15,10 +15,7 @@ void Game::initGame(){
     shader = new Shader( "../GameEngine/shaders/base_vshader.glsl", "../GameEngine/shaders/base_fshader.glsl" );
     terrainShader = new Shader(  "../GameEngine/shaders/terrain_vshader.glsl", "../GameEngine/shaders/terrain_fshader.glsl" );
     skyboxShader = new Shader(  "../GameEngine/shaders/skybox_vshader.glsl", "../GameEngine/shaders/skybox_fshader.glsl" );
-
-    renderingEngine.getLight().loadLight(shader);
-    renderingEngine.getLight().loadLight(terrainShader);
-    renderingEngine.getLight().loadLight(skyboxShader);
+    postProcessShader = new Shader(  "../GameEngine/shaders/base_vshader.glsl", "../GameEngine/shaders/postProcess_fshader.glsl" );
 
     // Build scene graph  -------------------------------------------------------------------------------
 
@@ -27,16 +24,17 @@ void Game::initGame(){
     std::string treeObj  = "../GameEngine/objects/tree/";
 
     Texture heightMap = Texture( "../GameEngine/textures/Heightmap_Rocky.png", "heightMap" );
-    Texture snow      = Texture( "../GameEngine/textures/snowrocks.png", "snow" );
-    Texture rock      = Texture( "../GameEngine/textures/rock.png", "rock" );
-    Texture grass     = Texture( "../GameEngine/textures/grass.png", "grass" );
+    Texture snow      = Texture( "../GameEngine/textures/snowrocks.png", "texture2" );
+    Texture rock      = Texture( "../GameEngine/textures/rock.png", "texture1" );
+    Texture rock2      = Texture( "../GameEngine/textures/rock.png", "texture0" );
+    Texture grass     = Texture( "../GameEngine/textures/grass.png", "texture0" );
 
     Texture skyboxBottom = Texture( "../GameEngine/textures/skybox/MusicHall/py.png", "skyboxBottom" );
-    Texture skyboxTop    = Texture( "../GameEngine/textures/skybox/MusicHall/ny.png", "skyboxTop" );
-    Texture skyboxRight  = Texture( "../GameEngine/textures/skybox/MusicHall/px.png", "skyboxRight" );
-    Texture skyboxLeft   = Texture( "../GameEngine/textures/skybox/MusicHall/nx.png", "skyboxLeft" );
-    Texture skyboxFront  = Texture( "../GameEngine/textures/skybox/MusicHall/nz.png", "skyboxFront" );
-    Texture skyboxBack   = Texture( "../GameEngine/textures/skybox/MusicHall/pz.png", "skyboxBack" );
+    Texture skyboxTop    = Texture( "../GameEngine/textures/skybox/MusicHall/ny.png", "skyboxTop"    );
+    Texture skyboxRight  = Texture( "../GameEngine/textures/skybox/MusicHall/px.png", "skyboxRight"  );
+    Texture skyboxLeft   = Texture( "../GameEngine/textures/skybox/MusicHall/nx.png", "skyboxLeft"   );
+    Texture skyboxFront  = Texture( "../GameEngine/textures/skybox/MusicHall/nz.png", "skyboxFront"  );
+    Texture skyboxBack   = Texture( "../GameEngine/textures/skybox/MusicHall/pz.png", "skyboxBack"   );
 
 
     Texture treeSnow   = Texture( "../GameEngine/textures/T_Tree_winter", "snowTree" );
@@ -50,9 +48,6 @@ void Game::initGame(){
     // Terrain Game Object ------------------------------------------------------------------------------
 
     std::vector<Texture> terrainTextures;
-    terrainTextures.push_back( heightMap );
-    terrainTextures.push_back( snow );
-    terrainTextures.push_back( rock );
     terrainTextures.push_back( grass );
 
     terrain = Terrain( heightMap );
@@ -68,7 +63,7 @@ void Game::initGame(){
     std::vector<Texture> playerTextures;
     playerTextures.push_back( grass );
 
-    Mesh playerMesh = Mesh( sphereObj ,playerTextures, shader, white, true );
+    Mesh playerMesh = Mesh( bunnyObj ,playerTextures, shader, white, true );
 
     MeshRenderer * playerRenderer      = new MeshRenderer( playerMesh, this );
     MoveComponent * playerMove         = new MoveComponent( terrain, this );
@@ -139,12 +134,12 @@ void Game::initGame(){
 
 
     // Light
-    sphereTextures.push_back( grass );
-    sphereLightGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider, terrainGO );
-    sphereLightGO->move( renderingEngine.getLight().getLightPosition() );
-    sphereLightGO->move(  QVector3D(0., -4., 0.) );
+//    sphereTextures.push_back( grass );
+//    sphereLightGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider, terrainGO );
+//    sphereLightGO->move( renderingEngine.getLight().getLightPosition() );
+//    sphereLightGO->move(  QVector3D(0., -4., 0.) );
 
-    this->goMeshes.push_back( sphereLightGO );
+//    this->goMeshes.push_back( sphereLightGO );
 
     // Camera  -------------------------------------------------------------------------------
 
@@ -179,8 +174,8 @@ void Game::update( float fixedStep )
     this->sceneGraph.update( fixedStep  );
 }
 
-void Game::render( ){
-    renderingEngine.renderScene( this->sceneGraph );
+void Game::render(  float deltaTime ){
+    renderingEngine.renderScene( this->sceneGraph, deltaTime );
 }
 
 // SLOTS

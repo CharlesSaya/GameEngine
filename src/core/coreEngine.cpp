@@ -122,8 +122,8 @@ void CoreEngine::initializeGL(){
     initializeOpenGLFunctions();
     glClearColor(0, 0, 0, 1);
     glEnable(GL_DEPTH_TEST);
-    //    glEnable(GL_CULL_FACE);
-
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     //Start timer   -------------------------------------------------------------------------------
     time.start();
@@ -145,7 +145,7 @@ void CoreEngine::initGame(){
     // Physics Engine  -----------------------------------------------------------------------
     PhysicsEngine physicsEngine = PhysicsEngine( this->fixedStep );
     ColliderEngine colliderEngine = ColliderEngine( this->fixedStep );
-    RenderingEngine renderingEngine = RenderingEngine( this->context(), this->renderStep );
+    RenderingEngine renderingEngine = RenderingEngine( this->renderStep );
 
     // Game  --------------------------------------------------------------------------------
 
@@ -165,6 +165,6 @@ void CoreEngine::paintGL()
     lastFrame = currentFrame;
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-    this->game->render();
+    this->game->render( deltaTime );
 
 }

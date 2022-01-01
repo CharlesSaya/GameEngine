@@ -1,7 +1,7 @@
 #ifndef COLLIDERCOMPONENT_H
 #define COLLIDERCOMPONENT_H
 
-#include <QOpenGLFunctions_3_1>
+#include <QOpenGLFunctions_3_3_Core>
 
 #include "headers/render/mesh.h"
 #include "headers/render/mesh.h"

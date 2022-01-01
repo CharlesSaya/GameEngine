@@ -3,7 +3,7 @@
 
 #include <QOpenGLBuffer>
 #include <QOpenGLTexture>
-#include <QOpenGLFunctions_3_1>
+#include <QOpenGLFunctions_3_3_Core>
 
 #include <headers/core/gameObjectCamera.h>
 
@@ -11,7 +11,7 @@
 #include "headers/render/vertexData.h"
 
 
-class CubeMap : protected QOpenGLFunctions_3_1{
+class CubeMap : protected QOpenGLFunctions_3_3_Core{
 
 public:
 

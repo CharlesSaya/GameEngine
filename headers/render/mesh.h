@@ -6,7 +6,7 @@
 
 #include <QVector3D>
 #include <QOpenGLBuffer>
-#include <QOpenGLFunctions_3_1>
+#include <QOpenGLFunctions_3_3_Core>
 
 #include "dirent.h"
 
@@ -20,7 +20,7 @@
 #include "headers/render/AABB.h"
 #include "headers/render/texture.h"
 
-class Mesh : protected QOpenGLFunctions_3_1{
+class Mesh : protected QOpenGLFunctions_3_3_Core{
 
  private:
     int indexCount;
@@ -45,8 +45,8 @@ class Mesh : protected QOpenGLFunctions_3_1{
 
     void loadGeometry( std::string filepath );
     void initBuffers( uint lod );
-    void drawMesh( float distance );
-    void drawAABB();
+    void drawMesh( float distance, Shader * gShader );
+    void drawAABB( Shader * shader );
     uint getLod( float distance );
 
     void updateAABB( const QMatrix4x4& model  ) ;
@@ -60,7 +60,7 @@ class Mesh : protected QOpenGLFunctions_3_1{
     const std::vector<Texture> &getTextures() const;
     void setTextures(const std::vector<Texture> &newTextures);
 
-    void bindTextures();
+    void bindTextures( Shader * shader );
     void bindShadowTexture();
     void unbindTextures();
 
