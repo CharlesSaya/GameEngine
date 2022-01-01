@@ -147,24 +147,24 @@ void Mesh::unbindTextures(){
 }
 
 void Mesh::drawAABB( Shader * shader ){
+      this->bBox.drawAABB(shader);
+//    this->bBox.initBuffers();
 
-    this->bBox.initBuffers();
+//    indexCount = this->bBox.getIndexCount();
 
-    indexCount = this->bBox.getIndexCount();
+//    AABBverticesBuffer.bind();
+//    AABBverticesBuffer.allocate( this->bBox.getVertices().data(), this->bBox.getVertices().size() * sizeof( QVector3D ) );
 
-    AABBverticesBuffer.bind();
-    AABBverticesBuffer.allocate( this->bBox.getVertices().data(), this->bBox.getVertices().size() * sizeof( QVector3D ) );
+//    AABBindexesBuffer.bind();
+//    AABBindexesBuffer.allocate ( this->bBox.getLines().data(), indexCount * sizeof( GLuint ) );
 
-    AABBindexesBuffer.bind();
-    AABBindexesBuffer.allocate ( this->bBox.getLines().data(), indexCount * sizeof( GLuint ) );
+//    quintptr offset = 0;
 
-    quintptr offset = 0;
+//    int vertexLocation = shader->getProgram().attributeLocation("a_position");
+//    shader->getProgram().enableAttributeArray(vertexLocation);
+//    shader->getProgram().setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(QVector3D));
 
-    int vertexLocation = shader->getProgram().attributeLocation("a_position");
-    shader->getProgram().enableAttributeArray(vertexLocation);
-    shader->getProgram().setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(QVector3D));
-
-    glDrawElements(GL_LINES, indexCount, GL_UNSIGNED_INT, 0);
+//    glDrawElements(GL_LINES, indexCount, GL_UNSIGNED_INT, 0);
 }
 
 void Mesh::drawMesh( float distance, Shader * shader ){

@@ -31,3 +31,4 @@ void main()
     gl_Position     = projection * view * worldPosition;
 }
 //! [0]
+

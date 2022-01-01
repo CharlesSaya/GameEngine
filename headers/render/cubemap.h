@@ -23,6 +23,9 @@ public:
     void unbindTexture();
     void render( GameObjectCamera * camera, QMatrix4x4 model );
 
+    Shader *getShader() const;
+    void setShader(Shader *newShader);
+
 private:
     unsigned int textureID = 0;
 

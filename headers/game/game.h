@@ -96,7 +96,6 @@ private:
     Shader * shader ;
     Shader * terrainShader;
     Shader * skyboxShader;
-    Shader * postProcessShader;
 
     CubeMap cubemap;
 

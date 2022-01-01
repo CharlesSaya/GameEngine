@@ -124,9 +124,24 @@ void SceneGraph::render( GameObjectCamera * camera, Shader * shader  ){
         this->renderMesh( go, camera, shader );
         go->getPlayerComponent()->drawRay( camera->getCameraComponent()->getViewMatrix(), camera->getCameraComponent()->getProjection() );
     }
+
+
 }
 
+void SceneGraph::renderBVH( Node * node, Shader * shader ){
+    node->nodeBoundingBox.drawAABB(shader);
 
+    if( isLeaf( node )){
+
+        return;
+
+    }else{
+
+        for( Node * childNode : node->children ){
+            childNode->nodeBoundingBox.drawAABB(shader);
+        }
+    }
+}
 
 void SceneGraph::updateBVH( Node * node ){
 

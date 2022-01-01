@@ -49,7 +49,6 @@ private:
     DirectionalLight directionalLight;
 
     Shader * shadowShader, * gBufferShader, * particleShader, *postProcessShader;
-
     QOpenGLContext * context;
 
     QVector3D white = QVector3D( 1., 1., 1.);

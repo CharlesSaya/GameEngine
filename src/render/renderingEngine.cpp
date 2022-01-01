@@ -10,10 +10,11 @@ RenderingEngine::RenderingEngine( float renderStep ){
 
     directionalLight = DirectionalLight(QVector3D( 10.0, 70.0, -5.0), white, white, white);
     initPointLights();
+
     shadowShader = new Shader(  "../GameEngine/shaders/depth_vshader.glsl", "../GameEngine/shaders/depth_fshader.glsl" );
     gBufferShader = new Shader(  "../GameEngine/shaders/gBuffer_vshader.glsl", "../GameEngine/shaders/gBuffer_fshader.glsl" );
     postProcessShader = new Shader(  "../GameEngine/shaders/postProcess_vshader.glsl", "../GameEngine/shaders/postProcess_fshader.glsl" );
-    particleShader = new Shader(  "../GameEngine/shaders/particle_vshader.glsl", "../GameEngine/shaders/particle_fshader.glsl" );
+    particleShader = new Shader(  "../GameEngine/shaders/base_vshader.glsl", "../GameEngine/shaders/base_fshader.glsl" );
 
     cameraOrtho  = new CameraComponent( directionalLight.getLightPosition(), QVector3D(0.0f,0.0f,0.0f),-50.0f,50.0f,-50.0f,50.0f,0.01f,100.f );
     cameraOrtho->setProjectionOrtho();
@@ -223,9 +224,10 @@ void RenderingEngine::renderScene( SceneGraph &sceneGraph,  float deltaTime ){
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, context->defaultFramebufferObject()); // write to default framebuffer
     glBlitFramebuffer( 0, 0, SCR_WIDTH, SCR_HEIGHT, 0, 0, SCR_WIDTH, SCR_HEIGHT, GL_DEPTH_BUFFER_BIT, GL_NEAREST );
     skybox.render( mainCamera, QMatrix4x4() );
+    sceneGraph.renderBVH( sceneGraph.getRoot(), skybox.getShader() );
 
-    particleGenerator.update( deltaTime );
-    particleGenerator.render( particleShader );
+//    particleGenerator.update( deltaTime );
+//    particleGenerator.render( particleShader );
 }
 
 

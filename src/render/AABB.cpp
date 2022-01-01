@@ -3,6 +3,14 @@
 #include <vector>
 
 AABB::AABB(){
+
+    this->context = QOpenGLContext::currentContext();
+    glFuncs = this->context->versionFunctions<QOpenGLFunctions_3_3_Core>();
+
+    AABBverticesBuffer = QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+    AABBindexesBuffer  =  QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
+    AABBverticesBuffer.create();
+    AABBindexesBuffer.create();
 }
 
 AABB::AABB( std::vector<VertexData> &points ){
@@ -30,6 +38,14 @@ AABB::AABB( std::vector<VertexData> &points ){
     maxDefault = max;
     lastMin = min;
     lastMax = max;
+
+    this->context = QOpenGLContext::currentContext();
+    glFuncs = this->context->versionFunctions<QOpenGLFunctions_3_3_Core>();
+
+    AABBverticesBuffer = QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+    AABBindexesBuffer  =  QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
+    AABBverticesBuffer.create();
+    AABBindexesBuffer.create();
 }
 
 void AABB::resizeAABB( AABB& bBox ){
@@ -56,6 +72,7 @@ void AABB::resizeAABB( AABB& bBox ){
     maxDefault = max;
     lastMin = min;
     lastMax = max;
+
 }
 
 void AABB::resetAABB(){
@@ -167,25 +184,25 @@ bool AABB::intersect(const Ray & ray) {
 
 }
 
-//void AABB::drawAABB( Shader * shader ){
-//    this->initBuffers();
+void AABB::drawAABB( Shader * shader ){
+    this->initBuffers();
 
-//    indexCount = this->getIndexCount();
+    indexCount = this->getIndexCount();
 
-//    AABBverticesBuffer.bind();
-//    AABBverticesBuffer.allocate( this->getVertices().data(), this->getVertices().size() * sizeof( QVector3D ) );
+    AABBverticesBuffer.bind();
+    AABBverticesBuffer.allocate( this->getVertices().data(), this->getVertices().size() * sizeof( QVector3D ) );
 
-//    AABBindexesBuffer.bind();
-//    AABBindexesBuffer.allocate ( this->getLines().data(), indexCount * sizeof( GLuint ) );
+    AABBindexesBuffer.bind();
+    AABBindexesBuffer.allocate ( this->getLines().data(), indexCount * sizeof( GLuint ) );
 
-//    quintptr offset = 0;
+    quintptr offset = 0;
 
-//    int vertexLocation = shader->getProgram().attributeLocation("a_position");
-//    shader->getProgram().enableAttributeArray(vertexLocation);
-//    shader->getProgram().setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(QVector3D));
+    int vertexLocation = shader->getProgram().attributeLocation("a_position");
+    shader->getProgram().enableAttributeArray(vertexLocation);
+    shader->getProgram().setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(QVector3D));
 
-//       glDrawElements(GL_LINES, indexCount, GL_UNSIGNED_INT, 0);
-//}
+    glDrawElements(GL_LINES, indexCount, GL_UNSIGNED_INT, 0);
+}
 
 float AABB::getHeight(){
     return this->max.y() - this->min.y();

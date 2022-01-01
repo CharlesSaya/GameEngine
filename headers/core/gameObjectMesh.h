@@ -24,7 +24,7 @@ private:
 
 public :
     GameObjectMesh();
-    GameObjectMesh( std::string name, MeshRenderer * meshRenderer, ColliderComponent * colliderComponent,bool isMovable , GameObject * parent  = 0);
+    GameObjectMesh( std::string name, MeshRenderer * meshRenderer, ColliderComponent * colliderComponent, bool isMovable = true , GameObject * parent  = 0);
 
     void initSignalsSlots();
 

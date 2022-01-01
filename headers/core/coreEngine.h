@@ -143,7 +143,6 @@ private:
     SceneGraph sceneGraph;
     Terrain terrain;
     CameraComponent * camera;
-    Player player;
 
     QVector3D white = QVector3D( 1., 0., 0.);
 

@@ -1,11 +1,11 @@
 #ifndef AABB_H
 #define AABB_H
 
-
 #include<vector>
 
 #include<QVector3D>
 #include<QOpenGLBuffer>
+#include <QOpenGLFunctions_3_3_Core>
 
 #include "headers/render/ray.h"
 #include "headers/render/shader.h"
@@ -28,6 +28,9 @@ class AABB {
         QVector3D minDefault = QVector3D(__FLT_MAX__ ,__FLT_MAX__, -__FLT_MAX__) ;
         QVector3D maxDefault = QVector3D(-__FLT_MAX__ ,-__FLT_MAX__,__FLT_MAX__) ;
         QOpenGLBuffer AABBverticesBuffer, AABBindexesBuffer;
+
+        QOpenGLContext * context;
+        QOpenGLFunctions_3_3_Core * glFuncs;
 
     public:
 

@@ -1,6 +1,6 @@
 #include "headers/core/gameObjectMesh.h"
 
-GameObjectMesh::GameObjectMesh( std::string name, MeshRenderer * meshRenderer, ColliderComponent * colliderComponent, bool isMovable,GameObject * parent  ){
+GameObjectMesh::GameObjectMesh( std::string name, MeshRenderer * meshRenderer, ColliderComponent * colliderComponent, bool isMovable, GameObject * parent  ){
 
     this->name = name;
     this->meshRenderer = meshRenderer;

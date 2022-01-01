@@ -164,7 +164,6 @@ void CubeMap::initGeometry(){
     this->indicesBuffer.bind();
     this->indicesBuffer.allocate ( indices, this->indicesCount  * sizeof(GLuint));
 
-
 }
 
 void CubeMap::initTextures(){
@@ -277,4 +276,14 @@ void CubeMap::render( GameObjectCamera * camera, QMatrix4x4 model ){
 
 //    this->unbindTexture();
 
+}
+
+Shader *CubeMap::getShader() const
+{
+    return shader;
+}
+
+void CubeMap::setShader(Shader *newShader)
+{
+    shader = newShader;
 }

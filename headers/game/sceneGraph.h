@@ -48,6 +48,7 @@ public:
     void input ( QKeyEvent * key );
     void update( float fixedStep );
     void render( GameObjectCamera * camera, Shader * shader = 0 );
+    void renderBVH( Node * node, Shader * shader );
 
     template<class Movable>
     void updatePhysics( Movable * go, float step ){
