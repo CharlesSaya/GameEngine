@@ -6,7 +6,6 @@ RenderingEngine::RenderingEngine(){
 
 RenderingEngine::RenderingEngine( float renderStep ){
     this->step = renderStep;
-    this->mainCamera = mainCamera;
     this->context = QOpenGLContext::currentContext();
 
     directionalLight = DirectionalLight(QVector3D( 10.0, 70.0, -5.0), white, white, white);
@@ -22,6 +21,7 @@ RenderingEngine::RenderingEngine( float renderStep ){
 
 
     initializeOpenGLFunctions();
+
 
 }
 
@@ -86,9 +86,7 @@ void RenderingEngine::initGBufferFBO()
 
     glBindFramebuffer(GL_FRAMEBUFFER, context->defaultFramebufferObject());
 
-
 }
-
 
 void RenderingEngine::initDepthMap( SceneGraph &sceneGraph )
 {
@@ -207,7 +205,6 @@ void RenderingEngine::renderPostProcess()
         glEnableVertexAttribArray(1);
         glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     }
-
     glBindVertexArray(quadVAO);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     glBindVertexArray(0);

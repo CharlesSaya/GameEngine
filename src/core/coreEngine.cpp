@@ -163,7 +163,7 @@ void CoreEngine::paintGL()
     float currentFrame = time.elapsed()/1000.;
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
-    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+//    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
     this->game->render( deltaTime );
 

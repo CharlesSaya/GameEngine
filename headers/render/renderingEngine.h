@@ -29,7 +29,7 @@ private:
     uint SCR_WIDTH = 1920;
     uint SCR_HEIGHT = 1080;
 
-    uint quadVAO, quadVBO;
+    uint quadVAO = 0, quadVBO = 0;
 
     uint m_shadowMapFBO = 0;
     uint m_shadowMapTex = 0;

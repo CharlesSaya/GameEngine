@@ -128,7 +128,7 @@ void main()
         color += CalcPointLight( pointLights[i], normal, pos, lightSpacePos);
     vec4 a = texture( diffuseTexture, v_texcoord );
 
-    gl_FragColor = vec4( color , 1.0 );
+    gl_FragColor = vec4(  color, 1.0 );
 
 }
 //! [0]
