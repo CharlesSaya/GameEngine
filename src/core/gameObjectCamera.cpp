@@ -19,11 +19,6 @@ GameObjectCamera::GameObjectCamera( std::string name, CameraComponent *cameraOrt
     this->name = name;
     this->cameraComponent = cameraOrthoComponent;
 
-//    this->parent = parent;
-//    this->transform = new Transform( this );
-
-//    if ( parent != nullptr )
-//        parent->addChild( this );
 
 }
 MoveComponent *GameObjectCamera::getMoveComponent()

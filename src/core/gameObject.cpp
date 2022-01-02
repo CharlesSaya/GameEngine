@@ -69,23 +69,23 @@ GameObject *GameObject::getParent()
 
 void GameObject::setParent(GameObject *newParent){
 
-    QVector3D diff = getWorldPosition();
-    QVector3D trans = diff;
+    QVector3D trans = getWorldPosition();
     newParent->addChild(this);
     parent->removeChild( this );
     lastParent = parent;
     parent = newParent;
     QVector3D invertTrans = newParent->getModel().inverted() * trans ;
-    getTransform()->setPosition(invertTrans);
+    transform->setPosition(invertTrans);
 
 }
 
 void GameObject::setLastParent(){
-    QVector3D trans = ( getWorldPosition() - lastParent->getWorldPosition() );
+    QVector3D trans = getWorldPosition() ;
     parent->removeChild( this );
     lastParent->addChild( this );
     parent = lastParent;
-    this->transform->setPosition( trans );
+    QVector3D invertTrans = parent->getModel().inverted() * trans ;
+    transform->setPosition( invertTrans );
     lastParent = nullptr;
 }
 
@@ -111,6 +111,11 @@ QVector3D& GameObject::getWorldPosition(){
     worldPosition = this->getModel() * QVector3D( 0.0, 0.0, 0.0 );
     return worldPosition;
 }
+
+void GameObject::setHeight(float height){
+    this->transform->getPosition().setY( height );
+}
+
 
 const QMatrix4x4 GameObject::getModel(){
 

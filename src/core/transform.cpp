@@ -82,7 +82,6 @@ void Transform::setPosition(const QVector3D &newPosition)
 {
     this->position = newPosition;
     emit transformed();
-
 }
 
 QVector3D& Transform::getWorldPosition(){

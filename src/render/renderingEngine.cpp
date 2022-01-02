@@ -8,13 +8,13 @@ RenderingEngine::RenderingEngine( float renderStep ){
     this->step = renderStep;
     this->context = QOpenGLContext::currentContext();
 
-    directionalLight = DirectionalLight(QVector3D( 10.0, 70.0, -5.0), white, white, white);
+    directionalLight = DirectionalLight(QVector3D( 0.0, 20.0, -5.0), white, white, white);
     initPointLights();
-
     shadowShader = new Shader(  "../GameEngine/shaders/depth_vshader.glsl", "../GameEngine/shaders/depth_fshader.glsl" );
     gBufferShader = new Shader(  "../GameEngine/shaders/gBuffer_vshader.glsl", "../GameEngine/shaders/gBuffer_fshader.glsl" );
     postProcessShader = new Shader(  "../GameEngine/shaders/postProcess_vshader.glsl", "../GameEngine/shaders/postProcess_fshader.glsl" );
-    particleShader = new Shader(  "../GameEngine/shaders/base_vshader.glsl", "../GameEngine/shaders/base_fshader.glsl" );
+    particleShader = new Shader(  "../GameEngine/shaders/particle_vshader.glsl", "../GameEngine/shaders/particle_fshader.glsl" );
+    flareShader = new Shader(  "../GameEngine/shaders/flare_vshader.glsl", "../GameEngine/shaders/flare_fshader.glsl" );
 
     cameraOrtho  = new CameraComponent( directionalLight.getLightPosition(), QVector3D(0.0f,0.0f,0.0f),-50.0f,50.0f,-50.0f,50.0f,0.01f,100.f );
     cameraOrtho->setProjectionOrtho();
@@ -23,13 +23,40 @@ RenderingEngine::RenderingEngine( float renderStep ){
 
     initializeOpenGLFunctions();
 
+    initLensFlares();
+    initParticles();
+
+}
+void RenderingEngine::initParticles(){
+
+    Texture sprite = Texture( "../GameEngine/textures/skybox/MusicHall/py.png", "sprite" );
+
+    particleGenerator = ParticleGenerator( 1000, sprite );
 
 }
 
-void RenderingEngine::initializeGL(){
+
+void RenderingEngine::initLensFlares(){
+    Texture sun      = Texture( "../GameEngine/textures/lensFlare/sun.png", "flare" );
+    Texture texture2 = Texture( "../GameEngine/textures/lensFlare/tex2.png", "flare" );
+    Texture texture3 = Texture( "../GameEngine/textures/lensFlare/tex3.png", "flare" );
+    Texture texture4 = Texture( "../GameEngine/textures/lensFlare/tex4.png", "flare" );
+    Texture texture5 = Texture( "../GameEngine/textures/lensFlare/tex5.png", "flare" );
+    Texture texture6 = Texture( "../GameEngine/textures/lensFlare/tex6.png", "flare" );
+    Texture texture7 = Texture( "../GameEngine/textures/lensFlare/tex7.png", "flare" );
+    Texture texture8 = Texture( "../GameEngine/textures/lensFlare/tex8.png", "flare" );
+    std::vector<FlareTexture> flareTextures  ={ FlareTexture( sun, 0.15),
+                                                FlareTexture( texture2, 0.1),
+                                                FlareTexture( texture3, 0.1),
+                                                FlareTexture( texture4, 0.1),
+                                                FlareTexture( texture5, 0.1),
+                                                FlareTexture( texture6, 0.1),
+                                                FlareTexture( texture7, 0.1),
+                                                FlareTexture( texture8, 0.1) };
+
+    flareGenerator = FlareGenerator( directionalLight, flareTextures );
 
 }
-
 void RenderingEngine::initPointLights(){
     const unsigned int NR_LIGHTS = 1;
     srand(13);
@@ -224,10 +251,16 @@ void RenderingEngine::renderScene( SceneGraph &sceneGraph,  float deltaTime ){
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, context->defaultFramebufferObject()); // write to default framebuffer
     glBlitFramebuffer( 0, 0, SCR_WIDTH, SCR_HEIGHT, 0, 0, SCR_WIDTH, SCR_HEIGHT, GL_DEPTH_BUFFER_BIT, GL_NEAREST );
     skybox.render( mainCamera, QMatrix4x4() );
-    sceneGraph.renderBVH( sceneGraph.getRoot(), skybox.getShader() );
 
-//    particleGenerator.update( deltaTime );
-//    particleGenerator.render( particleShader );
+    particleGenerator.update( deltaTime );
+    particleGenerator.render( particleShader );
+    glEnable(GL_BLEND);
+    glDisable(GL_DEPTH_TEST);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    flareGenerator.render( 1.0f, flareShader );
+    glDisable(GL_BLEND);
+    glEnable(GL_DEPTH_TEST);
+
 }
 
 
@@ -257,10 +290,9 @@ GameObjectCamera *RenderingEngine::getMainCamera() const
 void RenderingEngine::setMainCamera(GameObjectCamera *newMainCamera)
 {
     mainCamera = newMainCamera;
+    particleGenerator.setCamera( mainCamera );
+    flareGenerator.setCamera( mainCamera );
 
-    Texture sprite = Texture( "../GameEngine/textures/skybox/MusicHall/py.png", "sprite" );
-
-    particleGenerator = ParticleGenerator( 1000, sprite, mainCamera );
 }
 
 uint RenderingEngine::shadowMapTex() const
@@ -279,5 +311,9 @@ void RenderingEngine::setSkybox(const CubeMap &newSkybox)
     skybox = newSkybox;
 }
 
+void RenderingEngine::screenResized( int width, int height ){
+    SCR_WIDTH = width;
+    SCR_HEIGHT = height;
 
-
+    flareGenerator.screenResized( width, height );
+}

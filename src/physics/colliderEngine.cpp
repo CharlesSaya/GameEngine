@@ -37,8 +37,6 @@ float ColliderEngine::sweptAABB( QVector3D velocity, AABB& box1, AABB& box2, QVe
     QVector3D box1LastMaxPosition = box1.getLastMax();
     QVector3D box2MinPosition = box2.getMin();
     QVector3D box2MaxPosition = box2.getMax();
-    qDebug() << "Box1"  << box1.getLastMin() << box1.getLastMax() << box1.getMin() << box1.getMax() ;
-    qDebug() << "Box2"  << box2.getMin() << box2.getMax();
 
     if( velocity.x() > 0. ){
         dxEntry = box2MinPosition.x() - box1LastMaxPosition.x();
@@ -98,10 +96,7 @@ float ColliderEngine::sweptAABB( QVector3D velocity, AABB& box1, AABB& box2, QVe
 
     float entryTime = max(xEntryTime, max( yEntryTime, zEntryTime ) );
     float exitTime = min(xExitTime, min( yExitTime, zExitTime ) );
-    qDebug() << xEntryTime << yEntryTime << zEntryTime;
-    qDebug() << ( entryTime > exitTime );
-    qDebug() <<  ( xEntryTime < 0.0 && yEntryTime < 0.0 && zEntryTime < 0.0 );
-    qDebug() <<  (xEntryTime > 1.0 || yEntryTime > 1.0|| zEntryTime > 1.0 );
+
     if(  entryTime > exitTime
      || ( xEntryTime < 0.0 && yEntryTime < 0.0 && zEntryTime < 0.0 )
      ||   xEntryTime > 1.0 || yEntryTime > 1.0|| zEntryTime > 1.0 )

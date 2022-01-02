@@ -49,7 +49,7 @@ private:
 public:
 
     ParticleGenerator();
-    ParticleGenerator( float number, Texture &sprite, GameObjectCamera * camera );
+    ParticleGenerator( float number, Texture &sprite );
 
     void initBuffers();
     void initGeometry();
@@ -60,6 +60,7 @@ public:
     void update(float dt );
     void render( Shader * shader );
 
+    void setCamera(GameObjectCamera *newCamera);
 };
 
 #endif // PARTICLEGENERATOR_H

@@ -19,12 +19,12 @@ void Texture::initTexture(){
     this->texture->generateMipMaps();
 }
 
-void Texture::bindTexture( uint textureUnit, Shader * shader ){
+void Texture::bindTexture( uint textureUnit, Shader * shader ) const {
     this->texture->bind( textureUnit );
     shader->setUniformValue( this->location, textureUnit );
 }
 
-void Texture::unbindTexture(){
+void Texture::unbindTexture() const{
     this->texture->release();
 }
 
@@ -41,4 +41,14 @@ QImage &Texture::getImage()
 void Texture::setImage(const QImage &newImage)
 {
     image = newImage;
+}
+
+const std::string &Texture::getLocation() const
+{
+    return location;
+}
+
+void Texture::setLocation(const std::string &newLocation)
+{
+    location = newLocation;
 }

@@ -29,6 +29,7 @@ void Shader::loadDirectionalLight( DirectionalLight light ){
 }
 
 void Shader::loadPointLights( std::vector<PointLight> lights ){
+    this->useShaderProgram();
 
     for( uint i = 0; i < lights.size(); i++ ){
         this->setUniformValue( "pointLights["+std::to_string(i)+"].position", lights[i].getLightPosition() );

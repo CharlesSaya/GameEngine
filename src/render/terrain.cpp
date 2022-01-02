@@ -13,7 +13,7 @@ Terrain::Terrain(){
 }
 
 //! [0]
-Terrain::Terrain( Texture &texture )
+Terrain::Terrain( Texture &texture, float maxHeight )
 
 {
     this->texture = texture;
@@ -73,7 +73,7 @@ void Terrain::initGeometry()
 float Terrain::getHeight( QVector3D &position ){
     QImage &im = this->texture.getImage();
 
-    QVector3D relativePosition = position - QVector3D( 0.f, 0.f, 0.f );
+    QVector3D relativePosition = position - QVector3D( -gridSize/2.0, 0.f, gridSize/2.0 );
 
     int gridX =  int( floor( relativePosition.x() / gridSquareSize ) );
     int gridZ =  int( floor( -relativePosition.z() / gridSquareSize ) );

@@ -22,6 +22,8 @@ SOURCES += src/game/main.cpp \
     src/core/gameObject.cpp \
     src/render/cubemap.cpp \
     src/render/directionalLight.cpp \
+    src/render/flareGenerator.cpp \
+    src/render/flareTexture.cpp \
     src/render/light.cpp \
     src/render/mesh.cpp \
     src/core/meshrenderer.cpp \
@@ -60,6 +62,8 @@ HEADERS += \
     headers/core/gameObject.h \
     headers/render/cubemap.h \
     headers/render/directionalLight.h \
+    headers/render/flareGenerator.h \
+    headers/render/flareTexture.h \
     headers/render/light.h \
     headers/render/mesh.h \
     headers/render/mesh.h \

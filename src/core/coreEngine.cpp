@@ -39,7 +39,7 @@ void CoreEngine::wheelEvent(QWheelEvent *event){
 
 void CoreEngine::mouseMoveEvent(QMouseEvent *e){
     if( e->localPos().x() > this->width() -10. || e->localPos().x() < 10. ){
-        this->cursor().setPos( mapToGlobal( QPoint( mousePressPosition.x(), mousePressPosition.y() ) ) );
+        this->cursor().setPos( mapToGlobal( QPoint( width()/2, e->localPos().y() ) ) );
         this->game->mouseMoved( QVector2D( this->cursor().pos() ), true);
     }
     else
@@ -122,8 +122,9 @@ void CoreEngine::initializeGL(){
     initializeOpenGLFunctions();
     glClearColor(0, 0, 0, 1);
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+//       glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
+
 
     //Start timer   -------------------------------------------------------------------------------
     time.start();
@@ -137,15 +138,15 @@ void CoreEngine::resizeGL(int w, int h)
     qreal aspect = qreal(w) / qreal(h ? h : 1);
 
     game->setProjection( aspect );
-
+    renderingEngine.screenResized( this->width(), this->height() );
 }
 
 void CoreEngine::initGame(){
 
     // Physics Engine  -----------------------------------------------------------------------
-    PhysicsEngine physicsEngine = PhysicsEngine( this->fixedStep );
-    ColliderEngine colliderEngine = ColliderEngine( this->fixedStep );
-    RenderingEngine renderingEngine = RenderingEngine( this->renderStep );
+    physicsEngine = PhysicsEngine( this->fixedStep );
+    colliderEngine = ColliderEngine( this->fixedStep );
+    renderingEngine = RenderingEngine( this->renderStep );
 
     // Game  --------------------------------------------------------------------------------
 

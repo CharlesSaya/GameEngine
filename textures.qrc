@@ -21,5 +21,16 @@
         <file>textures/skybox/MusicHall/py.png</file>
         <file>textures/skybox/MusicHall/pz.png</file>
         <file>textures/T_Tree_winter.png</file>
+        <file>textures/desert.png</file>
+        <file>textures/lensFlare/sun.png</file>
+        <file>textures/lensFlare/tex1.png</file>
+        <file>textures/lensFlare/tex2.png</file>
+        <file>textures/lensFlare/tex3.png</file>
+        <file>textures/lensFlare/tex4.png</file>
+        <file>textures/lensFlare/tex5.png</file>
+        <file>textures/lensFlare/tex6.png</file>
+        <file>textures/lensFlare/tex7.png</file>
+        <file>textures/lensFlare/tex8.png</file>
+        <file>textures/lensFlare/tex9.png</file>
     </qresource>
 </RCC>

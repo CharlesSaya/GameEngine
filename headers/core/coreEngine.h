@@ -138,6 +138,10 @@ private:
 
     QMatrix4x4 projection;
 
+    RenderingEngine renderingEngine;
+    PhysicsEngine physicsEngine;
+    ColliderEngine colliderEngine;
+
     Game * game;
 
     SceneGraph sceneGraph;
@@ -147,8 +151,7 @@ private:
     QVector3D white = QVector3D( 1., 0., 0.);
 
     QSet<uint> inputs;
-    PhysicsEngine physicsEngine;
-    ColliderEngine colliderEngine;
+
 };
 
 #endif // COREENGINE_H

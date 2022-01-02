@@ -15,5 +15,7 @@
         <file>shaders/postProcess_vshader.glsl</file>
         <file>shaders/particle_fshader.glsl</file>
         <file>shaders/particle_vshader.glsl</file>
+        <file>shaders/flare_fshader.glsl</file>
+        <file>shaders/flare_vshader.glsl</file>
     </qresource>
 </RCC>

@@ -13,6 +13,7 @@
 
 #include "headers/render/directionalLight.h"
 #include "headers/render/particleGenerator.h"
+#include "headers/render/flareGenerator.h"
 #include "headers/render/pointLight.h"
 
 
@@ -24,10 +25,10 @@ class RenderingEngine : protected QOpenGLFunctions_3_3_Core{
 private:
     float step;
 
-    uint SHADOW_WIDTH = 2048;
-    uint SHADOW_HEIGHT = 2048 ;
-    uint SCR_WIDTH = 1920;
-    uint SCR_HEIGHT = 1080;
+    int SHADOW_WIDTH = 2048;
+    int SHADOW_HEIGHT = 2048 ;
+    int SCR_WIDTH = 1920;
+    int SCR_HEIGHT = 1080;
 
     uint quadVAO = 0, quadVBO = 0;
 
@@ -48,12 +49,14 @@ private:
     std::vector<PointLight> pointLights;
     DirectionalLight directionalLight;
 
-    Shader * shadowShader, * gBufferShader, * particleShader, *postProcessShader;
+    Shader * shadowShader, * gBufferShader, *particleShader, *postProcessShader, *flareShader;
+
     QOpenGLContext * context;
 
     QVector3D white = QVector3D( 1., 1., 1.);
 
     ParticleGenerator particleGenerator;
+    FlareGenerator flareGenerator;
 
 public:
 
@@ -65,6 +68,9 @@ public:
     void initDepthMap( SceneGraph &sceneGraph );
     void initPointLights();
     void initPostProcessShader();
+    void initLensFlares();
+    void initParticles();
+    void generateQuad();
 
     void configureUniforms(SceneGraph &sceneGraph);
 
@@ -75,6 +81,8 @@ public:
     void renderGeometryData( SceneGraph &sceneGraph );
 
     void renderPostProcess();
+
+    void screenResized( int width, int height  );
 
     void setMainCamera(GameObjectCamera *newMainCamera);
     GameObjectCamera *getMainCamera() const;

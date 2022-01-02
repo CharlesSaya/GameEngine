@@ -22,7 +22,7 @@ void Game::initGame(){
     std::string bunnyObj  = "../GameEngine/objects/bunny/";
     std::string treeObj  = "../GameEngine/objects/tree/";
 
-    Texture heightMap = Texture( "../GameEngine/textures/Heightmap_Rocky.png", "heightMap" );
+    Texture heightMap = Texture( "../GameEngine/textures/desert.png", "heightMap" );
     Texture snow      = Texture( "../GameEngine/textures/snowrocks.png", "texture2" );
     Texture rock      = Texture( "../GameEngine/textures/rock.png", "texture1" );
     Texture rock2      = Texture( "../GameEngine/textures/rock.png", "texture0" );
@@ -35,7 +35,6 @@ void Game::initGame(){
     Texture skyboxFront  = Texture( "../GameEngine/textures/skybox/MusicHall/nz.png", "skyboxFront"  );
     Texture skyboxBack   = Texture( "../GameEngine/textures/skybox/MusicHall/pz.png", "skyboxBack"   );
 
-
     Texture treeSnow   = Texture( "../GameEngine/textures/T_Tree_winter", "snowTree" );
 
     // Environment
@@ -47,9 +46,9 @@ void Game::initGame(){
     // Terrain Game Object ------------------------------------------------------------------------------
 
     std::vector<Texture> terrainTextures;
-    terrainTextures.push_back( grass );
+    terrainTextures.push_back( heightMap );
 
-    terrain = Terrain( heightMap );
+    terrain = Terrain( heightMap, 1.0f );
     Mesh terrainMesh = Mesh( terrain, terrainTextures, terrainShader, white, false );
     MeshRenderer * terrainRenderer = new MeshRenderer( terrainMesh, this );
     ColliderComponent * terrainCollider = new ColliderComponent( this );
@@ -79,7 +78,7 @@ void Game::initGame(){
     connect( this, &Game::sendMouseWheel, playerComponent, &PlayerComponent::wheelScrolled );
 
     playerGO  = new GameObjectPlayer( "Player" , playerRenderer, playerMove, playerPhysics, playerCollider, playerComponent );
-    playerGO->move(  QVector3D(0., 100., -0. ) );
+    playerGO->move(  QVector3D(0., 30., -0. ) );
 
     this->goPlayers.push_back( playerGO );
 
@@ -123,8 +122,6 @@ void Game::initGame(){
         listTree.push_back(treeGO);
         this->goMeshes.push_back( treeGO );
     }
-
-;
 
     // Light
 //    sphereTextures.push_back( grass );

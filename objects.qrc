@@ -7,5 +7,6 @@
         <file>objects/sphere/sphereLOD2.obj</file>
         <file>objects/sphere/sphereLOD3.obj</file>
         <file>objects/tree/Tree001.obj</file>
+        <file>objects/terrain3DModel.obj</file>
     </qresource>
 </RCC>

@@ -87,7 +87,6 @@ void AABB::updateAABB( const  QMatrix4x4 &model ) {
     lastMax = QVector3D( max);
     min = model * minDefault;
     max = model * maxDefault;
-    qDebug() << lastMin << lastMax << min <<max;
 
 }
 

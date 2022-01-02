@@ -1,13 +1,17 @@
 #include "headers/render/particleGenerator.h"
 
+void ParticleGenerator::setCamera(GameObjectCamera *newCamera)
+{
+    camera = newCamera;
+}
+
 ParticleGenerator::ParticleGenerator(){
 
 }
 
-ParticleGenerator::ParticleGenerator( float number, Texture &sprite, GameObjectCamera * camera  ){
+ParticleGenerator::ParticleGenerator( float number, Texture &sprite ){
     this->number = number;
     this->sprite = sprite;
-    this->camera = camera;
     this->context = QOpenGLContext::currentContext();
     glFuncs = this->context->versionFunctions<QOpenGLFunctions_3_3_Core>();
 
@@ -81,7 +85,7 @@ void ParticleGenerator::update( float dt ){
     for(int i=0; i<newParticles; i++){
             int particleIndex = firstUnusedParticle();
             particles[particleIndex].life = 5.0f; // This particle will live 5 seconds.
-            particles[particleIndex].position = QVector3D(0.,0.,0.0f);
+            particles[particleIndex].position = QVector3D(0.,0.,0.);
 
             float spread = 1.5f;
             QVector3D maindir = QVector3D(0.0f, -10.0f, 0.0f);
