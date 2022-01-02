@@ -7,10 +7,10 @@ AABB::AABB(){
     this->context = QOpenGLContext::currentContext();
     glFuncs = this->context->versionFunctions<QOpenGLFunctions_3_3_Core>();
 
-    AABBverticesBuffer = QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
-    AABBindexesBuffer  =  QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
-    AABBverticesBuffer.create();
-    AABBindexesBuffer.create();
+//    AABBverticesBuffer = QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+//    AABBindexesBuffer  =  QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
+//    AABBverticesBuffer.create();
+//    AABBindexesBuffer.create();
 }
 
 AABB::AABB( std::vector<VertexData> &points ){
@@ -42,10 +42,10 @@ AABB::AABB( std::vector<VertexData> &points ){
     this->context = QOpenGLContext::currentContext();
     glFuncs = this->context->versionFunctions<QOpenGLFunctions_3_3_Core>();
 
-    AABBverticesBuffer = QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
-    AABBindexesBuffer  =  QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
-    AABBverticesBuffer.create();
-    AABBindexesBuffer.create();
+//    AABBverticesBuffer = QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+//    AABBindexesBuffer  =  QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
+//    AABBverticesBuffer.create();
+//    AABBindexesBuffer.create();
 }
 
 void AABB::resizeAABB( AABB& bBox ){
@@ -201,7 +201,7 @@ void AABB::drawAABB( Shader * shader ){
     shader->getProgram().enableAttributeArray(vertexLocation);
     shader->getProgram().setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(QVector3D));
 
-    glDrawElements(GL_LINES, indexCount, GL_UNSIGNED_INT, 0);
+    glFuncs->glDrawElements(GL_LINES, indexCount, GL_UNSIGNED_INT, 0);
 }
 
 float AABB::getHeight(){
