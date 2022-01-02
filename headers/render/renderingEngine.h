@@ -25,17 +25,17 @@ class RenderingEngine : protected QOpenGLFunctions_3_3_Core{
 private:
     float step;
 
-    int SHADOW_WIDTH = 2048;
-    int SHADOW_HEIGHT = 2048 ;
-    int SCR_WIDTH = 1920;
-    int SCR_HEIGHT = 1080;
+    int shadowHeight = 2048;
+    int shadowWidth = 2048 ;
+    int screenWifth = 1920;
+    int screenHeight = 1080;
 
     uint quadVAO = 0, quadVBO = 0;
 
     uint m_shadowMapFBO = 0;
     uint m_shadowMapTex = 0;
 
-    uint gFBO, gPosition, gNormal, gColorSpec, gDiffuse, depthRBO;
+    uint gFBO, gPosition, gNormal, gColor, gDiffuse, gBloom, depthRBO;
 
     CubeMap skybox;
     GameObjectCamera * mainCamera;
@@ -54,6 +54,7 @@ private:
     QOpenGLContext * context;
 
     QVector3D white = QVector3D( 1., 1., 1.);
+    QVector3D red = QVector3D( 1., 0., 0.);
 
     ParticleGenerator particleGenerator;
     FlareGenerator flareGenerator;

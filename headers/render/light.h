@@ -10,15 +10,11 @@ public:
 
     const QVector3D &getLightPosition() const;
 
-    const QVector3D &getAmbient() const;
-    const QVector3D &getDiffuse() const;
-    const QVector3D &getSpecular() const;
+    const QVector3D &getLightColor() const;
 
 protected:
     QVector3D lightPosition;
-    QVector3D ambient;
-    QVector3D diffuse;
-    QVector3D specular;
+    QVector3D lightColor;
 };
 
 #endif // LIGHT_H

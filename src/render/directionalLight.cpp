@@ -4,11 +4,9 @@ DirectionalLight::DirectionalLight(){
 
 }
 
-DirectionalLight::DirectionalLight( QVector3D lightPosition, QVector3D &ambient, QVector3D &diffuse, QVector3D &specular ){
+DirectionalLight::DirectionalLight( QVector3D lightPosition, QVector3D &lightColor ){
     this->lightPosition = lightPosition;
-    this->ambient = ambient;
-    this->diffuse = diffuse;
-    this->specular = specular;
+    this->lightColor = lightColor;
 }
 
 QVector3D DirectionalLight::getDirection(){

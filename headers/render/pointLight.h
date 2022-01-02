@@ -12,7 +12,7 @@ private:
 public:
 
     PointLight();
-    PointLight( float constant, float linear, float quadratic, QVector3D lightPosition, QVector3D &ambient, QVector3D &diffuse, QVector3D &specular );
+    PointLight( float constant, float linear, float quadratic, QVector3D lightPosition, QVector3D &lightColor );
 
     float getConstant() const;
     float getLinear() const;

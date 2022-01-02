@@ -10,7 +10,7 @@ private:
 public:
 
     DirectionalLight();
-    DirectionalLight( QVector3D lightPosition, QVector3D &ambient, QVector3D &diffuse, QVector3D &specular );
+    DirectionalLight( QVector3D lightPosition, QVector3D &lightColor );
 
     QVector3D getDirection();
 

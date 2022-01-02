@@ -5,11 +5,9 @@ PointLight::PointLight(){
 
 }
 
-PointLight::PointLight(  float constant, float linear, float quadratic, QVector3D lightPosition, QVector3D &ambient, QVector3D &diffuse, QVector3D &specular ){
+PointLight::PointLight(  float constant, float linear, float quadratic, QVector3D lightPosition, QVector3D &lightColor ){
     this->lightPosition = lightPosition;
-    this->ambient = ambient;
-    this->diffuse = diffuse;
-    this->specular = specular;
+    this->lightColor = lightColor;
 
     this->constant = constant;
     this->linear = linear;

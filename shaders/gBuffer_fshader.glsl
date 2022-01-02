@@ -2,7 +2,7 @@
 
 layout (location = 0) out vec4 gPosition;
 layout (location = 1) out vec3 gNormal;
-layout (location = 2) out vec4 gAlbedoSpec;
+layout (location = 2) out vec4 gDiffuse;
 
 in vec4 v_pos;
 in vec3 v_normal;
@@ -16,6 +16,6 @@ void main(void)
     gPosition = v_pos;
     gNormal = normalize(v_normal);
 
-    gAlbedoSpec = texture( texture0, v_texcoord );
+    gDiffuse = texture( texture0, v_texcoord );
 
 }

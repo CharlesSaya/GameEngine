@@ -5,18 +5,8 @@ const QVector3D &Light::getLightPosition() const
     return lightPosition;
 }
 
-const QVector3D &Light::getAmbient() const
+const QVector3D &Light::getLightColor() const
 {
-    return ambient;
-}
-
-const QVector3D &Light::getDiffuse() const
-{
-    return diffuse;
-}
-
-const QVector3D &Light::getSpecular() const
-{
-    return specular;
+    return lightColor;
 }
 
