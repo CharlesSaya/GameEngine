@@ -32,5 +32,7 @@
         <file>textures/lensFlare/tex7.png</file>
         <file>textures/lensFlare/tex8.png</file>
         <file>textures/lensFlare/tex9.png</file>
+        <file>textures/terrainHeightMap4096.png</file>
+        <file>textures/heightmapHD.png</file>
     </qresource>
 </RCC>

@@ -24,7 +24,7 @@ Mesh::Mesh( std::string filepath, std::vector<Texture> textures, Shader * shader
 
 }
 
-Mesh::Mesh( Terrain terrain, std::vector<Texture> textures, Shader * shader,  QVector3D meshColor, bool renderAABB  ){
+Mesh::Mesh( Terrain& terrain, std::vector<Texture> textures, Shader * shader,  QVector3D meshColor, bool renderAABB  ){
     this->meshColor = meshColor;
     this->textures = textures;
     this->shader = shader;
@@ -43,8 +43,8 @@ Mesh::Mesh( Terrain terrain, std::vector<Texture> textures, Shader * shader,  QV
     this->meshesFaces.push_back( terrain.getPlaneIndices() );
 
     this->bBox = AABB( this->meshesVertexDatas[0] );
-    this->bBox.getMaxDefault().setY( terrain.getMaximumHeight() );
-    this->bBox.getMinDefault().setY( terrain.getMinimumHeight() );
+    this->bBox.getMaxDefault().setY( terrain.getMaximumHeight() * terrain.getScale() );
+    this->bBox.getMinDefault().setY( terrain.getMinimumHeight() * terrain.getScale() );
     this->bBox.setMax( this->bBox.getMaxDefault() );
     this->bBox.setMin( this->bBox.getMinDefault() );
     this->renderAABB = renderAABB;

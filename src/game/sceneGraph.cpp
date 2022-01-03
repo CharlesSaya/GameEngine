@@ -125,7 +125,6 @@ void SceneGraph::render( GameObjectCamera * camera, Shader * shader  ){
         go->getPlayerComponent()->drawRay( camera->getCameraComponent()->getViewMatrix(), camera->getCameraComponent()->getProjection() );
     }
 
-
 }
 
 void SceneGraph::renderBVH( Node * node, Shader * shader ){

@@ -17,5 +17,8 @@
         <file>shaders/particle_vshader.glsl</file>
         <file>shaders/flare_fshader.glsl</file>
         <file>shaders/flare_vshader.glsl</file>
+        <file>shaders/verticalBlur_vshader.glsl</file>
+        <file>shaders/horizontalBlur_vshader.glsl</file>
+        <file>shaders/blur_fshader.glsl</file>
     </qresource>
 </RCC>

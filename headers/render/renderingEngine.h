@@ -1,7 +1,7 @@
 #ifndef RENDERINGENGINE_H
 #define RENDERINGENGINE_H
 
-#include <QOpenGLFunctions>
+#include <QOpenGLBuffer>
 #include <QOpenGLFunctions_3_3_Core>
 #include <QOpenGLContext>
 
@@ -15,6 +15,7 @@
 #include "headers/render/particleGenerator.h"
 #include "headers/render/flareGenerator.h"
 #include "headers/render/pointLight.h"
+#include "headers/render/vertexData.h".h"
 
 
 #include "headers/render/shader.h"
@@ -27,15 +28,18 @@ private:
 
     int shadowHeight = 2048;
     int shadowWidth = 2048 ;
-    int screenWifth = 1920;
+    int screenWidth = 1920;
     int screenHeight = 1080;
 
     uint quadVAO = 0, quadVBO = 0;
+    uint quadVAO2 = 0, quadVBO2 = 0;
 
     uint m_shadowMapFBO = 0;
     uint m_shadowMapTex = 0;
 
-    uint gFBO, gPosition, gNormal, gColor, gDiffuse, gBloom, depthRBO;
+    uint gFBO = 0, gPosition, gNormal, gColor, gDiffuse, gBloom, depthRBO;
+
+    uint blurVFbo = 0 , blurHFbo  = 0, blurVTexture, blurTexture;
 
     CubeMap skybox;
     GameObjectCamera * mainCamera;
@@ -49,7 +53,7 @@ private:
     std::vector<PointLight> pointLights;
     DirectionalLight directionalLight;
 
-    Shader * shadowShader, * gBufferShader, *particleShader, *postProcessShader, *flareShader;
+    Shader * shadowShader, * gBufferShader, *particleShader, *postProcessShader, *flareShader, *blurVShader, *blurHShader;
 
     QOpenGLContext * context;
 
@@ -64,22 +68,30 @@ public:
     RenderingEngine();
     RenderingEngine( float renderStep );
 
-    void initGBufferFBO();
-    void initializeGL();
-    void initDepthMap( SceneGraph &sceneGraph );
     void initPointLights();
-    void initPostProcessShader();
+
     void initLensFlares();
     void initParticles();
-    void generateQuad();
 
+    void initGBufferFBO();
+    void initBlurFBO();
+    void initDepthFBO( SceneGraph &sceneGraph );
+
+    void initPostProcessShader();
+    void initVBlurShader();
+    void initHBlurShader();
     void configureUniforms(SceneGraph &sceneGraph);
+
+
+    void generateQuad();
 
     void renderScene( SceneGraph &sceneGraph, float deltaTime );
     void renderOutline();
 
     void renderShadowMap(SceneGraph &sceneGraph);
     void renderGeometryData( SceneGraph &sceneGraph );
+
+    void renderBloom();
 
     void renderPostProcess();
 
@@ -91,7 +103,6 @@ public:
     const CubeMap &getSkybox() const;
     void setSkybox(const CubeMap &newSkybox);
 
-    uint shadowMapTex() const;
 };
 
 #endif // RENDERINGENGINE_H

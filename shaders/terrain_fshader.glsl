@@ -5,6 +5,7 @@
 
 
 uniform sampler2D texture0;
+uniform sampler2D texture1;
 
 uniform vec3 meshColor;
 
@@ -12,6 +13,7 @@ uniform vec3 meshColor;
 uniform vec3 cameraPosition;
 
 in vec3 v_pos;
+in vec3 viewPos;
 flat in vec3 v_normal;
 in vec2 v_texcoord;
 in vec4 v_lightSpacePos;
@@ -76,10 +78,15 @@ float shadowCalculation(vec4 fragPosLightSpace)
 void main()
 {
     vec4 color;
+
     vec4 rockColor  = texture( texture0, v_texcoord);
-    vec4 grassColor = texture( texture0,v_texcoord);
+    vec4 grassColor = texture( texture1,v_texcoord);
     vec4 snowColor  = texture( texture0, v_texcoord);
-    float closestDepth = texture(texture0, v_texcoord).r;
+
+    vec3 xTangent = dFdx( viewPos );
+    vec3 yTangent = dFdy( viewPos );
+    vec3 faceNormal = normalize( cross( xTangent, yTangent ) );
+
 
     if ( height <0.6)
         color = grassColor;
@@ -87,20 +94,20 @@ void main()
         color = rockColor;
     else
         color = snowColor;
-    color = vec4(0.80);
+    color = mix( rockColor, grassColor, 0.5);
     vec3 lightDir = normalize(-directionalLight.direction);
 
-    vec3 lambertian =  0.4 * max( 0.0, dot( lightDir, normalize(v_normal)  ) ) * vec3( 1.0 ) ;
+    vec3 lambertian =  0.4 * max( 0.0, dot( lightDir, normalize(faceNormal)  ) ) * vec3( 1.0 ) ;
 
-    vec3 r = normalize( reflect ( -lightDir, normalize( v_normal ) ) );
+    vec3 r = normalize( reflect ( -lightDir, normalize( faceNormal ) ) );
     vec3 v = normalize( cameraPosition - v_pos );
     vec3 specular =  0.2 * pow( max( 0.0, dot( r, v ) ), 20.0 ) * vec3( 1.0 ) ;
 
     float shadow = 0.0;
 
-    vec3 ambient = 0.4 * color.xyz;
+    vec3 ambient =  0.6 * color.xyz;
 
-    gl_FragColor = vec4( vec3(rockColor), 1.0);
+    gl_FragColor = vec4( ambient + lambertian , 1.0);
 
 }
 //! [0]

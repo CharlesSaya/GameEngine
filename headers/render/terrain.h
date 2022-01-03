@@ -63,7 +63,7 @@ class Terrain
 {
 public:
     Terrain();
-    Terrain( Texture & texture, float maxHeight );
+    Terrain( Texture & texture, float scale );
     virtual ~Terrain();
 
     float getHeight( QVector3D &position );
@@ -77,13 +77,15 @@ public:
     float getMinimumHeight();
     float getMaximumHeight();
 
+    float getScale() const;
+
 private:
     void initGeometry();
 
     int width, height;
-    float gridSize = 32.f;
+    float gridSize = 128.f;
     float gridSquareSize, gridNumber;
-
+    float scale;
 
     std::vector< VertexData > planeVertices;
     std::vector< GLuint > planeIndices;

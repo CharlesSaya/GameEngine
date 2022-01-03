@@ -62,8 +62,8 @@ public:
                             worldPos = go->getWorldPosition();
                             height = terrain.getHeight( worldPos );
                             if( worldPos.y() < height )
-                                go->setHeight(height );
-                            qDebug() << height ;
+                                go->setHeight(height * terrain.getScale() );
+                            qDebug() << height * terrain.getScale() ;
                             continue;
                         }
                     }

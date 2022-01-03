@@ -41,7 +41,7 @@ class Mesh : protected QOpenGLFunctions_3_3_Core{
  public:
     Mesh();
     Mesh( std::string filepath, std::vector<Texture> textures, Shader * shader, QVector3D meshColor, bool renderAABB = false );
-    Mesh( Terrain terrain, std::vector<Texture> textures, Shader * shader, QVector3D meshColor, bool renderAABB = false   );
+    Mesh( Terrain& terrain, std::vector<Texture> textures, Shader * shader, QVector3D meshColor, bool renderAABB = false   );
 
     void loadGeometry( std::string filepath );
     void initBuffers( uint lod );

@@ -13,14 +13,14 @@ Terrain::Terrain(){
 }
 
 //! [0]
-Terrain::Terrain( Texture &texture, float maxHeight )
+Terrain::Terrain( Texture &texture, float scale )
 
 {
     this->texture = texture;
 
-    this->width = 32;
-    this->height = 32;
-
+    this->width = 64;
+    this->height = 64;
+    this->scale = scale;
     this->gridSquareSize = gridSize / float( width - 1) ;
     this->gridNumber = gridSize / gridSquareSize ;
 
@@ -68,6 +68,11 @@ void Terrain::initGeometry()
         }
     }
 
+}
+
+float Terrain::getScale() const
+{
+    return scale;
 }
 
 float Terrain::getHeight( QVector3D &position ){

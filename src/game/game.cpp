@@ -22,7 +22,7 @@ void Game::initGame(){
     std::string bunnyObj  = "../GameEngine/objects/bunny/";
     std::string treeObj  = "../GameEngine/objects/tree/";
 
-    Texture heightMap = Texture( "../GameEngine/textures/desert.png", "heightMap" );
+    Texture heightMap = Texture( "../GameEngine/textures/heightmapHD.png", "heightMap" );
     Texture snow      = Texture( "../GameEngine/textures/snowrocks.png", "texture2" );
     Texture rock      = Texture( "../GameEngine/textures/rock.png", "texture1" );
     Texture rock2      = Texture( "../GameEngine/textures/rock.png", "texture0" );
@@ -47,8 +47,9 @@ void Game::initGame(){
 
     std::vector<Texture> terrainTextures;
     terrainTextures.push_back( heightMap );
+    terrainTextures.push_back( grass );
 
-    terrain = Terrain( heightMap, 1.0f );
+    terrain = Terrain( heightMap, 10 );
     Mesh terrainMesh = Mesh( terrain, terrainTextures, terrainShader, white, false );
     MeshRenderer * terrainRenderer = new MeshRenderer( terrainMesh, this );
     ColliderComponent * terrainCollider = new ColliderComponent( this );
@@ -78,7 +79,9 @@ void Game::initGame(){
     connect( this, &Game::sendMouseWheel, playerComponent, &PlayerComponent::wheelScrolled );
 
     playerGO  = new GameObjectPlayer( "Player" , playerRenderer, playerMove, playerPhysics, playerCollider, playerComponent );
+    playerGO->scale(  QVector3D(0.1, 0.1, 0.1) );
     playerGO->move(  QVector3D(0., 30., -0. ) );
+
 
     this->goPlayers.push_back( playerGO );
 
@@ -135,7 +138,7 @@ void Game::initGame(){
 
     QVector3D cameraPosition = QVector3D();
     QVector3D cameraTarget   = playerGO->getWorldPosition();
-    const qreal zNear = .01, zFar = 1000.0, fov = 80.0;
+    const qreal zNear = .01, zFar = 1000.0, fov = 70.0;
     camera = new CameraComponent( cameraPosition, cameraTarget, fov, zNear, zFar );
     MoveComponent * cameraMove = new MoveComponent( terrain, this );
     PhysicsComponent * cameraPhysics = new PhysicsComponent( physicsEngine, this );
