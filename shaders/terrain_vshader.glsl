@@ -24,7 +24,7 @@ void main()
 {
     float h = texture( heightMap,  a_texcoord ).r * 10.;
 
-    vec4 position = vec4( a_position, 1.0) + vec4( 0.0, h , 0.0,  0.0 ) ;
+    vec4 position = vec4( a_position, 1.0) + vec4( 0.0, h*10 , 0.0,  0.0 ) ;
     vec4 worldPosition = model * position;
 
     //out

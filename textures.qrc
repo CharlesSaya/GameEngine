@@ -32,6 +32,16 @@
         <file>textures/lensFlare/tex7.png</file>
         <file>textures/lensFlare/tex8.png</file>
         <file>textures/lensFlare/tex9.png</file>
+        <file>textures/terrainBendMap.png</file>
+        <file>textures/snowTexture.png</file>
+        <file>textures/sandTexture.png</file>
+        <file>textures/rockTexture.png</file>
+        <file>textures/plateauTexture.png</file>
+        <file>textures/hillTexture.png</file>
+        <file>textures/heightmapTerrain.png</file>
+        <file>textures/blendmapTop.png</file>
+        <file>textures/blendmapMiddle.png</file>
+        <file>textures/blendmapBottom.png</file>
         <file>textures/terrainHeightMap4096.png</file>
         <file>textures/heightmapHD.png</file>
     </qresource>

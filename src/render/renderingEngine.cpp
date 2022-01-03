@@ -424,9 +424,9 @@ void RenderingEngine::renderPostProcess()
 
 void RenderingEngine::renderScene( SceneGraph &sceneGraph,  float deltaTime ){
 
-    renderShadowMap(sceneGraph);
-    renderGeometryData(sceneGraph);
-    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+        renderShadowMap(sceneGraph);
+        renderGeometryData(sceneGraph);
+        glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 //    configureUniforms( sceneGraph );
 //    sceneGraph.render( mainCamera );
@@ -446,20 +446,22 @@ void RenderingEngine::renderScene( SceneGraph &sceneGraph,  float deltaTime ){
 //    // render skybox
     skybox.render( mainCamera, QMatrix4x4() );
 
-    // render particles
-    particleGenerator.update( deltaTime );
-    particleGenerator.render( particleShader );
+    //    // render skybox
+//        skybox.render( mainCamera, QMatrix4x4() );
 
 //     render lens flare effect
     glDisable(GL_DEPTH_TEST);
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    //    // render lens flare effect
+        glDisable(GL_DEPTH_TEST);
 
-    flareGenerator.render( 1.0f, flareShader );
+    //    glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
-    glDisable(GL_BLEND);
-    glEnable(GL_DEPTH_TEST);
+        flareGenerator.render( 1.0f, flareShader );
+
+        glDisable(GL_BLEND);
+        glEnable(GL_DEPTH_TEST);
 
 }
 

@@ -22,11 +22,25 @@ void Game::initGame(){
     std::string bunnyObj  = "../GameEngine/objects/bunny/";
     std::string treeObj  = "../GameEngine/objects/tree/";
 
-    Texture heightMap = Texture( "../GameEngine/textures/heightmapHD.png", "heightMap" );
-    Texture snow      = Texture( "../GameEngine/textures/snowrocks.png", "texture2" );
-    Texture rock      = Texture( "../GameEngine/textures/rock.png", "texture1" );
-    Texture rock2      = Texture( "../GameEngine/textures/rock.png", "texture0" );
-    Texture grass     = Texture( "../GameEngine/textures/grass.png", "texture0" );
+    Texture heightMap = Texture( "../GameEngine/textures/heightmapTerrain.png", "heightMap" );
+    Texture blendMapTop = Texture( "../GameEngine/textures/blendmapTop.png", "blendmapTop" );
+    Texture blendMapMiddle = Texture( "../GameEngine/textures/blendmapMiddle.png", "blendmapMiddle" );
+    Texture blendMapBottom = Texture( "../GameEngine/textures/blendmapBottom.png", "blendmapBottom" );
+//    Texture snow      = Texture( "../GameEngine/textures/snowrocks.png", "texture2" );
+//    Texture rock      = Texture( "../GameEngine/textures/rock.png", "texture1" );
+//    Texture rock2      = Texture( "../GameEngine/textures/rock.png", "texture0" );
+//    Texture grass     = Texture( "../GameEngine/textures/grass.png", "texture0" );
+
+
+    Texture snow      = Texture( "../GameEngine/textures/snowTexture.png", "snowTexture" );
+    Texture rock      = Texture( "../GameEngine/textures/rockTexture.png", "rockTexture" );
+
+    Texture grass      = Texture( "../GameEngine/textures/grassTexture.png", "grassTexdture" );
+    Texture plateau      = Texture( "../GameEngine/textures/plateauTexture.png", "plateauTexture" );
+
+    Texture sand      = Texture( "../GameEngine/textures/sandTexture.png", "sandTexture" );
+    Texture hill      = Texture( "../GameEngine/textures/hillTexture.png", "hillTexture" );
+
 
     Texture skyboxBottom = Texture( "../GameEngine/textures/skybox/MusicHall/py.png", "skyboxBottom" );
     Texture skyboxTop    = Texture( "../GameEngine/textures/skybox/MusicHall/ny.png", "skyboxTop"    );
@@ -47,7 +61,15 @@ void Game::initGame(){
 
     std::vector<Texture> terrainTextures;
     terrainTextures.push_back( heightMap );
+    terrainTextures.push_back( blendMapTop );
+    terrainTextures.push_back( blendMapMiddle );
+    terrainTextures.push_back( blendMapBottom );
+    terrainTextures.push_back( snow );
+    terrainTextures.push_back( rock );
     terrainTextures.push_back( grass );
+    terrainTextures.push_back( plateau );
+    terrainTextures.push_back( sand );
+    terrainTextures.push_back( hill );
 
     terrain = Terrain( heightMap, 10 );
     Mesh terrainMesh = Mesh( terrain, terrainTextures, terrainShader, white, false );
@@ -60,7 +82,7 @@ void Game::initGame(){
     // Player Game Object  ------------------------------------------------------------------------------
 
     std::vector<Texture> playerTextures;
-    playerTextures.push_back( rock2 );
+//    playerTextures.push_back( rock );
 
     Mesh playerMesh = Mesh( bunnyObj ,playerTextures, shader, white, false );
 
@@ -87,7 +109,7 @@ void Game::initGame(){
 
     // Sphere
     std::vector<Texture> sphereTextures;
-    sphereTextures.push_back( grass );
+//    sphereTextures.push_back( grass );
 
     Mesh sphereMesh = Mesh( sphereObj, sphereTextures, shader, white, false );
     MeshRenderer * sphereRenderer = new MeshRenderer( sphereMesh, this  );
