@@ -31,10 +31,12 @@ bool PlayerComponent::telekinesisActivated(){
 }
 
 void PlayerComponent::telekinesis(  GameObject * player, GameObject * go ){
+    GameObjectMesh *child =  dynamic_cast<GameObjectMesh *>(go);
     if ( leftMousePressed ){
-        if(!useTelekinesis && dynamic_cast<GameObjectMesh *>(go)->getIsMovable()){
+        if(!useTelekinesis && child->getIsMovable()){
             linkedGO = go;
             useTelekinesis = true;
+            child->setUseGravity(false);
             if( go->getParent()->getName() != player->getName()){
                 go->setParent( player );
             }
@@ -44,11 +46,12 @@ void PlayerComponent::telekinesis(  GameObject * player, GameObject * go ){
 
 void PlayerComponent::attractAndPush(GameObject * go ){
         GameObject * child = go->getChildren()[go->getChildren().size()-1];
-           if(wheelDown && child->getWorldPosition().length() - go->getWorldPosition().length() > minRange) {
-               child->attract(0.05f);
+
+           if(wheelDown && (child->getWorldPosition() - go->getWorldPosition()).length() > minRange) {
+               child->attract(0.50 );
            }
-           else if(wheelUp&& child->getWorldPosition().length() - go->getWorldPosition().length() < maxRange){
-               child->push(0.05f);
+           else if(wheelUp&& (child->getWorldPosition() - go->getWorldPosition()).length() < maxRange){
+               child->push(0.50f);
            }
 
     }
@@ -74,10 +77,10 @@ void PlayerComponent::releasedInput( QMouseEvent * key ){
         useTelekinesis = false;
         if( linkedGO != nullptr ){
             linkedGO->setLastParent();
+            dynamic_cast<GameObjectMesh *>(linkedGO)->setUseGravity(true);
             linkedGO = nullptr;
         }
     }
-
 }
 
 void PlayerComponent::wheelScrolled( QWheelEvent * scroll ){

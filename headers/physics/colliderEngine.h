@@ -63,7 +63,7 @@ public:
                             height = terrain.getHeight( worldPos );
                             if( worldPos.y() < height )
                                 go->setHeight(height * terrain.getScale() );
-                            qDebug() << height * terrain.getScale() ;
+//                            qDebug() << height * terrain.getScale() ;
                             continue;
                         }
                     }

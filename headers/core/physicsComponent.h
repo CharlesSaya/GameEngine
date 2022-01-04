@@ -20,6 +20,7 @@ public:
     PhysicsComponent(  PhysicsEngine &physicsEngine, QObject * parent = 0 );
 
     void updatePhysics( float step, Transform & transform );
+    void updatePhysicsMesh( float step, Transform & transform );
     void stop();
     PhysicsEngine &physicsEngine;
 

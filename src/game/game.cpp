@@ -114,10 +114,11 @@ void Game::initGame(){
     Mesh sphereMesh = Mesh( sphereObj, sphereTextures, shader, white, false );
     MeshRenderer * sphereRenderer = new MeshRenderer( sphereMesh, this  );
     ColliderComponent * sphereCollider = new ColliderComponent( this );
+    PhysicsComponent * spherePhysics = new PhysicsComponent(physicsEngine, this );
 
-    sphereGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider, true, terrainGO );
+    sphereGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider,spherePhysics, true, terrainGO );
     sphereGO->scale( 1 );
-    sphereGO->move( QVector3D(2., 2., -0.) );
+    sphereGO->move(  QVector3D(0., 200., -0. ));
 
     this->goMeshes.push_back( sphereGO );
 
@@ -167,7 +168,7 @@ void Game::initGame(){
     ColliderComponent * cameraCollider = new ColliderComponent( this );
     connect( this, &Game::sendMouseMoved, cameraMove, &MoveComponent::mouseMoveEvent );
     mainCameraGO = new GameObjectCamera("Main camera",camera,cameraMove,cameraPhysics,cameraCollider, playerGO  );
-    mainCameraGO->move(0.0f,0.0f,0.0f);
+    mainCameraGO->move(0.0f,0.0f,2.0f);
     mainCameraGO->updateCameraPosition();
     this->goCameras.push_back(mainCameraGO);
     renderingEngine.setMainCamera( mainCameraGO );

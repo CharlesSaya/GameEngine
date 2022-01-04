@@ -80,22 +80,31 @@ void SceneGraph::update( float fixedStep ){
     // update player physics
     for( GameObjectPlayer * go : this->goPlayers){
         this->updatePhysics( go, fixedStep );
-        go->rotate(go->getMoveComponent()->getRotationY());
-
+        go->rotate( go->getMoveComponent()->getRotationY()* go->getMoveComponent()->getRotationX().inverted() );
     }
 
     // update main camera position
     for( GameObjectCamera * goC : this->goCameras){
-        float angleX = goC->getMoveComponent()->getRotationX().toEulerAngles()[0];
+        QQuaternion parentRotationX = dynamic_cast<GameObjectPlayer*>(goC->getParent())->getMoveComponent()->getRotationX();
+        float angleX = parentRotationX.toEulerAngles()[0];
 
-        QQuaternion parentRotation = dynamic_cast<GameObjectPlayer*>(goC->getParent())->getMoveComponent()->getRotationY();
-        float angleY = parentRotation.toEulerAngles()[1];
+        QQuaternion parentRotationY = dynamic_cast<GameObjectPlayer*>(goC->getParent())->getMoveComponent()->getRotationY();
+        float angleY = parentRotationY.toEulerAngles()[1];
+
         float calibration = 90.0f;
 
         goC->getCameraComponent()->rotate(-angleX, -angleY - calibration);
         goC->updateCameraPosition();
     }
 
+    for( GameObjectMesh * goMesh : this->goMeshes){
+        if(goMesh->getIsMovable() && goMesh->getUseGravity()){
+            qDebug()<< goMesh->getTransform()->getPosition();
+             this->updatePhysicsMesh( goMesh, fixedStep );
+        }
+
+
+    }
     // update BVH
     updateALLBVH();
 

@@ -10,8 +10,8 @@ void PhysicsComponent::updatePhysics( float step, Transform & transform ){
     move(transform);
     acceleration = - physicsEngine.getDamp() * velocity;
 
-    if ( !resting )
-        acceleration += physicsEngine.getGravity();
+//    if ( !resting )
+//        acceleration += physicsEngine.getGravity();
 
     acceleration /= mass;
 
@@ -27,8 +27,31 @@ void PhysicsComponent::updatePhysics( float step, Transform & transform ){
         transform.applyTranslation( meanSpeed * step );
     }
     velocity = newVelocity;
-
 }
+
+void PhysicsComponent::updatePhysicsMesh( float step, Transform & transform ){
+
+    acceleration = - physicsEngine.getDamp()
+            * velocity;
+
+    if ( !resting )
+        acceleration += physicsEngine.getGravity();
+
+    acceleration /= mass;
+
+    QVector3D newVelocity  = velocity + acceleration * step;
+
+    QVector3D meanSpeed = (velocity + newVelocity) / 2.0 ;
+
+    if( meanSpeed.length() > this->maxSpeedWalk )
+        meanSpeed = this->maxSpeedWalk * meanSpeed.normalized();
+
+    if ( meanSpeed.length() != 0.0f ){
+        transform.applyTranslation( meanSpeed * step );
+    }
+    velocity = newVelocity;
+}
+
 
 void PhysicsComponent::move(Transform & transform){
     for( uint i : inputsMoves ){

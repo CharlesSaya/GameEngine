@@ -54,8 +54,8 @@ private:
 
     GameObject * linkedGO = nullptr ;
 
-    float minRange = 1.0f;
-    float maxRange = 20.0f;
+    float minRange = 5.0f;
+    float maxRange = 40.0f;
 
     bool leftMousePressed = false;
     bool rightMousePressed = false;

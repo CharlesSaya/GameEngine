@@ -35,6 +35,7 @@ void GameObject::rotate( QVector3D axis, float angle ){
     this->transform->applyRotation( QQuaternion::fromAxisAndAngle( axis, angle ) );
 }
 
+
 void GameObject::rotate( QQuaternion rotation ){
     this->transform->applyRotation(rotation);
 }
@@ -74,8 +75,12 @@ void GameObject::setParent(GameObject *newParent){
     parent->removeChild( this );
     lastParent = parent;
     parent = newParent;
-    QVector3D invertTrans = newParent->getModel().inverted() * trans ;
+    QVector3D scaleParent = parent->getTransform()->getScale();
+    QVector3D invertScale = QVector3D(1/scaleParent.x(),1/scaleParent.y(), 1/scaleParent.z());
+    getTransform()->applyScale(invertScale);
+    QVector3D invertTrans =  newParent->getModel().inverted()* trans  ;
     transform->setPosition(invertTrans);
+
 
 }
 
@@ -85,6 +90,7 @@ void GameObject::setLastParent(){
     lastParent->addChild( this );
     parent = lastParent;
     QVector3D invertTrans = parent->getModel().inverted() * trans ;
+    getTransform()->applyScale(parent->getTransform()->getScale());
     transform->setPosition( invertTrans );
     lastParent = nullptr;
 }

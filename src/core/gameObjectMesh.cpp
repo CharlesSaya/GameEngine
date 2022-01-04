@@ -14,9 +14,26 @@ GameObjectMesh::GameObjectMesh( std::string name, MeshRenderer * meshRenderer, C
         parent->addChild( this );
 }
 
+GameObjectMesh::GameObjectMesh( std::string name, MeshRenderer * meshRenderer, ColliderComponent * colliderComponent,PhysicsComponent *physicsComponent, bool isMovable, GameObject * parent  ){
+
+    this->name = name;
+    this->meshRenderer = meshRenderer;
+    this->colliderComponent = colliderComponent;
+    this->parent = parent;
+    this->transform = new Transform( this );
+    this->physicsComponent = physicsComponent;
+    initSignalsSlots();
+    this->isMovable = isMovable;
+
+    if ( parent != nullptr )
+        parent->addChild( this );
+}
+
+
 void GameObjectMesh::initSignalsSlots(){
     connect( transform, &Transform::transformed, this, &GameObjectMesh::hasTransformed );
     connect( this, &GameObjectMesh::updateAABB, meshRenderer, &MeshRenderer::updateAABB );
+
 }
 
 void GameObjectMesh::hasTransformed(){
@@ -24,6 +41,22 @@ void GameObjectMesh::hasTransformed(){
     tr.translate( this->transform->getPosition() );
     sc.scale( this->transform->getScale());
     emit updateAABB(  tr * sc );
+}
+
+void GameObjectMesh::setUseGravity(bool newUseGravity)
+{
+    useGravity = newUseGravity;
+}
+
+bool GameObjectMesh::getUseGravity() const
+{
+    return useGravity;
+}
+
+
+PhysicsComponent *GameObjectMesh::getPhysicsComponent() const
+{
+    return physicsComponent;
 }
 
 bool GameObjectMesh::getIsMovable() const

@@ -55,6 +55,11 @@ public:
         go->getPhysicsComponent()->updatePhysics( step, *go->getTransform() );
     }
 
+    template<class Movable>
+    void updatePhysicsMesh( Movable * go, float step ){
+        go->getPhysicsComponent()->updatePhysicsMesh( step, *go->getTransform() );
+    }
+
     template<class Renderable>
     void renderMesh( Renderable * go,  GameObjectCamera * camera, Shader * shader ){
          go->getMeshRenderer()->renderMesh( *go->getTransform(), go->getModel(), camera->getCameraComponent(), shader );
