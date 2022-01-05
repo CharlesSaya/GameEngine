@@ -8,7 +8,7 @@ RenderingEngine::RenderingEngine( float renderStep ){
     this->step = renderStep;
     this->context = QOpenGLContext::currentContext();
 
-    directionalLight = DirectionalLight(QVector3D( 0.0, 20.0, -5.0), white);
+    directionalLight = DirectionalLight(QVector3D( 0.0, 100.0, -5.0), white);
 
     initPointLights();
 
@@ -112,7 +112,6 @@ void RenderingEngine::generateQuad(){
          glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
 
      }
-
 
 }
 
@@ -252,6 +251,7 @@ void RenderingEngine::initPostProcessShader(){
     postProcessShader->loadDirectionalLight(directionalLight);
     postProcessShader->setUniformValue( "cameraPosition", mainCamera->getCameraComponent()->getCameraPosition() );
     postProcessShader->setUniformValue( "lightSpaceMatrix", cameraOrtho->getProjection() * cameraOrtho->getViewMatrix() );
+    postProcessShader->setUniformValue( "view", mainCamera->getCameraComponent()->getViewMatrix() );
 
     glActiveTexture( GL_TEXTURE0 );
     glBindTexture( GL_TEXTURE_2D, gDiffuse );
@@ -316,6 +316,7 @@ void RenderingEngine::configureUniforms( SceneGraph &sceneGraph ){
 void RenderingEngine::renderBloom(){
     initBlurFBO();
     initVBlurShader();
+
     // Render Vertical blur
 
     glViewport(0, 0, screenWidth, screenHeight);
@@ -328,11 +329,11 @@ void RenderingEngine::renderBloom(){
         glEnableVertexAttribArray(1);
         glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 
-
         glBindVertexArray(quadVAO);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         glBindVertexArray(0);
-//    // Render Horizontal blur
+
+    // Render Horizontal blur
 
     blurHShader->useShaderProgram();
 
@@ -357,6 +358,7 @@ void RenderingEngine::renderBloom(){
 
 void RenderingEngine::renderShadowMap(SceneGraph &sceneGraph)
 {
+
     initDepthFBO( sceneGraph );
 
     shadowShader->useShaderProgram();
@@ -408,9 +410,7 @@ void RenderingEngine::renderPostProcess()
     //    postProcessShader->getProgram().enableAttributeArray(texcoordLocation);
     //    postProcessShader->getProgram().setAttributeBuffer(texcoordLocation, GL_FLOAT, offset , 2, sizeof(VertexData));
 
-
     initPostProcessShader();
-
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
@@ -424,9 +424,9 @@ void RenderingEngine::renderPostProcess()
 
 void RenderingEngine::renderScene( SceneGraph &sceneGraph,  float deltaTime ){
 
-        renderShadowMap(sceneGraph);
-        renderGeometryData(sceneGraph);
-        glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    renderShadowMap(sceneGraph);
+    renderGeometryData(sceneGraph);
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 //    configureUniforms( sceneGraph );
 //    sceneGraph.render( mainCamera );
@@ -434,7 +434,7 @@ void RenderingEngine::renderScene( SceneGraph &sceneGraph,  float deltaTime ){
     // render the final scene by adding the differents FBO textures on a quad
     generateQuad();
 
-    renderBloom();
+//    renderBloom();
 
     renderPostProcess();
 
@@ -443,28 +443,21 @@ void RenderingEngine::renderScene( SceneGraph &sceneGraph,  float deltaTime ){
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, context->defaultFramebufferObject());
     glBlitFramebuffer( 0, 0, screenWidth, screenHeight, 0, 0, screenWidth, screenHeight, GL_DEPTH_BUFFER_BIT, GL_NEAREST );
 
-//    // render skybox
+    // render skybox
     skybox.render( mainCamera, QMatrix4x4() );
 
-    //    // render skybox
-//        skybox.render( mainCamera, QMatrix4x4() );
-
-//     render lens flare effect
+    // render lens flare effect
     glDisable(GL_DEPTH_TEST);
 
-    //    // render lens flare effect
-        glDisable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
-    //    glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    flareGenerator.render( 1.0f, flareShader );
 
-        flareGenerator.render( 1.0f, flareShader );
-
-        glDisable(GL_BLEND);
-        glEnable(GL_DEPTH_TEST);
+    glDisable(GL_BLEND);
+    glEnable(GL_DEPTH_TEST);
 
 }
-
 
 GameObjectCamera *RenderingEngine::getMainCamera() const
 {
@@ -476,7 +469,6 @@ void RenderingEngine::setMainCamera(GameObjectCamera *newMainCamera)
     mainCamera = newMainCamera;
     particleGenerator.setCamera( mainCamera );
     flareGenerator.setCamera( mainCamera );
-
 }
 
 const CubeMap &RenderingEngine::getSkybox() const

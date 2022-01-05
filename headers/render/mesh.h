@@ -38,16 +38,19 @@ class Mesh : protected QOpenGLFunctions_3_3_Core{
     Shader * shader;
     AABB bBox;
     bool renderAABB;
+    bool terrain;
  public:
     Mesh();
     Mesh( std::string filepath, std::vector<Texture> textures, Shader * shader, QVector3D meshColor, bool renderAABB = false );
-    Mesh( Terrain& terrain, std::vector<Texture> textures, Shader * shader, QVector3D meshColor, bool renderAABB = false   );
+    Mesh( Terrain& terrain, std::vector<Texture> textures, Shader * shader, QVector3D meshColor, bool renderAABB = false );
 
     void loadGeometry( std::string filepath );
     void initBuffers( uint lod );
     void drawMesh( float distance, Shader * gShader );
     void drawAABB( Shader * shader );
     uint getLod( float distance );
+
+    bool isTerrain();
 
     void updateAABB( const QMatrix4x4& model  ) ;
 
@@ -63,12 +66,14 @@ class Mesh : protected QOpenGLFunctions_3_3_Core{
     void bindTextures( Shader * shader );
     void bindShadowTexture();
     void unbindTextures();
+    void unbindShadowTexture();
 
     AABB &getAABB();
     bool getRenderAABB() const;
 
     void setShadowTexture(uint m_shadowMapTex);
 
+    void setTerrain(bool newTerrain);
 };
 
 #endif // MESH_H

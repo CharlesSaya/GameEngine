@@ -13,25 +13,21 @@ Terrain::Terrain(){
 }
 
 //! [0]
-Terrain::Terrain( Texture &texture, float scale )
+Terrain::Terrain( float gridSize, float scale, std::string file, Texture & heightmap )
 
 {
-    this->texture = texture;
+    this->heightmap = heightmap;
+    this->gridSize = gridSize;
+    this->scale  = scale;
 
-    this->width = 64;
-    this->height = 64;
-    this->scale = scale;
+    this->terrainOBJ = file;
+
     this->gridSquareSize = gridSize / float( width - 1) ;
-    this->gridNumber = gridSize / gridSquareSize ;
+    this->gridNumber     = gridSize / gridSquareSize ;
 
-    initGeometry();
-
+//    initGeometry();
 }
 
-Terrain::~Terrain()
-{
-
-}
 
 void Terrain::initGeometry()
 {
@@ -70,13 +66,29 @@ void Terrain::initGeometry()
 
 }
 
+const std::string &Terrain::getOBJFilename() const
+{
+    return terrainOBJ;
+}
+
+void Terrain::setWidth(int newWidth)
+{
+    width = newWidth;
+}
+
+void Terrain::setHeight(int newHeight)
+{
+    height = newHeight;
+}
+
+
 float Terrain::getScale() const
 {
     return scale;
 }
 
 float Terrain::getHeight( QVector3D &position ){
-    QImage &im = this->texture.getImage();
+    QImage &im = this->heightmap.getImage();
 
     QVector3D relativePosition = position - QVector3D( -gridSize/2.0, 0.f, gridSize/2.0 );
 
@@ -101,13 +113,10 @@ float Terrain::getHeight( QVector3D &position ){
     float posX = fmod(relativePosition.x(), gridSquareSize) / gridSquareSize;
     float posZ = fmod(relativePosition.z(), gridSquareSize) / gridSquareSize;
 
-    if ( posX < 1. - posZ ){
-
+    if ( posX < 1. - posZ )
         return baricentricHeight( QVector3D( 0., hA, 0. ),  QVector3D( 1., hB, 0. ),  QVector3D( 0., hD, 1. ), QVector2D( posX, posZ ) );
-
-    }else{
+    else
         return baricentricHeight( QVector3D( 1., hD, 0. ),  QVector3D( 1., hB, 1. ),  QVector3D( 0., hC, 1. ), QVector2D( posX, posZ ) );
-    }
 
 }
 
@@ -125,26 +134,26 @@ float Terrain::baricentricHeight(  QVector3D v0, QVector3D v1, QVector3D v2, QVe
 
 float Terrain::getMaximumHeight(){
     float maxHeight = -__FLT_MAX__;
-    QImage &im = this->texture.getImage();
+    QImage &im = this->heightmap.getImage();
     for( int i = 0; i < this->height; i++ ){
         for( int j = 0; j < this->width; j++){
             if( im.pixelColor( j, i ).blue() > maxHeight )
                 maxHeight = im.pixelColor( j, i ).blue() ;
         }
     }
-    return maxHeight/255.0;
+    return maxHeight/255.0 * scale;
 }
 
 float Terrain::getMinimumHeight(){
     float minHeight = __FLT_MAX__;
-    QImage &im = this->texture.getImage();
+    QImage &im = this->heightmap.getImage();
     for( int i = 0; i < this->height; i++ ){
         for( int j = 0; j < this->width; j++){
             if( im.pixelColor( j, i ).blue() < minHeight )
                 minHeight = im.pixelColor( j, i ).blue() ;
         }
     }
-    return minHeight/255.0;
+    return minHeight/255.0  * scale ;
 }
 
 std::vector<GLuint> &Terrain::getPlaneIndices()

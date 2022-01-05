@@ -8,6 +8,8 @@ Texture::Texture(  std::string file, std::string location ){
     this->image = QImage( file.c_str() ).mirrored();
     this->location = location;
     this->initTexture();
+    this->context = QOpenGLContext::currentContext();
+    glFuncs = this->context->versionFunctions<QOpenGLFunctions_3_3_Core>();
 }
 
 
@@ -20,11 +22,16 @@ void Texture::initTexture(){
 }
 
 void Texture::bindTexture( uint textureUnit, Shader * shader ) const {
-    this->texture->bind( textureUnit );
+
+    glFuncs->glActiveTexture( GL_TEXTURE0 + textureUnit );
+    this->texture->bind();
+//    qDebug() <<  GL_TEXTURE0 + textureUnit  << this->location.c_str();
     shader->setUniformValue( this->location, textureUnit );
+
 }
 
-void Texture::unbindTexture() const{
+void Texture::unbindTexture( uint textureUnit ) const{
+    glFuncs->glActiveTexture( GL_TEXTURE0 + textureUnit );
     this->texture->release();
 }
 

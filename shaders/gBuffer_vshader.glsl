@@ -9,6 +9,7 @@ in vec3 a_normal;
 in vec2 a_texcoord;
 
 out vec4 v_pos;
+out vec4 v_viewPos;
 out vec3 v_normal;
 out vec2 v_texcoord;
 
@@ -23,7 +24,7 @@ void main()
     v_pos           = worldPosition;
     v_texcoord      = a_texcoord;
     v_normal        = transpose(inverse(mat3(model))) *  a_normal;
-
+    v_viewPos       = view * worldPosition;
     gl_Position     = projection * view * worldPosition;
 
 }

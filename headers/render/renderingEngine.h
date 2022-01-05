@@ -15,7 +15,7 @@
 #include "headers/render/particleGenerator.h"
 #include "headers/render/flareGenerator.h"
 #include "headers/render/pointLight.h"
-#include "headers/render/vertexData.h".h"
+#include "headers/render/vertexData.h"
 
 
 #include "headers/render/shader.h"

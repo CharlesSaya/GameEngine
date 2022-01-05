@@ -63,8 +63,7 @@ class Terrain
 {
 public:
     Terrain();
-    Terrain( Texture & texture, float scale );
-    virtual ~Terrain();
+    Terrain( float gridSize, float scale, std::string file, Texture & heightmap );
 
     float getHeight( QVector3D &position );
     float baricentricHeight( QVector3D v0, QVector3D v1, QVector3D v2, QVector2D pos );
@@ -79,6 +78,12 @@ public:
 
     float getScale() const;
 
+    void setHeight(int newHeight);
+
+    void setWidth(int newWidth);
+
+    const std::string &getOBJFilename() const;
+
 private:
     void initGeometry();
 
@@ -90,7 +95,8 @@ private:
     std::vector< VertexData > planeVertices;
     std::vector< GLuint > planeIndices;
     std::map< int, std::vector<int>> map;
-    Texture texture;
+    Texture heightmap;
+    std::string terrainOBJ;
 };
 
 #endif // TERRAIN_H

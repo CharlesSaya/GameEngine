@@ -81,6 +81,9 @@ public:
 
 private:
     float deltaTime;
+
+    const qreal zNear = .01, zFar = 10000.0, fov = 80.0;
+
     CameraComponent * camera;
     SceneGraph sceneGraph;
 

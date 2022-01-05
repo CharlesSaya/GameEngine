@@ -25,6 +25,7 @@ uniform sampler2D positionTexture;
 uniform sampler2D bloomTexture;
 
 uniform mat4 lightSpaceMatrix;
+uniform mat4 view;
 
 uniform PointLight pointLights[1];
 uniform DirectionalLight directionalLight;
@@ -109,17 +110,24 @@ vec3 colorPointLight(PointLight light, vec3 normal, vec3 pos, vec4 lightSpacePos
 //! [0]
 void main()
 {
-    vec3 normal        = normalize( texture( normalTexture, v_texcoord.xy ).rgb);
+
+
     vec4 pos           = texture( positionTexture, v_texcoord.xy );
     vec4 lightSpacePos = lightSpaceMatrix * pos;
     vec3 viewDir       = normalize( cameraPosition - pos.rgb);
+    vec3 normal        = normalize( texture( normalTexture, v_texcoord.xy ).rgb);
+
+    vec3 xTangent = vec4(dFdx( view * pos )).xyz;
+    vec3 yTangent = vec4(dFdy( view * pos )).xyz;
+    vec3 faceNormal = normalize( cross( xTangent, yTangent ) );
 
     vec3 color = colorDirectionalLight( directionalLight, normal, pos.rgb, lightSpacePos );
 
     for(int i = 0; i < 1; i++)
         color += colorPointLight( pointLights[i], normal, pos.rgb, lightSpacePos);
+    vec4 colsr = texture( diffuseTexture, v_texcoord );
 
-    gl_FragColor = vec4( color + texture( bloomTexture, v_texcoord ).xyz, 1.0 );
+    gl_FragColor = vec4( color.xyz, 1.0 );
 
 }
 //! [0]

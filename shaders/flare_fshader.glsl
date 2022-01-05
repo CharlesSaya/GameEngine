@@ -10,5 +10,5 @@ void main()
 {
     vec4 texColor = texture(flare, v_texcoord);
 
-    gl_FragColor =  texColor* brightness;
+    gl_FragColor =  texColor * brightness;
 }

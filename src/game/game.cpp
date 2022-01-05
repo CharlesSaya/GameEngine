@@ -21,26 +21,11 @@ void Game::initGame(){
     std::string sphereObj = "../GameEngine/objects/sphere/";
     std::string bunnyObj  = "../GameEngine/objects/bunny/";
     std::string treeObj  = "../GameEngine/objects/tree/";
+    std::string terrainOBJ  = "../GameEngine/objects/terrain/";
 
-    Texture heightMap = Texture( "../GameEngine/textures/heightmapTerrain.png", "heightMap" );
-    Texture blendMapTop = Texture( "../GameEngine/textures/blendmapTop.png", "blendmapTop" );
-    Texture blendMapMiddle = Texture( "../GameEngine/textures/blendmapMiddle.png", "blendmapMiddle" );
-    Texture blendMapBottom = Texture( "../GameEngine/textures/blendmapBottom.png", "blendmapBottom" );
-//    Texture snow      = Texture( "../GameEngine/textures/snowrocks.png", "texture2" );
-//    Texture rock      = Texture( "../GameEngine/textures/rock.png", "texture1" );
-//    Texture rock2      = Texture( "../GameEngine/textures/rock.png", "texture0" );
-//    Texture grass     = Texture( "../GameEngine/textures/grass.png", "texture0" );
+    Texture treeSnow   = Texture( "../GameEngine/textures/T_Tree_winter", "snowTree" );
 
-
-    Texture snow      = Texture( "../GameEngine/textures/snowTexture.png", "snowTexture" );
-    Texture rock      = Texture( "../GameEngine/textures/rockTexture.png", "rockTexture" );
-
-    Texture grass      = Texture( "../GameEngine/textures/grassTexture.png", "grassTexdture" );
-    Texture plateau      = Texture( "../GameEngine/textures/plateauTexture.png", "plateauTexture" );
-
-    Texture sand      = Texture( "../GameEngine/textures/sandTexture.png", "sandTexture" );
-    Texture hill      = Texture( "../GameEngine/textures/hillTexture.png", "hillTexture" );
-
+    // Environment ------------------------------------------------------------------------------
 
     Texture skyboxBottom = Texture( "../GameEngine/textures/skybox/MusicHall/py.png", "skyboxBottom" );
     Texture skyboxTop    = Texture( "../GameEngine/textures/skybox/MusicHall/ny.png", "skyboxTop"    );
@@ -49,21 +34,28 @@ void Game::initGame(){
     Texture skyboxFront  = Texture( "../GameEngine/textures/skybox/MusicHall/nz.png", "skyboxFront"  );
     Texture skyboxBack   = Texture( "../GameEngine/textures/skybox/MusicHall/pz.png", "skyboxBack"   );
 
-    Texture treeSnow   = Texture( "../GameEngine/textures/T_Tree_winter", "snowTree" );
-
-    // Environment
-
     std::vector<Texture> skyboxTextures = { skyboxRight, skyboxBottom, skyboxFront, skyboxLeft, skyboxTop, skyboxBack };
-    cubemap = CubeMap( 50, skyboxShader, skyboxTextures );
+    cubemap = CubeMap( 15*64, skyboxShader, skyboxTextures );
     renderingEngine.setSkybox( cubemap );
 
     // Terrain Game Object ------------------------------------------------------------------------------
 
+    Texture heightMap = Texture( "../GameEngine/textures/heightmapTerrain.png", "heightMap" );
+
+
+    Texture snow    = Texture( "../GameEngine/textures/snowTexture.png", "tex0" );
+    Texture rock    = Texture( "../GameEngine/textures/rockTexture.png", "tex1" );
+    Texture grass   = Texture( "../GameEngine/textures/grassTexture.png", "tex2" );
+    Texture plateau = Texture( "../GameEngine/textures/plateauTexture.png", "tex3" );
+    Texture sand    = Texture( "../GameEngine/textures/sandTexture.png", "tex4" );
+    Texture hill    = Texture( "../GameEngine/textures/hillTexture.png", "tex5" );
+
+    Texture blendMapTop = Texture( "../GameEngine/textures/blendmapTop.png", "blendmapTop" );
+    Texture blendMapMiddle = Texture( "../GameEngine/textures/blendmapMiddle.png", "blendmapMiddle" );
+    Texture blendMapBottom = Texture( "../GameEngine/textures/blendmapBottom.png", "blendmapBottom" );
+
     std::vector<Texture> terrainTextures;
-    terrainTextures.push_back( heightMap );
-    terrainTextures.push_back( blendMapTop );
-    terrainTextures.push_back( blendMapMiddle );
-    terrainTextures.push_back( blendMapBottom );
+
     terrainTextures.push_back( snow );
     terrainTextures.push_back( rock );
     terrainTextures.push_back( grass );
@@ -71,20 +63,32 @@ void Game::initGame(){
     terrainTextures.push_back( sand );
     terrainTextures.push_back( hill );
 
-    terrain = Terrain( heightMap, 10 );
+    terrainTextures.push_back( blendMapTop );
+    terrainTextures.push_back( blendMapMiddle );
+    terrainTextures.push_back( blendMapBottom );
+
+    terrain = Terrain( 128, 15.0, terrainOBJ, heightMap );
     Mesh terrainMesh = Mesh( terrain, terrainTextures, terrainShader, white, false );
     MeshRenderer * terrainRenderer = new MeshRenderer( terrainMesh, this );
     ColliderComponent * terrainCollider = new ColliderComponent( this );
 
     terrainGO = new GameObjectMesh( "Terrain", terrainRenderer, terrainCollider, false );
+    terrainGO->scale( terrain.getScale() );
+    terrainGO->move( QVector3D( 64.0 * terrain.getScale(), 0.0, -64.0 * terrain.getScale() ) );
+
     this->goMeshes.push_back( terrainGO );
     colliderEngine.setTerrain( terrain );
+
     // Player Game Object  ------------------------------------------------------------------------------
 
-    std::vector<Texture> playerTextures;
-//    playerTextures.push_back( rock );
+    Texture sandP      = Texture( "../GameEngine/textures/sandTexture.png", "tex0" );
+    Texture grassP      = Texture( "../GameEngine/textures/snowrocks.png", "tex1" );
 
-    Mesh playerMesh = Mesh( bunnyObj ,playerTextures, shader, white, false );
+    std::vector<Texture> playerTextures;
+    playerTextures.push_back( sandP );
+    playerTextures.push_back( grassP );
+
+    Mesh playerMesh = Mesh( bunnyObj, playerTextures, shader, white, false );
 
     MeshRenderer * playerRenderer      = new MeshRenderer( playerMesh, this );
     MoveComponent * playerMove         = new MoveComponent( terrain, this );
@@ -104,12 +108,11 @@ void Game::initGame(){
     playerGO->scale(  QVector3D(0.1, 0.1, 0.1) );
     playerGO->move(  QVector3D(0., 30., -0. ) );
 
-
     this->goPlayers.push_back( playerGO );
 
     // Sphere
     std::vector<Texture> sphereTextures;
-//    sphereTextures.push_back( grass );
+    sphereTextures.push_back( grass );
 
     Mesh sphereMesh = Mesh( sphereObj, sphereTextures, shader, white, false );
     MeshRenderer * sphereRenderer = new MeshRenderer( sphereMesh, this  );
@@ -122,7 +125,8 @@ void Game::initGame(){
 
     this->goMeshes.push_back( sphereGO );
 
-    //Tree
+    // Trees  ------------------------------------------------------------------------------
+
     std::vector<Texture> treeTextures;
     treeTextures.push_back( treeSnow );
 
@@ -131,6 +135,7 @@ void Game::initGame(){
     QVector<GameObjectMesh*> listTree;
     int numberTree = 10;
     float x = -40.0f;
+
     for(int i =0 ; i< numberTree; i++){
         positionsTree.push_back(QVector3D(x,0.0f,0.0f));
         x+=8.0f;
@@ -141,40 +146,35 @@ void Game::initGame(){
     }
 
     for(int i = 0 ;i<numberTree;i++ ){
-        Mesh treeMesh =Mesh( treeObj, treeTextures, shader, white, false );
-        GameObjectMesh * treeGO = new GameObjectMesh( "Tree" + std::to_string(i), new MeshRenderer( treeMesh, this  ), new ColliderComponent( this ), false, terrainGO );
-        treeGO->scale( scalesTree[i] );
-        treeGO->move( positionsTree[i] );
-        listTree.push_back(treeGO);
-        this->goMeshes.push_back( treeGO );
+//        Mesh treeMesh =Mesh( treeObj, treeTextures, shader, white, false );
+//        GameObjectMesh * treeGO = new GameObjectMesh( "Tree" + std::to_string(i), new MeshRenderer( treeMesh, this  ), new ColliderComponent( this ), false, terrainGO );
+//        treeGO->scale( scalesTree[i] );
+//        treeGO->move( positionsTree[i] );
+//        listTree.push_back(treeGO);
+//        this->goMeshes.push_back( treeGO );
     }
-
-    // Light
-//    sphereTextures.push_back( grass );
-//    sphereLightGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider, terrainGO );
-//    sphereLightGO->move( renderingEngine.getLight().getLightPosition() );
-//    sphereLightGO->move(  QVector3D(0., -4., 0.) );
-
-//    this->goMeshes.push_back( sphereLightGO );
 
     // Camera  -------------------------------------------------------------------------------
 
     QVector3D cameraPosition = QVector3D();
     QVector3D cameraTarget   = playerGO->getWorldPosition();
-    const qreal zNear = .01, zFar = 1000.0, fov = 70.0;
+
     camera = new CameraComponent( cameraPosition, cameraTarget, fov, zNear, zFar );
     MoveComponent * cameraMove = new MoveComponent( terrain, this );
     PhysicsComponent * cameraPhysics = new PhysicsComponent( physicsEngine, this );
     ColliderComponent * cameraCollider = new ColliderComponent( this );
+
     connect( this, &Game::sendMouseMoved, cameraMove, &MoveComponent::mouseMoveEvent );
+
     mainCameraGO = new GameObjectCamera("Main camera",camera,cameraMove,cameraPhysics,cameraCollider, playerGO  );
     mainCameraGO->move(0.0f,0.0f,2.0f);
     mainCameraGO->updateCameraPosition();
     this->goCameras.push_back(mainCameraGO);
+
     renderingEngine.setMainCamera( mainCameraGO );
 
     // Build hierarchy ---------------------------------------------------------------------------------
-    std::vector<GameObject *> baseGo = { terrainGO, playerGO };
+    std::vector<GameObject *> baseGo = { sphereGO, playerGO };
 
     sceneGraph = SceneGraph( baseGo, this->goMeshes, this->goPlayers, this->goCameras, this->physicsEngine, this->colliderEngine );
 }

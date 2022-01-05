@@ -6,56 +6,76 @@ layout (location = 2) out vec4 gDiffuse;
 layout (location = 3) out vec4 gBloom;
 
 in vec4 v_pos;
+in vec4 v_viewPos;
 in vec3 v_normal;
 in vec2 v_texcoord;
 
-uniform sampler2D blendmapTop;
-uniform sampler2D blendmapMiddle;
-uniform sampler2D blendmapBottom;
-
-uniform sampler2D snowTexture;
-uniform sampler2D rockTexture;
-uniform sampler2D grassTexture;
-uniform sampler2D plateauTexture;
-uniform sampler2D sandTexture;
-uniform sampler2D hillTexture;
+uniform bool terrain;
 
 
-uniform sampler2D texture0;
+uniform sampler2D tex0; // snow
+uniform sampler2D tex1; // rock
+uniform sampler2D tex2; // grass
+uniform sampler2D tex3; // plateau
+uniform sampler2D tex4; // sand
+uniform sampler2D tex5; // hill
+
+uniform sampler2D blendmapTop;      // blendmap top
+uniform sampler2D blendmapMiddle; // blendmap middle
+uniform sampler2D blendmapBottom; // blendmap bottom
 
 void main(void)
 {
 
+    vec4 blendMapTopColour    = texture(blendmapTop, v_texcoord);
+    vec4 blendMapMiddleColour = texture(blendmapMiddle, v_texcoord);
+    vec4 blendMapBottomColour = texture(blendmapBottom, v_texcoord);
 
-//    vec4 blendMapTopColour = texture(blendmapBottom, v_texcoord);
-//    vec4 blendMapMiddleColour = texture(blendmapMiddle, v_texcoord);
-//    vec4 blendMapBottomColour = texture(blendmapBottom, v_texcoord);
+    float backTextureAmount = 1 - (blendMapTopColour.r +
+                                   blendMapTopColour.g +
+                                   blendMapTopColour.b );
+
+    float backTextureAmountMiddle = 1 - (blendMapMiddleColour.r +
+                                      blendMapMiddleColour.g +
+                                      blendMapMiddleColour.b );
+
+    float backTextureAmountBottom = 1 - ( blendMapBottomColour.r +
+                                       blendMapBottomColour.g +
+                                           blendMapBottomColour.b );
+
+    vec4 rTextureColour = texture(tex0, v_texcoord) * blendMapTopColour.r +
+                          texture(tex3, v_texcoord) * blendMapMiddleColour.r+
+                          texture(tex5, v_texcoord) * blendMapBottomColour.r;
+
+    vec4 gTextureColour = vec4( 0.75) * blendMapTopColour.g +
+                          vec4( 0.75) * blendMapMiddleColour.g+
+                          vec4( 0.75) * blendMapBottomColour.g;
+
+    vec4 bTextureColour = texture(tex1, v_texcoord) * blendMapTopColour.b +
+                          texture(tex4, v_texcoord) * blendMapMiddleColour.b+
+                          texture(tex2, v_texcoord) * blendMapBottomColour.b;
 
 
-//    float backTextureAmount = 1 - (blendMapTopColour.r + blendMapMiddleColour.r + blendMapBottomColour.r +
-//                                   blendMapTopColour.g + blendMapMiddleColour.g + blendMapBottomColour.g );
-//    vec2 tiledCoords = v_texcoord * 40.0;
-//    vec4 backgroundTextureColour = texture(grassTexture,tiledCoords) * backTextureAmount +
-//            texture(sandTexture,tiledCoords) * backTextureAmount +
-//            texture(rockTexture,tiledCoords) * backTextureAmount;
+//    vec4 backgroundTextureColour = texture(tex2,v_texcoord) * backTextureAmount;
 
-//    vec4 rTextureColour = texture(hillTexture, tiledCoords)* blendMapTopColour.r +
-//            texture(plateauTexture, tiledCoords)* blendMapTopColour.r+
-//            texture(snowTexture, tiledCoords)* blendMapTopColour.r;
-
-    //TODO PATH
-
-//    vec4 totalColour = backgroundTextureColour + rTextureColour ;
-
+    vec4 totalColour = rTextureColour + gTextureColour + bTextureColour;
 
     gPosition = v_pos;
-    gNormal = normalize(v_normal);
 
-    gDiffuse = texture( blendmapBottom, v_texcoord );
+    vec3 xTangent = vec4(dFdx( v_viewPos )).xyz;
+    vec3 yTangent = vec4(dFdy( v_viewPos )).xyz;
+    vec3 faceNormal = normalize( cross( xTangent, yTangent ) );
+
+    gNormal = normalize(faceNormal);
+
+    if( terrain )
+        gDiffuse = totalColour ;
+    else
+        gDiffuse =  texture(tex0, v_texcoord) ;
 
     float brightness = gDiffuse.r *  0.2126 + gDiffuse.g * 0.7152 + gDiffuse.b * 0.0722;
 
-    if( brightness > 0.55 )
+    if( brightness > 0.75 )
         gBloom = gDiffuse;
     else
         gBloom = vec4(0.0);

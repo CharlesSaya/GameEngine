@@ -39,10 +39,10 @@
         <file>textures/plateauTexture.png</file>
         <file>textures/hillTexture.png</file>
         <file>textures/heightmapTerrain.png</file>
-        <file>textures/blendmapTop.png</file>
-        <file>textures/blendmapMiddle.png</file>
-        <file>textures/blendmapBottom.png</file>
         <file>textures/terrainHeightMap4096.png</file>
         <file>textures/heightmapHD.png</file>
+        <file>textures/blendmapBottom.png</file>
+        <file>textures/blendmapMiddle.png</file>
+        <file>textures/blendmapTop.png</file>
     </qresource>
 </RCC>

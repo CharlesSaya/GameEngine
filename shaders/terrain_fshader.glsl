@@ -107,7 +107,7 @@ void main()
 
     vec3 ambient =  0.6 * color.xyz;
 
-    gl_FragColor = vec4( ambient + lambertian , 1.0);
+    gl_FragColor = vec4( ambient + lambertian + specular , 1.0);
 
 }
 //! [0]

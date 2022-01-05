@@ -18,8 +18,10 @@ Mesh::Mesh( std::string filepath, std::vector<Texture> textures, Shader * shader
     this->loadGeometry( filepath );
 
     this->bBox = AABB( this->meshesVertexDatas[0] );
-
     this->renderAABB = renderAABB;
+
+    this->terrain = false;
+
     initializeOpenGLFunctions();
 
 }
@@ -39,16 +41,19 @@ Mesh::Mesh( Terrain& terrain, std::vector<Texture> textures, Shader * shader,  Q
     this->AABBverticesBuffer.create();
     this->AABBindexesBuffer.create();
 
-    this->meshesVertexDatas.push_back( terrain.getPlaneVertices() );
-    this->meshesFaces.push_back( terrain.getPlaneIndices() );
+    this->loadGeometry( terrain.getOBJFilename() );
+
+//    this->meshesVertexDatas.push_back( terrain.getPlaneVertices() );
+//    this->meshesFaces.push_back( terrain.getPlaneIndices() );
 
     this->bBox = AABB( this->meshesVertexDatas[0] );
-    this->bBox.getMaxDefault().setY( terrain.getMaximumHeight() * terrain.getScale() );
-    this->bBox.getMinDefault().setY( terrain.getMinimumHeight() * terrain.getScale() );
-    this->bBox.setMax( this->bBox.getMaxDefault() );
-    this->bBox.setMin( this->bBox.getMinDefault() );
+//    this->bBox.getMaxDefault().setY( terrain.getMaximumHeight() * terrain.getScale() );
+//    this->bBox.getMinDefault().setY( terrain.getMinimumHeight() * terrain.getScale() );
+//    this->bBox.setMax( this->bBox.getMaxDefault() );
+//    this->bBox.setMin( this->bBox.getMinDefault() );
     this->renderAABB = renderAABB;
 
+    this->terrain = true;
     initializeOpenGLFunctions();
 
 }
@@ -142,9 +147,13 @@ void Mesh::bindShadowTexture(){
 }
 
 void Mesh::unbindTextures(){
-    for ( Texture texture : this->textures )
-        texture.unbindTexture();
+    for ( uint u = 0; u < this->textures.size() ; u++ )
+        this->textures[u].unbindTexture( u );
+    glBindTexture( GL_TEXTURE_2D, 0 );
+
 }
+
+
 
 void Mesh::drawAABB( Shader * shader ){
       this->bBox.drawAABB(shader);
@@ -193,6 +202,10 @@ void Mesh::drawMesh( float distance, Shader * shader ){
 
 }
 
+bool Mesh::isTerrain(){
+    return terrain;
+}
+
 void Mesh::setShadowTexture(uint m_shadowMapTex){
     this->m_shadowMapTex = m_shadowMapTex;
 }
@@ -237,6 +250,11 @@ AABB &Mesh::getAABB()
 bool Mesh::getRenderAABB() const
 {
     return renderAABB;
+}
+
+void Mesh::setTerrain(bool newTerrain)
+{
+    terrain = newTerrain;
 }
 
 Mesh::Mesh(){

@@ -62,7 +62,6 @@ void FlareGenerator::renderFlare( FlareTexture flare, Shader * shader ){
     float xScale = flare.getScale();
     float yScale = xScale * (float)width / (float)height;
     QVector2D screenPos = flare.getScreenPos();
-
     positions.clear();
     positions.push_back( QVector4D( screenPos, xScale, yScale ) );
 
@@ -93,6 +92,10 @@ void FlareGenerator::renderFlare( FlareTexture flare, Shader * shader ){
     shader->getProgram().enableAttributeArray(xyzsLocation);
     shader->getProgram().setAttributeBuffer(xyzsLocation, GL_FLOAT, 0 , 4, sizeof(QVector4D));
 
+    glFuncs->glVertexAttribDivisor(0, 0);
+    glFuncs->glVertexAttribDivisor(1, 0);
+    glFuncs->glVertexAttribDivisor(2, 0);
+    glFuncs->glVertexAttribDivisor(3, 1);
 
     glFuncs->glDrawArrays( GL_TRIANGLE_STRIP, 0, 4 );
 }
@@ -117,7 +120,6 @@ void FlareGenerator::render( float brightness, Shader * shader ){
     computeFlaresPosition( sunToCenter, sunPosition );
 
     shader->useShaderProgram();
-
 
     shader->setUniformValue( "cameraRight_W", rightW);
     shader->setUniformValue( "cameraUp_W", up );

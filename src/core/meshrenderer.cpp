@@ -5,29 +5,30 @@ MeshRenderer::MeshRenderer( Mesh &mesh, QObject * parent ) {
     this->mesh = mesh;
 }
 
-void MeshRenderer::renderMesh( Transform & transform, const QMatrix4x4& model, CameraComponent * camera, Shader *shaderDepth ) {
+void MeshRenderer::renderMesh( Transform & transform, const QMatrix4x4& model, CameraComponent * camera, Shader * shader ) {
 
     float distance = 0.0;
 
-    if(shaderDepth != nullptr)
-        shader = shaderDepth;
+    if(shader != nullptr)
+        shader = shader;
     else{
         shader = this->mesh.getShader();
         distance = (camera->getCameraPosition() - transform.getWorldPosition()).length();
     }
 
     shader->useShaderProgram();
+
     shader->setUniformValue( "model", model );
     shader->setUniformValue( "view", camera->getViewMatrix());
     shader->setUniformValue( "projection", camera->getProjection() );
     shader->setUniformValue( "cameraPosition", camera->getCameraPosition() );
     shader->setUniformValue( "lightSpaceMatrix", lightSpaceMatrix );
 
-    this->mesh.bindTextures( shader );
-    this->mesh.drawMesh( distance, shader );
+    shader->setUniformValue( "terrain", this->mesh.isTerrain() );
 
-    if( this->mesh.getRenderAABB() )
-        this->mesh.drawAABB( shader );
+    this->mesh.bindTextures( shader );
+
+    this->mesh.drawMesh( distance, shader );
 
     this->mesh.unbindTextures();
    }

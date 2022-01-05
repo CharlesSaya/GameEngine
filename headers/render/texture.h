@@ -2,6 +2,8 @@
 #define TEXTURE_H
 
 #include <QOpenGLTexture>
+#include <QOpenGLContext>
+#include <QOpenGLFunctions_3_3_Core>
 
 #include "headers/render/shader.h"
 
@@ -12,7 +14,7 @@ public:
     Texture( std::string file, std::string location );
     void initTexture();
     void bindTexture( uint textureUnit, Shader * shader ) const;
-    void unbindTexture() const;
+    void unbindTexture( uint textureUnit ) const;
 
     QOpenGLTexture * getTexture();
 
@@ -26,7 +28,8 @@ private:
     std::string location;
     QImage image;
     QOpenGLTexture * texture;
-
+    QOpenGLContext * context;
+    QOpenGLFunctions_3_3_Core * glFuncs;
 };
 
 #endif // TEXTURE_H
