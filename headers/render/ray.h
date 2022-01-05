@@ -39,6 +39,8 @@ public:
 
     void initBuffers();
     void drawRay( Shader * shader, const QMatrix4x4& view, const QMatrix4x4& projection  );
+    void setDirection(const QVector3D &newDirection);
+
 private:
 
     QVector3D _origin;

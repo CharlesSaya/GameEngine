@@ -34,3 +34,8 @@ void Ray::drawRay( Shader * shader, const QMatrix4x4& view, const QMatrix4x4& pr
 
     glDrawArrays(GL_LINES, 0, 2 );
 }
+
+void Ray::setDirection(const QVector3D &newDirection)
+{
+    _direction = newDirection;
+}

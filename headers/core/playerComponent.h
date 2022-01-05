@@ -31,7 +31,7 @@ public:
     PlayerComponent( Shader * shader, QObject * parent = 0 );
     PlayerComponent( QVector3D &playerPosition, QVector3D &playerDirection, Shader * shader, QObject * parent = 0  );
 
-    Ray & castRay();
+    Ray & castRay(QVector3D target);
 
     void telekinesis(  GameObject * player, GameObject * go );
 

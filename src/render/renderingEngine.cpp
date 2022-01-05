@@ -303,12 +303,12 @@ void RenderingEngine::configureUniforms( SceneGraph &sceneGraph ){
         go->getMeshRenderer()->setLightSpaceMatrix( cameraOrtho->getProjection() * cameraOrtho->getViewMatrix() );
     }
 
-    for( GameObjectPlayer * go : sceneGraph.getGoPlayers()){
-        go->getMeshRenderer()->getMesh().setShadowTexture( m_shadowMapTex );
-        go->getMeshRenderer()->getMesh().getShader()->loadDirectionalLight(directionalLight);
-        go->getMeshRenderer()->getMesh().getShader()->loadPointLights(pointLights);
-        go->getMeshRenderer()->setLightSpaceMatrix( cameraOrtho->getProjection() * cameraOrtho->getViewMatrix() );
-    }
+    GameObjectPlayer *goPlayer = sceneGraph.getGoPlayer();
+        goPlayer->getMeshRenderer()->getMesh().setShadowTexture( m_shadowMapTex );
+        goPlayer->getMeshRenderer()->getMesh().getShader()->loadDirectionalLight(directionalLight);
+        goPlayer->getMeshRenderer()->getMesh().getShader()->loadPointLights(pointLights);
+        goPlayer->getMeshRenderer()->setLightSpaceMatrix( cameraOrtho->getProjection() * cameraOrtho->getViewMatrix() );
+
 }
 
 // RENDERING FUNCTIONS

@@ -24,8 +24,8 @@ private:
     std::vector<GameObject *> goList;
     std::vector<GameObject *> goCollidable;
     std::vector<GameObjectMesh *> goMeshes;
-    std::vector<GameObjectPlayer *> goPlayers;
-    std::vector<GameObjectCamera *> goCameras;
+    GameObjectPlayer * goPlayer;
+    GameObjectCamera * goCamera;
     GameObjectCamera * mainCamera;
     PhysicsEngine physicsEngine;
     ColliderEngine colliderEngine;
@@ -35,8 +35,8 @@ public:
     SceneGraph();
     SceneGraph( std::vector<GameObject *>& goList,
                 std::vector<GameObjectMesh *> &goMeshes,
-                std::vector<GameObjectPlayer *> &goPlayers,
-                std::vector<GameObjectCamera *> &goCameras,
+                GameObjectPlayer * &goPlayers,
+                GameObjectCamera * &goCameras,
                 PhysicsEngine & physicsEngine,
                 ColliderEngine & colliderEngine );
 
@@ -79,7 +79,7 @@ public:
     void updateALLBVH();
     void rayBVHCollision( GameObjectPlayer * playerGO, Node * node );
     const std::vector<GameObjectMesh *> &getGoMeshes() const;
-    const std::vector<GameObjectPlayer *> &getGoPlayers() const;
+    GameObjectPlayer *getGoPlayer() const;
 };
 
 #endif // SCENEGRAPH_H

@@ -108,7 +108,6 @@ void Game::initGame(){
     playerGO->scale(  QVector3D(0.1, 0.1, 0.1) );
     playerGO->move(  QVector3D(0., 30., -0. ) );
 
-    this->goPlayers.push_back( playerGO );
 
     // Sphere
     std::vector<Texture> sphereTextures;
@@ -169,14 +168,13 @@ void Game::initGame(){
     mainCameraGO = new GameObjectCamera("Main camera",camera,cameraMove,cameraPhysics,cameraCollider, playerGO  );
     mainCameraGO->move(0.0f,0.0f,2.0f);
     mainCameraGO->updateCameraPosition();
-    this->goCameras.push_back(mainCameraGO);
 
     renderingEngine.setMainCamera( mainCameraGO );
 
     // Build hierarchy ---------------------------------------------------------------------------------
     std::vector<GameObject *> baseGo = { sphereGO, playerGO };
 
-    sceneGraph = SceneGraph( baseGo, this->goMeshes, this->goPlayers, this->goCameras, this->physicsEngine, this->colliderEngine );
+    sceneGraph = SceneGraph( baseGo, this->goMeshes, playerGO, mainCameraGO, this->physicsEngine, this->colliderEngine );
 }
 
 void Game::input( QKeyEvent * key  ){

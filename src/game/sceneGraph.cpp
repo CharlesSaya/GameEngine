@@ -5,9 +5,9 @@ const std::vector<GameObjectMesh *> &SceneGraph::getGoMeshes() const
     return goMeshes;
 }
 
-const std::vector<GameObjectPlayer *> &SceneGraph::getGoPlayers() const
+GameObjectPlayer *SceneGraph::getGoPlayer() const
 {
-    return goPlayers;
+    return goPlayer;
 }
 
 SceneGraph::SceneGraph(){
@@ -16,15 +16,15 @@ SceneGraph::SceneGraph(){
 
 SceneGraph::SceneGraph( std::vector<GameObject *>& goList,
                         std::vector<GameObjectMesh *> &goMeshes,
-                        std::vector<GameObjectPlayer *> &goPlayers,
-                        std::vector<GameObjectCamera *> &goCameras,
+                        GameObjectPlayer * &goPlayer,
+                        GameObjectCamera * &goCamera,
                         PhysicsEngine& physicsEngine,
                         ColliderEngine & colliderEngine  ){
 
     this->goList = goList;
     this->goMeshes = goMeshes;
-    this->goPlayers = goPlayers;
-    this->goCameras = goCameras;
+    this->goPlayer = goPlayer;
+    this->goCamera = goCamera;
     this->root = new Node();
     for( GameObject * go : goList){
         this->root->children.push_back( buildGraphScene( go ) );
@@ -49,13 +49,13 @@ Node * SceneGraph::buildGraphScene( GameObject * go ){
 
     AABB bbox;
     itA = find( goMeshes.begin(), goMeshes.end(), go);
-    itB = find( goPlayers.begin(), goPlayers.end(), go);
+//    itB = find( goPlayers.begin(), goPlayers.end(), go);
 
     if ( itA != goMeshes.end()  )
         bbox = (*itA)->getMeshRenderer()->getMesh().getAABB();
 
-    else if ( itB != goPlayers.end()  )
-        bbox = (*itB)->getMeshRenderer()->getMesh().getAABB();
+//    else if ( itB != goPlayers.end()  )
+//        bbox = (*itB)->getMeshRenderer()->getMesh().getAABB();
 
     if( go->getChildren().empty() ){
 
@@ -78,28 +78,24 @@ void SceneGraph::input(QKeyEvent *key){
 
 void SceneGraph::update( float fixedStep ){
     // update player physics
-    for( GameObjectPlayer * go : this->goPlayers){
-        this->updatePhysics( go, fixedStep );
-        go->rotate( go->getMoveComponent()->getRotationY()* go->getMoveComponent()->getRotationX().inverted() );
-    }
+      this->updatePhysics( goPlayer, fixedStep );
+      goPlayer->rotate(goPlayer->getMoveComponent()->getRotationY());
 
-    // update main camera position
-    for( GameObjectCamera * goC : this->goCameras){
-        QQuaternion parentRotationX = dynamic_cast<GameObjectPlayer*>(goC->getParent())->getMoveComponent()->getRotationX();
-        float angleX = parentRotationX.toEulerAngles()[0];
 
-        QQuaternion parentRotationY = dynamic_cast<GameObjectPlayer*>(goC->getParent())->getMoveComponent()->getRotationY();
-        float angleY = parentRotationY.toEulerAngles()[1];
+      // update main camera position
+      float angleX = goCamera->getMoveComponent()->getRotationX().toEulerAngles()[0];
 
-        float calibration = 90.0f;
+      QQuaternion parentRotation = dynamic_cast<GameObjectPlayer*>(goCamera->getParent())->getMoveComponent()->getRotationY();
+      float angleY = parentRotation.toEulerAngles()[1];
+      float calibration = 90.0f;
 
-        goC->getCameraComponent()->rotate(-angleX, -angleY - calibration);
-        goC->updateCameraPosition();
-    }
+      goCamera->getCameraComponent()->rotate(-angleX, -angleY - calibration);
+      goCamera->updateCameraPosition();
+
 
     for( GameObjectMesh * goMesh : this->goMeshes){
         if(goMesh->getIsMovable() && goMesh->getUseGravity()){
-            qDebug()<< goMesh->getTransform()->getPosition();
+//            qDebug()<< goMesh->getTransform()->getPosition();
              this->updatePhysicsMesh( goMesh, fixedStep );
         }
 
@@ -109,27 +105,26 @@ void SceneGraph::update( float fixedStep ){
     updateALLBVH();
 
 
-    for( GameObjectPlayer * go : this->goPlayers){
-        if( ! go->getPlayerComponent()->telekinesisActivated() )
-            continue;
 
-        go->getPlayerComponent()->castRay();
-        rayBVHCollision( go, this->getRoot() );
-    }
+    if( goPlayer->getPlayerComponent()->telekinesisActivated() )
+        goPlayer->getPlayerComponent()->castRay(goCamera->getCameraComponent()->getCameraForward());
+        rayBVHCollision( goPlayer, this->getRoot() );
+
+
+
 
     // compute collision
-    for( GameObjectPlayer * go : this->goPlayers){
-        this->computeCollision( go );
-    }
+
+    this->computeCollision( goPlayer );
+
 }
 
 
 void SceneGraph::render( GameObjectCamera * camera, Shader * shader  ){
 
-    for( GameObjectPlayer * go : this->goPlayers){
-        this->renderMesh( go, camera, shader );
-        go->getPlayerComponent()->drawRay( camera->getCameraComponent()->getViewMatrix(), camera->getCameraComponent()->getProjection() );
-    }
+
+    this->renderMesh( goPlayer, camera, shader );
+    goPlayer->getPlayerComponent()->drawRay( camera->getCameraComponent()->getViewMatrix(), camera->getCameraComponent()->getProjection() );
 
     for( GameObjectMesh * go : this->goMeshes){
         this->renderMesh( go, camera, shader );
@@ -163,13 +158,11 @@ void SceneGraph::updateBVH( Node * node ){
     AABB bbox;
 
     itA = find( goMeshes.begin(), goMeshes.end(), go);
-    itB = find( goPlayers.begin(), goPlayers.end(), go);
 
     if ( itA != goMeshes.end()  )
         bbox = (*itA)->getMeshRenderer()->getMesh().getAABB();
 
-    else if ( itB != goPlayers.end()  )
-        bbox = (*itB)->getMeshRenderer()->getMesh().getAABB();
+     bbox = goPlayer->getMeshRenderer()->getMesh().getAABB();
 
 
     if( go->getChildren().empty() ){

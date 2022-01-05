@@ -21,8 +21,9 @@ void PlayerComponent::update( QVector3D &playerPosition, QVector3D playerDirecti
 
 }
 
-Ray & PlayerComponent::castRay(){
-    ray = Ray( this->playerPosition, this->playerDirection );
+Ray & PlayerComponent::castRay(QVector3D target){
+
+    ray = Ray( this->playerPosition, target);
     return ray;
 }
 

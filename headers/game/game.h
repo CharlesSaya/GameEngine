@@ -108,8 +108,6 @@ private:
     QVector3D white = QVector3D( 1., 1., 1.);
 
     std::vector< GameObjectMesh *> goMeshes;
-    std::vector< GameObjectPlayer *> goPlayers;
-    std::vector< GameObjectCamera *> goCameras;
 };
 
 #endif // GAME_H
