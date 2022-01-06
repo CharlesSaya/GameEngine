@@ -45,17 +45,15 @@ Node * SceneGraph::buildGraphScene( GameObject * go ){
     node->gameObject  = go;
 
     std::vector<GameObjectMesh *>::iterator itA;
-    std::vector<GameObjectPlayer *>::iterator itB;
 
     AABB bbox;
     itA = find( goMeshes.begin(), goMeshes.end(), go);
-//    itB = find( goPlayers.begin(), goPlayers.end(), go);
 
     if ( itA != goMeshes.end()  )
         bbox = (*itA)->getMeshRenderer()->getMesh().getAABB();
 
-//    else if ( itB != goPlayers.end()  )
-//        bbox = (*itB)->getMeshRenderer()->getMesh().getAABB();
+
+    else bbox = goPlayer->getMeshRenderer()->getMesh().getAABB();
 
     if( go->getChildren().empty() ){
 
@@ -80,7 +78,7 @@ void SceneGraph::update( float fixedStep ){
     // update player physics
       this->updatePhysics( goPlayer, fixedStep );
       goPlayer->rotate(goPlayer->getMoveComponent()->getRotationY());
-
+//      qDebug()<< goPlayer->getTransform()->getPosition();
 
       // update main camera position
       float angleX = goCamera->getMoveComponent()->getRotationX().toEulerAngles()[0];
@@ -98,21 +96,16 @@ void SceneGraph::update( float fixedStep ){
 //            qDebug()<< goMesh->getTransform()->getPosition();
              this->updatePhysicsMesh( goMesh, fixedStep );
         }
-
-
     }
+
     // update BVH
     updateALLBVH();
 
 
-
-    if( goPlayer->getPlayerComponent()->telekinesisActivated() )
+    if( goPlayer->getPlayerComponent()->telekinesisActivated() ){
         goPlayer->getPlayerComponent()->castRay(goCamera->getCameraComponent()->getCameraForward());
-        rayBVHCollision( goPlayer, this->getRoot() );
-
-
-
-
+        rayBVHCollision( this->getRoot() );
+}
     // compute collision
 
     this->computeCollision( goPlayer );
@@ -162,7 +155,7 @@ void SceneGraph::updateBVH( Node * node ){
     if ( itA != goMeshes.end()  )
         bbox = (*itA)->getMeshRenderer()->getMesh().getAABB();
 
-     bbox = goPlayer->getMeshRenderer()->getMesh().getAABB();
+     else bbox = goPlayer->getMeshRenderer()->getMesh().getAABB();
 
 
     if( go->getChildren().empty() ){
@@ -194,25 +187,27 @@ void SceneGraph::updateALLBVH(){
 
 }
 
-void SceneGraph::rayBVHCollision( GameObjectPlayer * playerGO, Node * node ){
-    bool collision = node->nodeBoundingBox.intersect( playerGO->getPlayerComponent()->getRay() );
-
+void SceneGraph::rayBVHCollision( Node * node ){
+    bool collision = node->nodeBoundingBox.intersect( goPlayer->getPlayerComponent()->getRay() );
+    qDebug()<< node->children[0]->gameObject->getName().c_str();
     if( node->children.empty() && collision ){
-        playerGO->getPlayerComponent()->telekinesis( playerGO, node->gameObject );
+
+        goPlayer->getPlayerComponent()->telekinesis( goPlayer, node->gameObject );
+
 
     }
 
     else if(collision){
         for( Node * childNode : node->children ){
 
-            if( ( childNode->gameObject->getName() == playerGO->getName() ) )
+            if( ( childNode->gameObject->getName() == goPlayer->getName() ) )
                 continue;
 
-            bool collision = childNode->nodeBoundingBox.intersect( playerGO->getPlayerComponent()->getRay() );
+            bool collision = childNode->nodeBoundingBox.intersect( goPlayer->getPlayerComponent()->getRay() );
             if( collision ){
-                rayBVHCollision( playerGO, childNode );
+                rayBVHCollision( childNode );
             }
-             playerGO->getPlayerComponent()->attractAndPush(playerGO);
+             goPlayer->getPlayerComponent()->attractAndPush(goPlayer);
         }
     }
 }

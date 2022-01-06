@@ -35,7 +35,7 @@ public:
     SceneGraph();
     SceneGraph( std::vector<GameObject *>& goList,
                 std::vector<GameObjectMesh *> &goMeshes,
-                GameObjectPlayer * &goPlayers,
+                GameObjectPlayer * &goPlayer,
                 GameObjectCamera * &goCameras,
                 PhysicsEngine & physicsEngine,
                 ColliderEngine & colliderEngine );
@@ -77,7 +77,7 @@ public:
 
     void updateBVH( Node * node );
     void updateALLBVH();
-    void rayBVHCollision( GameObjectPlayer * playerGO, Node * node );
+    void rayBVHCollision(  Node * node );
     const std::vector<GameObjectMesh *> &getGoMeshes() const;
     GameObjectPlayer *getGoPlayer() const;
 };

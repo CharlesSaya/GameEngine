@@ -34,8 +34,8 @@ void PhysicsComponent::updatePhysicsMesh( float step, Transform & transform ){
     acceleration = - physicsEngine.getDamp()
             * velocity;
 
-    if ( !resting )
-        acceleration += physicsEngine.getGravity();
+//    if ( !resting )
+//        acceleration += physicsEngine.getGravity();
 
     acceleration /= mass;
 

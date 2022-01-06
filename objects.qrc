@@ -6,7 +6,13 @@
         <file>objects/sphere/sphereLOD1.obj</file>
         <file>objects/sphere/sphereLOD2.obj</file>
         <file>objects/sphere/sphereLOD3.obj</file>
-        <file>objects/tree/treeLOD1.obj</file>
         <file>objects/terrain/terrainLOD1.obj</file>
+        <file>objects/snowyFir/firLOD1.obj</file>
+        <file>objects/snowyTree/treeLOD1.obj</file>
+        <file>objects/snowyTreeV2/TreeLOD1.obj</file>
+        <file>objects/desertCactus/desertCactusLOD1.obj</file>
+        <file>objects/desertCactusV2/desertCactuskLOD1.obj</file>
+        <file>objects/desertCactusV3/desertCactuskLOD1.obj</file>
+        <file>objects/woodBox/woodBoxLOD1.obj</file>
     </qresource>
 </RCC>
