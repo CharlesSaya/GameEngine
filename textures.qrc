@@ -1,13 +1,9 @@
 <RCC>
     <qresource prefix="/">
-        <file>textures/cube.png</file>
-        <file>textures/Heightmap_Mountain.png</file>
         <file>textures/rock.png</file>
         <file>textures/grass.png</file>
         <file>textures/forest.jpg</file>
         <file>textures/snowrocks.png</file>
-        <file>textures/heightmap-1024x1024.png</file>
-        <file>textures/Heightmap_Rocky.png</file>
         <file>textures/skybox/Cathedral/nx.png</file>
         <file>textures/skybox/Cathedral/ny.png</file>
         <file>textures/skybox/Cathedral/nz.png</file>
@@ -21,7 +17,6 @@
         <file>textures/skybox/MusicHall/py.png</file>
         <file>textures/skybox/MusicHall/pz.png</file>
         <file>textures/T_Tree_winter.png</file>
-        <file>textures/desert.png</file>
         <file>textures/lensFlare/sun.png</file>
         <file>textures/lensFlare/tex1.png</file>
         <file>textures/lensFlare/tex2.png</file>
@@ -42,6 +37,7 @@
         <file>textures/blendmapBottom.png</file>
         <file>textures/blendmapMiddle.png</file>
         <file>textures/blendmapTop.png</file>
+        <file>textures/cactusTexture.png</file>
         <file>textures/heightmapF2.png</file>
         <file>textures/heightmapF3.png</file>
     </qresource>

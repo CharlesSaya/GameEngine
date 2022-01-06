@@ -20,10 +20,8 @@ void Game::initGame(){
 
     std::string sphereObj = "../GameEngine/objects/sphere/";
     std::string bunnyObj  = "../GameEngine/objects/bunny/";
-    std::string treeObj  = "../GameEngine/objects/tree/";
     std::string terrainOBJ  = "../GameEngine/objects/terrain/";
 
-    Texture treeSnow   = Texture( "../GameEngine/textures/T_Tree_winter", "snowTree" );
 
     // Environment ------------------------------------------------------------------------------
 
@@ -117,40 +115,130 @@ void Game::initGame(){
     ColliderComponent * sphereCollider = new ColliderComponent( this );
     PhysicsComponent * spherePhysics = new PhysicsComponent(physicsEngine, this );
 
-//    sphereGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider,spherePhysics, true, terrainGO );
-//    sphereGO->scale( 1 );
-//    sphereGO->move(  QVector3D(0., 200., -0. ));
+    sphereGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider,spherePhysics, true, terrainGO );
+    sphereGO->scale( 1 );
+    sphereGO->move(  QVector3D(-103.6432,0.5f,73.0f));
 
 //    this->goMeshes.push_back( sphereGO );
 
-    // Trees  ------------------------------------------------------------------------------
+    // snowy tree  ------------------------------------------------------------------------------
+
+    Texture treeSnow   = Texture( "../GameEngine/textures/T_Tree_winter", "snowTree" );
+
+    std::vector<std::string> snowyObj;
+    snowyObj.push_back("../GameEngine/objects/snowyFir/");
+    snowyObj.push_back("../GameEngine/objects/snowyTree/");
+    snowyObj.push_back("../GameEngine/objects/snowyStump/");
+    snowyObj.push_back("../GameEngine/objects/snowyTreeV2/");
 
     std::vector<Texture> treeTextures;
     treeTextures.push_back( treeSnow );
 
     QVector<QVector3D> positionsTree;
     QVector<float> scalesTree;
-    QVector<GameObjectMesh*> listTree;
-    int numberTree = 10;
-    float x = -40.0f;
 
-    for(int i =0 ; i< numberTree; i++){
-        positionsTree.push_back(QVector3D(x,0.0f,0.0f));
-        x+=8.0f;
+    positionsTree.push_back(QVector3D(-46.6432,0.0f,43.0f));
+    positionsTree.push_back(QVector3D(-17.0,0.0f,51.0f));
+    positionsTree.push_back(QVector3D(-11.0,0.0f,42.0f));
+    positionsTree.push_back(QVector3D(-60.0,0.0f,15.0f));
+    positionsTree.push_back(QVector3D(-120.0,0.0f,20.0f));
+    positionsTree.push_back(QVector3D(-117.0,0.0f,29.0f));
+    positionsTree.push_back(QVector3D(-110.0,0.0f,56.0f));
+    positionsTree.push_back(QVector3D(-89.0,0.0f,53.0f));
+    positionsTree.push_back(QVector3D(-72.0,0.0f,48.0f));
+    positionsTree.push_back(QVector3D(-62.0,0.0f,50.0f));
+    positionsTree.push_back(QVector3D(-47.0,0.0f,19.0f));
+    positionsTree.push_back(QVector3D(-45.0,0.0f,9.0f));
+    positionsTree.push_back(QVector3D(-67.0,0.0f,22.0f));
+    positionsTree.push_back(QVector3D(-60.0,0.0f,26.0f));
+    positionsTree.push_back(QVector3D(-21.0,0.0f,46.0f));
+    positionsTree.push_back(QVector3D(-13.0,0.0f,43.0f));
+    positionsTree.push_back(QVector3D(-9.0,0.0f,19.0f));
+    positionsTree.push_back(QVector3D(-30.0,0.0f,8.0f));
+    positionsTree.push_back(QVector3D(-41.0,0.0f,15.0f));
+    positionsTree.push_back(QVector3D(-98.0,0.0f,32.0f));
+    positionsTree.push_back(QVector3D(-84.0,0.0f,35.0f));
+    positionsTree.push_back(QVector3D(-99.0,0.0f,40.0f));
+
+    for(int i = 0 ;i<positionsTree.size();i++ ){
+        scalesTree.push_back( 0.5 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(1.5))));
     }
 
-    for(int i = 0 ;i<numberTree;i++ ){
-        scalesTree.push_back(1);
+    for(int i = 0 ;i<positionsTree.size();i++ ){
+        Mesh treeMesh =Mesh( snowyObj[rand()%snowyObj.size()], treeTextures, shader, white, false );
+        GameObjectMesh * treeGO = new GameObjectMesh( "Tree" + std::to_string(i), new MeshRenderer( treeMesh, this  ), new ColliderComponent( this ), false, terrainGO );
+        treeGO->scale( scalesTree[i] );
+        treeGO->move( positionsTree[i] );
+        this->goMeshes.push_back( treeGO );
     }
 
-    for(int i = 0 ;i<numberTree;i++ ){
-//        Mesh treeMesh =Mesh( treeObj, treeTextures, shader, white, false );
-//        GameObjectMesh * treeGO = new GameObjectMesh( "Tree" + std::to_string(i), new MeshRenderer( treeMesh, this  ), new ColliderComponent( this ), false, terrainGO );
-//        treeGO->scale( scalesTree[i] );
-//        treeGO->move( positionsTree[i] );
-//        listTree.push_back(treeGO);
-//        this->goMeshes.push_back( treeGO );
-    }
+    // cactus  ------------------------------------------------------------------------------
+
+
+//    std::vector<std::string> cactusObj;
+//    cactusObj.push_back("../GameEngine/objects/desertCactus/");
+//    cactusObj.push_back("../GameEngine/objects/desertCactusV2/");
+//    cactusObj.push_back("../GameEngine/objects/desertCactusV3/");
+
+//    Texture cactusTexture   = Texture( "../GameEngine/textures/cactusTexture", "cactusTexture" );
+//    std::vector<Texture> cactusTextures;
+//    cactusTextures.push_back(cactusTexture  );
+
+//    QVector<QVector3D> positionsCactus;
+//    QVector<float> scalesCactus;
+
+//    positionsCactus.push_back(QVector3D(-100.6432,0.5f,73.0f));
+////    positionsCactus.push_back(QVector3D(-100.6432,0.0f,73.0f));
+
+//    for(int i = 0 ;i<positionsCactus.size();i++ ){
+//        scalesCactus.push_back( 0.5 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(1.5))));
+//    }
+
+//    for(int i = 0 ;i<positionsCactus.size();i++ ){
+//        Mesh cactusMesh =Mesh( cactusObj[rand()%cactusObj.size()], cactusTextures, shader, white, false );
+//        GameObjectMesh * cactusGO = new GameObjectMesh( "cactus" + std::to_string(i), new MeshRenderer( cactusMesh, this  ), new ColliderComponent( this ), false, terrainGO );
+//        cactusGO->scale( scalesCactus[i] );
+//        cactusGO->move( positionsCactus[i] );
+//        this->goMeshes.push_back( cactusGO );
+//    }
+
+    //    woodBox  ------------------------------------------------------------------------------
+
+
+        std::vector<std::string> boxObj;
+        boxObj.push_back("../GameEngine/objects/woodBox/");
+
+        Texture boxTexture   = Texture( "../GameEngine/textures/textureBox", "textureBox" );
+        std::vector<std::vector<Texture>> listTexturesBox;
+        std::vector<Texture> boxTextures;
+
+        boxTextures.push_back(boxTexture  );
+        listTexturesBox.push_back(boxTextures);
+        QVector<QVector3D> positionsBox;
+        QVector<float> scalesBox;
+
+        positionsBox.push_back(QVector3D(-100.6432,0.5f,73.0f));
+        positionsBox.push_back(QVector3D(-90.6432,0.5f,73.0f));
+        positionsBox.push_back(QVector3D(-80.6432,0.5f,73.0f));
+        positionsBox.push_back(QVector3D(-70.6432,0.5f,73.0f));
+    //    positionsCactus.push_back(QVector3D(-100.6432,0.0f,73.0f));
+
+        for(int i = 0 ;i<positionsBox.size();i++ ){
+            scalesBox.push_back(((rand()%10))/10.0f);
+//            qDebug()<<scalesBox[i];
+        }
+
+        for(int i = 0 ;i<positionsBox.size();i++ ){
+            int randomObj = rand()%boxObj.size();
+            Mesh boxMesh =Mesh( boxObj[randomObj], listTexturesBox[randomObj], shader, white, false );
+            GameObjectMesh * boxGO = new GameObjectMesh( "box" + std::to_string(i), new MeshRenderer( boxMesh, this  ), new ColliderComponent( this ), new PhysicsComponent(physicsEngine, this ) ,true, terrainGO );
+            boxGO->scale( scalesBox[i] );
+            boxGO->move( positionsBox[i] );
+            this->goMeshes.push_back( boxGO );
+        }
+
+
+
 
     // Camera  -------------------------------------------------------------------------------
 
