@@ -54,16 +54,19 @@ public:
 
                 bool collision = intersectAABB( go->getMeshRenderer()->getMesh().getAABB(), childNode->nodeBoundingBox );
                 if( collision ){
+
                     if ( childNode->gameObject->getName() == "Terrain"){
+//                        qDebug() << childNode->nodeBoundingBox.getMin() << childNode->nodeBoundingBox.getMax();
+
                         bool collision = intersectAABB( go->getMeshRenderer()->getMesh().getAABB(), dynamic_cast<GameObjectMesh*>(childNode->gameObject)->getMeshRenderer()->getMesh().getAABB());
                         if( collision ){
                             float height;
                             QVector3D worldPos;
                             worldPos = go->getWorldPosition();
-                            height = terrain.getHeight( worldPos );
+                            height = terrain.getHeightOfTerrain( worldPos );
                             if( worldPos.y() < height )
                                 go->setHeight(height * terrain.getScale() );
-//                            qDebug() << height * terrain.getScale() ;
+                            qDebug() << "height" << height * terrain.getScale() ;
                             continue;
                         }
                     }

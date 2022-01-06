@@ -1,3 +1,6 @@
+#ifndef OBJ_LOADER_H
+#define OBJ_LOADER_H
+
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -15,3 +18,5 @@ private:
 public:
     static void loadObject( string file, vector<VertexData> & vertexDatas, vector<int> &faces );
 };
+
+#endif // OBJ_LOADER_H

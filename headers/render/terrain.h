@@ -65,8 +65,9 @@ public:
     Terrain();
     Terrain( float gridSize, float scale, std::string file, Texture & heightmap );
 
-    float getHeight( QVector3D &position );
+    float getHeightOfTerrain( QVector3D &position );
     float baricentricHeight( QVector3D v0, QVector3D v1, QVector3D v2, QVector2D pos );
+
     std::vector<VertexData> &getPlaneVertices();
     void setPlaneVertices(const std::vector<VertexData> &newPlaneVertices);
 
@@ -78,22 +79,23 @@ public:
 
     float getScale() const;
 
-    void setHeight(int newHeight);
+    void setMaximumHeight(float newHeight);
 
-    void setWidth(int newWidth);
 
     const std::string &getOBJFilename() const;
 
 private:
     void initGeometry();
 
-    int width, height;
+    int width = 33, height = 33;
+    float maximumHeight;
     float gridSize = 128.f;
-    float gridSquareSize, gridNumber;
+    float gridSquareSize , gridNumber;
     float scale;
 
     std::vector< VertexData > planeVertices;
     std::vector< GLuint > planeIndices;
+    std::vector< float > heights;
     std::map< int, std::vector<int>> map;
     Texture heightmap;
     std::string terrainOBJ;

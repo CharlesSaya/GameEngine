@@ -11,7 +11,7 @@ Player::Player( GameObject & gameObject ){
 void Player::move( QVector3D translation,  Terrain & terrain ){
     this->player->move( translation );
     QVector3D currentPos =  this->player->getWorldPosition() ;
-    this->setHeight( terrain.getHeight( currentPos ) );
+    this->setHeight( terrain.getHeightOfTerrain( currentPos ) );
 }
 
 

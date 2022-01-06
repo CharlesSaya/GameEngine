@@ -95,7 +95,6 @@ void SceneGraph::update( float fixedStep ){
 
     for( GameObjectMesh * goMesh : this->goMeshes){
         if(goMesh->getIsMovable() && goMesh->getUseGravity()){
-//            qDebug()<< goMesh->getTransform()->getPosition();
              this->updatePhysicsMesh( goMesh, fixedStep );
         }
 

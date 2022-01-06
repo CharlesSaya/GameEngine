@@ -20,12 +20,15 @@ Terrain::Terrain( float gridSize, float scale, std::string file, Texture & heigh
     this->gridSize = gridSize;
     this->scale  = scale;
 
+    this->width = heightmap.getImage().width();
+    this->height = heightmap.getImage().height();
+
     this->terrainOBJ = file;
 
     this->gridSquareSize = gridSize / float( width - 1) ;
     this->gridNumber     = gridSize / gridSquareSize ;
 
-//    initGeometry();
+    initGeometry();
 }
 
 
@@ -34,11 +37,21 @@ void Terrain::initGeometry()
 
     for( int i =0; i<height; i++){
        for (int j = 0; j<width; j++ ){
-           planeVertices.push_back( { QVector3D( (float(j)/(float(width)-1.0)  - 0.5 ) * gridSize, 0.0, - (float(i)/(float(height)-1.0)  - 0.5 ) * gridSize ),
+           planeVertices.push_back( { QVector3D( (float(j)/(float(width)-1.0) ) * gridSize, 0.0, - (float(i)/(float(height)-1.0) ) * gridSize ),
                                       QVector3D( 0., 1., 0.),
                                       QVector2D( float(j)/float(width-1), float(i)/float(height-1))
                                     } );
        }
+   }
+
+    QImage &im = this->heightmap.getImage();
+
+    for( uint i =0; i<planeVertices.size(); i++){
+       float height = 0.0;
+       VertexData v = planeVertices[i];
+       height = im.pixelColor( v.texCoord.x() * (im.width()-1), v.texCoord.y() * (im.width()-1 )).blue()/255.;
+       heights.push_back( height );
+       planeVertices[i].position.setY( height * 30.156 );
    }
 
     for ( int i =0; i < height - 1; i++ ){
@@ -71,53 +84,37 @@ const std::string &Terrain::getOBJFilename() const
     return terrainOBJ;
 }
 
-void Terrain::setWidth(int newWidth)
-{
-    width = newWidth;
-}
-
-void Terrain::setHeight(int newHeight)
-{
-    height = newHeight;
-}
-
 
 float Terrain::getScale() const
 {
     return scale;
 }
 
-float Terrain::getHeight( QVector3D &position ){
+float Terrain::getHeightOfTerrain  ( QVector3D &position ){
     QImage &im = this->heightmap.getImage();
 
-    QVector3D relativePosition = position - QVector3D( -gridSize/2.0, 0.f, gridSize/2.0 );
+    QVector3D relativePosition = position - QVector3D();
 
     int gridX =  int( floor( relativePosition.x() / gridSquareSize ) );
     int gridZ =  int( floor( -relativePosition.z() / gridSquareSize ) );
-
-    if ( gridX < (0) || gridX > int( gridNumber -1 ) || gridZ < (0) || gridZ > int( gridNumber - 1 ))
+//    qDebug() << gridX << gridZ;
+    if ( (gridX < 0) || (gridX > im.width() -1)  || (gridZ < 0) || (gridZ > im.height() - 1 ) )
         return 0.f;
 
-    std::vector<int> ind = map[ gridZ * width + gridX ];
-
-    QVector2D a = planeVertices[ind[0]].texCoord * (im.width()-1);
-    QVector2D b = planeVertices[ind[1]].texCoord * (im.width()-1);
-    QVector2D c = planeVertices[ind[5]].texCoord * (im.width()-1);
-    QVector2D d = planeVertices[ind[2]].texCoord * (im.width()-1);
-
-    float hA = im.pixelColor(a.x(), a.y()).blue() / 255.;
-    float hB = im.pixelColor(b.x(), b.y()).blue() / 255.;
-    float hC = im.pixelColor(c.x(), c.y()).blue() / 255.;
-    float hD = im.pixelColor(d.x(), d.y()).blue() / 255.;
 
     float posX = fmod(relativePosition.x(), gridSquareSize) / gridSquareSize;
     float posZ = fmod(relativePosition.z(), gridSquareSize) / gridSquareSize;
 
     if ( posX < 1. - posZ )
-        return baricentricHeight( QVector3D( 0., hA, 0. ),  QVector3D( 1., hB, 0. ),  QVector3D( 0., hD, 1. ), QVector2D( posX, posZ ) );
+        return baricentricHeight( QVector3D( 0., heights[ gridZ * im.width() + gridX ], 0. ),
+                                  QVector3D( 1., heights[ ( gridZ + 1 ) * im.width() + gridX ], 0. ),
+                                  QVector3D( 0., heights[ gridZ * im.width() + ( gridX + 1 ) ], 1. ),
+                                  QVector2D( posX, posZ ) ) * maximumHeight;
     else
-        return baricentricHeight( QVector3D( 1., hD, 0. ),  QVector3D( 1., hB, 1. ),  QVector3D( 0., hC, 1. ), QVector2D( posX, posZ ) );
-
+        return baricentricHeight( QVector3D( 0., heights[ ( gridZ + 1 ) * im.width() ], 0. ),
+                                  QVector3D( 1., heights[ ( gridZ + 1 ) * im.width() + ( gridX + 1 ) ], 0. ),
+                                  QVector3D( 0., heights[ gridZ * im.width() + ( gridX + 1 ) ], 1. ),
+                                  QVector2D( posX, posZ ) ) * maximumHeight;
 }
 
 float Terrain::baricentricHeight(  QVector3D v0, QVector3D v1, QVector3D v2, QVector2D pos ){
@@ -133,17 +130,11 @@ float Terrain::baricentricHeight(  QVector3D v0, QVector3D v1, QVector3D v2, QVe
 }
 
 float Terrain::getMaximumHeight(){
-    float maxHeight = -__FLT_MAX__;
-    QImage &im = this->heightmap.getImage();
-    for( int i = 0; i < this->height; i++ ){
-        for( int j = 0; j < this->width; j++){
-            if( im.pixelColor( j, i ).blue() > maxHeight )
-                maxHeight = im.pixelColor( j, i ).blue() ;
-        }
-    }
-    return maxHeight/255.0 * scale;
+    return maximumHeight;
 }
-
+void Terrain::setMaximumHeight( float height ){
+    maximumHeight = height;
+}
 float Terrain::getMinimumHeight(){
     float minHeight = __FLT_MAX__;
     QImage &im = this->heightmap.getImage();
@@ -158,12 +149,31 @@ float Terrain::getMinimumHeight(){
 
 std::vector<GLuint> &Terrain::getPlaneIndices()
 {
+
     return planeIndices;
 }
 
 void Terrain::setPlaneIndices(const std::vector<GLuint> &newPlaneIndices)
 {
     planeIndices = newPlaneIndices;
+
+//    for ( int i =0; i < height - 1; i++ ){
+//        for (int j = 0 ; j< width - 1; j++){
+
+//            std::vector<int> ind;
+
+//            ind.push_back( GLuint(j + i * width) );
+//            ind.push_back( GLuint(j + 1 + i * width ) );
+//            ind.push_back( GLuint(j + ( i + 1 ) * width ) );
+//            ind.push_back( GLuint(j + ( i + 1 ) * width ) );
+//            ind.push_back( GLuint(j + 1 + i * width ) );
+//            ind.push_back( GLuint(j + 1 + ( i + 1 ) * width ) );
+
+//            map.insert(std::pair<int, std::vector<int>>( i*width + j, ind ));
+
+//        }
+//    }
+
 }
 
  std::vector<VertexData> &Terrain::getPlaneVertices()

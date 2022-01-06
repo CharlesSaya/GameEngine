@@ -26,7 +26,7 @@ Mesh::Mesh( std::string filepath, std::vector<Texture> textures, Shader * shader
 
 }
 
-Mesh::Mesh( Terrain& terrain, std::vector<Texture> textures, Shader * shader,  QVector3D meshColor, bool renderAABB  ){
+Mesh::Mesh( Terrain& terrainOBJ, std::vector<Texture> textures, Shader * shader,  QVector3D meshColor, bool renderAABB  ){
     this->meshColor = meshColor;
     this->textures = textures;
     this->shader = shader;
@@ -41,16 +41,19 @@ Mesh::Mesh( Terrain& terrain, std::vector<Texture> textures, Shader * shader,  Q
     this->AABBverticesBuffer.create();
     this->AABBindexesBuffer.create();
 
-    this->loadGeometry( terrain.getOBJFilename() );
+//    this->loadGeometry( terrainOBJ.getOBJFilename() );
 
-//    this->meshesVertexDatas.push_back( terrain.getPlaneVertices() );
-//    this->meshesFaces.push_back( terrain.getPlaneIndices() );
+    this->meshesVertexDatas.push_back( terrainOBJ.getPlaneVertices() );
+    this->meshesFaces.push_back( terrainOBJ.getPlaneIndices() );
 
     this->bBox = AABB( this->meshesVertexDatas[0] );
-//    this->bBox.getMaxDefault().setY( terrain.getMaximumHeight() * terrain.getScale() );
-//    this->bBox.getMinDefault().setY( terrain.getMinimumHeight() * terrain.getScale() );
+    qDebug() <<  this->bBox.getMax() << this->bBox.getMin();
+//    this->bBox.getMaxDefault().setY( terrainOBJ.getMaximumHeight() * terrain.getScale() );
+    this->bBox.setMinDefault( this->bBox.getMinDefault() - QVector3D( 0.0, 100. , 0.0 ) );
 //    this->bBox.setMax( this->bBox.getMaxDefault() );
-//    this->bBox.setMin( this->bBox.getMinDefault() );
+    this->bBox.setMin( this->bBox.getMinDefault() - QVector3D( 0.0, 100. , 0.0 ) );
+    terrainOBJ.setMaximumHeight( this->bBox.getMax().y() );
+
     this->renderAABB = renderAABB;
 
     this->terrain = true;
@@ -87,7 +90,6 @@ void Mesh::updateAABB( const QMatrix4x4& model ) {
 void Mesh::loadGeometry( std::string dirPath ){
 
     std::vector< string > files = dirFiles( dirPath );
-
     for( std::string filepath : files  ){
 
         std::vector<VertexData> lodVertices;
@@ -156,24 +158,24 @@ void Mesh::unbindTextures(){
 
 
 void Mesh::drawAABB( Shader * shader ){
-      this->bBox.drawAABB(shader);
-//    this->bBox.initBuffers();
+//      this->bBox.drawAABB(shader);
+    this->bBox.initBuffers();
 
-//    indexCount = this->bBox.getIndexCount();
+    indexCount = this->bBox.getIndexCount();
 
-//    AABBverticesBuffer.bind();
-//    AABBverticesBuffer.allocate( this->bBox.getVertices().data(), this->bBox.getVertices().size() * sizeof( QVector3D ) );
+    AABBverticesBuffer.bind();
+    AABBverticesBuffer.allocate( this->bBox.getVertices().data(), this->bBox.getVertices().size() * sizeof( QVector3D ) );
 
-//    AABBindexesBuffer.bind();
-//    AABBindexesBuffer.allocate ( this->bBox.getLines().data(), indexCount * sizeof( GLuint ) );
+    AABBindexesBuffer.bind();
+    AABBindexesBuffer.allocate ( this->bBox.getLines().data(), indexCount * sizeof( GLuint ) );
 
-//    quintptr offset = 0;
+    quintptr offset = 0;
 
-//    int vertexLocation = shader->getProgram().attributeLocation("a_position");
-//    shader->getProgram().enableAttributeArray(vertexLocation);
-//    shader->getProgram().setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(QVector3D));
+    int vertexLocation = shader->getProgram().attributeLocation("a_position");
+    shader->getProgram().enableAttributeArray(vertexLocation);
+    shader->getProgram().setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(QVector3D));
 
-//    glDrawElements(GL_LINES, indexCount, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_LINES, indexCount, GL_UNSIGNED_INT, 0);
 }
 
 void Mesh::drawMesh( float distance, Shader * shader ){

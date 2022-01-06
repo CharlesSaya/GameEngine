@@ -12,7 +12,6 @@ vector<string> split(  string line,  string delimiter ){
     while ((pos = line.find(delimiter)) !=  string::npos) {
         token = line.substr(0, pos);
         list.push_back( token );
-
         line.erase(0, pos + delimiter.length());
     }
     list.push_back( line );
@@ -36,10 +35,9 @@ void processVertex( string line,
         vector<string> splited2 = split( s, "/" );
 
         int vertexPointer  = atoi( splited2[0].c_str() ) - 1 ;
-
         faces.push_back( vertexPointer );
-        v.position = positions[vertexPointer];
 
+        v.position = positions[vertexPointer];
         int count = 1;
         if( hasTexcoord ){
             int texCoordPointer = atoi( splited2[count].c_str() ) - 1;
@@ -48,10 +46,9 @@ void processVertex( string line,
         }
 
         if( hasNormal ){
-            int normalPointer = atoi( splited2[count    ].c_str() ) - 1;
+            int normalPointer = atoi( splited2[count].c_str() ) - 1;
             v.normal = normals[ normalPointer ];
         }
-
         vertexDatas[vertexPointer] = v;
 
     }
@@ -113,7 +110,6 @@ void ObjLoader::loadObject( string file, vector<VertexData> & vertexDatas, vecto
     }
 
     vertexDatas.resize( positions.size() );
-    faces.resize( positions.size() * 3 );
 
     do{
 
@@ -122,6 +118,7 @@ void ObjLoader::loadObject( string file, vector<VertexData> & vertexDatas, vecto
             processVertex( line, vertexDatas, faces, positions, normals, textureCoords, hasNormal, hasTexcoord );
 
     }while( getline( input, line ) );
+
 
 }
 

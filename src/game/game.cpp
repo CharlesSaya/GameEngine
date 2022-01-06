@@ -40,8 +40,7 @@ void Game::initGame(){
 
     // Terrain Game Object ------------------------------------------------------------------------------
 
-    Texture heightMap = Texture( "../GameEngine/textures/heightmapTerrain.png", "heightMap" );
-
+    Texture heightMap = Texture( "../GameEngine/textures/heightmapF3.png", "tex0" );
 
     Texture snow    = Texture( "../GameEngine/textures/snowTexture.png", "tex0" );
     Texture rock    = Texture( "../GameEngine/textures/rockTexture.png", "tex1" );
@@ -67,14 +66,14 @@ void Game::initGame(){
     terrainTextures.push_back( blendMapMiddle );
     terrainTextures.push_back( blendMapBottom );
 
-    terrain = Terrain( 128, 15.0, terrainOBJ, heightMap );
+    terrain = Terrain( 256, 1.0, terrainOBJ, heightMap );
     Mesh terrainMesh = Mesh( terrain, terrainTextures, terrainShader, white, false );
     MeshRenderer * terrainRenderer = new MeshRenderer( terrainMesh, this );
     ColliderComponent * terrainCollider = new ColliderComponent( this );
 
     terrainGO = new GameObjectMesh( "Terrain", terrainRenderer, terrainCollider, false );
     terrainGO->scale( terrain.getScale() );
-    terrainGO->move( QVector3D( 64.0 * terrain.getScale(), 0.0, -64.0 * terrain.getScale() ) );
+//    terrainGO->move( QVector3D( -64.0 * terrain.getScale(), 0.0, 64.0 * terrain.getScale() ) );
 
     this->goMeshes.push_back( terrainGO );
     colliderEngine.setTerrain( terrain );
@@ -106,7 +105,7 @@ void Game::initGame(){
 
     playerGO  = new GameObjectPlayer( "Player" , playerRenderer, playerMove, playerPhysics, playerCollider, playerComponent );
     playerGO->scale(  QVector3D(0.1, 0.1, 0.1) );
-    playerGO->move(  QVector3D(0., 30., -0. ) );
+    playerGO->move(  QVector3D(10., 30., -10. ) );
 
 
     // Sphere
@@ -118,11 +117,11 @@ void Game::initGame(){
     ColliderComponent * sphereCollider = new ColliderComponent( this );
     PhysicsComponent * spherePhysics = new PhysicsComponent(physicsEngine, this );
 
-    sphereGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider,spherePhysics, true, terrainGO );
-    sphereGO->scale( 1 );
-    sphereGO->move(  QVector3D(0., 200., -0. ));
+//    sphereGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider,spherePhysics, true, terrainGO );
+//    sphereGO->scale( 1 );
+//    sphereGO->move(  QVector3D(0., 200., -0. ));
 
-    this->goMeshes.push_back( sphereGO );
+//    this->goMeshes.push_back( sphereGO );
 
     // Trees  ------------------------------------------------------------------------------
 
@@ -172,7 +171,7 @@ void Game::initGame(){
     renderingEngine.setMainCamera( mainCameraGO );
 
     // Build hierarchy ---------------------------------------------------------------------------------
-    std::vector<GameObject *> baseGo = { sphereGO, playerGO };
+    std::vector<GameObject *> baseGo = { terrainGO, playerGO };
 
     sceneGraph = SceneGraph( baseGo, this->goMeshes, playerGO, mainCameraGO, this->physicsEngine, this->colliderEngine );
 }

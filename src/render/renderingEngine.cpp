@@ -434,7 +434,7 @@ void RenderingEngine::renderScene( SceneGraph &sceneGraph,  float deltaTime ){
     // render the final scene by adding the differents FBO textures on a quad
     generateQuad();
 
-//    renderBloom();
+    renderBloom();
 
     renderPostProcess();
 
@@ -444,7 +444,7 @@ void RenderingEngine::renderScene( SceneGraph &sceneGraph,  float deltaTime ){
     glBlitFramebuffer( 0, 0, screenWidth, screenHeight, 0, 0, screenWidth, screenHeight, GL_DEPTH_BUFFER_BIT, GL_NEAREST );
 
     // render skybox
-    skybox.render( mainCamera, QMatrix4x4() );
+//    skybox.render( mainCamera, QMatrix4x4() );
 
     // render lens flare effect
     glDisable(GL_DEPTH_TEST);

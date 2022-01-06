@@ -28,7 +28,7 @@ public:
 
 private:
 
-    QVector3D gravity = QVector3D(0., -30.81, 0.);
+    QVector3D gravity = QVector3D(0., -9.81, 0.);
 
     float deltaTime = 0.0f;
     float damp      = .5f;
