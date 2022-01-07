@@ -116,10 +116,10 @@ void Game::initGame(){
     PhysicsComponent * spherePhysics = new PhysicsComponent(physicsEngine, this );
 
     sphereGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider,spherePhysics, true, terrainGO );
-    sphereGO->scale( 1 );
-    sphereGO->move(  QVector3D(-103.6432,0.5f,73.0f));
+    sphereGO->scale( 1);
+    sphereGO->move(  QVector3D(-0.0,0.0f,0.0f));
 
-//    this->goMeshes.push_back( sphereGO );
+    this->goMeshes.push_back( sphereGO );
 
     // snowy tree  ------------------------------------------------------------------------------
 
@@ -137,28 +137,28 @@ void Game::initGame(){
     QVector<QVector3D> positionsTree;
     QVector<float> scalesTree;
 
-    positionsTree.push_back(QVector3D(-46.6432,0.0f,43.0f));
-    positionsTree.push_back(QVector3D(-17.0,0.0f,51.0f));
-    positionsTree.push_back(QVector3D(-11.0,0.0f,42.0f));
-    positionsTree.push_back(QVector3D(-60.0,0.0f,15.0f));
-    positionsTree.push_back(QVector3D(-120.0,0.0f,20.0f));
-    positionsTree.push_back(QVector3D(-117.0,0.0f,29.0f));
-    positionsTree.push_back(QVector3D(-110.0,0.0f,56.0f));
-    positionsTree.push_back(QVector3D(-89.0,0.0f,53.0f));
-    positionsTree.push_back(QVector3D(-72.0,0.0f,48.0f));
-    positionsTree.push_back(QVector3D(-62.0,0.0f,50.0f));
-    positionsTree.push_back(QVector3D(-47.0,0.0f,19.0f));
-    positionsTree.push_back(QVector3D(-45.0,0.0f,9.0f));
-    positionsTree.push_back(QVector3D(-67.0,0.0f,22.0f));
-    positionsTree.push_back(QVector3D(-60.0,0.0f,26.0f));
-    positionsTree.push_back(QVector3D(-21.0,0.0f,46.0f));
-    positionsTree.push_back(QVector3D(-13.0,0.0f,43.0f));
-    positionsTree.push_back(QVector3D(-9.0,0.0f,19.0f));
-    positionsTree.push_back(QVector3D(-30.0,0.0f,8.0f));
-    positionsTree.push_back(QVector3D(-41.0,0.0f,15.0f));
-    positionsTree.push_back(QVector3D(-98.0,0.0f,32.0f));
-    positionsTree.push_back(QVector3D(-84.0,0.0f,35.0f));
-    positionsTree.push_back(QVector3D(-99.0,0.0f,40.0f));
+//    positionsTree.push_back(QVector3D(-46.6432,0.0f,43.0f));
+//    positionsTree.push_back(QVector3D(-17.0,0.0f,51.0f));
+//    positionsTree.push_back(QVector3D(-11.0,0.0f,42.0f));
+//    positionsTree.push_back(QVector3D(-60.0,0.0f,15.0f));
+//    positionsTree.push_back(QVector3D(-120.0,0.0f,20.0f));
+//    positionsTree.push_back(QVector3D(-117.0,0.0f,29.0f));
+//    positionsTree.push_back(QVector3D(-110.0,0.0f,56.0f));
+//    positionsTree.push_back(QVector3D(-89.0,0.0f,53.0f));
+//    positionsTree.push_back(QVector3D(-72.0,0.0f,48.0f));
+//    positionsTree.push_back(QVector3D(-62.0,0.0f,50.0f));
+//    positionsTree.push_back(QVector3D(-47.0,0.0f,19.0f));
+//    positionsTree.push_back(QVector3D(-45.0,0.0f,9.0f));
+//    positionsTree.push_back(QVector3D(-67.0,0.0f,22.0f));
+//    positionsTree.push_back(QVector3D(-60.0,0.0f,26.0f));
+//    positionsTree.push_back(QVector3D(-21.0,0.0f,46.0f));
+//    positionsTree.push_back(QVector3D(-13.0,0.0f,43.0f));
+//    positionsTree.push_back(QVector3D(-9.0,0.0f,19.0f));
+//    positionsTree.push_back(QVector3D(-30.0,0.0f,8.0f));
+//    positionsTree.push_back(QVector3D(-41.0,0.0f,15.0f));
+//    positionsTree.push_back(QVector3D(-98.0,0.0f,32.0f));
+//    positionsTree.push_back(QVector3D(-84.0,0.0f,35.0f));
+//    positionsTree.push_back(QVector3D(-99.0,0.0f,40.0f));
 
     for(int i = 0 ;i<positionsTree.size();i++ ){
         scalesTree.push_back( 0.5 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(1.5))));
@@ -166,7 +166,7 @@ void Game::initGame(){
 
     for(int i = 0 ;i<positionsTree.size();i++ ){
         Mesh treeMesh =Mesh( snowyObj[rand()%snowyObj.size()], treeTextures, shader, white, false );
-        GameObjectMesh * treeGO = new GameObjectMesh( "Tree" + std::to_string(i), new MeshRenderer( treeMesh, this  ), new ColliderComponent( this ), false, terrainGO );
+        GameObjectMesh * treeGO = new GameObjectMesh( "Tree" + std::to_string(i), new MeshRenderer( treeMesh, this  ), new ColliderComponent( this ), false );
         treeGO->scale( scalesTree[i] );
         treeGO->move( positionsTree[i] );
         this->goMeshes.push_back( treeGO );
@@ -221,7 +221,7 @@ void Game::initGame(){
         positionsBox.push_back(QVector3D(-90.6432,0.5f,73.0f));
         positionsBox.push_back(QVector3D(-80.6432,0.5f,73.0f));
         positionsBox.push_back(QVector3D(-70.6432,0.5f,73.0f));
-    //    positionsCactus.push_back(QVector3D(-100.6432,0.0f,73.0f));
+//        positionsCactus.push_back(QVector3D(-100.6432,0.0f,73.0f));
 
         for(int i = 0 ;i<positionsBox.size();i++ ){
             scalesBox.push_back(((rand()%10))/10.0f);

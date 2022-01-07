@@ -40,6 +40,17 @@ void MoveComponent::pressedInput(QKeyEvent * key){
             inputs.insert( 5 );
             emit move( inputs );
             break;
+
+        case Qt::Key_A :
+            inputsChild.insert( 0 );
+            emit moveChild (inputsChild );
+            break;
+
+
+        case Qt::Key_E :
+            inputsChild.insert( 1 );
+            emit moveChild(inputsChild );
+            break;
     }
 }
 
@@ -86,6 +97,17 @@ void MoveComponent::releasedInput(QKeyEvent * key){
             inputs.remove( 5 );
             emit stop( inputs );
             break;
+
+        case Qt::Key_A :
+            inputsChild.remove( 0 );
+            emit stopChild(inputsChild);
+            break;
+
+
+        case Qt::Key_E :
+            inputsChild.remove( 1 );
+            emit stopChild( inputsChild );
+            break;
     }
 }
 
@@ -107,8 +129,8 @@ void MoveComponent::mouseMoveEvent(QVector2D pos, bool reset){
 
     rotationAxis[0] -= pitch;
     rotationAxis[1] -= yaw ;
-    if(rotationAxis[0]>60) rotationAxis[0] = 60.0f;
-    if(rotationAxis[0]<-60) rotationAxis[0] = -60.0f;
+    if(rotationAxis[0]>90) rotationAxis[0] = 90.0f;
+    if(rotationAxis[0]<-90) rotationAxis[0] = -90.0f;
     rotationX =  QQuaternion::fromAxisAndAngle( QVector3D(360.0f,0.0f,0.0f),  rotationAxis[0]);
     rotationY =  QQuaternion::fromAxisAndAngle( QVector3D(0.0f,360.0f,0.0f),  rotationAxis[1]);
 

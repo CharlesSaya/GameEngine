@@ -95,6 +95,10 @@ void SceneGraph::update( float fixedStep ){
         if(goMesh->getIsMovable() && goMesh->getUseGravity()){
              this->updatePhysicsMesh( goMesh, fixedStep );
         }
+        if(goMesh->getIsTelekinesis()){
+           goPlayer->getPlayerComponent()->setPositionChild(goPlayer,goMesh);
+          }
+
     }
 
     // update BVH
@@ -141,8 +145,6 @@ void SceneGraph::renderBVH( Node * node, Shader * shader ){
 void SceneGraph::updateBVH( Node * node ){
 
     std::vector<GameObjectMesh *>::iterator itA;
-    std::vector<GameObjectPlayer *>::iterator itB;
-    std::vector<GameObjectCamera *>::iterator itC;
 
     GameObject * go = node->gameObject;
     node->nodeBoundingBox.resetAABB();
@@ -188,11 +190,8 @@ void SceneGraph::updateALLBVH(){
 
 void SceneGraph::rayBVHCollision( Node * node ){
     bool collision = node->nodeBoundingBox.intersect( goPlayer->getPlayerComponent()->getRay() );
-    qDebug()<< node->children[0]->gameObject->getName().c_str();
     if( node->children.empty() && collision ){
-
         goPlayer->getPlayerComponent()->telekinesis( goPlayer, node->gameObject );
-
 
     }
 
@@ -206,7 +205,6 @@ void SceneGraph::rayBVHCollision( Node * node ){
             if( collision ){
                 rayBVHCollision( childNode );
             }
-             goPlayer->getPlayerComponent()->attractAndPush(goPlayer);
         }
     }
 }

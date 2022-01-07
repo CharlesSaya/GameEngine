@@ -28,6 +28,10 @@ void GameObjectPlayer::initSignalsSlots(){
     connect( this, &GameObjectPlayer::updateAABB, meshRenderer, &MeshRenderer::updateAABB );
     connect( this, &GameObjectPlayer::updatePlayerComponent, playerComponent, &PlayerComponent::update );
 
+    connect( moveComponent, &MoveComponent::moveChild, playerComponent, &PlayerComponent::hasMovedChild );
+    connect( moveComponent, &MoveComponent::stopChild, playerComponent, &PlayerComponent::hasStoppedChild );
+
+
 }
 
 void GameObjectPlayer::hasTransformed(){

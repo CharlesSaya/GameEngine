@@ -22,7 +22,6 @@ void PlayerComponent::update( QVector3D &playerPosition, QVector3D playerDirecti
 }
 
 Ray & PlayerComponent::castRay(QVector3D target){
-
     ray = Ray( this->playerPosition, target);
     return ray;
 }
@@ -45,16 +44,20 @@ void PlayerComponent::telekinesis(  GameObject * player, GameObject * go ){
     }
 }
 
-void PlayerComponent::attractAndPush(GameObject * go ){
-        GameObject * child = go->getChildren()[go->getChildren().size()-1];
+void PlayerComponent::setPositionChild(GameObject * go,GameObject * child  ){
 
-           if(wheelDown && (child->getWorldPosition() - go->getWorldPosition()).length() > minRange) {
-               child->attract(0.50 );
+           if(wheelDown && (child->getWorldPosition() - go->getWorldPosition()).y() > rangeY[0]) {
+               child->move(0.0f,-translationChildSpeed[1],0.0f );
            }
-           else if(wheelUp&& (child->getWorldPosition() - go->getWorldPosition()).length() < maxRange){
-               child->push(0.50f);
+           else if(wheelUp&& (child->getWorldPosition() - go->getWorldPosition()).y() < rangeY[1]){
+               child->move(0.0f,translationChildSpeed[1],0.0f);
            }
 
+           moveChildZ();
+           if(translationChildSpeed[2]<=0 && (child->getWorldPosition() - go->getWorldPosition()).length() < rangeZ[1] ||
+              translationChildSpeed[2]>=0 && (child->getWorldPosition() - go->getWorldPosition()).length() > rangeZ[0]){
+               child->move(0.0f,0.0f,translationChildSpeed[2] );
+           }
     }
 
 void PlayerComponent::pressedInput( QMouseEvent * key ){
@@ -107,6 +110,21 @@ void PlayerComponent::deactivateWheel(){
     timer->stop();
 }
 
+void PlayerComponent::moveChildZ(){
+    for( uint i : inputsMoves ){
+        switch( i ){
+            case 0 :
+                translationChildSpeed.setZ( speedZ);
+                break;
+
+            case 1 :
+                translationChildSpeed.setZ( - speedZ);
+                break;
+
+        }
+    }
+}
+
 void PlayerComponent::drawRay( const QMatrix4x4& view, const QMatrix4x4& projection  ){
     if( rightMousePressed )
 
@@ -122,4 +140,15 @@ const Ray &PlayerComponent::getRay() const
 void PlayerComponent::setRay(const Ray &newRay)
 {
     ray = newRay;
+}
+
+
+
+void PlayerComponent::hasMovedChild( QSet<uint> inputsMoves ){
+    this->inputsMoves = inputsMoves;
+}
+
+void PlayerComponent::hasStoppedChild( QSet<uint> inputsMoves ){
+    this->inputsMoves = inputsMoves;
+    translationChildSpeed.setZ(0.0f);
 }

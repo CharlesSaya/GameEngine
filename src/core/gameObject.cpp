@@ -1,5 +1,6 @@
 #include "headers/core/gameObject.h"
 
+
 GameObject::GameObject(){}
 
 GameObject::GameObject( std::string name, GameObject * parent ){
@@ -76,10 +77,12 @@ void GameObject::setParent(GameObject *newParent){
     lastParent = parent;
     parent = newParent;
     QVector3D scaleParent = parent->getTransform()->getScale();
-    QVector3D invertScale = QVector3D(1/scaleParent.x(),1/scaleParent.y(), 1/scaleParent.z());
+    predScale = this->getTransform()->getScale();
+    QVector3D invertScale = this->getTransform()->getScale() * QVector3D(1/scaleParent.x(),1/scaleParent.y(), 1/scaleParent.z());
     getTransform()->applyScale(invertScale);
     QVector3D invertTrans =  newParent->getModel().inverted()* trans  ;
     transform->setPosition(invertTrans);
+    setIsTelekinesis(true);
 
 
 }
@@ -90,17 +93,10 @@ void GameObject::setLastParent(){
     lastParent->addChild( this );
     parent = lastParent;
     QVector3D invertTrans = parent->getModel().inverted() * trans ;
-    getTransform()->applyScale(parent->getTransform()->getScale());
+    getTransform()->applyScale(predScale);
     transform->setPosition( invertTrans );
     lastParent = nullptr;
-}
-
-void GameObject::attract(float speed){
-    this->move(QVector3D(0.0f,0.0,speed));
-}
-
-void GameObject::push(float speed){
-    this->move(QVector3D(0.0f,0.0,-speed));
+    setIsTelekinesis(false);
 }
 
 Transform *GameObject::getTransform()
@@ -120,6 +116,16 @@ QVector3D& GameObject::getWorldPosition(){
 
 void GameObject::setHeight(float height){
     this->transform->getPosition().setY( height );
+}
+
+bool GameObject::getIsTelekinesis() const
+{
+    return isTelekinesis;
+}
+
+void GameObject::setIsTelekinesis(bool newIsTelekinesis)
+{
+    isTelekinesis = newIsTelekinesis;
 }
 
 

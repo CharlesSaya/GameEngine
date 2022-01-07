@@ -20,6 +20,9 @@ signals:
     void move( QSet<uint> inputs );
     void stop( QSet<uint> inputs );
 
+    void moveChild( QSet<uint> inputs );
+    void stopChild( QSet<uint> inputs );
+
 public:
 
     MoveComponent( Terrain & terrain, QObject * parent = 0  );
@@ -48,6 +51,7 @@ private:
     QVector3D jump     = QVector3D( 0.0, speed , 0.0    );
 
     QSet<uint> inputs;
+    QSet<uint> inputsChild;
     float inputsX;
 
     Terrain terrain;

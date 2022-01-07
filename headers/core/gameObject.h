@@ -22,6 +22,9 @@ protected:
 
     std::vector<GameObject *> children;
     QVector3D worldPosition;
+
+    QVector3D predScale; // for setLastParent
+    bool isTelekinesis = false ;
 public:
 
     GameObject();
@@ -34,7 +37,6 @@ public:
     void move( float x, float y , float z );
     void rotate( QVector3D axis, float angle );
     void rotate( QQuaternion rotate );
-    void addRotate( QQuaternion rotate );
     void scale( QVector3D scale );
     void scale( float scale );
     void setHeight(float height);
@@ -53,8 +55,8 @@ public:
     GameObject * getParent();
     void setParent(GameObject *newParent);
     void setLastParent();
-    void attract(float speed);
-    void push(float speed);
+    bool getIsTelekinesis() const;
+    void setIsTelekinesis(bool newIsTelekinesis);
 };
 
 

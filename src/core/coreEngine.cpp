@@ -45,58 +45,12 @@ void CoreEngine::mouseMoveEvent(QMouseEvent *e){
     else
         this->game->mouseMoved( QVector2D( e->localPos() ), false);
 
-//    float hAngle = 0., vAngle = 0.;
-//    float sensitivity = 0.1f;
-//    vAngle = mousePressPosition.y() -  e->localPos().y() ;
-//    vAngle *= sensitivity * 3.;
-
-//    if( e->localPos().x() > this->width() -10. || e->localPos().x() < 10. ){
-
-//        mousePressPosition = QVector2D( width()/2, e->localPos().y() );
-//        this->cursor().setPos( mapToGlobal( QPoint( mousePressPosition.x(), mousePressPosition.y() ) ) );
-//        return;
-
-//    }
-//    else
-//    {
-//        hAngle = e->localPos().x() -mousePressPosition.x() ;
-//        hAngle *= sensitivity;
-//        mousePressPosition = QVector2D( e->localPos() );
-//    }
-
-//    yaw += hAngle;
-//    pitch += vAngle;
-
-//    if( pitch > 89.0f) pitch = 89.0f;
-//    if( pitch < -89.0f) pitch = -89.0f;
-
-//    this->game->getCamera()->rotate( pitch, yaw );
 }
 
 
 void CoreEngine::keyPressEvent(QKeyEvent *key){
     float movementSpeed = deltaTime;
     this->game->keyPressed( key );
-
-//    switch( key->key() ){
-
-//        case Qt::Key_Z:
-//            this->game->getCamera()->move( this->game->getCamera()->getCameraForward() * movementSpeed * 2. );
-//            break;
-
-//        case Qt::Key_S:
-//            this->game->getCamera()->move( -this->game->getCamera()->getCameraForward() * movementSpeed * 2. );
-//            break;
-
-//        case Qt::Key_Q:
-//            this->game->getCamera()->move( this->game->getCamera()->getRight() * movementSpeed * 2. );
-//            break;
-
-//        case Qt::Key_D:
-//            this->game->getCamera()->move( this->game->getCamera()->getLeft() * movementSpeed * 2. );
-//            break;
-
-//    }
 
 }
 

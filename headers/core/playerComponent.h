@@ -25,7 +25,8 @@ public slots:
     void wheelScrolled( QWheelEvent * scroll );
     void deactivateWheel();
     void update( QVector3D &playerPosition, QVector3D playerDirection );
-
+    void hasMovedChild( QSet<uint>  inputsMoves);
+    void hasStoppedChild( QSet<uint>  inputsMoves);
 public:
 
     PlayerComponent( Shader * shader, QObject * parent = 0 );
@@ -38,10 +39,11 @@ public:
     bool telekinesisActivated();
 
     void drawRay( const QMatrix4x4& view, const QMatrix4x4& projection );
-    void attractAndPush( GameObject * go  );
+    void setPositionChild( GameObject * go,GameObject * child  );
     const Ray &getRay() const;
     void setRay(const Ray &newRay);
 
+    void moveChildZ();
 private:
 
     Ray ray;
@@ -54,8 +56,13 @@ private:
 
     GameObject * linkedGO = nullptr ;
 
-    float minRange = 5.0f;
-    float maxRange = 40.0f;
+    QSet<uint> inputsMoves;
+    QVector3D translationChildSpeed = QVector3D(0.0f,1.0f,0.0f);
+    float speedZ = 0.1;
+
+    QVector2D rangeY = QVector2D(0.0f,5.0f);
+    QVector2D rangeZ = QVector2D(5.0f,20.0f);
+
 
     bool leftMousePressed = false;
     bool rightMousePressed = false;
