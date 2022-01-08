@@ -26,17 +26,16 @@ public:
 
         QVector3D objectVel =  go->getPhysicsComponent()->getVelocity();
 
-        AABB broadPhaseBox;
-//        buildBroadPhaseBox( broadPhaseBox, objectVel, go->getMeshRenderer()->getMesh().getAABB());
+
 
         bool collision = intersectAABB( go->getMeshRenderer()->getMesh().getAABB(), node->nodeBoundingBox );
 
         if( node->children.empty() && collision ){
-//            qDebug() << "Collision detected between " << go->getName().c_str() << node->gameObject->getName().c_str();
+
             QVector3D normal;
             float time = sweptAABB( objectVel, go->getMeshRenderer()->getMesh().getAABB(), node->nodeBoundingBox, normal );
             float distance = __FLT_MAX__;
-//            qDebug() <<time;
+
             if( time >= 0.){
                 if (node->gameObject->getName() == "Terrain")
                     distance = distanceToTerrain( go->getMeshRenderer()->getMesh().getAABB().getMin(), node->nodeBoundingBox.getMax(), normal  );
@@ -56,17 +55,15 @@ public:
                 if( collision ){
 
                     if ( childNode->gameObject->getName() == "Terrain"){
-//                        qDebug() << childNode->nodeBoundingBox.getMin() << childNode->nodeBoundingBox.getMax();
 
                         bool collision = intersectAABB( go->getMeshRenderer()->getMesh().getAABB(), dynamic_cast<GameObjectMesh*>(childNode->gameObject)->getMeshRenderer()->getMesh().getAABB());
                         if( collision ){
                             float height;
                             QVector3D worldPos;
                             worldPos = go->getWorldPosition();
-                            height = terrain.getHeightOfTerrain( worldPos );
+                            height = terrain.getHeightTerrain( worldPos );
                             if( worldPos.y() < height )
                                 go->setHeight(height * terrain.getScale() );
-                            qDebug() << "height" << height * terrain.getScale() ;
                             continue;
                         }
                     }

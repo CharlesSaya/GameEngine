@@ -15,10 +15,11 @@ Texture::Texture(  std::string file, std::string location ){
 
 void Texture::initTexture(){
     this->texture = new QOpenGLTexture( this->image );
-    this->texture->setWrapMode( QOpenGLTexture::Repeat );
+    this->texture->setWrapMode( QOpenGLTexture::ClampToEdge );
     this->texture->setMinMagFilters( QOpenGLTexture::LinearMipMapNearest, QOpenGLTexture::LinearMipMapLinear );
 
     this->texture->generateMipMaps();
+
 }
 
 void Texture::bindTexture( uint textureUnit, Shader * shader ) const {

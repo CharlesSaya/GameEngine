@@ -20,5 +20,7 @@
         <file>shaders/verticalBlur_vshader.glsl</file>
         <file>shaders/horizontalBlur_vshader.glsl</file>
         <file>shaders/blur_fshader.glsl</file>
+        <file>shaders/particlePoint_fshader.glsl</file>
+        <file>shaders/particlePoint_vshader.glsl</file>
     </qresource>
 </RCC>

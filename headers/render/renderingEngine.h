@@ -31,6 +31,7 @@ private:
     int screenWidth = 1920;
     int screenHeight = 1080;
 
+
     uint quadVAO = 0, quadVBO = 0;
     uint quadVAO2 = 0, quadVBO2 = 0;
 
@@ -53,14 +54,19 @@ private:
     std::vector<PointLight> pointLights;
     DirectionalLight directionalLight;
 
-    Shader * shadowShader, * gBufferShader, *particleShader, *postProcessShader, *flareShader, *blurVShader, *blurHShader;
+    Shader * shadowShader, * gBufferShader, *particleShader, *pointParticleShader, *postProcessShader, *flareShader, *blurVShader, *blurHShader;
 
     QOpenGLContext * context;
 
     QVector3D white = QVector3D( 1., 1., 1.);
-    QVector3D red = QVector3D( 1., 0., 0.);
+    QVector3D red = QVector3D( 1., 0., 0. );
+    QVector3D sandColor = QVector3D( 0.84, 0.63, 0.05 );
+    QVector3D snowColor = QVector3D( 0.78, 0.98, 0.95 );
 
-    ParticleGenerator particleGenerator;
+    ParticleGenerator snowGenerator;
+    ParticleGenerator sandPointGenerator;
+    ParticleGenerator sandSpriteGenerator;
+    ParticleGenerator leavesGenerator;
     FlareGenerator flareGenerator;
 
 public:

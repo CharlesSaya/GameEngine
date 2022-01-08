@@ -16,6 +16,7 @@ RenderingEngine::RenderingEngine( float renderStep ){
     gBufferShader = new Shader(  "../GameEngine/shaders/gBuffer_vshader.glsl", "../GameEngine/shaders/gBuffer_fshader.glsl" );
     postProcessShader = new Shader(  "../GameEngine/shaders/postProcess_vshader.glsl", "../GameEngine/shaders/postProcess_fshader.glsl" );
     particleShader = new Shader(  "../GameEngine/shaders/particle_vshader.glsl", "../GameEngine/shaders/particle_fshader.glsl" );
+    pointParticleShader = new Shader(  "../GameEngine/shaders/particlePoint_vshader.glsl", "../GameEngine/shaders/particlePoint_fshader.glsl" );
     flareShader = new Shader(  "../GameEngine/shaders/flare_vshader.glsl", "../GameEngine/shaders/flare_fshader.glsl" );
 
     blurVShader = new Shader(  "../GameEngine/shaders/verticalBlur_vshader.glsl", "../GameEngine/shaders/blur_fshader.glsl" );
@@ -47,15 +48,34 @@ void RenderingEngine::initPointLights(){
     }
 }
 
-// CONFIGURE PARTICLES AND LENS FLARE
+// CONFIGURE PARTICLES
 
 void RenderingEngine::initParticles(){
 
-    Texture sprite = Texture( "../GameEngine/textures/skybox/MusicHall/py.png", "sprite" );
+    // SNOW PARTICLES
 
-    particleGenerator = ParticleGenerator( 1000, sprite );
+    Texture snowSprite = Texture( "../GameEngine/textures/snowflakes.png", "sprite" );
+
+    snowGenerator = ParticleGenerator( 5000, QVector3D( 0.0, 0., 97 ), QVector3D( 1.0, 0.0, 0.0 ), snowColor,  true );
+    snowGenerator.setRange( 31 );
+    // SAND PARTICLES
+
+    sandPointGenerator = ParticleGenerator( 2500, QVector3D( 0.0, 0., 52. ), QVector3D( 1.0, 0.0, 0.0 ), sandColor, true );
+    sandPointGenerator.setRange( 13 );
+
+    Texture sandSprite = Texture( "../GameEngine/textures/sand.png", "sprite" );
+    sandSpriteGenerator = ParticleGenerator( 2500, sandSprite, QVector3D( 0.0, 0., 52. ), QVector3D( 1.0, 0.0, 0.0 ), false );
+    sandSpriteGenerator.setRange( 18 );
+
+    // LEAVES PARTICLES
+
+    Texture leafSprite = Texture( "../GameEngine/textures/snowflakes.png", "sprite" );
+
+    leavesGenerator = ParticleGenerator( 1000, leafSprite, QVector3D( 0.0, 0., 19 ), QVector3D( 1.0, -0.0, 0.0 ), false );
+    leavesGenerator.setRange( 18 );
 
 }
+// CONFIGURE LENS FLARE
 
 void RenderingEngine::initLensFlares(){
 
@@ -82,17 +102,6 @@ void RenderingEngine::initLensFlares(){
 }
 
 void RenderingEngine::generateQuad(){
-
-//    quadBuffer = QOpenGLBuffer( QOpenGLBuffer::VertexBuffer );
-//    quadBuffer.create();
-
-//    quadVertices.push_back( { QVector3D(-1.0f,  1.0f, 0.0f), QVector3D( 0.0, 0.0, 1.0 ), QVector2D(0.0f, 1.0f) } );
-//    quadVertices.push_back( { QVector3D(-1.0f, -1.0f, 0.0f), QVector3D( 0.0, 0.0, 1.0 ), QVector2D(0.0f, 0.0f) } );
-//    quadVertices.push_back( { QVector3D( 1.0f,  1.0f, 0.0f), QVector3D( 0.0, 0.0, 1.0 ), QVector2D(1.0f, 1.0f) } );
-//    quadVertices.push_back( { QVector3D( 1.0f, -1.0f, 0.0f), QVector3D( 0.0, 0.0, 1.0 ), QVector2D(1.0f, 0.0f) } );
-
-//    quadBuffer.bind();
-//    quadBuffer.allocate( quadVertices.data(), 4.0 * sizeof(VertexData));
 
     if (quadVAO == 0)
      {
@@ -444,15 +453,33 @@ void RenderingEngine::renderScene( SceneGraph &sceneGraph,  float deltaTime ){
     glBlitFramebuffer( 0, 0, screenWidth, screenHeight, 0, 0, screenWidth, screenHeight, GL_DEPTH_BUFFER_BIT, GL_NEAREST );
 
     // render skybox
-//    skybox.render( mainCamera, QMatrix4x4() );
+    skybox.render( mainCamera, QMatrix4x4() );
 
-    // render lens flare effect
-    glDisable(GL_DEPTH_TEST);
+
+
+
+
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
+    snowGenerator.update( deltaTime );
+    snowGenerator.render( pointParticleShader );
+
+    sandSpriteGenerator.update( deltaTime );
+    sandSpriteGenerator.render( particleShader );
+
+    sandPointGenerator.update( deltaTime );
+    sandPointGenerator.render( pointParticleShader );
+
+//    leavesGenerator.update( deltaTime );
+//    leavesGenerator.render( particleShader );
+
+    // render lens flare effect
+    glDisable(GL_DEPTH_TEST);
+
     flareGenerator.render( 1.0f, flareShader );
+
 
     glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
@@ -467,7 +494,10 @@ GameObjectCamera *RenderingEngine::getMainCamera() const
 void RenderingEngine::setMainCamera(GameObjectCamera *newMainCamera)
 {
     mainCamera = newMainCamera;
-    particleGenerator.setCamera( mainCamera );
+    snowGenerator.setCamera( mainCamera );
+    sandPointGenerator.setCamera( mainCamera );
+    sandSpriteGenerator.setCamera( mainCamera );
+    leavesGenerator.setCamera( mainCamera );
     flareGenerator.setCamera( mainCamera );
 }
 

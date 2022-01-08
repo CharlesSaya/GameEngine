@@ -172,27 +172,27 @@ void CubeMap::initTextures(){
 
     glTexImage2D(
            QOpenGLTexture::CubeMapNegativeX ,
-           0, GL_RGBA, 2048, 2048, 0, GL_RGBA, GL_UNSIGNED_BYTE, textures[0].getImage().mirrored().constBits());
+           0, GL_RGBA, 512, 512, 0, GL_RGBA, GL_UNSIGNED_BYTE, textures[0].getImage().mirrored().constBits());
 
     glTexImage2D(
            QOpenGLTexture::CubeMapNegativeY ,
-           0, GL_RGBA, 2048, 2048, 0, GL_RGBA, GL_UNSIGNED_BYTE, textures[4].getImage().mirrored(true, false).constBits());
+           0, GL_RGBA, 512, 512, 0, GL_RGBA, GL_UNSIGNED_BYTE, textures[4].getImage().mirrored(true, false).constBits());
 
     glTexImage2D(
            QOpenGLTexture::CubeMapNegativeZ ,
-           0, GL_RGBA, 2048, 2048, 0, GL_RGBA, GL_UNSIGNED_BYTE, textures[5].getImage().mirrored().constBits());
+           0, GL_RGBA, 512, 512, 0, GL_RGBA, GL_UNSIGNED_BYTE, textures[5].getImage().mirrored().constBits());
 
     glTexImage2D(
            QOpenGLTexture::CubeMapPositiveX ,
-           0, GL_RGBA, 2048, 2048, 0, GL_RGBA, GL_UNSIGNED_BYTE, textures[3].getImage().mirrored().constBits());
+           0, GL_RGBA, 512, 512, 0, GL_RGBA, GL_UNSIGNED_BYTE, textures[3].getImage().mirrored().constBits());
 
     glTexImage2D(
            QOpenGLTexture::CubeMapPositiveY ,
-           0, GL_RGBA, 2048, 2048, 0, GL_RGBA, GL_UNSIGNED_BYTE, textures[1].getImage().mirrored(true, false).constBits());
+           0, GL_RGBA, 512, 512 , 0, GL_RGBA, GL_UNSIGNED_BYTE, textures[1].getImage().mirrored(true, false).constBits());
 
     glTexImage2D(
            QOpenGLTexture::CubeMapPositiveZ ,
-           0, GL_RGBA, 2048, 2048, 0, GL_RGBA, GL_UNSIGNED_BYTE, textures[2].getImage().mirrored().constBits());
+           0, GL_RGBA, 512, 512, 0, GL_RGBA, GL_UNSIGNED_BYTE, textures[2].getImage().mirrored().constBits());
 
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

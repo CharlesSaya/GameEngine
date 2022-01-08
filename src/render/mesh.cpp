@@ -51,7 +51,7 @@ Mesh::Mesh( Terrain& terrainOBJ, std::vector<Texture> textures, Shader * shader,
 //    this->bBox.getMaxDefault().setY( terrainOBJ.getMaximumHeight() * terrain.getScale() );
     this->bBox.setMinDefault( this->bBox.getMinDefault() - QVector3D( 0.0, 100. , 0.0 ) );
 //    this->bBox.setMax( this->bBox.getMaxDefault() );
-    this->bBox.setMin( this->bBox.getMinDefault() - QVector3D( 0.0, 100. , 0.0 ) );
+    this->bBox.setMin( this->bBox.getMinDefault() );
     terrainOBJ.setMaximumHeight( this->bBox.getMax().y() );
 
     this->renderAABB = renderAABB;

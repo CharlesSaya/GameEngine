@@ -56,6 +56,7 @@ HEADERS += \
     headers/game/game.h \
     headers/game/node.h \
     headers/physics/colliderEngine.h \
+    headers/random.h \
     headers/render/AABB.h \
     headers/core/BasicIO.h \
     headers/core/gameComponent.h \

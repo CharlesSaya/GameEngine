@@ -25,12 +25,12 @@ void Game::initGame(){
 
     // Environment ------------------------------------------------------------------------------
 
-    Texture skyboxBottom = Texture( "../GameEngine/textures/skybox/MusicHall/py.png", "skyboxBottom" );
-    Texture skyboxTop    = Texture( "../GameEngine/textures/skybox/MusicHall/ny.png", "skyboxTop"    );
-    Texture skyboxRight  = Texture( "../GameEngine/textures/skybox/MusicHall/px.png", "skyboxRight"  );
-    Texture skyboxLeft   = Texture( "../GameEngine/textures/skybox/MusicHall/nx.png", "skyboxLeft"   );
-    Texture skyboxFront  = Texture( "../GameEngine/textures/skybox/MusicHall/nz.png", "skyboxFront"  );
-    Texture skyboxBack   = Texture( "../GameEngine/textures/skybox/MusicHall/pz.png", "skyboxBack"   );
+    Texture skyboxBottom = Texture( "../GameEngine/textures/skybox/Night/py.png", "skyboxBottom" );
+    Texture skyboxTop    = Texture( "../GameEngine/textures/skybox/Night/ny.png", "skyboxTop"    );
+    Texture skyboxRight  = Texture( "../GameEngine/textures/skybox/Night/px.png", "skyboxRight"  );
+    Texture skyboxLeft   = Texture( "../GameEngine/textures/skybox/Night/nx.png", "skyboxLeft"   );
+    Texture skyboxFront  = Texture( "../GameEngine/textures/skybox/Night/nz.png", "skyboxFront"  );
+    Texture skyboxBack   = Texture( "../GameEngine/textures/skybox/Night/pz.png", "skyboxBack"   );
 
     std::vector<Texture> skyboxTextures = { skyboxRight, skyboxBottom, skyboxFront, skyboxLeft, skyboxTop, skyboxBack };
     cubemap = CubeMap( 15*64, skyboxShader, skyboxTextures );
@@ -38,7 +38,7 @@ void Game::initGame(){
 
     // Terrain Game Object ------------------------------------------------------------------------------
 
-    Texture heightMap = Texture( "../GameEngine/textures/heightmapF3.png", "tex0" );
+    Texture heightMap = Texture( "../GameEngine/textures/heightmapF7.png", "tex0" );
 
     Texture snow    = Texture( "../GameEngine/textures/snowTexture.png", "tex0" );
     Texture rock    = Texture( "../GameEngine/textures/rockTexture.png", "tex1" );
@@ -64,7 +64,7 @@ void Game::initGame(){
     terrainTextures.push_back( blendMapMiddle );
     terrainTextures.push_back( blendMapBottom );
 
-    terrain = Terrain( 256, 1.0, terrainOBJ, heightMap );
+    terrain = Terrain( 128, 1.0, terrainOBJ, heightMap );
     Mesh terrainMesh = Mesh( terrain, terrainTextures, terrainShader, white, false );
     MeshRenderer * terrainRenderer = new MeshRenderer( terrainMesh, this );
     ColliderComponent * terrainCollider = new ColliderComponent( this );
@@ -103,7 +103,6 @@ void Game::initGame(){
 
     playerGO  = new GameObjectPlayer( "Player" , playerRenderer, playerMove, playerPhysics, playerCollider, playerComponent );
     playerGO->scale(  QVector3D(0.1, 0.1, 0.1) );
-    playerGO->move(  QVector3D(10., 30., -10. ) );
 
 
     // Sphere

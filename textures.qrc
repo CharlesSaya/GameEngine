@@ -40,5 +40,17 @@
         <file>textures/cactusTexture.png</file>
         <file>textures/heightmapF2.png</file>
         <file>textures/heightmapF3.png</file>
+        <file>textures/heightmapF4.png</file>
+        <file>textures/heightmapF5.png</file>
+        <file>textures/heightmapF6.png</file>
+        <file>textures/heightmapF7.png</file>
+        <file>textures/skybox/Night/nx.png</file>
+        <file>textures/skybox/Night/ny.png</file>
+        <file>textures/skybox/Night/nz.png</file>
+        <file>textures/skybox/Night/px.png</file>
+        <file>textures/skybox/Night/py.png</file>
+        <file>textures/skybox/Night/pz.png</file>
+        <file>textures/snowflakes.png</file>
+        <file>textures/sand.png</file>
     </qresource>
 </RCC>
