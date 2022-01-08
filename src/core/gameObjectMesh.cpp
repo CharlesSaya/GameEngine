@@ -43,6 +43,7 @@ void GameObjectMesh::hasTransformed(){
     emit updateAABB(  tr * sc );
 }
 
+
 void GameObjectMesh::setUseGravity(bool newUseGravity)
 {
     useGravity = newUseGravity;
@@ -57,11 +58,6 @@ bool GameObjectMesh::getUseGravity() const
 PhysicsComponent *GameObjectMesh::getPhysicsComponent() const
 {
     return physicsComponent;
-}
-
-bool GameObjectMesh::getIsMovable() const
-{
-    return isMovable;
 }
 
 MeshRenderer *GameObjectMesh::getMeshRenderer()

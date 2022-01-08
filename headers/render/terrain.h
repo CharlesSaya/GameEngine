@@ -90,6 +90,8 @@ public:
 
     const std::string &getOBJFilename() const;
 
+    float getMaxClimbableHeight() const;
+
 private:
     void initGeometry();
 
@@ -98,6 +100,8 @@ private:
     float gridSize = 128.f;
     float gridSquareSize , gridNumber;
     float scale;
+
+    float maxClimbableHeight = 15.f;
 
     std::vector< VertexData > planeVertices;
     std::vector< GLuint > planeIndices;

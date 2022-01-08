@@ -21,7 +21,6 @@ private:
     MeshRenderer * meshRenderer;
     ColliderComponent * colliderComponent;
     PhysicsComponent * physicsComponent;
-    bool isMovable;
     bool useGravity = true;
 
 public :
@@ -35,10 +34,11 @@ public :
     void setMeshRenderer(MeshRenderer *newMeshRenderer);
     ColliderComponent *getColliderComponent() ;
     void setColliderComponent(ColliderComponent *newColliderComponent);
-    bool getIsMovable() const;
+
     PhysicsComponent *getPhysicsComponent() const;
     bool getUseGravity() const;
     void setUseGravity(bool newUseGravity);
+
 };
 // MeshRenderer
 

@@ -30,6 +30,7 @@ private:
     PhysicsEngine physicsEngine;
     ColliderEngine colliderEngine;
     QVector3D test = QVector3D(1.0f,1.0f,1.0f);
+    Terrain terrain;
 public:
 
     SceneGraph();
@@ -38,7 +39,8 @@ public:
                 GameObjectPlayer * &goPlayer,
                 GameObjectCamera * &goCameras,
                 PhysicsEngine & physicsEngine,
-                ColliderEngine & colliderEngine );
+                ColliderEngine & colliderEngine,
+                Terrain & terrain);
 
     Node * getRoot();
 
@@ -50,14 +52,16 @@ public:
     void render( GameObjectCamera * camera, Shader * shader = 0 );
     void renderBVH( Node * node, Shader * shader );
 
+    void destroyGOs( );
+
     template<class Movable>
     void updatePhysics( Movable * go, float step ){
-        go->getPhysicsComponent()->updatePhysics( step, *go->getTransform() );
+        go->getPhysicsComponent()->updatePhysics( step, go, terrain );
     }
 
     template<class Movable>
     void updatePhysicsMesh( Movable * go, float step ){
-        go->getPhysicsComponent()->updatePhysicsMesh( step, *go->getTransform() );
+        go->getPhysicsComponent()->updatePhysicsMesh( step, go );
     }
 
     template<class Renderable>

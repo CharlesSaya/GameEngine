@@ -5,6 +5,7 @@
 
 #include "headers/core/gameObject.h"
 #include "headers/core/gameObjectMesh.h"
+#include "headers/core/gameObjectPlayer.h"
 #include "headers/core/colliderComponent.h"
 
 class ColliderEngine{
@@ -26,21 +27,23 @@ public:
 
         QVector3D objectVel =  go->getPhysicsComponent()->getVelocity();
 
-
-
         bool collision = intersectAABB( go->getMeshRenderer()->getMesh().getAABB(), node->nodeBoundingBox );
 
-        if( node->children.empty() && collision ){
+        if( node->children.empty() && collision && ( node->gameObject->getName() != go->getName() )){
+            if ( go->getName() == "Player" &&  node->gameObject->getIsCollectible()  ){
+                dynamic_cast<GameObjectPlayer*>(go)->getPlayerComponent()->addCollectible();
+                node->gameObject->destroy();
+            }
+            else{
+                QVector3D normal;
+                float time = sweptAABB( objectVel, go->getMeshRenderer()->getMesh().getAABB(), node->nodeBoundingBox, normal );
+                float distance = __FLT_MAX__;
 
-            QVector3D normal;
-            float time = sweptAABB( objectVel, go->getMeshRenderer()->getMesh().getAABB(), node->nodeBoundingBox, normal );
-            float distance = __FLT_MAX__;
+                if( time >= 0.){
 
-            if( time >= 0.){
-                if (node->gameObject->getName() == "Terrain")
-                    distance = distanceToTerrain( go->getMeshRenderer()->getMesh().getAABB().getMin(), node->nodeBoundingBox.getMax(), normal  );
-                resting( go, normal, distance );
-                computeCollision( time, distance, go, normal );
+                    resting( go, normal, distance );
+                    computeCollision( time, distance, go, normal );
+                }
             }
         }
 
@@ -48,9 +51,8 @@ public:
 
 
             for( Node * childNode : node->children ){
-                if( ( childNode->gameObject->getName() == go->getName() ) )
-                    continue;
-
+                if( node->gameObject != nullptr && node->gameObject->getName().c_str() == "Player" )
+                     qDebug() << ( childNode->gameObject->getName().c_str() );
                 bool collision = intersectAABB( go->getMeshRenderer()->getMesh().getAABB(), childNode->nodeBoundingBox );
                 if( collision ){
 
@@ -64,7 +66,6 @@ public:
                             height = terrain.getHeightTerrain( worldPos );
                             if( worldPos.y() < height )
                                 go->setHeight(height * terrain.getScale() );
-                            continue;
                         }
                     }
 
@@ -95,7 +96,7 @@ public:
 
         QVector3D vf = vnp + vtp;
 
-        go->move( -objectVel * deltaTime  );
+        go->move( -objectVel * ( 1.0f - time ) * deltaTime );
         go->getPhysicsComponent()->setVelocity( vf );
 
     }
@@ -108,7 +109,6 @@ public:
         if (objectVel.length() < 0.5 && distance < 0.01 && QVector3D::dotProduct(  go->getPhysicsComponent()->getAcceleration(), normal ) < 0.001 && vt.length() <  go->getPhysicsComponent()->getFriction() * vn.length()  ){
             go->getPhysicsComponent()->setResting( true );
         }
-
 
     }
 

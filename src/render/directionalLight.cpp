@@ -10,5 +10,5 @@ DirectionalLight::DirectionalLight( QVector3D lightPosition, QVector3D &lightCol
 }
 
 QVector3D DirectionalLight::getDirection(){
-    return QVector3D(0.0, 0.0, 0.0) - this->lightPosition;
+    return QVector3D(64.0, 0.0, 64.0) - this->lightPosition;
 }

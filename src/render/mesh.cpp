@@ -47,7 +47,6 @@ Mesh::Mesh( Terrain& terrainOBJ, std::vector<Texture> textures, Shader * shader,
     this->meshesFaces.push_back( terrainOBJ.getPlaneIndices() );
 
     this->bBox = AABB( this->meshesVertexDatas[0] );
-    qDebug() <<  this->bBox.getMax() << this->bBox.getMin();
 //    this->bBox.getMaxDefault().setY( terrainOBJ.getMaximumHeight() * terrain.getScale() );
     this->bBox.setMinDefault( this->bBox.getMinDefault() - QVector3D( 0.0, 100. , 0.0 ) );
 //    this->bBox.setMax( this->bBox.getMaxDefault() );

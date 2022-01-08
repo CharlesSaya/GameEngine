@@ -5,9 +5,9 @@ PhysicsComponent::PhysicsComponent( PhysicsEngine &physicsEngine,  QObject * par
 }
 
 
-void PhysicsComponent::updatePhysics( float step, Transform & transform ){
+void PhysicsComponent::updatePhysics( float step,  GameObject * go, Terrain &terrain ){
 
-    move(transform);
+    move(*go->getTransform());
     acceleration = - physicsEngine.getDamp() * velocity;
 
     if ( !resting )
@@ -24,18 +24,23 @@ void PhysicsComponent::updatePhysics( float step, Transform & transform ){
         meanSpeed = this->maxSpeedWalk * meanSpeed.normalized();
 
     if ( meanSpeed.length() != 0.0f ){
-        transform.applyTranslation( meanSpeed * step );
+        go->move( meanSpeed * step );
+        QVector3D worldPos;
+        worldPos = go->getWorldPosition();
+        float height = terrain.getHeightTerrain( worldPos );
+        if( height > terrain.getMaxClimbableHeight() )
+            go->move( - meanSpeed * step );
     }
     velocity = newVelocity;
 }
 
-void PhysicsComponent::updatePhysicsMesh( float step, Transform & transform ){
+void PhysicsComponent::updatePhysicsMesh( float step,  GameObject * go ){
 
     acceleration = - physicsEngine.getDamp()
             * velocity;
 
-//    if ( !resting )
-//        acceleration += physicsEngine.getGravity();
+    if ( !resting )
+        acceleration += physicsEngine.getGravity();
 
     acceleration /= mass;
 
@@ -47,7 +52,7 @@ void PhysicsComponent::updatePhysicsMesh( float step, Transform & transform ){
         meanSpeed = this->maxSpeedWalk * meanSpeed.normalized();
 
     if ( meanSpeed.length() != 0.0f ){
-        transform.applyTranslation( meanSpeed * step );
+        go->move( meanSpeed * step );
     }
     velocity = newVelocity;
 }

@@ -8,7 +8,7 @@ RenderingEngine::RenderingEngine( float renderStep ){
     this->step = renderStep;
     this->context = QOpenGLContext::currentContext();
 
-    directionalLight = DirectionalLight(QVector3D( 0.0, 100.0, -5.0), white);
+    directionalLight = DirectionalLight(QVector3D(60.0, 60.0, 0.0), white);
 
     initPointLights();
 
@@ -22,7 +22,7 @@ RenderingEngine::RenderingEngine( float renderStep ){
     blurVShader = new Shader(  "../GameEngine/shaders/verticalBlur_vshader.glsl", "../GameEngine/shaders/blur_fshader.glsl" );
     blurHShader = new Shader(  "../GameEngine/shaders/horizontalBlur_vshader.glsl", "../GameEngine/shaders/blur_fshader.glsl" );
 
-    cameraOrtho  = new CameraComponent( directionalLight.getLightPosition(), QVector3D(0.0f,0.0f,0.0f),-50.0f,50.0f,-50.0f,50.0f,0.01f,100.f );
+    cameraOrtho  = new CameraComponent( directionalLight.getLightPosition(), QVector3D(64.0f,0.0f,64.0f),-60.0f,60.0f,-60.0f,60.0f,0.01f,150.f );
     cameraOrtho->setProjectionOrtho();
     cameraOrthoGO = new GameObjectCamera("camera ortho", cameraOrtho);
 
@@ -399,25 +399,6 @@ void RenderingEngine::renderGeometryData( SceneGraph &sceneGraph ){
 
 void RenderingEngine::renderPostProcess()
 {
-    //    quadBuffer.bind();
-
-    //    quintptr offset = 0;
-
-    //    int vertexLocation = postProcessShader->getProgram().attributeLocation("a_position");
-    //    postProcessShader->getProgram().enableAttributeArray(vertexLocation);
-    //    postProcessShader->getProgram().setAttributeBuffer(vertexLocation, GL_FLOAT, offset, 3, sizeof(VertexData));
-
-    //    offset += sizeof(QVector3D);
-
-    //    int normalLocation = postProcessShader->getProgram().attributeLocation("a_normal");
-    //    postProcessShader->getProgram().enableAttributeArray(normalLocation);
-    //    postProcessShader->getProgram().setAttributeBuffer(normalLocation, GL_FLOAT, offset , 3, sizeof(VertexData));
-
-    //    offset += sizeof(QVector3D);
-
-    //    int texcoordLocation = postProcessShader->getProgram().attributeLocation("a_texcoord");
-    //    postProcessShader->getProgram().enableAttributeArray(texcoordLocation);
-    //    postProcessShader->getProgram().setAttributeBuffer(texcoordLocation, GL_FLOAT, offset , 2, sizeof(VertexData));
 
     initPostProcessShader();
 
@@ -455,22 +436,17 @@ void RenderingEngine::renderScene( SceneGraph &sceneGraph,  float deltaTime ){
     // render skybox
     skybox.render( mainCamera, QMatrix4x4() );
 
-
-
-
-
-
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
-    snowGenerator.update( deltaTime );
-    snowGenerator.render( pointParticleShader );
+//    snowGenerator.update( deltaTime );
+//    snowGenerator.render( pointParticleShader );
 
-    sandSpriteGenerator.update( deltaTime );
-    sandSpriteGenerator.render( particleShader );
+//    sandSpriteGenerator.update( deltaTime );
+//    sandSpriteGenerator.render( particleShader );
 
-    sandPointGenerator.update( deltaTime );
-    sandPointGenerator.render( pointParticleShader );
+//    sandPointGenerator.update( deltaTime );
+//    sandPointGenerator.render( pointParticleShader );
 
 //    leavesGenerator.update( deltaTime );
 //    leavesGenerator.render( particleShader );
@@ -478,7 +454,7 @@ void RenderingEngine::renderScene( SceneGraph &sceneGraph,  float deltaTime ){
     // render lens flare effect
     glDisable(GL_DEPTH_TEST);
 
-    flareGenerator.render( 1.0f, flareShader );
+    flareGenerator.render( 0.8f, flareShader );
 
 
     glDisable(GL_BLEND);

@@ -38,7 +38,7 @@ void Game::initGame(){
 
     // Terrain Game Object ------------------------------------------------------------------------------
 
-    Texture heightMap = Texture( "../GameEngine/textures/heightmapF7.png", "tex0" );
+    Texture heightMap = Texture( "../GameEngine/textures/heightmapF8.png", "tex0" );
 
     Texture snow    = Texture( "../GameEngine/textures/snowTexture.png", "tex0" );
     Texture rock    = Texture( "../GameEngine/textures/rockTexture.png", "tex1" );
@@ -117,7 +117,8 @@ void Game::initGame(){
 
     sphereGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider,spherePhysics, true, terrainGO );
     sphereGO->scale( 1);
-    sphereGO->move(  QVector3D(-0.0,0.0f,0.0f));
+    sphereGO->move(  QVector3D(-0.0,0.0f,10.0f));
+    sphereGO->setIsCollectible( true );
 
     this->goMeshes.push_back( sphereGO );
 
@@ -242,7 +243,6 @@ void Game::initGame(){
 
     //    woodBox  ------------------------------------------------------------------------------
 
-
         std::vector<std::string> boxObj;
         boxObj.push_back("../GameEngine/objects/woodBox/");
 
@@ -284,6 +284,7 @@ void Game::initGame(){
             this->goMeshes.push_back( boxGO );
         }
 
+    // Collectible ------------------------------------------------------------------------------
 
         // bush  ------------------------------------------------------------------------------
 
@@ -439,7 +440,7 @@ void Game::initGame(){
     // Build hierarchy ---------------------------------------------------------------------------------
     std::vector<GameObject *> baseGo = { terrainGO, playerGO };
 
-    sceneGraph = SceneGraph( baseGo, this->goMeshes, playerGO, mainCameraGO, this->physicsEngine, this->colliderEngine );
+    sceneGraph = SceneGraph( baseGo, this->goMeshes, playerGO, mainCameraGO, this->physicsEngine, this->colliderEngine, terrain );
 }
 
 void Game::input( QKeyEvent * key  ){

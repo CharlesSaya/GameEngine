@@ -19,8 +19,7 @@ void GameObject::removeChild( GameObject *go ){
     itA = find( children.begin(), children.end(), go);
     if ( itA != children.end()  )
         children.erase( itA );
-    else
-        qDebug() << "not";
+
 }
 
 void GameObject::move( QVector3D translation ){
@@ -50,6 +49,12 @@ void GameObject::scale( float scale ){
 
 }
 
+void GameObject::destroy(){
+    isDestroyed = true;
+    this->parent->removeChild( this );
+}
+
+
 //Getters & Setters
 
 const std::string &GameObject::getName() const{
@@ -73,6 +78,7 @@ void GameObject::setParent(GameObject *newParent){
 
     QVector3D trans = getWorldPosition();
     newParent->addChild(this);
+    qDebug() << newParent->getName().c_str() << newParent->getChildren().size();
     parent->removeChild( this );
     lastParent = parent;
     parent = newParent;
@@ -98,6 +104,8 @@ void GameObject::setLastParent(){
     lastParent = nullptr;
     setIsTelekinesis(false);
 }
+
+
 
 Transform *GameObject::getTransform()
 {
@@ -137,6 +145,35 @@ const QMatrix4x4 GameObject::getModel(){
     else
         return this->parent->getModel() * this->transform->getModel();
 
-
 }
 
+
+bool GameObject::getIsMovable() const
+{
+    return isMovable;
+}
+
+void GameObject::setIsMovable(bool newIsMovable)
+{
+    isMovable = newIsMovable;
+}
+
+bool GameObject::getIsCollectible() const
+{
+    return isCollectible;
+}
+
+void GameObject::setIsCollectible(bool newIsCollectible)
+{
+    isCollectible = newIsCollectible;
+}
+
+bool GameObject::getIsDestroyed() const
+{
+    return isDestroyed;
+}
+
+void GameObject::setIsDestroyed(bool newIsDestroyed)
+{
+    isDestroyed = newIsDestroyed;
+}

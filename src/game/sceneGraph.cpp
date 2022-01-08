@@ -19,12 +19,14 @@ SceneGraph::SceneGraph( std::vector<GameObject *>& goList,
                         GameObjectPlayer * &goPlayer,
                         GameObjectCamera * &goCamera,
                         PhysicsEngine& physicsEngine,
-                        ColliderEngine & colliderEngine  ){
+                        ColliderEngine & colliderEngine,
+                        Terrain & terrain){
 
     this->goList = goList;
     this->goMeshes = goMeshes;
     this->goPlayer = goPlayer;
     this->goCamera = goCamera;
+    this->terrain = terrain;
     this->root = new Node();
     for( GameObject * go : goList){
         this->root->children.push_back( buildGraphScene( go ) );
@@ -111,11 +113,31 @@ void SceneGraph::update( float fixedStep ){
         rayBVHCollision( this->getRoot() );
 }
     // compute collision
-
     this->computeCollision( goPlayer );
+
+    for( GameObjectMesh * goMesh : this->goMeshes){
+        if(goMesh->getIsMovable()){
+            this->computeCollision( goMesh );
+        }
+    }
+
+    // remove collected collectibles
+    destroyGOs();
 
 }
 
+void SceneGraph::destroyGOs(){
+    std::vector<GameObjectMesh *>::iterator itA;
+
+    for( GameObjectMesh * goMesh : goMeshes ){
+        if( !goMesh->getIsDestroyed() )
+            continue;
+        qDebug() << "destroyed" << goMesh->getName().c_str();
+        itA = find( goMeshes.begin(), goMeshes.end(), goMesh );
+        if ( itA != goMeshes.end()  )
+            goMeshes.erase( itA );
+    }
+}
 
 void SceneGraph::render( GameObjectCamera * camera, Shader * shader  ){
 

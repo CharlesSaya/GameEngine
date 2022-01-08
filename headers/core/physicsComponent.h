@@ -4,6 +4,9 @@
 #include "headers/core/transform.h"
 #include "headers/core/gameComponent.h"
 #include "headers/physics/physicsEngine.h"
+#include "headers/core/gameObject.h"
+
+#include "headers/render/terrain.h"
 
 
 class PhysicsComponent : public QObject{
@@ -19,8 +22,8 @@ public:
 
     PhysicsComponent(  PhysicsEngine &physicsEngine, QObject * parent = 0 );
 
-    void updatePhysics( float step, Transform & transform );
-    void updatePhysicsMesh( float step, Transform & transform );
+    void updatePhysics( float step, GameObject * go, Terrain & terrain );
+    void updatePhysicsMesh( float step, GameObject * go );
     void stop();
     PhysicsEngine &physicsEngine;
 

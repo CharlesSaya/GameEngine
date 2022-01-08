@@ -20,11 +20,16 @@ protected:
     GameObject * parent;
     GameObject * lastParent;
 
+    bool isMovable;
+    bool isCollectible = false;
+    bool isDestroyed = false;
+
     std::vector<GameObject *> children;
     QVector3D worldPosition;
 
     QVector3D predScale; // for setLastParent
     bool isTelekinesis = false ;
+
 public:
 
     GameObject();
@@ -47,6 +52,8 @@ public:
     void setTransform( Transform * newTransform);
     Transform *getTransform();
 
+    void destroy();
+
     const QMatrix4x4 getModel();
 
     QVector3D& getWorldPosition();
@@ -57,6 +64,12 @@ public:
     void setLastParent();
     bool getIsTelekinesis() const;
     void setIsTelekinesis(bool newIsTelekinesis);
+    bool getIsMovable() const;
+    void setIsMovable(bool newIsMovable);
+    bool getIsCollectible() const;
+    void setIsCollectible(bool newIsCollectible);
+    bool getIsDestroyed() const;
+    void setIsDestroyed(bool newIsDestroyed);
 };
 
 

@@ -12,7 +12,6 @@
 
 #include "headers/render/ray.h"
 #include "headers/render/shader.h"
-#include "headers/render/shader.h"
 
 class PlayerComponent : public QObject {
     Q_OBJECT
@@ -44,12 +43,18 @@ public:
     void setRay(const Ray &newRay);
 
     void moveChildZ();
+    int getCollectibleNumber() const;
+    void setCollectibleNumber(int newCollectibleNumber);
+    void addCollectible();
+
 private:
 
     Ray ray;
     QTimer * timer;
     Shader * shader;
     int wheelTimer = 200;
+
+    int collectibleNumber;
 
     QVector3D playerPosition;
     QVector3D playerDirection = QVector3D( 0.0, 0.0, -1.0);

@@ -25,5 +25,5 @@ void main()
     float particleSize = xyzs.w;
     vec3 offset = xyzs.xyz;
     gl_Position = projection * view * mat4(1) * vec4(a_position + offset, 1.0f);
-    gl_PointSize = 3.;
+    gl_PointSize = 2.5;
 }

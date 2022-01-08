@@ -126,6 +126,20 @@ void PlayerComponent::moveChildZ(){
     }
 }
 
+int PlayerComponent::getCollectibleNumber() const
+{
+    return collectibleNumber;
+}
+
+void PlayerComponent::setCollectibleNumber(int newCollectibleNumber)
+{
+    collectibleNumber = newCollectibleNumber;
+}
+
+void PlayerComponent::addCollectible(){
+    this->collectibleNumber++;
+}
+
 void PlayerComponent::drawRay( const QMatrix4x4& view, const QMatrix4x4& projection  ){
     if( rightMousePressed )
 

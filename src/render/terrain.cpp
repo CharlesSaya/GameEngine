@@ -81,6 +81,11 @@ void Terrain::initGeometry()
 
 }
 
+float Terrain::getMaxClimbableHeight() const
+{
+    return maxClimbableHeight;
+}
+
 QVector3D Terrain::computeNormal( QVector2D texcoords ){
     float heightL = getHeight( QVector2D( texcoords.x() - 1, texcoords.y()  ) );
     float heightR = getHeight( QVector2D( texcoords.x() + 1, texcoords.y()  ) );
