@@ -120,7 +120,7 @@ private:
 
     int frames;
 
-    float   fixedStep   = 0.01f;
+    float fixedStep   = 0.005f;
     float renderStep  = 0.0f;
 
     float deltaTime   = 0.0f;

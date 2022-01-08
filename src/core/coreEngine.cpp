@@ -67,8 +67,8 @@ void CoreEngine::timerEvent(QTimerEvent *)
     while( accumulator > this->fixedStep ){
         game->update( this->fixedStep );
         accumulator -= this->fixedStep;
+        cpt++;
     }
-
     update();
 }
 

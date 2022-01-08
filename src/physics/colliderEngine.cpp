@@ -117,9 +117,9 @@ float ColliderEngine::sweptAABB( QVector3D velocity, AABB& box1, AABB& box2, QVe
     }
     else{
         if( velocity.z() > 0 )
-            normal = QVector3D( 0., 0., 1. );
-        else
             normal = QVector3D( 0., 0., -1. );
+        else
+            normal = QVector3D( 0., 0., 1. );
     }
     return entryTime;
 }

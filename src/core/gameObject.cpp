@@ -78,7 +78,6 @@ void GameObject::setParent(GameObject *newParent){
 
     QVector3D trans = getWorldPosition();
     newParent->addChild(this);
-    qDebug() << newParent->getName().c_str() << newParent->getChildren().size();
     parent->removeChild( this );
     lastParent = parent;
     parent = newParent;

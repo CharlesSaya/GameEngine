@@ -40,6 +40,7 @@ public:
                 float distance = __FLT_MAX__;
 
                 if( time >= 0.){
+                    qDebug()  << node->gameObject->getName().c_str() << normal;
 
                     resting( go, normal, distance );
                     computeCollision( time, distance, go, normal );
@@ -51,8 +52,8 @@ public:
 
 
             for( Node * childNode : node->children ){
-                if( node->gameObject != nullptr && node->gameObject->getName().c_str() == "Player" )
-                     qDebug() << ( childNode->gameObject->getName().c_str() );
+                if( ( childNode->gameObject->getName() == go->getName() ) )
+                    continue;
                 bool collision = intersectAABB( go->getMeshRenderer()->getMesh().getAABB(), childNode->nodeBoundingBox );
                 if( collision ){
 

@@ -20,8 +20,8 @@ void PhysicsComponent::updatePhysics( float step,  GameObject * go, Terrain &ter
     QVector3D meanSpeed = (velocity + newVelocity) / 2.0 ;
 
 
-    if( meanSpeed.length() > this->maxSpeedWalk )
-        meanSpeed = this->maxSpeedWalk * meanSpeed.normalized();
+    if( meanSpeed.length() > this->maxSpeed )
+        meanSpeed = this->maxSpeed * meanSpeed.normalized();
 
     if ( meanSpeed.length() != 0.0f ){
         go->move( meanSpeed * step );
@@ -31,7 +31,7 @@ void PhysicsComponent::updatePhysics( float step,  GameObject * go, Terrain &ter
         if( height > terrain.getMaxClimbableHeight() )
             go->move( - meanSpeed * step );
     }
-    velocity = newVelocity;
+    velocity = meanSpeed;
 }
 
 void PhysicsComponent::updatePhysicsMesh( float step,  GameObject * go ){
@@ -48,8 +48,8 @@ void PhysicsComponent::updatePhysicsMesh( float step,  GameObject * go ){
 
     QVector3D meanSpeed = (velocity + newVelocity) / 2.0 ;
 
-    if( meanSpeed.length() > this->maxSpeedWalk )
-        meanSpeed = this->maxSpeedWalk * meanSpeed.normalized();
+    if( meanSpeed.length() > this->maxSpeed )
+        meanSpeed = this->maxSpeed * meanSpeed.normalized();
 
     if ( meanSpeed.length() != 0.0f ){
         go->move( meanSpeed * step );
