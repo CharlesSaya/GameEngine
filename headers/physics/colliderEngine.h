@@ -113,7 +113,7 @@ public:
     }
 
 
-    const Terrain &getTerrain() const;
+    Terrain &getTerrain();
     void setTerrain(const Terrain &newTerrain);
 
 private:

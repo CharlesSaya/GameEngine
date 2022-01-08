@@ -57,11 +57,11 @@ private:
     GameObject * linkedGO = nullptr ;
 
     QSet<uint> inputsMoves;
-    QVector3D translationChildSpeed = QVector3D(0.0f,1.0f,0.0f);
+    QVector3D translationChildSpeed = QVector3D(0.0f,0.1f,0.0f);
     float speedZ = 0.1;
 
-    QVector2D rangeY = QVector2D(0.0f,5.0f);
-    QVector2D rangeZ = QVector2D(5.0f,20.0f);
+    QVector2D rangeY = QVector2D(-5.0f,5.0f);
+    QVector2D rangeZ = QVector2D(3.0f,20.0f);
 
 
     bool leftMousePressed = false;

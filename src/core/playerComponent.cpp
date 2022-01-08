@@ -54,9 +54,10 @@ void PlayerComponent::setPositionChild(GameObject * go,GameObject * child  ){
            }
 
            moveChildZ();
-           if(translationChildSpeed[2]<=0 && (child->getWorldPosition() - go->getWorldPosition()).length() < rangeZ[1] ||
-              translationChildSpeed[2]>=0 && (child->getWorldPosition() - go->getWorldPosition()).length() > rangeZ[0]){
-               child->move(0.0f,0.0f,translationChildSpeed[2] );
+           if( ( translationChildSpeed[2]>=0 && (child->getWorldPosition() - go->getWorldPosition()).length() > rangeZ[0])||
+                (translationChildSpeed[2]<=0 && (child->getWorldPosition() - go->getWorldPosition()).length() < rangeZ[1])
+            ){
+               child->move(0.0f,0.0f,translationChildSpeed[2]*10 );
            }
     }
 

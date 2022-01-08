@@ -47,7 +47,7 @@ public:
 
 private:
 
-    float speed = .10    ;
+    float speed = 2.0f    ;
     float mass = 1.0;
     float friction = 1.0;
     float restitution = .0;

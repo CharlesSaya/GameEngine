@@ -78,7 +78,7 @@ void SceneGraph::update( float fixedStep ){
     // update player physics
       this->updatePhysics( goPlayer, fixedStep );
       goPlayer->rotate(goPlayer->getMoveComponent()->getRotationY());
-//      qDebug()<< goPlayer->getTransform()->getPosition();
+      qDebug()<< goPlayer->getWorldPosition().x() << ',' << goPlayer->getWorldPosition().z();
 
       // update main camera position
       float angleX = goCamera->getMoveComponent()->getRotationX().toEulerAngles()[0];
@@ -95,9 +95,10 @@ void SceneGraph::update( float fixedStep ){
         if(goMesh->getIsMovable() && goMesh->getUseGravity()){
              this->updatePhysicsMesh( goMesh, fixedStep );
         }
-        if(goMesh->getIsTelekinesis()){
-           goPlayer->getPlayerComponent()->setPositionChild(goPlayer,goMesh);
-          }
+    if(goMesh->getIsTelekinesis()){
+       goPlayer->getPlayerComponent()->setPositionChild(goPlayer,goMesh);
+       QVector3D positionMesh = goMesh->getWorldPosition();
+      }
 
     }
 
@@ -160,7 +161,6 @@ void SceneGraph::updateBVH( Node * node ){
 
 
     if( go->getChildren().empty() ){
-
         node->nodeBoundingBox.resizeAABB( bbox );
         return;
 
@@ -216,3 +216,4 @@ bool SceneGraph::isLeaf( Node * node ){
 Node * SceneGraph::getRoot(){
     return this->root;
 }
+

@@ -14,5 +14,13 @@
         <file>objects/desertCactusV2/desertCactuskLOD1.obj</file>
         <file>objects/desertCactusV3/desertCactuskLOD1.obj</file>
         <file>objects/woodBox/woodBoxLOD1.obj</file>
+        <file>objects/treeHouse/treeHouse.obj</file>
+        <file>objects/bigBush/BigBush.obj</file>
+        <file>objects/smallBush/SmallBush.obj</file>
+        <file>objects/SmallTreeWithLeave/SmallTreeWithLeave.obj</file>
+        <file>objects/BigTreeWithLeaves/BigTreeWithLeaves.obj</file>
+        <file>objects/TreeNoLeavesSmall/TreeNoLeavesSmall.obj</file>
+        <file>objects/TreeNoLeavesBig/BigTreeWithLeaves.obj</file>
+        <file>objects/grid/grid.obj</file>
     </qresource>
 </RCC>

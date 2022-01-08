@@ -126,7 +126,7 @@ float ColliderEngine::sweptAABB( QVector3D velocity, AABB& box1, AABB& box2, QVe
 
 
 
-const Terrain &ColliderEngine::getTerrain() const
+ Terrain &ColliderEngine::getTerrain()
 {
     return terrain;
 }

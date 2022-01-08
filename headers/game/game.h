@@ -79,6 +79,7 @@ public:
     const RenderingEngine &getRenderingEngine() const;
     void setRenderingEngine(const RenderingEngine &newRenderingEngine);
 
+    QVector3D getHeightObject(float x, float z);
 private:
     float deltaTime;
 

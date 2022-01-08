@@ -52,5 +52,8 @@
         <file>textures/skybox/Night/pz.png</file>
         <file>textures/snowflakes.png</file>
         <file>textures/sand.png</file>
+        <file>textures/treeHouseTexture.jpg</file>
+        <file>textures/bushTexture.png</file>
+        <file>textures/TreeTexture.png</file>
     </qresource>
 </RCC>
