@@ -56,5 +56,8 @@
         <file>textures/treeHouseTexture.jpg</file>
         <file>textures/bushTexture.png</file>
         <file>textures/TreeTexture.png</file>
+        <file>textures/plushiesTexture.png</file>
+        <file>textures/heightmapF9.png</file>
+        <file>textures/hm1.png</file>
     </qresource>
 </RCC>

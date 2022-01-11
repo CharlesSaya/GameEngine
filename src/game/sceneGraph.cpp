@@ -80,6 +80,7 @@ void SceneGraph::update( float fixedStep ){
     // update player physics
       this->updatePhysics( goPlayer, fixedStep );
       goPlayer->rotate(goPlayer->getMoveComponent()->getRotationY());
+//      qDebug() << goPlayer->getPhysicsComponent()->getVelocity();
 //      qDebug()<< goPlayer->getWorldPosition();
 
       // update main camera position
@@ -120,6 +121,8 @@ void SceneGraph::update( float fixedStep ){
             this->computeCollision( goMesh );
         }
     }
+
+    colliderEngine.updatePlayerCurrentCollisionsList( goPlayer );
 
     // remove collected collectibles
     destroyGOs();

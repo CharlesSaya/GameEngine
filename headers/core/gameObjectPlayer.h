@@ -30,6 +30,8 @@ private:
     PhysicsComponent * physicsComponent;
     ColliderComponent * colliderComponent;
 
+    std::vector<GameObject *> currentCollisions;
+
     QVector3D direction = QVector3D(0.0, 0.0, -1.0);
 
 public :
@@ -49,6 +51,12 @@ public :
 
     PlayerComponent *getPlayerComponent() const;
     void setPlayerComponent(PlayerComponent *newPlayerComponent);
+    std::vector<GameObject *> &getCurrentCollisions();
+
+    void addCollision( GameObject * go  );
+    bool isAlreadyCollidingWith( GameObject * go );
+    void updateRestingState();
+
 };
 
 // MeshRenderer

@@ -10,6 +10,7 @@ Game::Game( CameraComponent * camera,  QObject * parent ) : QObject(parent){
 
 void Game::initGame(){
 
+
     // Shaders & Lights  --------------------------------------------------------------------------------
 
     shader = new Shader( "../GameEngine/shaders/base_vshader.glsl", "../GameEngine/shaders/base_fshader.glsl" );
@@ -19,7 +20,7 @@ void Game::initGame(){
     // Build scene graph  -------------------------------------------------------------------------------
 
     std::string sphereObj = "../GameEngine/objects/sphere/";
-    std::string bunnyObj  = "../GameEngine/objects/bunny/";
+    std::string bunnyObj  = "../GameEngine/objects/plushies/";
     std::string terrainOBJ  = "../GameEngine/objects/terrain/";
 
 
@@ -38,7 +39,7 @@ void Game::initGame(){
 
     // Terrain Game Object ------------------------------------------------------------------------------
 
-    Texture heightMap = Texture( "../GameEngine/textures/heightmapF8.png", "tex0" );
+    Texture heightMap = Texture( "../GameEngine/textures/heightmapF9.png", "tex0" );
 
     Texture snow    = Texture( "../GameEngine/textures/snowTexture.png", "tex0" );
     Texture rock    = Texture( "../GameEngine/textures/rockTexture.png", "tex1" );
@@ -78,15 +79,12 @@ void Game::initGame(){
 
     // Player Game Object  ------------------------------------------------------------------------------
 
-    Texture sandP      = Texture( "../GameEngine/textures/sandTexture.png", "tex0" );
-    Texture grassP      = Texture( "../GameEngine/textures/snowrocks.png", "tex1" );
+    Texture sandP      = Texture( "../GameEngine/textures/plushiesTexture.png", "tex0" );
 
     std::vector<Texture> playerTextures;
     playerTextures.push_back( sandP );
-    playerTextures.push_back( grassP );
 
     Mesh playerMesh = Mesh( bunnyObj, playerTextures, shader, white, false );
-
     MeshRenderer * playerRenderer      = new MeshRenderer( playerMesh, this );
     MoveComponent * playerMove         = new MoveComponent( terrain, this );
     ColliderComponent * playerCollider = new ColliderComponent( this );
@@ -102,9 +100,8 @@ void Game::initGame(){
     connect( this, &Game::sendMouseWheel, playerComponent, &PlayerComponent::wheelScrolled );
 
     playerGO  = new GameObjectPlayer( "Player" , playerRenderer, playerMove, playerPhysics, playerCollider, playerComponent,terrainGO );
-    playerGO->scale(  QVector3D(0.1, 0.1, 0.1));
-    playerGO->move( QVector3D(getHeightObject(26.0543,23.3017)));
-
+    playerGO->scale( QVector3D(0.8, 0.8, 0.8));
+    playerGO->move( QVector3D(getHeightObject(26.0543,23.3017) ) );
 
     // Sphere
     std::vector<Texture> sphereTextures;
@@ -117,7 +114,7 @@ void Game::initGame(){
 
     sphereGO = new GameObjectMesh( "Sphere", sphereRenderer, sphereCollider,spherePhysics, true, terrainGO );
     sphereGO->scale( 1);
-    sphereGO->move(  QVector3D(-0.0,0.0f,10.0f));
+    sphereGO->move( QVector3D(-0.0,0.0f,10.0f) );
     sphereGO->setIsCollectible( true );
 
     this->goMeshes.push_back( sphereGO );
@@ -199,7 +196,6 @@ void Game::initGame(){
 
     // cactus  ------------------------------------------------------------------------------
 
-
     std::vector<std::string> cactusObj;
     cactusObj.push_back("../GameEngine/objects/desertCactus/");
     cactusObj.push_back("../GameEngine/objects/desertCactusV2/");
@@ -271,7 +267,7 @@ void Game::initGame(){
         positionsBox.push_back(QVector3D(getHeightObject(96.608,117.022 )));
 
         for(int i = 0 ;i<positionsBox.size();i++ ){
-             scalesBox.push_back( 0.01 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(0.5))));
+             scalesBox.push_back( 0.2);
 
         }
 
@@ -432,7 +428,7 @@ void Game::initGame(){
     connect( this, &Game::sendMouseMoved, cameraMove, &MoveComponent::mouseMoveEvent );
 
     mainCameraGO = new GameObjectCamera("Main camera",camera,cameraMove,cameraPhysics,cameraCollider, playerGO  );
-    mainCameraGO->move(0.0f,0.0f,2.0f);
+    mainCameraGO->move(0.0f,0.0f,1.0f);
     mainCameraGO->updateCameraPosition();
 
     renderingEngine.setMainCamera( mainCameraGO );
@@ -441,6 +437,9 @@ void Game::initGame(){
     std::vector<GameObject *> baseGo = { terrainGO, playerGO };
 
     sceneGraph = SceneGraph( baseGo, this->goMeshes, playerGO, mainCameraGO, this->physicsEngine, this->colliderEngine, terrain );
+    SoundEngine soundEngine;
+//    soundEngine.ost();
+
 }
 
 void Game::input( QKeyEvent * key  ){
@@ -454,6 +453,7 @@ void Game::update( float fixedStep )
 
 void Game::render(  float deltaTime ){
     renderingEngine.renderScene( this->sceneGraph, deltaTime );
+
 }
 
 // SLOTS

@@ -34,7 +34,7 @@ public:
     // Getters & Setters
 
     const QVector3D &getVelocity() const;
-    void setVelocity(const QVector3D &newVelocity);
+    void setVelocity(const QVector3D newVelocity);
 
     float getRestitution() const;
     void setRestitution(float newRestitution);
@@ -53,8 +53,8 @@ private:
     float speed = 1.0f    ;
     float mass = 1.0;
     float friction = 1.0;
-    float restitution = .0;
-    float maxSpeed = 1.50;
+    float restitution = .00;
+    float maxSpeed = 2.0;
 
     bool resting = false;
 

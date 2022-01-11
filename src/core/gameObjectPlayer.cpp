@@ -1,7 +1,6 @@
 #include "headers/core/gameObjectPlayer.h"
 
 
-
 GameObjectPlayer::GameObjectPlayer( std::string name, MeshRenderer * meshRenderer, MoveComponent * moveComponent, PhysicsComponent * physicsComponent, ColliderComponent * colliderComponent,PlayerComponent * playerComponent,  GameObject * parent ){
 
     this->name = name;
@@ -41,6 +40,7 @@ void GameObjectPlayer::hasTransformed(){
     emit updateAABB(  tr * sc );
     emit updatePlayerComponent( this->getWorldPosition(), this->getTransform()->getRotation() * direction );
 }
+
 
 PlayerComponent *GameObjectPlayer::getPlayerComponent() const
 {

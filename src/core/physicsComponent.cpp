@@ -27,8 +27,9 @@ void PhysicsComponent::updatePhysics( float step,  GameObject * go, Terrain &ter
         go->move( meanSpeed * step );
         QVector3D worldPos;
         worldPos = go->getWorldPosition();
-        float height = terrain.getHeightTerrain( worldPos );
-        if( height > terrain.getMaxClimbableHeight() )
+        float height = terrain.getHeightOfTerrain( worldPos );
+        QVector3D normal =  terrain.getFaceNormalAtPosition( worldPos );
+        if( height > worldPos.y() && acos( QVector3D::dotProduct( normal, QVector3D( 0.0, 1.0, 0.0) ) ) * 180 / M_PI > 60.0 )
             go->move( - meanSpeed * step );
     }
     velocity = meanSpeed;
@@ -124,7 +125,7 @@ const QVector3D &PhysicsComponent::getVelocity() const
     return velocity;
 }
 
-void PhysicsComponent::setVelocity(const QVector3D &newVelocity)
+void PhysicsComponent::setVelocity(const QVector3D newVelocity)
 {
     velocity = newVelocity;
 }
@@ -151,7 +152,7 @@ void PhysicsComponent::setFriction(float newFriction)
 
 void PhysicsComponent::hasMoved( QSet<uint> inputsMoves ){
     this->inputsMoves = inputsMoves;
-    resting = false;
+//    resting = false;
 }
 
 void PhysicsComponent::hasStopped( QSet<uint> inputsMoves ){

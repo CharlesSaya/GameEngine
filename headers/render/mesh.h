@@ -74,6 +74,7 @@ class Mesh : protected QOpenGLFunctions_3_3_Core{
     void setShadowTexture(uint m_shadowMapTex);
 
     void setTerrain(bool newTerrain);
+    const std::vector<std::vector<VertexData> > &getMeshesVertexDatas() const;
 };
 
 #endif // MESH_H

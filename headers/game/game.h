@@ -18,6 +18,8 @@
 #include "headers/core/physicsComponent.h"
 #include "headers/core/colliderComponent.h"
 
+#include "headers/core/soundEngine.h"
+
 #include "headers/physics/physicsEngine.h"
 #include "headers/physics/colliderEngine.h"
 

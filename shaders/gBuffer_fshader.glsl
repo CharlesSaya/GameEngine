@@ -69,7 +69,7 @@ void main(void)
     gNormal = normalize(faceNormal);
 
     if( terrain )
-        gDiffuse = totalColour ;
+        gDiffuse = vec4( 0.35 ) ;
     else
         gDiffuse =  texture(tex0, v_texcoord) ;
 

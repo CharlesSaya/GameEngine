@@ -1,4 +1,4 @@
-QT       += core gui widgets
+QT       += core gui widgets multimedia
 
 TARGET = gameengine
 TEMPLATE = app
@@ -15,6 +15,7 @@ SOURCES += src/game/main.cpp \
     src/core/physicsComponent.cpp \
     src/core/player.cpp \
     src/core/playerComponent.cpp \
+    src/core/soundEngine.cpp \
     src/game/MainWindow.cpp \
     src/game/game.cpp \
     src/physics/colliderEngine.cpp \
@@ -51,6 +52,7 @@ HEADERS += \
     headers/core/physicsComponent.h \
     headers/core/player.h \
     headers/core/playerComponent.h \
+    headers/core/soundEngine.h \
     headers/dirent.h \
     headers/game/MainWindow.h \
     headers/game/game.h \
@@ -85,6 +87,7 @@ HEADERS += \
 RESOURCES += \
     objects.qrc \
     shaders.qrc \
+    sounds.qrc \
     textures.qrc \
 
 # install

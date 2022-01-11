@@ -1,14 +1,20 @@
 #include "headers/physics/colliderEngine.h"
 
+bool compareFloat(float a, float b)
+{
+    return fabs(a - b) <  0.0005;
+}
 
 ColliderEngine::ColliderEngine( float deltaTime ){
     this->deltaTime = deltaTime;
 }
 
 bool ColliderEngine::intersectAABB( AABB &box1, AABB &box2 ){
-    return (  ( ( box1.getMin().x() < box2.getMax().x() ) && ( box1.getMax().x() > box2.getMin().x() ) )
-           && ( ( box1.getMin().y() < box2.getMax().y() ) && ( box1.getMax().y() > box2.getMin().y() ) )
-           && ( ( box1.getMin().z() > box2.getMax().z() ) && ( box1.getMax().z() < box2.getMin().z() ) ) );
+
+
+    return (  ( ( box1.getMin().x() <= box2.getMax().x() ) && ( box1.getMax().x() >= box2.getMin().x() ) )
+           && ( ( ( box1.getMin().y() ) -  EPSILON <=  (  box2.getMax().y() ) )  && ( box1.getMax().y()  -  EPSILON  >= box2.getMin().y() ))
+           && ( ( box1.getMin().z() >= box2.getMax().z() ) && ( box1.getMax().z() <= box2.getMin().z() ) ) );
 }
 
 AABB& ColliderEngine::buildBroadPhaseBox( AABB &broadPhaseBox, QVector3D velocity, AABB& box1 ){
@@ -28,7 +34,7 @@ AABB& ColliderEngine::buildBroadPhaseBox( AABB &broadPhaseBox, QVector3D velocit
     return broadPhaseBox;
 }
 
-float ColliderEngine::sweptAABB( QVector3D velocity, AABB& box1, AABB& box2, QVector3D& normal ){
+float ColliderEngine::sweptAABB( QVector3D velocity, AABB& box1, AABB& box2, QVector3D& normal, QVector3D &planePoint ){
 
     float dxEntry, dyEntry, dzEntry;
     float dxExit, dyExit, dzExit;
@@ -104,22 +110,36 @@ float ColliderEngine::sweptAABB( QVector3D velocity, AABB& box1, AABB& box2, QVe
         return -1.0f;
 
     if( entryTime == xEntryTime ){
-        if( velocity.x() > 0 )
+        if( velocity.x() > 0 ){
             normal = QVector3D( -1., 0., 0. );
-        else
+            planePoint = box2MinPosition;
+        }else{
             normal = QVector3D( 1., 0., 0. );
+            planePoint = box2MaxPosition;
+
+        }
     }
     else if( entryTime == yEntryTime ){
-        if( velocity.y() > 0 )
+        if( velocity.y() > 0 ){
             normal = QVector3D( 0., -1., 0. );
-        else
+            planePoint = box2MinPosition;
+
+        }else{
             normal = QVector3D( 0., 1., 0. );
+            planePoint = box2MaxPosition;
+
+        }
     }
     else{
-        if( velocity.z() > 0 )
+        if( velocity.z() > 0 ){
             normal = QVector3D( 0., 0., -1. );
-        else
+            planePoint = box2MaxPosition;
+
+        }else{
             normal = QVector3D( 0., 0., 1. );
+            planePoint = box2MinPosition;
+
+        }
     }
     return entryTime;
 }

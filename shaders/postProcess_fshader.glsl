@@ -126,7 +126,7 @@ void main()
     for(int i = 0; i < 1; i++)
         color += colorPointLight( pointLights[i], normal, pos.rgb, lightSpacePos);
 
-    gl_FragColor = vec4( color.xyz, 1.0 );
+    gl_FragColor = vec4( color + texture( bloomTexture, v_texcoord ).xyz, 1.0 );
 
 }
 //! [0]

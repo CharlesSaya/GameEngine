@@ -47,7 +47,7 @@ Mesh::Mesh( Terrain& terrainOBJ, std::vector<Texture> textures, Shader * shader,
     this->meshesFaces.push_back( terrainOBJ.getPlaneIndices() );
 
     this->bBox = AABB( this->meshesVertexDatas[0] );
-//    this->bBox.getMaxDefault().setY( terrainOBJ.getMaximumHeight() * terrain.getScale() );
+    //    this->bBox.getMaxDefault().setY( terrainOBJ.getMaximumHeight() * terrain.getScale() );
     this->bBox.setMinDefault( this->bBox.getMinDefault() - QVector3D( 0.0, 100. , 0.0 ) );
 //    this->bBox.setMax( this->bBox.getMaxDefault() );
     this->bBox.setMin( this->bBox.getMinDefault() );
@@ -256,6 +256,11 @@ bool Mesh::getRenderAABB() const
 void Mesh::setTerrain(bool newTerrain)
 {
     terrain = newTerrain;
+}
+
+const std::vector<std::vector<VertexData> > &Mesh::getMeshesVertexDatas() const
+{
+    return meshesVertexDatas;
 }
 
 Mesh::Mesh(){

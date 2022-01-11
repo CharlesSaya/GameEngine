@@ -8,7 +8,7 @@ RenderingEngine::RenderingEngine( float renderStep ){
     this->step = renderStep;
     this->context = QOpenGLContext::currentContext();
 
-    directionalLight = DirectionalLight(QVector3D(60.0, 60.0, 0.0), white);
+    directionalLight = DirectionalLight(QVector3D(64.0, 60.0, 64.0), white);
 
     initPointLights();
 
@@ -424,7 +424,7 @@ void RenderingEngine::renderScene( SceneGraph &sceneGraph,  float deltaTime ){
     // render the final scene by adding the differents FBO textures on a quad
     generateQuad();
 
-    renderBloom();
+//    renderBloom();
 
     renderPostProcess();
 

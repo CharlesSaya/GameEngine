@@ -40,7 +40,7 @@ CameraComponent::CameraComponent(QVector3D cameraPosition, QVector3D cameraTarge
 
 void CameraComponent::updatePosition(const QMatrix4x4& model)
 {
-    this->cameraPosition = model * QVector3D(0.0f,5.0f,8.0f);
+    this->cameraPosition = model * QVector3D(0.0f,3.0f,4.0f);
 }
 bool CameraComponent::eventFilter(QObject *obj, QEvent *event){
     return false;

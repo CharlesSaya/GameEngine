@@ -86,11 +86,45 @@ float Terrain::getMaxClimbableHeight() const
     return maxClimbableHeight;
 }
 
+QVector3D Terrain:: getFaceNormalAtPosition( QVector3D &worldPosition ){
+    QImage &im = this->heightmap.getImage();
+
+    QVector3D relativePosition = worldPosition - QVector3D();
+
+    int gridX =  int( floor( relativePosition.x() / gridSquareSize ) );
+    int gridZ =  int( floor( relativePosition.z() / gridSquareSize ) );
+
+    if ( (gridX < 0) || (gridX > im.width() -1)  || (gridZ < 0) || (gridZ > im.height() - 1 ) )
+        return QVector3D( );
+
+    float posX = fmod(relativePosition.x(), gridSquareSize) / gridSquareSize;
+    float posZ = fmod(relativePosition.z(), gridSquareSize) / gridSquareSize;
+
+    if ( posX <= 1. - posZ )
+        return computeFaceNormal( planeVertices[gridZ * im.width() + gridX].position, planeVertices[( gridZ + 1 ) * im.width() + gridX ].position, planeVertices[gridZ * im.width() + ( gridX + 1 )].position );
+    else
+        return computeFaceNormal( planeVertices[( gridZ + 1 ) * im.width() + gridX].position, planeVertices[ ( gridZ + 1 ) * im.width() + ( gridX + 1 ) ].position, planeVertices[ gridZ * im.width() + ( gridX + 1 ) ].position );
+}
+
 QVector3D Terrain::computeNormal( QVector2D texcoords ){
-    float heightL = getHeight( QVector2D( texcoords.x() - 1, texcoords.y()  ) );
-    float heightR = getHeight( QVector2D( texcoords.x() + 1, texcoords.y()  ) );
-    float heightD = getHeight( QVector2D( texcoords.x(), texcoords.y() + 1 ) );
-    float heightU = getHeight( QVector2D( texcoords.x(), texcoords.y() - 1 ) );
+    float heightL = 0.0f;
+    float heightR = 0.0f;
+    float heightD = 0.0f;
+    float heightU = 0.0f;
+
+    if ( texcoords.x() > 0)
+        heightL = getHeight( QVector2D( texcoords.x() - 1, texcoords.y()  ) );
+
+    if ( texcoords.x() < this->heightmap.getImage().width() - 1 )
+        heightR = getHeight( QVector2D( texcoords.x() + 1, texcoords.y()  ) );
+
+    if ( texcoords.y() < this->heightmap.getImage().height() - 1 )
+        heightD    = getHeight( QVector2D( texcoords.x(), texcoords.y() + 1 ) );
+
+    if ( texcoords.y() > 0 )
+        heightU    = getHeight( QVector2D( texcoords.x(), texcoords.y() - 1 ) );
+
+
     return QVector3D( heightL - heightR, 2.0f, heightD - heightU ).normalized();
 }
 

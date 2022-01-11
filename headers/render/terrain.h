@@ -87,6 +87,7 @@ public:
 
     void setMaximumHeight(float newHeight);
 
+    QVector3D getFaceNormalAtPosition( QVector3D & worldPosition );
 
     const std::string &getOBJFilename() const;
 
