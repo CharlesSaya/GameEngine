@@ -59,5 +59,7 @@
         <file>textures/plushiesTexture.png</file>
         <file>textures/heightmapF9.png</file>
         <file>textures/hm1.png</file>
+        <file>textures/tunnelTexture.png</file>
+        <file>textures/honeyTexture.png</file>
     </qresource>
 </RCC>

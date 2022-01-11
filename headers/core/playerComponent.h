@@ -54,7 +54,7 @@ private:
     Shader * shader;
     int wheelTimer = 200;
 
-    int collectibleNumber;
+    int collectibleNumber = 0;
 
     QVector3D playerPosition;
     QVector3D playerDirection = QVector3D( 0.0, 0.0, -1.0);

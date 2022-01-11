@@ -39,7 +39,7 @@ void Game::initGame(){
 
     // Terrain Game Object ------------------------------------------------------------------------------
 
-    Texture heightMap = Texture( "../GameEngine/textures/heightmapF9.png", "tex0" );
+    Texture heightMap = Texture( "../GameEngine/textures/heightmapF8.png", "tex0" );
 
     Texture snow    = Texture( "../GameEngine/textures/snowTexture.png", "tex0" );
     Texture rock    = Texture( "../GameEngine/textures/rockTexture.png", "tex1" );
@@ -134,50 +134,50 @@ void Game::initGame(){
 
     QVector<QVector3D> positionsTreeSnow;
     QVector<float> scalesTreeSnow;
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(21.122,73.92)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(13.122,87.92)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(8.86,105.344)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(8.86,105.344)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(12.6731,109.539)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(15.2169,104.007)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(34.2184,104.791)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(29.0421,100.255)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(31.921,96.8429)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(32.4277,94.3707)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(28.962,92.7587)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(27.0081,96.6063)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(23.1854,101.203)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(19.7761,105.718)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(20.8789,90.1217)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(26.7896,82.0665)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(33.8752,80.1888)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(27.4411,80.4065)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(37.9303,84.2533)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(32.045,73.5333)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(40.5250,75.423)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(50.2974,73.2955)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(52.786,78.846)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(63.8832,77.3402)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(67.4085,77.525)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(70.9541,82.8983)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(79.6318,79.0449)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(84.7804,78.2473)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(103.834,79.6695)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(107.366,82.7031)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(102.199,91.3177)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(103.96,98.252)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(109.881,99.48)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(111.997,103.45)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(109.883,97.95)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(106.387,98.1969)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(99.342,115.686)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(95.4537,118.464)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(89.3565,118.35)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(84.7227,119.266)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(80.7093,112.646)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(50.8224,107.928)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(37.2173,109.069)));
-    positionsTreeSnow.push_back(QVector3D(getHeightObject(38.1351,98.8298)));
+    positionsTreeSnow.push_back(getHeightObject(21.122,73.92));
+    positionsTreeSnow.push_back(getHeightObject(13.122,87.92));
+    positionsTreeSnow.push_back(getHeightObject(8.86,105.344));
+    positionsTreeSnow.push_back(getHeightObject(8.86,105.344));
+    positionsTreeSnow.push_back(getHeightObject(12.6731,109.539));
+    positionsTreeSnow.push_back(getHeightObject(15.2169,104.007));
+    positionsTreeSnow.push_back(getHeightObject(34.2184,104.791));
+    positionsTreeSnow.push_back(getHeightObject(29.0421,100.255));
+    positionsTreeSnow.push_back(getHeightObject(31.921,96.8429));
+    positionsTreeSnow.push_back(getHeightObject(32.4277,94.3707));
+    positionsTreeSnow.push_back(getHeightObject(28.962,92.7587));
+    positionsTreeSnow.push_back(getHeightObject(27.0081,96.6063));
+    positionsTreeSnow.push_back(getHeightObject(23.1854,101.203));
+    positionsTreeSnow.push_back(getHeightObject(19.7761,105.718));
+    positionsTreeSnow.push_back(getHeightObject(20.8789,90.1217));
+    positionsTreeSnow.push_back(getHeightObject(26.7896,82.0665));
+    positionsTreeSnow.push_back(getHeightObject(33.8752,80.1888));
+    positionsTreeSnow.push_back(getHeightObject(27.4411,80.4065));
+    positionsTreeSnow.push_back(getHeightObject(37.9303,84.2533));
+    positionsTreeSnow.push_back(getHeightObject(32.045,73.5333));
+    positionsTreeSnow.push_back(getHeightObject(40.5250,75.423));
+    positionsTreeSnow.push_back(getHeightObject(50.2974,73.2955));
+    positionsTreeSnow.push_back(getHeightObject(52.786,78.846));
+    positionsTreeSnow.push_back(getHeightObject(63.8832,77.3402));
+    positionsTreeSnow.push_back(getHeightObject(67.4085,77.525));
+    positionsTreeSnow.push_back(getHeightObject(70.9541,82.8983));
+    positionsTreeSnow.push_back(getHeightObject(79.6318,79.0449));
+    positionsTreeSnow.push_back(getHeightObject(84.7804,78.2473));
+    positionsTreeSnow.push_back(getHeightObject(103.834,79.6695));
+    positionsTreeSnow.push_back(getHeightObject(107.366,82.7031));
+    positionsTreeSnow.push_back(getHeightObject(102.199,91.3177));
+    positionsTreeSnow.push_back(getHeightObject(103.96,98.252));
+    positionsTreeSnow.push_back(getHeightObject(109.881,99.48));
+    positionsTreeSnow.push_back(getHeightObject(111.997,103.45));
+    positionsTreeSnow.push_back(getHeightObject(109.883,97.95));
+    positionsTreeSnow.push_back(getHeightObject(106.387,98.1969));
+    positionsTreeSnow.push_back(getHeightObject(99.342,115.686));
+    positionsTreeSnow.push_back(getHeightObject(95.4537,118.464));
+    positionsTreeSnow.push_back(getHeightObject(89.3565,118.35));
+    positionsTreeSnow.push_back(getHeightObject(84.7227,119.266));
+    positionsTreeSnow.push_back(getHeightObject(80.7093,112.646));
+    positionsTreeSnow.push_back(getHeightObject(50.8224,107.928));
+    positionsTreeSnow.push_back(getHeightObject(37.2173,109.069));
+    positionsTreeSnow.push_back(getHeightObject(38.1351,98.8298));
 
 
 
@@ -208,21 +208,21 @@ void Game::initGame(){
     QVector<QVector3D> positionsCactus;
     QVector<float> scalesCactus;
 
-    positionsCactus.push_back(QVector3D(getHeightObject(25.9588,53.2657)));
-    positionsCactus.push_back(QVector3D(getHeightObject(17.2045,47.50)));
-    positionsCactus.push_back(QVector3D(getHeightObject(35.3655,50.5533)));
-    positionsCactus.push_back(QVector3D(getHeightObject(44.281,41.5533)));
-    positionsCactus.push_back(QVector3D(getHeightObject(39.5726,44.8162)));
-    positionsCactus.push_back(QVector3D(getHeightObject(51.0103,41.7781)));
-    positionsCactus.push_back(QVector3D(getHeightObject(20.6871,44.7781)));
-    positionsCactus.push_back(QVector3D(getHeightObject(48.8608,55.7303)));
-    positionsCactus.push_back(QVector3D(getHeightObject(64.1906,55.9789)));
+    positionsCactus.push_back(getHeightObject(25.9588,53.2657));
+    positionsCactus.push_back(getHeightObject(17.2045,47.50));
+    positionsCactus.push_back(getHeightObject(35.3655,50.5533));
+    positionsCactus.push_back(getHeightObject(44.281,41.5533));
+    positionsCactus.push_back(getHeightObject(39.5726,44.8162));
+    positionsCactus.push_back(getHeightObject(51.0103,41.7781));
+    positionsCactus.push_back(getHeightObject(20.6871,44.7781));
+    positionsCactus.push_back(getHeightObject(48.8608,55.7303));
+    positionsCactus.push_back(getHeightObject(64.1906,55.9789));
 
-    positionsCactus.push_back(QVector3D(getHeightObject(90.9981,51.3017)));
-    positionsCactus.push_back(QVector3D(getHeightObject(106.77,59.752)));
-    positionsCactus.push_back(QVector3D(getHeightObject(98.2764,43.2881)));
-    positionsCactus.push_back(QVector3D(getHeightObject(80.4497,46.281)));
-    positionsCactus.push_back(QVector3D(getHeightObject(73.4896,50.)));
+    positionsCactus.push_back(getHeightObject(90.9981,51.3017));
+    positionsCactus.push_back(getHeightObject(106.77,59.752));
+    positionsCactus.push_back(getHeightObject(98.2764,43.2881));
+    positionsCactus.push_back(getHeightObject(80.4497,46.281));
+    positionsCactus.push_back(getHeightObject(73.4896,50.));
 
 
     for(int i = 0 ;i<positionsCactus.size();i++ ){
@@ -251,20 +251,20 @@ void Game::initGame(){
         QVector<QVector3D> positionsBox;
         QVector<float> scalesBox;
 
-        positionsBox.push_back(QVector3D(getHeightObject(30.2537,23.5112)));
-        positionsBox.push_back(QVector3D(getHeightObject(16.169,14.781 )));
-        positionsBox.push_back(QVector3D(getHeightObject(14.2261,25.9705 )));
-        positionsBox.push_back(QVector3D(getHeightObject(31.0522,34.9705 )));
-        positionsBox.push_back(QVector3D(getHeightObject(50.2872,16.6526 )));
-        positionsBox.push_back(QVector3D(getHeightObject(113.914,29.2116 )));
-        positionsBox.push_back(QVector3D(getHeightObject(95.8851,46.9473 )));
-        positionsBox.push_back(QVector3D(getHeightObject(74.2979,47.5831 )));
-        positionsBox.push_back(QVector3D(getHeightObject(74.2979,47.5831 )));
-        positionsBox.push_back(QVector3D(getHeightObject(112.439,45.2934 )));
-        positionsBox.push_back(QVector3D(getHeightObject(28.8756,84.9065 )));
-        positionsBox.push_back(QVector3D(getHeightObject(65.6861,84.8065 )));
-        positionsBox.push_back(QVector3D(getHeightObject(93.6861,98.8065 )));
-        positionsBox.push_back(QVector3D(getHeightObject(96.608,117.022 )));
+        positionsBox.push_back(getHeightObject(30.2537,23.5112));
+        positionsBox.push_back(getHeightObject(16.169,14.781 ));
+        positionsBox.push_back(getHeightObject(14.2261,25.9705 ));
+        positionsBox.push_back(getHeightObject(31.0522,34.9705 ));
+        positionsBox.push_back(getHeightObject(50.2872,16.6526 ));
+        positionsBox.push_back(getHeightObject(113.914,29.2116 ));
+        positionsBox.push_back(getHeightObject(95.8851,46.9473 ));
+        positionsBox.push_back(getHeightObject(74.2979,47.5831 ));
+        positionsBox.push_back(getHeightObject(74.2979,47.5831 ));
+        positionsBox.push_back(getHeightObject(112.439,45.2934 ));
+        positionsBox.push_back(getHeightObject(28.8756,84.9065 ));
+        positionsBox.push_back(getHeightObject(65.6861,84.8065 ));
+        positionsBox.push_back(getHeightObject(93.6861,98.8065 ));
+        positionsBox.push_back(getHeightObject(96.608,117.022 ));
 
         for(int i = 0 ;i<positionsBox.size();i++ ){
              scalesBox.push_back( 0.2);
@@ -296,12 +296,12 @@ void Game::initGame(){
 
         QVector<QVector3D> positionsBush;
         QVector<float> scalesBush;
-        positionsBush.push_back(QVector3D(getHeightObject(33.1903,16.271 )));
-        positionsBush.push_back(QVector3D(getHeightObject(45.238,25.0801  )));
-        positionsBush.push_back(QVector3D(getHeightObject(57.1722,12.107  )));
-        positionsBush.push_back(QVector3D(getHeightObject(70.7692,15.9081  )));
-        positionsBush.push_back(QVector3D(getHeightObject(89.2729,26.8545  )));
-        positionsBush.push_back(QVector3D(getHeightObject(111.59,18.6222  )));
+        positionsBush.push_back(getHeightObject(33.1903,16.271 ));
+        positionsBush.push_back(getHeightObject(45.238,25.0801  ));
+        positionsBush.push_back(getHeightObject(57.1722,12.107  ));
+        positionsBush.push_back(getHeightObject(70.7692,15.9081  ));
+        positionsBush.push_back(getHeightObject(89.2729,26.8545  ));
+        positionsBush.push_back(getHeightObject(111.59,18.6222 ));
 
         for(int i = 0 ;i<positionsBush.size();i++ ){
             scalesBush.push_back( 0.2 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(0.6))));
@@ -327,25 +327,23 @@ void Game::initGame(){
         treeObj.push_back("../GameEngine/objects/TreeNoLeavesBig/");
         treeObj.push_back("../GameEngine/objects/TreeNoLeavesSmall/");
 
-
-
         std::vector<Texture> treeTextures;
         treeTextures.push_back( treeTexture );
 
         QVector<QVector3D> positionsTree;
         QVector<float> scalesTree;
-        positionsTree.push_back(QVector3D(getHeightObject(36.4723,21.4726 )));
-        positionsTree.push_back(QVector3D(getHeightObject(44.6209,17.2689 )));
-        positionsTree.push_back(QVector3D(getHeightObject(69.8517,5.18626 )));
-        positionsTree.push_back(QVector3D(getHeightObject(84.5685,16.0831 )));
-        positionsTree.push_back(QVector3D(getHeightObject(99.8933,25.50)));
-        positionsTree.push_back(QVector3D(getHeightObject(119.313,26.5568)));
-        positionsTree.push_back(QVector3D(getHeightObject(55.313,21.8187)));
-        positionsTree.push_back(QVector3D(getHeightObject(77.95,23.4315)));
-        positionsTree.push_back(QVector3D(getHeightObject(99.94,15.5421)));
-        positionsTree.push_back(QVector3D(getHeightObject(66.115,27.0250)));
-        positionsTree.push_back(QVector3D(getHeightObject(94.7229,4.2864)));
-        positionsTree.push_back(QVector3D(getHeightObject(9.01008,16.3732)));
+        positionsTree.push_back(getHeightObject(36.4723,21.4726 ));
+        positionsTree.push_back(getHeightObject(44.6209,17.2689 ));
+        positionsTree.push_back(getHeightObject(69.8517,5.18626 ));
+        positionsTree.push_back(getHeightObject(84.5685,16.0831 ));
+        positionsTree.push_back(getHeightObject(99.8933,25.50));
+        positionsTree.push_back(getHeightObject(119.313,26.5568));
+        positionsTree.push_back(getHeightObject(55.313,21.8187));
+        positionsTree.push_back(getHeightObject(77.95,23.4315));
+        positionsTree.push_back(getHeightObject(99.94,15.5421));
+        positionsTree.push_back(getHeightObject(66.115,27.0250));
+        positionsTree.push_back(getHeightObject(94.7229,4.2864));
+        positionsTree.push_back(getHeightObject(9.01008,16.3732));
 
 
         for(int i = 0 ;i<positionsTree.size();i++ ){
@@ -366,8 +364,56 @@ void Game::initGame(){
             this->goMeshes.push_back( treeGO );
         }
 
+        // Honey   ------------------------------------------------------------------------------
 
-//    treeHouse  ------------------------------------------------------------------------------
+        Texture honeyTexture = Texture( "../GameEngine/textures/honeyTexture", "honeyTexture" );
+
+        string honeyObj = "../GameEngine/objects/honey/";
+
+
+        std::vector<Texture> honeyTextures;
+        honeyTextures.push_back( honeyTexture );
+
+        QVector<QVector3D> positionsHoney;
+        QVector<float> scalesHoney;
+        //Land
+        positionsHoney.push_back(getHeightObject(9.53581,5.33834 ));
+        positionsHoney.push_back(getHeightObject(36.1001,9.84773 ));
+        positionsHoney.push_back(getHeightObject(92.7198,2.1197 ));
+        positionsHoney.push_back(getHeightObject(112.88,30.3552 ));
+        positionsHoney.push_back(getHeightObject(17.7571,29.5157 ));
+
+        //Sand
+        positionsHoney.push_back(getHeightObject(13.8642,50.164 ));
+        positionsHoney.push_back(getHeightObject(45.4596,40.8289 ));
+        positionsHoney.push_back(getHeightObject(44.3478,62.0984 ));
+        positionsHoney.push_back(getHeightObject(115.227,59.0063 ));
+
+
+        //Mountain
+        positionsHoney.push_back(getHeightObject(5.20934,81.761 ));
+        positionsHoney.push_back(getHeightObject(7.32801,112.838 ));
+        positionsHoney.push_back(getHeightObject(118.335,77.2394 ));
+        positionsHoney.push_back(getHeightObject(45.1982,118.721 ));
+        positionsHoney.push_back(getHeightObject(94.9191,86.8043 ));
+
+
+        for(int i = 0 ;i<positionsHoney.size();i++ ){
+            scalesHoney.push_back(5);
+        }
+
+        for(int i = 0 ;i<positionsHoney.size();i++ ){
+            Mesh honeyMesh =Mesh( honeyObj, honeyTextures, shader, white, false );
+
+            GameObjectMesh * honeyGO = new GameObjectMesh( "Honey" + std::to_string(i), new MeshRenderer( honeyMesh, this  ), new ColliderComponent( this ), false ,terrainGO);
+            honeyGO->scale( scalesHoney[i] );
+            honeyGO->move( positionsHoney[i] );
+            honeyGO->setIsCollectible(true);
+            this->goMeshes.push_back( honeyGO );
+        }
+
+
+         //    treeHouse  ------------------------------------------------------------------------------
 
         string treeHouseObj;
         treeHouseObj= "../GameEngine/objects/treeHouse/";
@@ -378,12 +424,35 @@ void Game::initGame(){
         treeHouseTextures.push_back(treeHouseTexture  );
 
         Mesh treeHouseMesh =Mesh(treeHouseObj, treeHouseTextures, shader, white, false );
-        GameObjectMesh * treeHouseGO = new GameObjectMesh( "treeHouse", new MeshRenderer( treeHouseMesh, this  ), new ColliderComponent( this ), new PhysicsComponent(physicsEngine, this ) ,true, terrainGO );
+        GameObjectMesh * treeHouseGO = new GameObjectMesh( "treeHouse", new MeshRenderer( treeHouseMesh, this  ), new ColliderComponent( this ), new PhysicsComponent(physicsEngine, this ) ,false, terrainGO );
         treeHouseGO->scale( 0.05);
-//        treeHouseGO->rotate(QVector3D(1.0f,0.0f,0.0f),-90) ;
-//        treeHouseGO->rotate(QVector3D(0.0f,0.0f,1.0f),90) ;
         treeHouseGO->move( getHeightObject(16.1342,31.3343 ));
         this->goMeshes.push_back( treeHouseGO );
+
+        //    tunnel  ------------------------------------------------------------------------------
+
+        string tunnelObj;
+        tunnelObj= "../GameEngine/objects/tunnel/";
+
+        Texture tunnelTexture   = Texture( "../GameEngine/textures/tunnelTexture", "tunnelTexture" );
+        std::vector<Texture> tunnelTextures;
+        tunnelTextures.push_back(tunnelTexture  );
+
+        Mesh tunnelMesh =Mesh(tunnelObj, tunnelTextures, shader, white, false );
+        GameObjectMesh * tunnelGO = new GameObjectMesh( "tunnel", new MeshRenderer(tunnelMesh, this  ), new ColliderComponent( this ), new PhysicsComponent(physicsEngine, this ) ,false, terrainGO );
+        tunnelGO->move( 120.959,-10.0f,225.183 );
+        this->goMeshes.push_back( tunnelGO );
+
+        //    outdoorField  ------------------------------------------------------------------------------
+
+        string planObj;
+        planObj= "../GameEngine/objects/outdoorField/";
+
+
+        Mesh planMesh =Mesh(planObj,  vector<Texture>(), shader, white, false );
+        GameObjectMesh * planGO = new GameObjectMesh( "plan", new MeshRenderer(planMesh, this  ), new ColliderComponent( this ), new PhysicsComponent(physicsEngine, this ) ,false, terrainGO );
+        planGO->move( 0.0,-0.3f,0.0 );
+        this->goMeshes.push_back( planGO );
 
         // bush  ------------------------------------------------------------------------------
 
@@ -397,9 +466,9 @@ void Game::initGame(){
 
         QVector<QVector3D> positionsGrid;
         QVector<QVector3D> scalesGrid;
-        positionsGrid.push_back(QVector3D(getHeightObject(98.2476,36.6745 )));
-        positionsGrid.push_back(QVector3D(getHeightObject(24.278,66.278 )));
-        positionsGrid.push_back(QVector3D(getHeightObject(88.8245,119.832 )));
+        positionsGrid.push_back(getHeightObject(98.2476,36.6745 ));
+        positionsGrid.push_back(getHeightObject(24.278,66.278 ));
+        positionsGrid.push_back(getHeightObject(88.8245,119.832 ));
 
         for(int i = 0 ;i<positionsGrid.size()-1;i++ ){
             scalesGrid.push_back( QVector3D(10.0,10.0f,1.0f));
@@ -407,12 +476,49 @@ void Game::initGame(){
         scalesGrid.push_back( QVector3D(20.0,15.0f,1.0f));
         for(int i = 0 ;i<positionsGrid.size();i++ ){
             Mesh gridMesh =Mesh( gridObj, gridTextures, shader, white, false );
-            GameObjectMesh * gridGO = new GameObjectMesh( "Grid" + std::to_string(i), new MeshRenderer( gridMesh, this  ), new ColliderComponent( this ), false );
+            GameObjectMesh * gridGO = new GameObjectMesh( "Grid" + std::to_string(i), new MeshRenderer( gridMesh, this  ), new ColliderComponent( this ), false, terrainGO );
             gridGO->scale( scalesGrid[i] );
             gridGO->move( positionsGrid[i] );
 
             this->goMeshes.push_back( gridGO );
         }
+
+        //    barrel  ------------------------------------------------------------------------------
+
+            string barrelObj = "../GameEngine/objects/barrel/";
+
+            std::vector<Texture> barrelTextures;
+            barrelTextures.push_back(Texture( "../GameEngine/textures/plateauTexture", "plateauTexture" ));
+//            barrelTextures.push_back(Texture( "../GameEngine/textures/barrel_BlueStripe", "barrel_BlueStripe" ));
+//            barrelTextures.push_back(Texture( "../GameEngine/textures/barrel_Green", "barrel_Green" ));
+//            barrelTextures.push_back(Texture( "../GameEngine/textures/barrel_Red", "barrel_Red" ));
+//            barrelTextures.push_back(Texture( "../GameEngine/textures/barrel_RedStripe", "barrel_RedStripe") );
+
+            QVector<QVector3D> positionsBarrel;
+            QVector<float> scalesBarrel;
+            QVector<float> rotationBarrel;
+
+            positionsBarrel.push_back(QVector3D(28.4032,0.0,46.8231));
+            scalesBarrel.push_back(0.5);
+            positionsBarrel.push_back(QVector3D(25.7202,-0.3,58.5778));
+            scalesBarrel.push_back(0.5);
+            positionsBarrel.push_back(QVector3D(22.2055,-.2,52.0175));
+            scalesBarrel.push_back(0.5);
+            positionsBarrel.push_back(QVector3D(22.2055,-0.4,52.0175));
+            scalesBarrel.push_back(0.5);
+            positionsBarrel.push_back(QVector3D(43.872,0.0,57.6844));
+            scalesBarrel.push_back(5);
+            positionsBarrel.push_back(QVector3D(44.8808,0.0,49.7593));
+            scalesBarrel.push_back(5);
+
+
+            for(int i = 0 ;i<positionsBarrel.size();i++ ){
+                Mesh barrelMesh =Mesh( barrelObj, barrelTextures, shader, white, false );
+                GameObjectMesh * barrelGO = new GameObjectMesh( "barrel" + std::to_string(i), new MeshRenderer( barrelMesh, this  ), new ColliderComponent( this ), new PhysicsComponent(physicsEngine, this ) ,true, terrainGO );
+                barrelGO->scale( scalesBarrel[i] );
+                barrelGO->move( positionsBarrel[i] );
+                this->goMeshes.push_back( barrelGO );
+            }
 
 
     // Camera  -------------------------------------------------------------------------------

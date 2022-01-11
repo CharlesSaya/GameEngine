@@ -23,5 +23,9 @@
         <file>objects/TreeNoLeavesBig/BigTreeWithLeaves.obj</file>
         <file>objects/grid/grid.obj</file>
         <file>objects/plushies/plushies.obj</file>
+        <file>objects/tunnel/tunnel.obj</file>
+        <file>objects/outdoorField/outdoorField.obj</file>
+        <file>objects/barrel/barrel.obj</file>
+        <file>objects/honey/honey.obj</file>
     </qresource>
 </RCC>

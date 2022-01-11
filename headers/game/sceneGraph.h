@@ -3,6 +3,9 @@
 
 #include <QVector3D>
 #include <QOpenGLShaderProgram>
+#include <QElapsedTimer>
+#include <QFileInfo>
+
 
 #include "headers/game/node.h"
 
@@ -29,8 +32,11 @@ private:
     GameObjectCamera * mainCamera;
     PhysicsEngine physicsEngine;
     ColliderEngine colliderEngine;
-    QVector3D test = QVector3D(1.0f,1.0f,1.0f);
     Terrain terrain;
+    QElapsedTimer timer;
+    int elapsedTime = 0;
+    float gridSpeed = -0.000002f;
+
 public:
 
     SceneGraph();
@@ -43,10 +49,9 @@ public:
                 Terrain & terrain);
 
     Node * getRoot();
-
+    void checkCollectibleNumber(GameObjectMesh *grid);
     Node * buildGraphScene( GameObject * go );
     bool isLeaf( Node * node);
-
     void input ( QKeyEvent * key );
     void update( float fixedStep );
     void render( GameObjectCamera * camera, Shader * shader = 0 );

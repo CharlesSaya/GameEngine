@@ -40,6 +40,7 @@ SceneGraph::SceneGraph( std::vector<GameObject *>& goList,
     this->physicsEngine = physicsEngine;
     this->colliderEngine = colliderEngine;
 
+    timer.start();
 }
 
 Node * SceneGraph::buildGraphScene( GameObject * go ){
@@ -80,7 +81,6 @@ void SceneGraph::update( float fixedStep ){
     // update player physics
       this->updatePhysics( goPlayer, fixedStep );
       goPlayer->rotate(goPlayer->getMoveComponent()->getRotationY());
-//      qDebug() << goPlayer->getPhysicsComponent()->getVelocity();
 //      qDebug()<< goPlayer->getWorldPosition();
 
       // update main camera position
@@ -95,13 +95,16 @@ void SceneGraph::update( float fixedStep ){
 
 
     for( GameObjectMesh * goMesh : this->goMeshes){
+
+        checkCollectibleNumber(goMesh);
         if(goMesh->getIsMovable() && goMesh->getUseGravity()){
              this->updatePhysicsMesh( goMesh, fixedStep );
         }
-    if(goMesh->getIsTelekinesis()){
-       goPlayer->getPlayerComponent()->setPositionChild(goPlayer,goMesh);
-       QVector3D positionMesh = goMesh->getWorldPosition();
-      }
+        if(goMesh->getIsTelekinesis()){
+           goPlayer->getPlayerComponent()->setPositionChild(goPlayer,goMesh);
+           QVector3D positionMesh = goMesh->getWorldPosition();
+        }
+
 
     }
 
@@ -240,5 +243,35 @@ bool SceneGraph::isLeaf( Node * node ){
 
 Node * SceneGraph::getRoot(){
     return this->root;
+}
+
+void SceneGraph::checkCollectibleNumber(GameObjectMesh *grid)
+{
+    bool stopGrid0 = false;
+    if( grid->getName()=="Grid0" && goPlayer->getPlayerComponent()->getCollectibleNumber()>=1 && !stopGrid0 ){
+        elapsedTime = timer.elapsed() -elapsedTime;
+        grid->move(0.0f,gridSpeed*elapsedTime,0.0f);
+        if(grid->getWorldPosition().y()<-10.0f){
+            stopGrid0 = true;
+            elapsedTime = 0;
+        }
+    }
+    bool stopGrid1 = false;
+    if( grid->getName()=="Grid1" && goPlayer->getPlayerComponent()->getCollectibleNumber()>=5 && !stopGrid1){
+        elapsedTime = timer.elapsed() -elapsedTime;
+        grid->move(0.0f,gridSpeed*elapsedTime,0.0f);
+        if(grid->getWorldPosition().y()<-10.0f){
+            stopGrid1 = true;
+            elapsedTime = 0;
+        }
+    }
+    bool stopGrid2 = false;
+    if( grid->getName()=="Grid2"&& goPlayer->getPlayerComponent()->getCollectibleNumber()>=15 && !stopGrid2){
+        elapsedTime = timer.elapsed() -elapsedTime;
+        grid->move(0.0f,gridSpeed*elapsedTime,0.0f);
+        if(grid->getWorldPosition().y()<-10.0f){
+            stopGrid2 = true;
+        }
+    }
 }
 
