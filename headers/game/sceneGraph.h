@@ -50,6 +50,7 @@ public:
 
     Node * getRoot();
     void checkCollectibleNumber(GameObjectMesh *grid);
+    void rotateRing(GameObjectMesh *ring);
     Node * buildGraphScene( GameObject * go );
     bool isLeaf( Node * node);
     void input ( QKeyEvent * key );

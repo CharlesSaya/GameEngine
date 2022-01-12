@@ -98,6 +98,10 @@ private:
     GameObjectPlayer * playerGO;
     GameObjectCamera *mainCameraGO ;
 
+    GameObject * plainArea ;
+    GameObject * desertArea ;
+    GameObject * moutainArea ;
+
     Shader * shader ;
     Shader * terrainShader;
     Shader * skyboxShader;

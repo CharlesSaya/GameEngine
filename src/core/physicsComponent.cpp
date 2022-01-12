@@ -2,10 +2,18 @@
 
 
 PhysicsComponent::PhysicsComponent( PhysicsEngine &physicsEngine,  QObject * parent ) :  physicsEngine(physicsEngine), QObject(parent){
+
 }
 
 
 void PhysicsComponent::updatePhysics( float step,  GameObject * go, Terrain &terrain ){
+
+    worldPos= go->getWorldPosition();
+    height = terrain.getHeightOfTerrain( worldPos );
+
+    if(playerIsOnGround()&& !(height > worldPos.y() && acos( QVector3D::dotProduct( terrain.getFaceNormalAtPosition( worldPos ), QVector3D( 0.0, 1.0, 0.0) ) ) * 180 / M_PI > 60.0)|| getResting()) canJump=true;
+//    else canJump =false;
+
 
     move(*go->getTransform());
     acceleration = - physicsEngine.getDamp() * velocity;
@@ -17,22 +25,26 @@ void PhysicsComponent::updatePhysics( float step,  GameObject * go, Terrain &ter
 
     QVector3D newVelocity  = velocity + acceleration * step;
 
+
     QVector3D meanSpeed = (velocity + newVelocity) / 2.0 ;
 
 
-    if( meanSpeed.length() > this->maxSpeed )
+    if( meanSpeed.length() > this->maxSpeed){
         meanSpeed = this->maxSpeed * meanSpeed.normalized();
+        }
 
     if ( meanSpeed.length() != 0.0f ){
         go->move( meanSpeed * step );
-        QVector3D worldPos;
-        worldPos = go->getWorldPosition();
-        float height = terrain.getHeightOfTerrain( worldPos );
+        worldPos= go->getWorldPosition();
+        height = terrain.getHeightOfTerrain( worldPos );
         QVector3D normal =  terrain.getFaceNormalAtPosition( worldPos );
         if( height > worldPos.y() && acos( QVector3D::dotProduct( normal, QVector3D( 0.0, 1.0, 0.0) ) ) * 180 / M_PI > 60.0 )
             go->move( - meanSpeed * step );
     }
+
     velocity = meanSpeed;
+
+
 }
 
 void PhysicsComponent::updatePhysicsMesh( float step,  GameObject * go ){
@@ -56,6 +68,7 @@ void PhysicsComponent::updatePhysicsMesh( float step,  GameObject * go ){
         go->move( meanSpeed * step );
     }
     velocity = newVelocity;
+
 }
 
 
@@ -63,7 +76,7 @@ void PhysicsComponent::move(Transform & transform){
     for( uint i : inputsMoves ){
         switch( i ){
             case 0 :
-                velocity += transform.getRotation() * forward  ;
+                velocity += transform.getRotation() * forward;
                 break;
 
             case 1 :
@@ -79,11 +92,15 @@ void PhysicsComponent::move(Transform & transform){
                 break;
 
             case 4 :
-                velocity += transform.getRotation() * jump;
+                if(canJump){
+                    velocity.setY(0.1f);
+                    velocity +=  jump ;
+//                    canJump = false;
+                }
                 break;
 
             case 5 :
-                velocity += transform.getRotation() * dive;
+                velocity += dive;
                 break;
         }
     }
@@ -95,7 +112,10 @@ bool PhysicsComponent::atRest(){
 
 void PhysicsComponent::stop()
 {
+    if(velocity.y()<0.0) velocity = QVector3D(0.0f,velocity.y(),0.0f);
+    else
     velocity = QVector3D();
+
 }
 
 // Getters & Setters
@@ -148,6 +168,11 @@ float PhysicsComponent::getFriction() const
 void PhysicsComponent::setFriction(float newFriction)
 {
     friction = newFriction;
+}
+
+bool PhysicsComponent::playerIsOnGround(){
+     if(worldPos.y() - height < 0.7 )return true;
+     else return false;
 }
 
 void PhysicsComponent::hasMoved( QSet<uint> inputsMoves ){

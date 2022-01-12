@@ -27,5 +27,9 @@
         <file>objects/outdoorField/outdoorField.obj</file>
         <file>objects/barrel/barrel.obj</file>
         <file>objects/honey/honey.obj</file>
+        <file>objects/houseV1/house.obj</file>
+        <file>objects/houseV2/house.obj</file>
+        <file>objects/pillar/pillar.obj</file>
+        <file>objects/ring/ring.obj</file>
     </qresource>
 </RCC>

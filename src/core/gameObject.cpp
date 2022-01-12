@@ -8,6 +8,7 @@ GameObject::GameObject( std::string name, GameObject * parent ){
     this->transform = new Transform( this );
     this->lastParent = parent;
     this->parent = parent;
+    parent->addChild(this);
 }
 
 void GameObject::addChild( GameObject *newChildren ){

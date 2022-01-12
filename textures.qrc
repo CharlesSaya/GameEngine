@@ -61,5 +61,7 @@
         <file>textures/hm1.png</file>
         <file>textures/tunnelTexture.png</file>
         <file>textures/honeyTexture.png</file>
+        <file>textures/houseTexture.png</file>
+        <file>textures/ringTexture.png</file>
     </qresource>
 </RCC>

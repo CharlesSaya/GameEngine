@@ -77,6 +77,12 @@ void Game::initGame(){
     this->goMeshes.push_back( terrainGO );
     colliderEngine.setTerrain( terrain );
 
+    // AREA -------------------------------------------------------------------------------------------
+
+    plainArea = new GameObject("plainArea",terrainGO);
+    desertArea = new GameObject("desertArea",terrainGO);
+    moutainArea = new GameObject("moutainArea",terrainGO);
+
     // Player Game Object  ------------------------------------------------------------------------------
 
     Texture sandP      = Texture( "../GameEngine/textures/plushiesTexture.png", "tex0" );
@@ -128,6 +134,9 @@ void Game::initGame(){
     snowyObj.push_back("../GameEngine/objects/snowyTree/");
     snowyObj.push_back("../GameEngine/objects/snowyStump/");
     snowyObj.push_back("../GameEngine/objects/snowyTreeV2/");
+    snowyObj.push_back("../GameEngine/objects/TreeNoLeavesBig/");
+    snowyObj.push_back("../GameEngine/objects/TreeNoLeavesSmall/");
+
 
     std::vector<Texture> treeSnowTextures;
     treeSnowTextures.push_back( treeSnow );
@@ -187,7 +196,7 @@ void Game::initGame(){
 
     for(int i = 0 ;i<positionsTreeSnow.size();i++ ){
         Mesh treeMesh =Mesh( snowyObj[rand()%snowyObj.size()], treeSnowTextures, shader, white, false );
-        GameObjectMesh * treeGO = new GameObjectMesh( "Tree" + std::to_string(i), new MeshRenderer( treeMesh, this  ), new ColliderComponent( this ), false,terrainGO );
+        GameObjectMesh * treeGO = new GameObjectMesh( "Tree" + std::to_string(i), new MeshRenderer( treeMesh, this  ), new ColliderComponent( this ), false,moutainArea );
         treeGO->scale( scalesTreeSnow[i] );
         treeGO->move( positionsTreeSnow[i] );
 //        treeGO->getColliderComponent()->
@@ -212,10 +221,10 @@ void Game::initGame(){
     positionsCactus.push_back(getHeightObject(17.2045,47.50));
     positionsCactus.push_back(getHeightObject(35.3655,50.5533));
     positionsCactus.push_back(getHeightObject(44.281,41.5533));
-    positionsCactus.push_back(getHeightObject(39.5726,44.8162));
+    positionsCactus.push_back(getHeightObject(42.5726,44.8162));
     positionsCactus.push_back(getHeightObject(51.0103,41.7781));
     positionsCactus.push_back(getHeightObject(20.6871,44.7781));
-    positionsCactus.push_back(getHeightObject(48.8608,55.7303));
+    positionsCactus.push_back(getHeightObject(64.3878,50.2446));
     positionsCactus.push_back(getHeightObject(64.1906,55.9789));
 
     positionsCactus.push_back(getHeightObject(90.9981,51.3017));
@@ -231,7 +240,7 @@ void Game::initGame(){
 
     for(int i = 0 ;i<positionsCactus.size();i++ ){
         Mesh cactusMesh =Mesh( cactusObj[rand()%cactusObj.size()], cactusTextures, shader, white, false );
-        GameObjectMesh * cactusGO = new GameObjectMesh( "cactus" + std::to_string(i), new MeshRenderer( cactusMesh, this  ), new ColliderComponent( this ), false, terrainGO );
+        GameObjectMesh * cactusGO = new GameObjectMesh( "cactus" + std::to_string(i), new MeshRenderer( cactusMesh, this  ), new ColliderComponent( this ), false, desertArea );
         cactusGO->scale( scalesCactus[i] );
         cactusGO->move( positionsCactus[i] );
         this->goMeshes.push_back( cactusGO );
@@ -254,7 +263,7 @@ void Game::initGame(){
         positionsBox.push_back(getHeightObject(30.2537,23.5112));
         positionsBox.push_back(getHeightObject(16.169,14.781 ));
         positionsBox.push_back(getHeightObject(14.2261,25.9705 ));
-        positionsBox.push_back(getHeightObject(31.0522,34.9705 ));
+        positionsBox.push_back(getHeightObject(25.232,46.6049 ));
         positionsBox.push_back(getHeightObject(50.2872,16.6526 ));
         positionsBox.push_back(getHeightObject(113.914,29.2116 ));
         positionsBox.push_back(getHeightObject(95.8851,46.9473 ));
@@ -309,7 +318,7 @@ void Game::initGame(){
 
         for(int i = 0 ;i<positionsBush.size();i++ ){
             Mesh bushMesh =Mesh( bushObj[rand()%bushObj.size()], bushTextures, shader, white, false );
-            GameObjectMesh * bushGO = new GameObjectMesh( "Bush" + std::to_string(i), new MeshRenderer( bushMesh, this  ), new ColliderComponent( this ), false ,terrainGO);
+            GameObjectMesh * bushGO = new GameObjectMesh( "Bush" + std::to_string(i), new MeshRenderer( bushMesh, this  ), new ColliderComponent( this ), false ,plainArea);
             bushGO->scale( scalesBush[i] );
             bushGO->move( positionsBush[i] );
 
@@ -324,8 +333,6 @@ void Game::initGame(){
         std::vector<std::string> treeObj;
         treeObj.push_back("../GameEngine/objects/BigTreeWithLeaves/");
         treeObj.push_back("../GameEngine/objects/SmallTreeWithLeave/");
-        treeObj.push_back("../GameEngine/objects/TreeNoLeavesBig/");
-        treeObj.push_back("../GameEngine/objects/TreeNoLeavesSmall/");
 
         std::vector<Texture> treeTextures;
         treeTextures.push_back( treeTexture );
@@ -333,17 +340,33 @@ void Game::initGame(){
         QVector<QVector3D> positionsTree;
         QVector<float> scalesTree;
         positionsTree.push_back(getHeightObject(36.4723,21.4726 ));
-        positionsTree.push_back(getHeightObject(44.6209,17.2689 ));
-        positionsTree.push_back(getHeightObject(69.8517,5.18626 ));
-        positionsTree.push_back(getHeightObject(84.5685,16.0831 ));
-        positionsTree.push_back(getHeightObject(99.8933,25.50));
-        positionsTree.push_back(getHeightObject(119.313,26.5568));
-        positionsTree.push_back(getHeightObject(55.313,21.8187));
-        positionsTree.push_back(getHeightObject(77.95,23.4315));
-        positionsTree.push_back(getHeightObject(99.94,15.5421));
-        positionsTree.push_back(getHeightObject(66.115,27.0250));
-        positionsTree.push_back(getHeightObject(94.7229,4.2864));
-        positionsTree.push_back(getHeightObject(9.01008,16.3732));
+        positionsTree.push_back(getHeightObject(40,21.4726 ));
+        positionsTree.push_back(getHeightObject(44,21.4726 ));
+        positionsTree.push_back(getHeightObject(48,21.4726 ));
+        positionsTree.push_back(getHeightObject(52,21.4726 ));
+        positionsTree.push_back(getHeightObject(56,21.4726 ));
+        positionsTree.push_back(getHeightObject(60,21.4726 ));
+        positionsTree.push_back(getHeightObject(64,21.4726 ));
+        positionsTree.push_back(getHeightObject(68,21.4726 ));
+        positionsTree.push_back(getHeightObject(72,21.4726 ));
+        positionsTree.push_back(getHeightObject(76,21.4726 ));
+        positionsTree.push_back(getHeightObject(80,21.4726 ));
+        positionsTree.push_back(getHeightObject(84,21.4726 ));
+        positionsTree.push_back(getHeightObject(88,21.4726 ));
+        positionsTree.push_back(getHeightObject(92,21.4726 ));
+        positionsTree.push_back(getHeightObject(96,21.4726 ));
+        positionsTree.push_back(getHeightObject(100,21.4726 ));
+        positionsTree.push_back(getHeightObject(104,22.7702 ));
+        positionsTree.push_back(getHeightObject(104,32.26 ));
+        positionsTree.push_back(getHeightObject(91,31.0429 ));
+        positionsTree.push_back(getHeightObject(91,31.0429 ));
+        positionsTree.push_back(getHeightObject(117,29.8403 ));
+        positionsTree.push_back(getHeightObject(120,22.2159 ));
+        positionsTree.push_back(getHeightObject(114,14.2838 ));
+        positionsTree.push_back(getHeightObject(111.582,11.8752 ));
+        positionsTree.push_back(getHeightObject(108.91,9.10252 ));
+        positionsTree.push_back(getHeightObject(102.289,6.81778 ));
+
 
 
         for(int i = 0 ;i<positionsTree.size();i++ ){
@@ -357,7 +380,7 @@ void Game::initGame(){
 
         for(int i = 0 ;i<positionsTree.size();i++ ){
             Mesh treeMesh =Mesh( treeObj[rand()%treeObj.size()], treeTextures, shader, white, false );
-            GameObjectMesh * treeGO = new GameObjectMesh( "Tree" + std::to_string(i), new MeshRenderer( treeMesh, this  ), new ColliderComponent( this ), false ,terrainGO);
+            GameObjectMesh * treeGO = new GameObjectMesh( "Tree" + std::to_string(i), new MeshRenderer( treeMesh, this  ), new ColliderComponent( this ), false ,plainArea);
             treeGO->scale( scalesTree[i] );
             treeGO->move( positionsTree[i] );
 
@@ -366,51 +389,88 @@ void Game::initGame(){
 
         // Honey   ------------------------------------------------------------------------------
 
-        Texture honeyTexture = Texture( "../GameEngine/textures/honeyTexture", "honeyTexture" );
+        Texture ringTexture = Texture( "../GameEngine/textures/ringTexture", "ringTexture" );
 
-        string honeyObj = "../GameEngine/objects/honey/";
+        string ringObj = "../GameEngine/objects/ring/";
 
 
-        std::vector<Texture> honeyTextures;
-        honeyTextures.push_back( honeyTexture );
+        std::vector<Texture> ringTextures;
+        ringTextures.push_back( ringTexture );
 
-        QVector<QVector3D> positionsHoney;
-        QVector<float> scalesHoney;
+        QVector<QVector3D> positionsRing;
+        QVector<float> scalesRing;
         //Land
-        positionsHoney.push_back(getHeightObject(9.53581,5.33834 ));
-        positionsHoney.push_back(getHeightObject(36.1001,9.84773 ));
-        positionsHoney.push_back(getHeightObject(92.7198,2.1197 ));
-        positionsHoney.push_back(getHeightObject(112.88,30.3552 ));
-        positionsHoney.push_back(getHeightObject(17.7571,29.5157 ));
+        positionsRing.push_back(getHeightObject(9.53581,5.33834 ));
+        positionsRing.push_back(getHeightObject(36.1001,9.84773 ));
+        positionsRing.push_back(getHeightObject(92.7198,2.1197 ));
+        positionsRing.push_back(getHeightObject(112.88,30.3552 ));
+        positionsRing.push_back(getHeightObject(17.7571,29.5157 ));
 
         //Sand
-        positionsHoney.push_back(getHeightObject(13.8642,50.164 ));
-        positionsHoney.push_back(getHeightObject(45.4596,40.8289 ));
-        positionsHoney.push_back(getHeightObject(44.3478,62.0984 ));
-        positionsHoney.push_back(getHeightObject(115.227,59.0063 ));
+        positionsRing.push_back(getHeightObject(13.8642,50.164 ));
+        positionsRing.push_back(getHeightObject(45.4596,40.8289 ));
+        positionsRing.push_back(getHeightObject(44.3478,62.0984 ));
+        positionsRing.push_back(getHeightObject(115.227,59.0063 ));
+        positionsRing.push_back(QVector3D(77.9561,4.0,59.0063 ));
 
 
         //Mountain
-        positionsHoney.push_back(getHeightObject(5.20934,81.761 ));
-        positionsHoney.push_back(getHeightObject(7.32801,112.838 ));
-        positionsHoney.push_back(getHeightObject(118.335,77.2394 ));
-        positionsHoney.push_back(getHeightObject(45.1982,118.721 ));
-        positionsHoney.push_back(getHeightObject(94.9191,86.8043 ));
+        positionsRing.push_back(getHeightObject(5.20934,81.761 ));
+        positionsRing.push_back(getHeightObject(7.32801,112.838 ));
+        positionsRing.push_back(getHeightObject(118.335,77.2394 ));
+        positionsRing.push_back(getHeightObject(45.1982,118.721 ));
+        positionsRing.push_back(getHeightObject(94.9191,86.8043 ));
 
 
-        for(int i = 0 ;i<positionsHoney.size();i++ ){
-            scalesHoney.push_back(5);
+        for(int i = 0 ;i<positionsRing.size();i++ ){
+            scalesRing.push_back(0.1);
         }
 
-        for(int i = 0 ;i<positionsHoney.size();i++ ){
-            Mesh honeyMesh =Mesh( honeyObj, honeyTextures, shader, white, false );
+        for(int i = 0 ;i<positionsRing.size();i++ ){
+            Mesh ringMesh =Mesh( ringObj, ringTextures, shader, white, false );
 
-            GameObjectMesh * honeyGO = new GameObjectMesh( "Honey" + std::to_string(i), new MeshRenderer( honeyMesh, this  ), new ColliderComponent( this ), false ,terrainGO);
-            honeyGO->scale( scalesHoney[i] );
-            honeyGO->move( positionsHoney[i] );
-            honeyGO->setIsCollectible(true);
-            this->goMeshes.push_back( honeyGO );
+            GameObjectMesh * ringGO = new GameObjectMesh( "Ring" + std::to_string(i), new MeshRenderer( ringMesh, this  ), new ColliderComponent( this ), false ,terrainGO);
+            ringGO->scale( scalesRing[i] );
+            ringGO->move( positionsRing[i] );
+            ringGO->move(0.0f,1.0f,0.0f);
+            ringGO->setIsCollectible(true);
+            this->goMeshes.push_back( ringGO );
         }
+
+        // desertHouse   ------------------------------------------------------------------------------
+
+        Texture desertHouseTexture = Texture( "../GameEngine/textures/houseTexture", "houseTexture" );
+
+        std::vector<std::string> desertHouseObj;
+        desertHouseObj.push_back("../GameEngine/objects/houseV1/");
+        desertHouseObj.push_back("../GameEngine/objects/houseV2/");
+
+
+        std::vector<Texture> desertHouseTextures;
+        desertHouseTextures.push_back( desertHouseTexture );
+
+        QVector<QVector3D> positionsDesertHouse;
+        QVector<float> scalesDesertHouse;
+        //Land
+        positionsDesertHouse.push_back(getHeightObject(84.500,61.3606 ));
+        positionsDesertHouse.push_back(getHeightObject(79.1818,58.7066 ));
+
+
+
+        for(int i = 0 ;i<positionsDesertHouse.size();i++ ){
+            scalesDesertHouse.push_back(0.30);
+            scalesDesertHouse.push_back(0.50);
+        }
+
+        for(int i = 0 ;i<positionsDesertHouse.size();i++ ){
+            Mesh desertHouseMesh =Mesh( desertHouseObj[i], desertHouseTextures, shader, white, false );
+
+            GameObjectMesh * desertHouseGO = new GameObjectMesh( "DesertHouse" + std::to_string(i), new MeshRenderer( desertHouseMesh, this  ), new ColliderComponent( this ), false ,desertArea);
+            desertHouseGO->scale( scalesDesertHouse[i] );
+            desertHouseGO->move( positionsDesertHouse[i] );
+            this->goMeshes.push_back( desertHouseGO );
+        }
+
 
 
          //    treeHouse  ------------------------------------------------------------------------------
@@ -424,7 +484,7 @@ void Game::initGame(){
         treeHouseTextures.push_back(treeHouseTexture  );
 
         Mesh treeHouseMesh =Mesh(treeHouseObj, treeHouseTextures, shader, white, false );
-        GameObjectMesh * treeHouseGO = new GameObjectMesh( "treeHouse", new MeshRenderer( treeHouseMesh, this  ), new ColliderComponent( this ), new PhysicsComponent(physicsEngine, this ) ,false, terrainGO );
+        GameObjectMesh * treeHouseGO = new GameObjectMesh( "treeHouse", new MeshRenderer( treeHouseMesh, this  ), new ColliderComponent( this ), new PhysicsComponent(physicsEngine, this ) ,false, plainArea );
         treeHouseGO->scale( 0.05);
         treeHouseGO->move( getHeightObject(16.1342,31.3343 ));
         this->goMeshes.push_back( treeHouseGO );
@@ -450,11 +510,11 @@ void Game::initGame(){
 
 
         Mesh planMesh =Mesh(planObj,  vector<Texture>(), shader, white, false );
-        GameObjectMesh * planGO = new GameObjectMesh( "plan", new MeshRenderer(planMesh, this  ), new ColliderComponent( this ), new PhysicsComponent(physicsEngine, this ) ,false, terrainGO );
+        GameObjectMesh * planGO = new GameObjectMesh( "plan", new MeshRenderer(planMesh, this  ), new ColliderComponent( this ), new PhysicsComponent(physicsEngine, this ) ,false );
         planGO->move( 0.0,-0.3f,0.0 );
         this->goMeshes.push_back( planGO );
 
-        // bush  ------------------------------------------------------------------------------
+        // grid  ------------------------------------------------------------------------------
 
         Texture gridTexture   = Texture( "../GameEngine/textures/rockTexture", "doorTexture" );
 
@@ -489,37 +549,53 @@ void Game::initGame(){
 
             std::vector<Texture> barrelTextures;
             barrelTextures.push_back(Texture( "../GameEngine/textures/plateauTexture", "plateauTexture" ));
-//            barrelTextures.push_back(Texture( "../GameEngine/textures/barrel_BlueStripe", "barrel_BlueStripe" ));
-//            barrelTextures.push_back(Texture( "../GameEngine/textures/barrel_Green", "barrel_Green" ));
-//            barrelTextures.push_back(Texture( "../GameEngine/textures/barrel_Red", "barrel_Red" ));
-//            barrelTextures.push_back(Texture( "../GameEngine/textures/barrel_RedStripe", "barrel_RedStripe") );
 
             QVector<QVector3D> positionsBarrel;
             QVector<float> scalesBarrel;
-            QVector<float> rotationBarrel;
 
             positionsBarrel.push_back(QVector3D(28.4032,0.0,46.8231));
-            scalesBarrel.push_back(0.5);
+            scalesBarrel.push_back(1);
             positionsBarrel.push_back(QVector3D(25.7202,-0.3,58.5778));
-            scalesBarrel.push_back(0.5);
+            scalesBarrel.push_back(1);
             positionsBarrel.push_back(QVector3D(22.2055,-.2,52.0175));
-            scalesBarrel.push_back(0.5);
+            scalesBarrel.push_back(1);
             positionsBarrel.push_back(QVector3D(22.2055,-0.4,52.0175));
-            scalesBarrel.push_back(0.5);
-            positionsBarrel.push_back(QVector3D(43.872,0.0,57.6844));
-            scalesBarrel.push_back(5);
-            positionsBarrel.push_back(QVector3D(44.8808,0.0,49.7593));
-            scalesBarrel.push_back(5);
+            scalesBarrel.push_back(1);
 
 
             for(int i = 0 ;i<positionsBarrel.size();i++ ){
                 Mesh barrelMesh =Mesh( barrelObj, barrelTextures, shader, white, false );
-                GameObjectMesh * barrelGO = new GameObjectMesh( "barrel" + std::to_string(i), new MeshRenderer( barrelMesh, this  ), new ColliderComponent( this ), new PhysicsComponent(physicsEngine, this ) ,true, terrainGO );
+                GameObjectMesh * barrelGO = new GameObjectMesh( "barrel" + std::to_string(i), new MeshRenderer( barrelMesh, this  ), new ColliderComponent( this ), new PhysicsComponent(physicsEngine, this ) ,true, desertArea );
                 barrelGO->scale( scalesBarrel[i] );
                 barrelGO->move( positionsBarrel[i] );
                 this->goMeshes.push_back( barrelGO );
             }
+        //    pillar  ------------------------------------------------------------------------------
 
+                string pillarObj = "../GameEngine/objects/pillar/";
+
+                std::vector<Texture> pillarTextures;
+                pillarTextures.push_back(Texture( "../GameEngine/textures/plateauTexture", "pillarTexture" ));
+
+                QVector<QVector3D> positionsPillar;
+                QVector<float> scalesPillar;
+
+                positionsPillar.push_back(QVector3D(44.8808,0.0,49.7593));
+                positionsPillar.push_back(QVector3D(43.872,0.0,57.6844));
+
+
+
+                for(int i = 0 ;i<positionsPillar.size();i++ ){
+                    scalesPillar.push_back( 0.8);
+                }
+
+                for(int i = 0 ;i<positionsPillar.size();i++ ){
+                    Mesh pillarMesh =Mesh( pillarObj, pillarTextures, shader, white, false );
+                    GameObjectMesh * pillarGO = new GameObjectMesh( "pillar" + std::to_string(i), new MeshRenderer(pillarMesh, this  ), new ColliderComponent( this ), new PhysicsComponent(physicsEngine, this ) ,true, desertArea );
+                    pillarGO->scale( scalesPillar[i] );
+                    pillarGO->move( positionsPillar[i] );
+                    this->goMeshes.push_back( pillarGO );
+                }
 
     // Camera  -------------------------------------------------------------------------------
 

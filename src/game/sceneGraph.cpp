@@ -81,7 +81,7 @@ void SceneGraph::update( float fixedStep ){
     // update player physics
       this->updatePhysics( goPlayer, fixedStep );
       goPlayer->rotate(goPlayer->getMoveComponent()->getRotationY());
-//      qDebug()<< goPlayer->getWorldPosition();
+      qDebug()<< goPlayer->getWorldPosition();
 
       // update main camera position
       float angleX = goCamera->getMoveComponent()->getRotationX().toEulerAngles()[0];
@@ -104,7 +104,9 @@ void SceneGraph::update( float fixedStep ){
            goPlayer->getPlayerComponent()->setPositionChild(goPlayer,goMesh);
            QVector3D positionMesh = goMesh->getWorldPosition();
         }
-
+        if(goMesh->getName().find("Ring")!=string::npos){
+            rotateRing(goMesh);
+        }
 
     }
 
@@ -273,5 +275,12 @@ void SceneGraph::checkCollectibleNumber(GameObjectMesh *grid)
             stopGrid2 = true;
         }
     }
+
+
+}
+
+void SceneGraph::rotateRing(GameObjectMesh *ring)
+{
+    ring->rotate(QVector3D(0.0f,1.0f,0.0f),timer.elapsed()/10);
 }
 
