@@ -63,5 +63,10 @@
         <file>textures/honeyTexture.png</file>
         <file>textures/houseTexture.png</file>
         <file>textures/ringTexture.png</file>
+        <file>textures/sandTex.png</file>
+        <file>textures/ExportedFont.bmp</file>
+        <file>textures/ExportedFont.png</file>
+        <file>textures/sandTex2.png</file>
+        <file>textures/Doraemon.png</file>
     </qresource>
 </RCC>

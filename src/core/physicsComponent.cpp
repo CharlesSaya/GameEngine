@@ -28,10 +28,8 @@ void PhysicsComponent::updatePhysics( float step,  GameObject * go, Terrain &ter
 
     QVector3D meanSpeed = (velocity + newVelocity) / 2.0 ;
 
-
-    if( meanSpeed.length() > this->maxSpeed){
+    if( meanSpeed.length()  > this->maxSpeed )
         meanSpeed = this->maxSpeed * meanSpeed.normalized();
-        }
 
     if ( meanSpeed.length() != 0.0f ){
         go->move( meanSpeed * step );
@@ -49,8 +47,7 @@ void PhysicsComponent::updatePhysics( float step,  GameObject * go, Terrain &ter
 
 void PhysicsComponent::updatePhysicsMesh( float step,  GameObject * go ){
 
-    acceleration = - physicsEngine.getDamp()
-            * velocity;
+    acceleration = - physicsEngine.getDamp() * velocity;
 
     if ( !resting )
         acceleration += physicsEngine.getGravity();

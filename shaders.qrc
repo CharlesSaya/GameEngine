@@ -22,5 +22,7 @@
         <file>shaders/blur_fshader.glsl</file>
         <file>shaders/particlePoint_fshader.glsl</file>
         <file>shaders/particlePoint_vshader.glsl</file>
+        <file>shaders/textShader_vshader.glsl</file>
+        <file>shaders/textShader_fshader.glsl</file>
     </qresource>
 </RCC>

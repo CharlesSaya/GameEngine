@@ -37,7 +37,7 @@ class Game : public QObject{
 signals:
     void sendPressedKey( QKeyEvent * event );
     void sendReleasedKey( QKeyEvent * event );
-    void sendMouseMoved( QVector2D pos, bool reset );
+    void sendMouseMoved( QVector2D pos, bool resetX, bool resetY );
 
     void sendPressedMouse( QMouseEvent * event );
     void sendreleasedMouse( QMouseEvent * event );
@@ -47,7 +47,7 @@ signals:
 public slots:
     void keyPressed( QKeyEvent * key );
     void keyReleased( QKeyEvent * key );
-    void mouseMoved( QVector2D pos, bool reset  );
+    void mouseMoved( QVector2D pos, bool resetX, bool resetY );
 
     void pressedMouse( QMouseEvent * event );
     void releasedMouse( QMouseEvent * event );

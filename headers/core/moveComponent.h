@@ -14,7 +14,7 @@ public slots:
 
     void pressedInput(QKeyEvent * event);
     void releasedInput(QKeyEvent * event);
-    void mouseMoveEvent(QVector2D pos, bool reset);
+    void mouseMoveEvent(QVector2D pos, bool resetX, bool resetY );
 
 signals:
     void move( QSet<uint> inputs );

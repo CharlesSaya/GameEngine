@@ -111,15 +111,18 @@ void MoveComponent::releasedInput(QKeyEvent * key){
     }
 }
 
-void MoveComponent::mouseMoveEvent(QVector2D pos, bool reset){
+void MoveComponent::mouseMoveEvent(QVector2D pos, bool resetX, bool resetY ){
     float hAngle = 0., vAngle = 0.;
     float sensitivity = 0.05f;
-    vAngle = mousePressPosition.y() -  pos.y() ;
-    vAngle *= sensitivity * 3.;
 
-    if( !reset ){
-        hAngle = pos.x() -mousePressPosition.x() ;
+    if( !resetX ){
+        hAngle = pos.x() -mousePressPosition.x();
         hAngle *= sensitivity *6;
+    }
+
+    if( !resetY ){
+        vAngle = mousePressPosition.y() - pos.y();
+        vAngle *= sensitivity * 5.;
     }
 
     mousePressPosition = pos;

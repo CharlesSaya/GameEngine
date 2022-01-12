@@ -11,11 +11,13 @@
 
 #include "headers/core/gameObjectCamera.h"
 
+#include "headers/render/vertexData.h"
+#include "headers/render/pointLight.h"
+#include "headers/render/renderText.h"
+#include "headers/render/flareGenerator.h"
 #include "headers/render/directionalLight.h"
 #include "headers/render/particleGenerator.h"
-#include "headers/render/flareGenerator.h"
-#include "headers/render/pointLight.h"
-#include "headers/render/vertexData.h"
+
 
 
 #include "headers/render/shader.h"
@@ -30,7 +32,6 @@ private:
     int shadowWidth = 2048 ;
     int screenWidth = 1920;
     int screenHeight = 1080;
-
 
     uint quadVAO = 0, quadVBO = 0;
     uint quadVAO2 = 0, quadVBO2 = 0;
@@ -54,13 +55,13 @@ private:
     std::vector<PointLight> pointLights;
     DirectionalLight directionalLight;
 
-    Shader * shadowShader, * gBufferShader, *particleShader, *pointParticleShader, *postProcessShader, *flareShader, *blurVShader, *blurHShader;
+    Shader * shadowShader, * gBufferShader, *particleShader, *pointParticleShader, *postProcessShader, *flareShader, *blurVShader, *blurHShader, *textShader;
 
     QOpenGLContext * context;
 
     QVector3D white = QVector3D( 1., 1., 1.);
     QVector3D red = QVector3D( 1., 0., 0. );
-    QVector3D sandColor = QVector3D( 0.84, 0.63, 0.05 );
+    QVector3D sandColor = QVector3D( 0.76, 0.70, 0.5 );
     QVector3D snowColor = QVector3D( 0.78, 0.98, 0.95 );
 
     ParticleGenerator snowGenerator;
@@ -69,15 +70,17 @@ private:
     ParticleGenerator leavesGenerator;
     FlareGenerator flareGenerator;
 
+    RenderText textGenerator;
+
 public:
 
     RenderingEngine();
     RenderingEngine( float renderStep );
 
     void initPointLights();
-
     void initLensFlares();
     void initParticles();
+    void initTextRendering();
 
     void initGBufferFBO();
     void initBlurFBO();
@@ -86,8 +89,8 @@ public:
     void initPostProcessShader();
     void initVBlurShader();
     void initHBlurShader();
-    void configureUniforms(SceneGraph &sceneGraph);
 
+    void configureUniforms(SceneGraph &sceneGraph);
 
     void generateQuad();
 
@@ -100,6 +103,8 @@ public:
     void renderBloom();
 
     void renderPostProcess();
+
+    void renderText();
 
     void screenResized( int width, int height  );
 

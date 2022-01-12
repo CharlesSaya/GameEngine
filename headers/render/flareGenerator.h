@@ -30,11 +30,11 @@ private:
     std::vector<QVector4D> positions;
 
     int width = 1920, height = 1080;
-
+    float spacing;
 public:
 
     FlareGenerator();
-    FlareGenerator(const DirectionalLight &sun, const std::vector<FlareTexture> &textures);
+    FlareGenerator(const DirectionalLight &sun, const std::vector<FlareTexture> &textures, float spacing );
 
     void initBuffers();
     void initGeometry();

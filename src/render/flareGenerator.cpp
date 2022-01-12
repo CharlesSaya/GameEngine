@@ -9,9 +9,10 @@ FlareGenerator::FlareGenerator(){
 
 }
 
-FlareGenerator::FlareGenerator(const DirectionalLight &sun, const std::vector<FlareTexture> &textures ) : sun(sun),
+FlareGenerator::FlareGenerator(const DirectionalLight &sun, const std::vector<FlareTexture> &textures, float spacing ) : sun(sun),
     flareTextures(textures)
 {
+    this->spacing = spacing;
     this->context = QOpenGLContext::currentContext();
     glFuncs = this->context->versionFunctions<QOpenGLFunctions_3_3_Core>();
     initBuffers();
@@ -52,7 +53,7 @@ QVector2D FlareGenerator::sunScreenPosition(){
 
 void FlareGenerator::computeFlaresPosition( QVector2D sunToCenter, QVector2D sunPosition ){
     for( uint i = 0 ; i < flareTextures.size(); i++ ){
-        flareTextures[i].setScreenPos( QVector2D( sunPosition + i *  sunToCenter ) );
+        flareTextures[i].setScreenPos( QVector2D( sunPosition + i * spacing * sunToCenter ) );
     }
 }
 
@@ -126,10 +127,8 @@ void FlareGenerator::render( float brightness, Shader * shader ){
     shader->setUniformValue( "view", view );
     shader->setUniformValue( "projection", camera->getCameraComponent()->getProjection() );
 
-    shader->setUniformValue("brightness", 1.0f);
-
     renderFlare( flareTextures[0], shader );
-    shader->setUniformValue("brightness", relativeBrightness);
+    shader->setUniformValue("brightness", relativeBrightness * 0.85f );
 
     for( uint i = 1; i< flareTextures.size(); i++ )
         renderFlare( flareTextures[i], shader );

@@ -39,11 +39,17 @@ void CoreEngine::wheelEvent(QWheelEvent *event){
 
 void CoreEngine::mouseMoveEvent(QMouseEvent *e){
     if( e->localPos().x() > this->width() -10. || e->localPos().x() < 10. ){
-        this->cursor().setPos( mapToGlobal( QPoint( width()/2, e->localPos().y() ) ) );
-        this->game->mouseMoved( QVector2D( this->cursor().pos() ), true);
+        this->cursor().setPos( mapToGlobal( QPoint( this->width()/2, e->localPos().y() ) ) );
+        this->game->mouseMoved( QVector2D( this->cursor().pos() ), true, false );
+    }else if ( e->localPos().y() > this->height() -10. || e->localPos().y() < 10. ){
+        qDebug() << mapToGlobal( QPoint( e->localPos().x(), e->localPos().y() ) );
+        this->cursor().setPos( mapToGlobal( QPoint( e->localPos().x(), this->height()/2 ) ) );
+        this->game->mouseMoved( QVector2D( this->cursor().pos() ), false, true );
+        qDebug() << this->cursor().pos();
+
     }
     else
-        this->game->mouseMoved( QVector2D( e->localPos() ), false);
+        this->game->mouseMoved( QVector2D( e->localPos() ), false, false );
 
 }
 

@@ -32,18 +32,22 @@ class ParticleGenerator {
 
 private:
 
+    float spawnRange;
     bool renderPoint = false;
+
+    int spriteNumber;
+
     QVector3D particlesSpawnPoint;
     QVector3D particleDirection;
     QVector3D color;
-    float range;
+
     QOpenGLContext * context;
     QOpenGLFunctions_3_3_Core * glFuncs;
 
     float maxParticles, newParticles;
     uint lastUsedParticle, particlesCount;
 
-    Texture sprite;
+    std::vector<Texture> sprites;
 
     QOpenGLBuffer vBuffer, positionsBuffer, colorsBuffer;
 
@@ -52,12 +56,13 @@ private:
     std::vector<Particle> particles;
     std::vector<QVector4D> positions;
     std::vector<QVector4D> colors;
-    std::vector<VertexData> particleData;
+
+    std::vector<VertexData> particleGeometry;
 
 public:
 
     ParticleGenerator();
-    ParticleGenerator( float number, Texture &sprite, QVector3D particlesSpawnPoint, QVector3D particleDirection, bool renderPoints  );
+    ParticleGenerator( float number, std::vector<Texture> &sprites, QVector3D particlesSpawnPoint, QVector3D particleDirection, bool renderPoints  );
     ParticleGenerator( float number, QVector3D particlesSpawnPoint, QVector3D particleDirection, QVector3D color, bool renderPoints  );
     void initBuffers();
     void initGeometry();

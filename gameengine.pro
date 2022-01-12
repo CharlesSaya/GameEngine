@@ -33,6 +33,7 @@ SOURCES += src/game/main.cpp \
     src/render/particleGenerator.cpp \
     src/render/pointLight.cpp \
     src/render/ray.cpp \
+    src/render/renderText.cpp \
     src/render/renderingEngine.cpp \
     src/physics/physicsEngine.cpp \
     src/render/shader.cpp \
@@ -76,6 +77,7 @@ HEADERS += \
     headers/render/particleGenerator.h \
     headers/render/pointLight.h \
     headers/render/ray.h \
+    headers/render/renderText.h \
     headers/render/renderingEngine.h \
     headers/physics/physicsEngine.h \
     headers/render/shader.h \

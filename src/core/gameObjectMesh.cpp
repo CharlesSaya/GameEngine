@@ -43,30 +43,6 @@ void GameObjectMesh::hasTransformed(){
     emit updateAABB(  tr * sc );
 }
 
-void GameObjectMesh::addCollision( GameObject * go ){
-    std::vector<GameObject *>::iterator itA;
-    itA = find( this->currentCollisions.begin(), this->currentCollisions.end(), go);
-    if ( itA ==this->currentCollisions.end()  )
-        this->currentCollisions.push_back( go );
-}
-
-bool GameObjectMesh::isAlreadyCollidingWith( GameObject * go ){
-    std::vector<GameObject *>::iterator itA;
-    itA = find( this->currentCollisions.begin(), this->currentCollisions.end(), go);
-    return itA !=this->currentCollisions.end();
-}
-
-void GameObjectMesh::updateRestingState(){
-    if( currentCollisions.empty() )
-        this->physicsComponent->setResting( false );
-}
-
-std::vector<GameObject *> &GameObjectMesh::getCurrentCollisions()
-{
-    return currentCollisions;
-}
-
-
 void GameObjectMesh::setUseGravity(bool newUseGravity)
 {
     useGravity = newUseGravity;

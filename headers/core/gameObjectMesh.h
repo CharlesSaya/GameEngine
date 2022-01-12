@@ -17,7 +17,6 @@ public slots :
     void hasTransformed();
 
 private:
-    std::vector<GameObject *> currentCollisions;
 
     MeshRenderer * meshRenderer;
     ColliderComponent * colliderComponent;
@@ -39,12 +38,6 @@ public :
     PhysicsComponent *getPhysicsComponent() const;
     bool getUseGravity() const;
     void setUseGravity(bool newUseGravity);
-
-    std::vector<GameObject *> &getCurrentCollisions();
-
-    void addCollision( GameObject * go );
-    bool isAlreadyCollidingWith( GameObject * go );
-    void updateRestingState();
 
 };
 // MeshRenderer

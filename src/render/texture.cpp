@@ -15,7 +15,7 @@ Texture::Texture(  std::string file, std::string location ){
 
 void Texture::initTexture(){
     this->texture = new QOpenGLTexture( this->image );
-    this->texture->setWrapMode( QOpenGLTexture::ClampToEdge );
+    this->texture->setWrapMode( QOpenGLTexture::ClampToBorder );
     this->texture->setMinMagFilters( QOpenGLTexture::LinearMipMapNearest, QOpenGLTexture::LinearMipMapLinear );
 
     this->texture->generateMipMaps();
@@ -26,7 +26,6 @@ void Texture::bindTexture( uint textureUnit, Shader * shader ) const {
 
     glFuncs->glActiveTexture( GL_TEXTURE0 + textureUnit );
     this->texture->bind();
-//    qDebug() <<  GL_TEXTURE0 + textureUnit  << this->location.c_str();
     shader->setUniformValue( this->location, textureUnit );
 
 }

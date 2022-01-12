@@ -9,26 +9,30 @@ void ParticleGenerator::setCamera(GameObjectCamera *newCamera)
 
 float ParticleGenerator::getRange() const
 {
-    return range;
+    return spawnRange;
 }
 
 void ParticleGenerator::setRange(float newRange)
 {
-    range = newRange;
+    spawnRange = newRange;
 }
 
 ParticleGenerator::ParticleGenerator(){
 
 }
 
-ParticleGenerator::ParticleGenerator( float number, Texture &sprite, QVector3D particlesSpawnPoint, QVector3D particleDirection, bool renderPoint ){
-    this->maxParticles = number;
-    this->sprite = sprite;
+ParticleGenerator::ParticleGenerator( float number, std::vector<Texture> &sprites, QVector3D particlesSpawnPoint, QVector3D particleDirection, bool renderPoint ){
     this->context = QOpenGLContext::currentContext();
     glFuncs = this->context->versionFunctions<QOpenGLFunctions_3_3_Core>();
 
+    this->sprites = sprites;
+    this->spriteNumber = ( this->sprites.size() - 1 ) ;
+
+    this->maxParticles = number;
+
     this->particleDirection = particleDirection;
     this->particlesSpawnPoint = particlesSpawnPoint;
+
     this->renderPoint = renderPoint;
 
     for (unsigned int i = 0; i < number; ++i){
@@ -86,16 +90,16 @@ void ParticleGenerator::initBuffers(){
 void ParticleGenerator::initGeometry(){   
 
     if ( ! renderPoint ){
-        particleData.push_back( { QVector3D( -1.0f,  1.0f, 0.0f ), QVector3D( 0.0f,  0.0f, 1.0f ), QVector2D( 0.0f, 1.0f ) });
-        particleData.push_back( { QVector3D( -1.0f, -1.0f, 0.0f ), QVector3D( 0.0f,  0.0f, 1.0f ), QVector2D( 0.0f, 0.0f ) });
-        particleData.push_back( { QVector3D(  1.0f,  1.0f, 0.0f ), QVector3D( 0.0f,  0.0f, 1.0f ), QVector2D( 1.0f, 1.0f ) });
-        particleData.push_back( { QVector3D(  1.0f, -1.0f, 0.0f ), QVector3D( 0.0f,  0.0f, 1.0f ), QVector2D( 1.0f, 0.0f ) });
+        particleGeometry.push_back( { QVector3D( -1.0f,  1.0f, 0.0f ), QVector3D( 0.0f,  0.0f, 1.0f ), QVector2D( 0.0f, 1.0f ) });
+        particleGeometry.push_back( { QVector3D( -1.0f, -1.0f, 0.0f ), QVector3D( 0.0f,  0.0f, 1.0f ), QVector2D( 0.0f, 0.0f ) });
+        particleGeometry.push_back( { QVector3D(  1.0f,  1.0f, 0.0f ), QVector3D( 0.0f,  0.0f, 1.0f ), QVector2D( 1.0f, 1.0f ) });
+        particleGeometry.push_back( { QVector3D(  1.0f, -1.0f, 0.0f ), QVector3D( 0.0f,  0.0f, 1.0f ), QVector2D( 1.0f, 0.0f ) });
     }
     else {
-        particleData.push_back( { QVector3D(  0.0f,  0.0f, 0.0f ), QVector3D( 0.0f,  0.0f, 1.0f ), QVector2D( 1.0f, 1.0f ) });
+        particleGeometry.push_back( { QVector3D(  0.0f,  0.0f, 0.0f ), QVector3D( 0.0f,  0.0f, 1.0f ), QVector2D( 1.0f, 1.0f ) });
     }
     this->vBuffer.bind();
-    this->vBuffer.allocate(particleData.data(), 4 * sizeof(VertexData) );
+    this->vBuffer.allocate(particleGeometry.data(), 4 * sizeof(VertexData) );
 
 }
 
@@ -134,8 +138,8 @@ void ParticleGenerator::update( float dt ){
             particles[particleIndex].life = Random::get( 1, 30); // This particle will live 5 seconds.
             particles[particleIndex].position =     this->particlesSpawnPoint + QVector3D(
                                 Random::get( -0., 0. ),
-                                Random::get( 1., 3. ),
-                                Random::get( -range, range )
+                                Random::get( 1., 5. ),
+                                Random::get( -spawnRange, spawnRange )
                             );
 
             float spread = 1.1f;
@@ -151,7 +155,11 @@ void ParticleGenerator::update( float dt ){
             particles[particleIndex].color = this->color;
             particles[particleIndex].color.setW( particles[particleIndex].life );
 
-            particles[particleIndex].size = (rand()%1000)/2000.0f + 0.1f;
+            if ( renderPoint )
+                particles[particleIndex].size = Random::get( 0.1, 3.0);
+            else
+                particles[particleIndex].size = Random::get( 0.1, 0.5);
+
 
     }
 
@@ -167,7 +175,7 @@ void ParticleGenerator::update( float dt ){
             if (p.life > 0.0f){
 
                 // Simulate simple physics : gravity only, no collisions
-                p.speed += 3 *  particleDirection * dt * 0.2f;
+                p.speed += 8.0 *  particleDirection * dt * 0.2f;
                 p.position +=  p.speed * dt;
                 QVector3D view = p.position - camera->getCameraComponent()->getCameraPosition();
                 p.cameradistance = view.lengthSquared();
@@ -193,11 +201,7 @@ void ParticleGenerator::update( float dt ){
 void ParticleGenerator::render( Shader * shader ){
     shader->useShaderProgram();
     QMatrix4x4 view = camera->getCameraComponent()->getViewMatrix();
-    QVector3D rightW = QVector3D( view.column(0).x(), view.column(0).y(),view.column(0).z() );
-    QVector3D up = QVector3D( view.column(0).y(), view.column(1).y(),view.column(2).y() );
 
-    shader->setUniformValue( "cameraRight_W", rightW);
-    shader->setUniformValue( "cameraUp_W", up );
     shader->setUniformValue( "model", QMatrix4x4());
     shader->setUniformValue( "view", view );
     shader->setUniformValue( "projection", camera->getCameraComponent()->getProjection() );
@@ -205,8 +209,7 @@ void ParticleGenerator::render( Shader * shader ){
     quintptr offset = 0;
 
     if( !  renderPoint ){
-
-        this->sprite.bindTexture( 0, shader );
+        this->sprites[0].bindTexture( 0, shader );
 
         vBuffer.bind();
 
@@ -248,7 +251,7 @@ void ParticleGenerator::render( Shader * shader ){
 
         glFuncs->glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, maxParticles);
 
-        this->sprite.unbindTexture( 0 );
+        this->sprites[0].unbindTexture( 0 );
 
     }
     else{

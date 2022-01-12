@@ -15,12 +15,16 @@ RenderingEngine::RenderingEngine( float renderStep ){
     shadowShader = new Shader(  "../GameEngine/shaders/depth_vshader.glsl", "../GameEngine/shaders/depth_fshader.glsl" );
     gBufferShader = new Shader(  "../GameEngine/shaders/gBuffer_vshader.glsl", "../GameEngine/shaders/gBuffer_fshader.glsl" );
     postProcessShader = new Shader(  "../GameEngine/shaders/postProcess_vshader.glsl", "../GameEngine/shaders/postProcess_fshader.glsl" );
+
     particleShader = new Shader(  "../GameEngine/shaders/particle_vshader.glsl", "../GameEngine/shaders/particle_fshader.glsl" );
     pointParticleShader = new Shader(  "../GameEngine/shaders/particlePoint_vshader.glsl", "../GameEngine/shaders/particlePoint_fshader.glsl" );
+
     flareShader = new Shader(  "../GameEngine/shaders/flare_vshader.glsl", "../GameEngine/shaders/flare_fshader.glsl" );
 
     blurVShader = new Shader(  "../GameEngine/shaders/verticalBlur_vshader.glsl", "../GameEngine/shaders/blur_fshader.glsl" );
     blurHShader = new Shader(  "../GameEngine/shaders/horizontalBlur_vshader.glsl", "../GameEngine/shaders/blur_fshader.glsl" );
+
+    textShader = new Shader(  "../GameEngine/shaders/textShader_vshader.glsl", "../GameEngine/shaders/textShader_fshader.glsl" );
 
     cameraOrtho  = new CameraComponent( directionalLight.getLightPosition(), QVector3D(64.0f,0.0f,64.0f),-60.0f,60.0f,-60.0f,60.0f,0.01f,150.f );
     cameraOrtho->setProjectionOrtho();
@@ -30,6 +34,12 @@ RenderingEngine::RenderingEngine( float renderStep ){
 
     initLensFlares();
     initParticles();
+    initTextRendering();
+}
+
+void RenderingEngine::initTextRendering(){
+    Texture fontAtlas = Texture( "../GameEngine/textures/ExportedFont.png", "fontAtlas" );
+    textGenerator = RenderText( fontAtlas );
 }
 
 // INIT POINT LIGHTS
@@ -56,22 +66,28 @@ void RenderingEngine::initParticles(){
 
     Texture snowSprite = Texture( "../GameEngine/textures/snowflakes.png", "sprite" );
 
-    snowGenerator = ParticleGenerator( 5000, QVector3D( 0.0, 0., 97 ), QVector3D( 1.0, 0.0, 0.0 ), snowColor,  true );
+    snowGenerator = ParticleGenerator( 3000, QVector3D( 0.0, 0., 97 ), QVector3D( 1.0, 0.0, 0.0 ), snowColor,  true );
     snowGenerator.setRange( 31 );
     // SAND PARTICLES
 
-    sandPointGenerator = ParticleGenerator( 2500, QVector3D( 0.0, 0., 52. ), QVector3D( 1.0, 0.0, 0.0 ), sandColor, true );
+    sandPointGenerator = ParticleGenerator( 1500, QVector3D( 0.0, 0., 52. ), QVector3D( 1.0, 0.0, 0.0 ), sandColor, true );
     sandPointGenerator.setRange( 13 );
 
-    Texture sandSprite = Texture( "../GameEngine/textures/sand.png", "sprite" );
-    sandSpriteGenerator = ParticleGenerator( 2500, sandSprite, QVector3D( 0.0, 0., 52. ), QVector3D( 1.0, 0.0, 0.0 ), false );
-    sandSpriteGenerator.setRange( 18 );
+    Texture sandSprite = Texture( "../GameEngine/textures/sandTex.png", "sprite" );
+    Texture sandSprite2 = Texture( "../GameEngine/textures/sandTex2.png", "sprite" );
+    std::vector<Texture> sandSprites;
+    sandSprites.push_back(sandSprite2);
+
+    sandSpriteGenerator = ParticleGenerator( 1500, sandSprites, QVector3D( 0.0, 0., 52. ), QVector3D( 1.0, 0.0, 0.0 ), false );
+    sandSpriteGenerator.setRange( 13 );
 
     // LEAVES PARTICLES
 
     Texture leafSprite = Texture( "../GameEngine/textures/snowflakes.png", "sprite" );
+    std::vector<Texture> leafSprites;
+    leafSprites.push_back(leafSprite);
 
-    leavesGenerator = ParticleGenerator( 1000, leafSprite, QVector3D( 0.0, 0., 19 ), QVector3D( 1.0, -0.0, 0.0 ), false );
+    leavesGenerator = ParticleGenerator( 1000, leafSprites, QVector3D( 0.0, 0., 19 ), QVector3D( 1.0, -0.0, 0.0 ), false );
     leavesGenerator.setRange( 18 );
 
 }
@@ -88,16 +104,20 @@ void RenderingEngine::initLensFlares(){
     Texture texture7 = Texture( "../GameEngine/textures/lensFlare/tex7.png", "flare" );
     Texture texture8 = Texture( "../GameEngine/textures/lensFlare/tex8.png", "flare" );
 
-    std::vector<FlareTexture> flareTextures  ={ FlareTexture( sun, 0.15),
-                                                FlareTexture( texture2, 0.1),
-                                                FlareTexture( texture3, 0.1),
-                                                FlareTexture( texture4, 0.1),
-                                                FlareTexture( texture5, 0.1),
-                                                FlareTexture( texture6, 0.1),
+    std::vector<FlareTexture> flareTextures  ={ FlareTexture( sun, 0.2),
+                                                FlareTexture( texture6, 0.15),
+                                                FlareTexture( texture4, 0.05),
+                                                FlareTexture( texture2, 0.05),
+                                                FlareTexture( texture7, 0.025),
+                                                FlareTexture( texture3, 0.03),
+                                                FlareTexture( texture5, 0.035),
                                                 FlareTexture( texture7, 0.1),
-                                                FlareTexture( texture8, 0.1) };
+                                                FlareTexture( texture3, 0.035),
+                                                FlareTexture( texture5, 0.15),
+                                                FlareTexture( texture4, 0.1),
+                                                FlareTexture( texture8, 0.1),};
 
-    flareGenerator = FlareGenerator( directionalLight, flareTextures );
+    flareGenerator = FlareGenerator( directionalLight, flareTextures, 0.2 );
 
 }
 
@@ -399,7 +419,6 @@ void RenderingEngine::renderGeometryData( SceneGraph &sceneGraph ){
 
 void RenderingEngine::renderPostProcess()
 {
-
     initPostProcessShader();
 
     glEnableVertexAttribArray(0);
@@ -411,6 +430,11 @@ void RenderingEngine::renderPostProcess()
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     glBindVertexArray(0);
 }
+
+void RenderingEngine::renderText(){
+    textGenerator.renderText( "01", QVector2D( screenWidth/2.0, screenHeight/2.0 ), QVector2D( screenWidth, screenHeight ), 30.0, textShader );
+}
+
 
 void RenderingEngine::renderScene( SceneGraph &sceneGraph,  float deltaTime ){
 
@@ -442,11 +466,11 @@ void RenderingEngine::renderScene( SceneGraph &sceneGraph,  float deltaTime ){
 //    snowGenerator.update( deltaTime );
 //    snowGenerator.render( pointParticleShader );
 
-//    sandSpriteGenerator.update( deltaTime );
-//    sandSpriteGenerator.render( particleShader );
+    sandSpriteGenerator.update( deltaTime );
+    sandSpriteGenerator.render( particleShader );
 
-//    sandPointGenerator.update( deltaTime );
-//    sandPointGenerator.render( pointParticleShader );
+    sandPointGenerator.update( deltaTime );
+    sandPointGenerator.render( pointParticleShader );
 
 //    leavesGenerator.update( deltaTime );
 //    leavesGenerator.render( particleShader );
@@ -455,7 +479,6 @@ void RenderingEngine::renderScene( SceneGraph &sceneGraph,  float deltaTime ){
     glDisable(GL_DEPTH_TEST);
 
     flareGenerator.render( 0.8f, flareShader );
-
 
     glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);

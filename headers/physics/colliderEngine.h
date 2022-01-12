@@ -110,7 +110,7 @@ public:
 
     void updatePlayerCurrentCollisionsList( GameObjectPlayer * goPlayer ){
 
-        for( int i = 0; i < currentPlayerCollisions.size(); i++ ){
+        for( uint i = 0; i < currentPlayerCollisions.size(); i++ ){
 
             if( !intersectAABB( goPlayer->getMeshRenderer()->getMesh().getAABB(), dynamic_cast<GameObjectMesh*>(currentPlayerCollisions[i].node->gameObject)->getMeshRenderer()->getMesh().getAABB() ) ) {
 

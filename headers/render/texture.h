@@ -12,6 +12,7 @@ class Texture{
 public:
     Texture();
     Texture( std::string file, std::string location );
+
     void initTexture();
     void bindTexture( uint textureUnit, Shader * shader ) const;
     void unbindTexture( uint textureUnit ) const;

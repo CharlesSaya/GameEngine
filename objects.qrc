@@ -31,5 +31,6 @@
         <file>objects/houseV2/house.obj</file>
         <file>objects/pillar/pillar.obj</file>
         <file>objects/ring/ring.obj</file>
+        <file>objects/Doraemon/Doraemon.obj</file>
     </qresource>
 </RCC>

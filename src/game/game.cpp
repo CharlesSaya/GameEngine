@@ -20,7 +20,7 @@ void Game::initGame(){
     // Build scene graph  -------------------------------------------------------------------------------
 
     std::string sphereObj = "../GameEngine/objects/sphere/";
-    std::string bunnyObj  = "../GameEngine/objects/plushies/";
+    std::string playerOBJ  = "../GameEngine/objects/Doraemon/";
     std::string terrainOBJ  = "../GameEngine/objects/terrain/";
 
 
@@ -85,12 +85,12 @@ void Game::initGame(){
 
     // Player Game Object  ------------------------------------------------------------------------------
 
-    Texture sandP      = Texture( "../GameEngine/textures/plushiesTexture.png", "tex0" );
+    Texture sandP      = Texture( "../GameEngine/textures/Doraemon.png", "tex0" );
 
     std::vector<Texture> playerTextures;
     playerTextures.push_back( sandP );
 
-    Mesh playerMesh = Mesh( bunnyObj, playerTextures, shader, white, false );
+    Mesh playerMesh = Mesh( playerOBJ, playerTextures, shader, white, false );
     MeshRenderer * playerRenderer      = new MeshRenderer( playerMesh, this );
     MoveComponent * playerMove         = new MoveComponent( terrain, this );
     ColliderComponent * playerCollider = new ColliderComponent( this );
@@ -635,7 +635,7 @@ void Game::update( float fixedStep )
 
 void Game::render(  float deltaTime ){
     renderingEngine.renderScene( this->sceneGraph, deltaTime );
-
+//    renderingEngine.renderText();
 }
 
 // SLOTS
@@ -665,8 +665,8 @@ void Game::mouseWheel( QWheelEvent * event ){
 
 }
 
-void Game::mouseMoved( QVector2D pos, bool reset ){
-    emit this->sendMouseMoved(pos, reset )  ;
+void Game::mouseMoved( QVector2D pos, bool resetX, bool resetY ){
+    emit this->sendMouseMoved(pos, resetX, resetY )  ;
 }
 // Getters & Setters
 
