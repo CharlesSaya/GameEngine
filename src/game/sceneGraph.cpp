@@ -33,8 +33,11 @@ SceneGraph::SceneGraph( std::vector<GameObject *>& goList,
     timer.start();
 }
 
-/*
- * Contruct the scene graph
+
+/**
+ * @brief Construit le graph de scene
+ * @param go
+ * @return
  */
 Node * SceneGraph::buildGraphScene( GameObject * go ){
     Node * node = new Node();
@@ -76,7 +79,7 @@ void SceneGraph::update( float fixedStep ){
     // update player physics
       this->updatePhysics( goPlayer, fixedStep );
       goPlayer->rotate(goPlayer->getMoveComponent()->getRotationY());
-//      qDebug()<< goPlayer->getPhysicsComponent()->getVelocity();
+//      qDebug()<< goPlayer->getWorldPosition();
 
       // update main camera position
       float angleX = goCamera->getMoveComponent()->getRotationX().toEulerAngles()[0];
@@ -207,8 +210,9 @@ void SceneGraph::updateBVH( Node * node ){
     }
 }
 
-/*
- * Update the position of player
+
+/**
+ * @brief Met à jour la posiitions des BVH
  */
 void SceneGraph::updateALLBVH(){
     // update children AABB
@@ -224,8 +228,10 @@ void SceneGraph::updateALLBVH(){
 
 }
 
-/*
- * detect collision ray/BVH collision
+
+/**
+ * @brief Permet de detecter les collisions rayon/BVH
+ * @param node
  */
 void SceneGraph::rayBVHCollision( Node * node ){
     bool collision = node->nodeBoundingBox.intersectRay( goPlayer->getPlayerComponent()->getRay() );
@@ -248,8 +254,11 @@ void SceneGraph::rayBVHCollision( Node * node ){
     }
 }
 
-/*
- * return true if node has no child
+
+/**
+ * @brief Permet de savoir si un noeud contient des enfants
+ * @param node
+ * @return
  */
 bool SceneGraph::isLeaf( Node * node ){
     return node->children.empty();
@@ -259,10 +268,14 @@ bool SceneGraph::isLeaf( Node * node ){
  * Check the number of collectible in player inventory
  * If there is a certain quantity, open grids
  */
+/**
+ * @brief Vérifie le nombre de collectible dans l'inventaire du joueur, s'il y en a un certain nombre, cela ouvre des grilles
+ * @param grid
+ */
 void SceneGraph::checkCollectibleNumber(GameObjectMesh *grid)
 {
 
-    if( grid->getName()=="Grid0" && goPlayer->getPlayerComponent()->getCollectibleNumber()>=1){
+    if( grid->getName()=="Grid0" && goPlayer->getPlayerComponent()->getCollectibleNumber()>=3){
         elapsedTime = timer.elapsed() -elapsedTime;
         grid->move(0.0f,gridSpeed*elapsedTime,0.0f);
         if(!gridSoundPlayed){
@@ -275,7 +288,7 @@ void SceneGraph::checkCollectibleNumber(GameObjectMesh *grid)
 
         }
     }
-    if( grid->getName()=="Grid1" && goPlayer->getPlayerComponent()->getCollectibleNumber()>=2){
+    if( grid->getName()=="Grid1" && goPlayer->getPlayerComponent()->getCollectibleNumber()>=3){
         elapsedTime = timer.elapsed() -elapsedTime;
         grid->move(0.0f,gridSpeed*elapsedTime,0.0f);
         if(!gridSoundPlayed){
@@ -288,7 +301,7 @@ void SceneGraph::checkCollectibleNumber(GameObjectMesh *grid)
             gridSoundPlayed = false;
         }
     }
-    if( grid->getName()=="Grid2"&& goPlayer->getPlayerComponent()->getCollectibleNumber()>=3){
+    if( grid->getName()=="Grid2"&& goPlayer->getPlayerComponent()->getCollectibleNumber()>=9){
         elapsedTime = timer.elapsed() -elapsedTime;
         grid->move(0.0f,gridSpeed*elapsedTime,0.0f);
         if(!gridSoundPlayed){
@@ -304,7 +317,10 @@ void SceneGraph::checkCollectibleNumber(GameObjectMesh *grid)
 
 }
 
-
+/**
+ * @brief Fait tourner les anneaux sur eux-mêmes
+ * @param ring
+ */
 void SceneGraph::rotateRing(GameObjectMesh *ring)
 {
     ring->rotate(QVector3D(0.0f,1.0f,0.0f),timer.elapsed()/10);

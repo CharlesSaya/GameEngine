@@ -14,9 +14,10 @@ private:
 
 public:
     SoundEngine();
-    void walk();
-    void jump();
-    void ost();
+    void static walk();
+    void static jump();
+    void static laser();
+    void static ost();
     void static ring();
     void static grid();
 };

@@ -2,6 +2,8 @@
     <qresource prefix="/">
         <file>sounds/ost.mp3</file>
         <file>sounds/ringSong.mp3</file>
-        <file>sounds/gridSong.mp3</file>
+        <file>sounds/gridSong.wav</file>
+        <file>sounds/jumpSong.mp3</file>
+        <file>sounds/laserSong.wav</file>
     </qresource>
 </RCC>

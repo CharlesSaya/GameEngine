@@ -7,6 +7,7 @@
 #include "headers/core/gameComponent.h"
 #include "headers/physics/physicsEngine.h"
 #include "headers/core/gameObject.h"
+#include "headers/core/soundEngine.h"
 
 #include "headers/render/terrain.h"
 
@@ -69,6 +70,8 @@ private:
 
     float inputsRotationX;
     float inputsRotationY;
+
+    bool playedMusic = false;
 
     QVector3D acceleration = QVector3D( 0.0, 0.0, 0.0 );
     QVector3D velocity     = QVector3D( 0.0, 0.0, 0.0 );

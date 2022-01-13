@@ -15,8 +15,10 @@ PlayerComponent::PlayerComponent( QVector3D &playerPosition, QVector3D &playerDi
     this->timer->start( wheelTimer );
 }
 
-/*
- * Update the position of the player
+/**
+ * @brief Met à jour la position et la direction
+ * @param playerPosition
+ * @param playerDirection
  */
 void PlayerComponent::update( QVector3D &playerPosition, QVector3D playerDirection ){
     this->playerPosition  = playerPosition;
@@ -26,6 +28,11 @@ void PlayerComponent::update( QVector3D &playerPosition, QVector3D playerDirecti
 
 /*
  * Cast ray from the player's position
+ */
+/**
+ * @brief Crée un rayon à partir du joueur vers la direction target
+ * @param target
+ * @return
  */
 Ray & PlayerComponent::castRay(QVector3D target){
     ray = Ray( this->playerPosition, target);
@@ -79,10 +86,12 @@ void PlayerComponent::setPositionChild(GameObject * go,GameObject * child  ){
 void PlayerComponent::pressedInput( QMouseEvent * key ){
     if( key->button() == Qt::RightButton ){
         rightMousePressed = true;
+        SoundEngine().laser();
     }
 
     if ( rightMousePressed && key->button() == Qt::LeftButton ){
         leftMousePressed = true;
+
     }
 }
 
@@ -200,5 +209,4 @@ void PlayerComponent::setRay(const Ray &newRay)
 {
     ray = newRay;
 }
-
 

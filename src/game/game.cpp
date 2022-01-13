@@ -9,7 +9,7 @@ Game::Game( CameraComponent * camera,  QObject * parent ) : QObject(parent){
 }
 
 /**
- * init all composant of the game ( cameras, meshs, terrain, textures etc.)
+ * @brief Initialise tous les composants du jeu ( cameras, meshs, terrain, textures etc.)
  */
 void Game::initGame(){
 
@@ -500,16 +500,33 @@ void Game::initGame(){
         tunnelGO->move( 120.959,-10.0f,225.183 );
         this->goMeshes.push_back( tunnelGO );
 
-        //  zzzzzzzz outdoorField  ------------------------------------------------------------------------------
+        //  outdoorField  ------------------------------------------------------------------------------
 
         string planObj;
         planObj= "../GameEngine/objects/outdoorField/";
 
 
-        Mesh planMesh =Mesh(planObj,  vector<Texture>(), shader, white, false );
+        Mesh planMesh =Mesh(planObj,  tunnelTextures, shader, white, false );
         GameObjectMesh * planGO = new GameObjectMesh( "plan", new MeshRenderer(planMesh, this  ), new ColliderComponent( this ), new PhysicsComponent(physicsEngine, this ) ,false );
         planGO->move( 0.0,-0.3f,0.0 );
-//        this->goMeshes.push_back( planGO );
+        this->goMeshes.push_back( planGO );
+
+        //    tails  ------------------------------------------------------------------------------
+
+        string tailsObj;
+        tunnelObj= "../GameEngine/objects/tails/";
+
+        Texture tailsTexture   = Texture( "../GameEngine/textures/tailsTexture", "tailsTexture" );
+        std::vector<Texture> tailsTextures;
+        tailsTextures.push_back(tailsTexture  );
+
+        Mesh tailsMesh =Mesh(tunnelObj, tailsTextures, shader, white, false );
+        GameObjectMesh * tailsGO = new GameObjectMesh( "tunnel", new MeshRenderer(tailsMesh, this  ), new ColliderComponent( this ), new PhysicsComponent(physicsEngine, this ) ,false, terrainGO );
+        tailsGO->move( 80.9471,0.0f,124.965 );
+        tailsGO->rotate(QVector3D(0.0f,1.0f,0.0),180.0f);
+        tailsGO->scale(0.4f);
+        this->goMeshes.push_back( tailsGO );
+
 
         // grid  ------------------------------------------------------------------------------
 
@@ -624,15 +641,18 @@ void Game::input( QKeyEvent * key  ){
 }
 
 /**
- * Update gameObject of the scene
+ * @brief Met à jour les gameObject de la scene
+ * @param fixedStep
  */
 void Game::update( float fixedStep )
 {
     this->sceneGraph.update( fixedStep  );
 }
 
+
 /**
- * Render the scene
+ * @brief Appel la fonction du rendu de scene de la classe sceneGraph
+ * @param deltaTime
  */
 void Game::render(  float deltaTime ){
     renderingEngine.renderScene( this->sceneGraph, deltaTime );

@@ -18,16 +18,31 @@ void SoundEngine::ost(){
 }
 
 void SoundEngine::ring(){
-    QMediaPlayer * ostPlayer = new QMediaPlayer();
-    ostPlayer->setMedia(QUrl::fromLocalFile(
+    QMediaPlayer * ringSong = new QMediaPlayer();
+    ringSong->setMedia(QUrl::fromLocalFile(
                             QFileInfo("../GameEngine/sounds/ringSong.mp3").absoluteFilePath()));
-    ostPlayer->setVolume(50);
-    ostPlayer->play();
+    ringSong->setVolume(50);
+    ringSong->play();
 }
 
 void SoundEngine::grid(){
-    QMediaPlayer * ostPlayer = new QMediaPlayer();
-    ostPlayer->setMedia(QUrl::fromLocalFile(QFileInfo("../GameEngine/sounds/gridSong.mp3").absoluteFilePath()));
-    ostPlayer->setVolume(50);
-    ostPlayer->play();
+    QMediaPlayer * gridSong = new QMediaPlayer();
+    gridSong->setMedia(QUrl::fromLocalFile(QFileInfo("../GameEngine/sounds/gridSong.wav").absoluteFilePath()));
+    gridSong->setVolume(50);
+    gridSong->play();
+}
+
+
+void SoundEngine::jump(){
+    QMediaPlayer * jumpSong = new QMediaPlayer();
+    jumpSong->setMedia(QUrl::fromLocalFile(QFileInfo("../GameEngine/sounds/jumpSong.mp3").absoluteFilePath()));
+    jumpSong->setVolume(50);
+    jumpSong->play();
+}
+
+void SoundEngine::laser(){
+    QMediaPlayer * laserSong = new QMediaPlayer();
+    laserSong->setMedia(QUrl::fromLocalFile(QFileInfo("../GameEngine/sounds/laserSong.wav").absoluteFilePath()));
+    laserSong->setVolume(50);
+    laserSong->play();
 }
