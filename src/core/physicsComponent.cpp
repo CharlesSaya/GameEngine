@@ -47,7 +47,6 @@ void PhysicsComponent::updatePhysics( float step,  GameObject * go, Terrain &ter
 //    if( meanSpeed.length()  > this->maxSpeed )
 //        meanSpeed = this->maxSpeed * meanSpeed.normalized();
 
-
     if ( meanSpeed.length() != 0.0f ){
         go->move( meanSpeed * step );
         worldPos= go->getWorldPosition();
