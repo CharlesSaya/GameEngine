@@ -14,7 +14,7 @@ RenderingEngine::RenderingEngine( float renderStep ){
     this->step = renderStep;
     this->context = QOpenGLContext::currentContext();
 
-    directionalLight = DirectionalLight(QVector3D(64.0, 80.0, 5.0), white);
+    directionalLight = DirectionalLight(QVector3D( 128., 150.0, 64.0), white);
 
     initPointLights();
 
@@ -32,7 +32,7 @@ RenderingEngine::RenderingEngine( float renderStep ){
 
     textShader = new Shader(  "../GameEngine/shaders/textShader_vshader.glsl", "../GameEngine/shaders/textShader_fshader.glsl" );
 
-    cameraOrtho  = new CameraComponent( directionalLight.getLightPosition(), QVector3D(64.0f,0.0f,64.0f),-100.0f,100.0f,-100.0f,100.0f,0.01f,200.f );
+    cameraOrtho  = new CameraComponent( directionalLight.getLightPosition(), QVector3D(64.0f,0.0f,64.0f),-100.0f,100.0f,-100.0f,100.0f,50.f,200.f );
     cameraOrtho->setProjectionOrtho();
     cameraOrthoGO = new GameObjectCamera("camera ortho", cameraOrtho);
 
@@ -121,7 +121,7 @@ void RenderingEngine::initLensFlares(){
     Texture texture7 = Texture( "../GameEngine/textures/lensFlare/tex7.png", "flare" );
     Texture texture8 = Texture( "../GameEngine/textures/lensFlare/tex8.png", "flare" );
 
-    std::vector<FlareTexture> flareTextures  ={ FlareTexture( sun, 0.2),
+    std::vector<FlareTexture> flareTextures  ={ FlareTexture( sun, 0.25),
                                                 FlareTexture( texture6, 0.15),
                                                 FlareTexture( texture4, 0.05),
                                                 FlareTexture( texture2, 0.05),
@@ -188,8 +188,16 @@ void RenderingEngine::initGBufferFBO()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, gBloom, 0);
 
-    unsigned int attachments[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
-    glDrawBuffers(4, attachments);
+    // light space pos buffer
+    glGenTextures(1, &gLightSpace);
+    glBindTexture(GL_TEXTURE_2D, gLightSpace);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, screenWidth, screenHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT4, GL_TEXTURE_2D, gLightSpace, 0);
+
+    unsigned int attachments[5] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4 };
+    glDrawBuffers(5, attachments);
 
     // depth render buffer
     glGenRenderbuffers( 1, &depthRBO );
@@ -315,6 +323,11 @@ void RenderingEngine::initPostProcessShader(){
     glBindTexture( GL_TEXTURE_2D, gBloom );
     postProcessShader->setUniformValue("bloomTexture", 4);
 
+    glActiveTexture( GL_TEXTURE5 );
+    glBindTexture( GL_TEXTURE_2D, gLightSpace );
+    postProcessShader->setUniformValue("lightSpacePosTexture", 5);
+
+
 }
 
 /**
@@ -426,7 +439,9 @@ void RenderingEngine::renderShadowMap(SceneGraph &sceneGraph)
     glViewport(0, 0, shadowHeight, shadowWidth);
     glBindFramebuffer(GL_FRAMEBUFFER, m_shadowMapFBO);
         glClear(GL_DEPTH_BUFFER_BIT);
+        glCullFace(GL_FRONT);
         sceneGraph.render(cameraOrthoGO, shadowShader);
+        glCullFace(GL_BACK);
     glBindFramebuffer(GL_FRAMEBUFFER, context->defaultFramebufferObject());
     glViewport(0, 0, screenWidth, screenHeight);
 
@@ -441,7 +456,7 @@ void RenderingEngine::renderGeometryData( SceneGraph &sceneGraph ){
 
     initGBufferFBO();
     gBufferShader->useShaderProgram();
-
+    gBufferShader->setUniformValue( "lightSpaceMatrix",  cameraOrtho->getProjection() * cameraOrtho->getViewMatrix() );
     glViewport(0, 0, screenWidth, screenHeight);
     glBindFramebuffer(GL_FRAMEBUFFER, gFBO);
         glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );

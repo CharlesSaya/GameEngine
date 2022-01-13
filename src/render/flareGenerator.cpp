@@ -159,7 +159,7 @@ void FlareGenerator::render( float brightness, Shader * shader ){
     shader->setUniformValue( "projection", camera->getCameraComponent()->getProjection() );
 
     renderFlare( flareTextures[0], shader );
-    shader->setUniformValue("brightness", relativeBrightness * 0.85f );
+    shader->setUniformValue("brightness", relativeBrightness * 0.95f );
 
     for( uint i = 1; i< flareTextures.size(); i++ )
         renderFlare( flareTextures[i], shader );

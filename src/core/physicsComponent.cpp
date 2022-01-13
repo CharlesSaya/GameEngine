@@ -4,6 +4,10 @@
 PhysicsComponent::PhysicsComponent( PhysicsEngine &physicsEngine,  QObject * parent ) :  physicsEngine(physicsEngine), QObject(parent){
 }
 
+template <typename T> int sgn(T val) {
+    return (T(0) < val) - (val < T(0));
+}
+
 /**
  * @brief Mets à jour la physique ( vitesse, position  du joueur
  * @param step
@@ -30,9 +34,19 @@ void PhysicsComponent::updatePhysics( float step,  GameObject * go, Terrain &ter
     QVector3D newVelocity  = velocity + acceleration * step;
 
     QVector3D meanSpeed = (velocity + newVelocity) / 2.0 ;
+    QVector3D meanSpeedMinusY = QVector3D( meanSpeed.x(), 0.0, meanSpeed.z() ) ;
 
-    if( meanSpeed.length()  > this->maxSpeed )
-        meanSpeed = this->maxSpeed * meanSpeed.normalized();
+    if( abs( meanSpeed.x() )> this->maxSpeed )
+        meanSpeed.setX( sgn( meanSpeed.x() ) * this->maxSpeed   );
+
+    if( abs( meanSpeed.y() )> 2 * this->maxSpeed )
+        meanSpeed.setY( sgn( meanSpeed.y() ) * 2 * this->maxSpeed  );
+
+    if( abs( meanSpeed.z() )> this->maxSpeed )
+        meanSpeed.setZ( sgn( meanSpeed.z() ) * this->maxSpeed );
+
+//    if( meanSpeed.length()  > this->maxSpeed )
+//        meanSpeed = this->maxSpeed * meanSpeed.normalized();
 
     if ( meanSpeed.length() != 0.0f ){
         go->move( meanSpeed * step );

@@ -84,9 +84,6 @@ public:
 
                 if( collision ){
 
-//                    if( go->getName() == "Player" )
-//                        qDebug() <<  childNode->gameObject->getName().c_str() << childNode->nodeBoundingBox.getMin() << childNode->nodeBoundingBox.getMax() ;
-
                     if ( childNode->gameObject->getName() == "Terrain"){
 
                         bool collision = intersectAABB( go->getMeshRenderer()->getMesh().getAABB(), dynamic_cast<GameObjectMesh*>(childNode->gameObject)->getMeshRenderer()->getMesh().getAABB() );

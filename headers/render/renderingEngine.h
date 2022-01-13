@@ -28,8 +28,8 @@ class RenderingEngine : protected QOpenGLFunctions_3_3_Core{
 private:
     float step;
 
-    int shadowHeight = 2048;
-    int shadowWidth = 2048 ;
+    int shadowHeight = 4096;
+    int shadowWidth = 4096 ;
     int screenWidth = 1920;
     int screenHeight = 1080;
 
@@ -39,7 +39,7 @@ private:
     uint m_shadowMapFBO = 0;
     uint m_shadowMapTex = 0;
 
-    uint gFBO = 0, gPosition, gNormal, gColor, gDiffuse, gBloom, depthRBO;
+    uint gFBO = 0, gPosition, gNormal, gColor, gDiffuse, gBloom, gLightSpace, depthRBO;
 
     uint blurVFbo = 0 , blurHFbo  = 0, blurVTexture, blurTexture;
 

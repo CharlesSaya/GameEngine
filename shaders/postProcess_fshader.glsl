@@ -23,6 +23,7 @@ uniform sampler2D shadowTexture;
 uniform sampler2D normalTexture;
 uniform sampler2D positionTexture;
 uniform sampler2D bloomTexture;
+uniform sampler2D lightSpacePosTexture;
 
 uniform mat4 lightSpaceMatrix;
 uniform mat4 view;
@@ -78,7 +79,7 @@ vec3 colorDirectionalLight(DirectionalLight light, vec3 normal, vec3 pos, vec4 l
 
     float shadow = shadowCalculation( lightSpacePos, normal);
 
-    return  ambient +  ( 1.0 -  shadow )* ( lambertian +  specular );
+    return  ambient +  ( 1.0 -  shadow )* ( lambertian  );
 
 }
 
@@ -115,6 +116,7 @@ void main()
 
     vec4 pos           = texture( positionTexture, v_texcoord.xy );
     vec4 lightSpacePos = lightSpaceMatrix * pos;
+//    vec4 lightSpacePos = texture( lightSpacePosTexture, v_texcoord.xy );
     vec3 viewDir       = normalize( cameraPosition - pos.rgb);
     vec3 normal        = normalize( texture( normalTexture, v_texcoord.xy ).rgb);
 
@@ -124,8 +126,8 @@ void main()
 //    for(int i = 0; i < 1; i++)
 //        color += colorPointLight( pointLights[i], normal, pos.rgb, lightSpacePos);
 
-//    gl_FragColor = vec4( color , 1.0 );
     gl_FragColor = vec4( color , 1.0 );
+//    gl_FragColor = lightSpacePos;
 
 }
 //! [0]

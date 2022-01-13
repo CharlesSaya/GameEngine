@@ -82,7 +82,7 @@ void CameraComponent::rotate( float pitch, float yaw ){
 
 void CameraComponent::updatePosition(const QMatrix4x4& model)
 {
-    this->cameraPosition = model * QVector3D(0.0f,1.75f,2.0f);
+    this->cameraPosition = model * QVector3D(0.0f,2.0f,2.2f);
 }
 
 /**
