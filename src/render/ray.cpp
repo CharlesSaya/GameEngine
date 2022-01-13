@@ -1,15 +1,5 @@
 #include "headers/render/ray.h"
 
-const QVector3D& Ray::getOrigin() const
-{
-    return _origin;
-}
-
-const QVector3D& Ray::getDirection() const
-{
-    return _direction;
-}
-
 void Ray::initBuffers(){
     std::vector<QVector3D> vertices = { _origin, _origin + 10. * _direction };
     this->verticesBuffer.bind();
@@ -17,7 +7,9 @@ void Ray::initBuffers(){
 
 }
 
-
+/**
+ * Draw the ray  (telekinesis)
+ */
 void Ray::drawRay( Shader * shader, const QMatrix4x4& view, const QMatrix4x4& projection  ){
     initBuffers();
 
@@ -38,4 +30,14 @@ void Ray::drawRay( Shader * shader, const QMatrix4x4& view, const QMatrix4x4& pr
 void Ray::setDirection(const QVector3D &newDirection)
 {
     _direction = newDirection;
+}
+
+const QVector3D& Ray::getOrigin() const
+{
+    return _origin;
+}
+
+const QVector3D& Ray::getDirection() const
+{
+    return _direction;
 }

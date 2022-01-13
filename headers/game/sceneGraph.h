@@ -14,11 +14,13 @@
 #include "headers/core/gameObjectMesh.h"
 #include "headers/core/gameObjectPlayer.h"
 #include "headers/core/gameObjectCamera.h"
+#include "headers/core/soundEngine.h"
 
 #include "headers/render/shader.h"
 
 #include "headers/physics/physicsEngine.h"
 #include "headers/physics/colliderEngine.h"
+
 
 class SceneGraph{
 
@@ -36,6 +38,7 @@ private:
     QElapsedTimer timer;
     int elapsedTime = 0;
     float gridSpeed = -0.000002f;
+    bool gridSoundPlayed = false;
 
 public:
 

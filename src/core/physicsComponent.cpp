@@ -11,15 +11,16 @@ void PhysicsComponent::updatePhysics( float step,  GameObject * go, Terrain &ter
     worldPos= go->getWorldPosition();
     height = terrain.getHeightOfTerrain( worldPos );
 
-    if(playerIsOnGround()&& !(height > worldPos.y() && acos( QVector3D::dotProduct( terrain.getFaceNormalAtPosition( worldPos ), QVector3D( 0.0, 1.0, 0.0) ) ) * 180 / M_PI > 60.0)|| getResting()) canJump=true;
-//    else canJump =false;
+    if(playerIsOnGround()&& !(height > worldPos.y() && acos( QVector3D::dotProduct( terrain.getFaceNormalAtPosition( worldPos ), QVector3D( 0.0, 1.0, 0.0) ) ) * 180 / M_PI > 60.0)|| getResting())
+        canJump=true;
+    else canJump =false;
 
 
     move(*go->getTransform());
     acceleration = - physicsEngine.getDamp() * velocity;
 
-    if ( !resting )
-        acceleration += physicsEngine.getGravity();
+//    if ( !resting )
+//        acceleration += physicsEngine.getGravity();
 
     acceleration /= mass;
 
@@ -92,7 +93,7 @@ void PhysicsComponent::move(Transform & transform){
                 if(canJump){
                     velocity.setY(0.1f);
                     velocity +=  jump ;
-//                    canJump = false;
+                    canJump = false;
                 }
                 break;
 

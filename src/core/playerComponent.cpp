@@ -15,12 +15,18 @@ PlayerComponent::PlayerComponent( QVector3D &playerPosition, QVector3D &playerDi
     this->timer->start( wheelTimer );
 }
 
+/*
+ * Update the position of the player
+ */
 void PlayerComponent::update( QVector3D &playerPosition, QVector3D playerDirection ){
     this->playerPosition  = playerPosition;
     this->playerDirection = playerDirection;
 
 }
 
+/*
+ * Cast ray from the player's position
+ */
 Ray & PlayerComponent::castRay(QVector3D target){
     ray = Ray( this->playerPosition, target);
     return ray;
@@ -30,6 +36,9 @@ bool PlayerComponent::telekinesisActivated(){
     return this->rightMousePressed;
 }
 
+/*
+ * Activate telekinesis by linking an object to the playerGo
+ */
 void PlayerComponent::telekinesis(  GameObject * player, GameObject * go ){
     GameObjectMesh *child =  dynamic_cast<GameObjectMesh *>(go);
     if ( leftMousePressed ){
@@ -44,6 +53,9 @@ void PlayerComponent::telekinesis(  GameObject * player, GameObject * go ){
     }
 }
 
+/*
+ * Changes the Y and Z position of the object mastered by the telekenised
+ */
 void PlayerComponent::setPositionChild(GameObject * go,GameObject * child  ){
 
            if(wheelDown && (child->getWorldPosition() - go->getWorldPosition()).y() > rangeY[0]) {
@@ -61,6 +73,9 @@ void PlayerComponent::setPositionChild(GameObject * go,GameObject * child  ){
            }
     }
 
+/*
+ * Detects mouse inputs (telekinesis)
+ */
 void PlayerComponent::pressedInput( QMouseEvent * key ){
     if( key->button() == Qt::RightButton ){
         rightMousePressed = true;
@@ -71,6 +86,9 @@ void PlayerComponent::pressedInput( QMouseEvent * key ){
     }
 }
 
+/*
+ * Releases the object from playerGo's grip (telekinesis)
+ */
 void PlayerComponent::releasedInput( QMouseEvent * key ){
 
     if( key->button() == Qt::RightButton ){
@@ -88,6 +106,9 @@ void PlayerComponent::releasedInput( QMouseEvent * key ){
     }
 }
 
+/*
+ * Rise and descend the controlled object(telekinesis)
+ */
 void PlayerComponent::wheelScrolled( QWheelEvent * scroll ){
 
     timer->stop();
@@ -111,6 +132,9 @@ void PlayerComponent::deactivateWheel(){
     timer->stop();
 }
 
+/*
+ * Attract and push the controlled object(telekinesis)
+ */
 void PlayerComponent::moveChildZ(){
     for( uint i : inputsMoves ){
         switch( i ){
@@ -126,6 +150,36 @@ void PlayerComponent::moveChildZ(){
     }
 }
 
+/*
+ * Input for the controlled object (telekinesis)
+ */
+void PlayerComponent::hasMovedChild( QSet<uint> inputsMoves ){
+    this->inputsMoves = inputsMoves;
+}
+
+void PlayerComponent::hasStoppedChild( QSet<uint> inputsMoves ){
+    this->inputsMoves = inputsMoves;
+    translationChildSpeed.setZ(0.0f);
+}
+
+/*
+ * Add a collectible to the player's inventory
+ */
+void PlayerComponent::addCollectible(){
+    SoundEngine().ring();
+    this->collectibleNumber++;
+}
+
+/*
+ * Draw the telekinesic ray
+ */
+void PlayerComponent::drawRay( const QMatrix4x4& view, const QMatrix4x4& projection  ){
+    if( rightMousePressed )
+
+        ray.drawRay( shader, view, projection );
+
+}
+
 int PlayerComponent::getCollectibleNumber() const
 {
     return collectibleNumber;
@@ -133,18 +187,8 @@ int PlayerComponent::getCollectibleNumber() const
 
 void PlayerComponent::setCollectibleNumber(int newCollectibleNumber)
 {
+
     collectibleNumber = newCollectibleNumber;
-}
-
-void PlayerComponent::addCollectible(){
-    this->collectibleNumber++;
-}
-
-void PlayerComponent::drawRay( const QMatrix4x4& view, const QMatrix4x4& projection  ){
-    if( rightMousePressed )
-
-        ray.drawRay( shader, view, projection );
-
 }
 
 const Ray &PlayerComponent::getRay() const
@@ -158,12 +202,3 @@ void PlayerComponent::setRay(const Ray &newRay)
 }
 
 
-
-void PlayerComponent::hasMovedChild( QSet<uint> inputsMoves ){
-    this->inputsMoves = inputsMoves;
-}
-
-void PlayerComponent::hasStoppedChild( QSet<uint> inputsMoves ){
-    this->inputsMoves = inputsMoves;
-    translationChildSpeed.setZ(0.0f);
-}

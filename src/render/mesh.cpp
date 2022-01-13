@@ -1,5 +1,9 @@
 #include "headers/render/mesh.h"
 
+Mesh::Mesh(){
+
+}
+
 Mesh::Mesh( std::string filepath, std::vector<Texture> textures, Shader * shader, QVector3D meshColor, bool renderAABB ){
     this->meshColor = meshColor;
     this->textures = textures;
@@ -60,6 +64,9 @@ Mesh::Mesh( Terrain& terrainOBJ, std::vector<Texture> textures, Shader * shader,
 
 }
 
+/*
+ * browses all files in a directory
+ */
 std::vector<string> dirFiles( std::string dirName ){
     DIR *dir;
     struct dirent *ent;
@@ -82,10 +89,16 @@ std::vector<string> dirFiles( std::string dirName ){
     return files;
 }
 
+/*
+ * Update AABB of the mesh
+ */
 void Mesh::updateAABB( const QMatrix4x4& model ) {
     this->bBox.updateAABB( model );
 }
 
+/*
+ * Load geometry of all files in a directory
+ */
 void Mesh::loadGeometry( std::string dirPath ){
 
     std::vector< string > files = dirFiles( dirPath );
@@ -106,16 +119,6 @@ void Mesh::loadGeometry( std::string dirPath ){
 
     }
 
-}
-
-uint Mesh::getLod( float distance ){
-
-    if( distance > 5. && distance < 10.)
-        return 1;
-    else if( distance > 10.)
-        return 2;
-
-    return 0;
 }
 
 void Mesh::initBuffers( uint lod ){
@@ -263,6 +266,12 @@ const std::vector<std::vector<VertexData> > &Mesh::getMeshesVertexDatas() const
     return meshesVertexDatas;
 }
 
-Mesh::Mesh(){
+uint Mesh::getLod( float distance ){
 
+    if( distance > 5. && distance < 10.)
+        return 1;
+    else if( distance > 10.)
+        return 2;
+
+    return 0;
 }

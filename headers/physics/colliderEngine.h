@@ -30,7 +30,9 @@ public:
     AABB& buildBroadPhaseBox( AABB &broadPhaseBox, QVector3D velocity, AABB& box1  );
     float sweptAABB( QVector3D velocity, AABB& box1, AABB& box2, QVector3D& normal, QVector3D &planePoint );
 
-    // Detect collision between a moving GameObject and a BVH
+    /**
+     * Detect collision between a moving GameObject and a BVH
+     */
     template< class Collidable>
     void detectCollision( Collidable * go, Node * node ){
 
@@ -39,11 +41,13 @@ public:
         bool collision = intersectAABB( go->getMeshRenderer()->getMesh().getAABB(), node->nodeBoundingBox );
 
         if( node->children.empty() && ( node->gameObject->getName() != go->getName() )){
+//            qDebug()<<(node->gameObject->getName().c_str() );
             if ( collision ){
 
                 // Test if the collided object is a collectible
                 if ( go->getName() == "Player" &&  node->gameObject->getIsCollectible()  ){
                     dynamic_cast<GameObjectPlayer*>(go)->getPlayerComponent()->addCollectible();
+
                     node->gameObject->destroy();
                 }
                 else{
@@ -100,7 +104,9 @@ public:
         }
 
     }
-
+    /**
+     * Detect if a go is already colliding with Player
+     */
     bool isAlreadyCollidingWithPlayer( GameObject * go ){
         for( CollisionData data : this->currentPlayerCollisions )
             if( data.node->gameObject == go )
@@ -108,6 +114,9 @@ public:
         return false;
     }
 
+    /**
+     * Update the collision list of the goPlayer
+     */
     void updatePlayerCurrentCollisionsList( GameObjectPlayer * goPlayer ){
 
         for( uint i = 0; i < currentPlayerCollisions.size(); i++ ){
@@ -122,10 +131,16 @@ public:
             goPlayer->getPhysicsComponent()->setResting( false );
     }
 
+    /**
+     * return the distance between a position and the terrain
+     */
     float distanceToTerrain( QVector3D  position, QVector3D pointOnPlane, QVector3D normal ){
         return QVector3D::dotProduct( position - pointOnPlane, normal );
     }
 
+    /**
+     * Compute collision between 2 gameObjects
+     */
     template< class Collider, class Collided>
     void computeCollision( float time, float distance, Collider * collider, Collided * collided , QVector3D &normal ){
 
@@ -145,6 +160,9 @@ public:
 
     }
 
+    /**
+     * Return true if go is in resting phase
+     */
     template<class Collidable>
     bool resting( Collidable * go, QVector3D& normal, float distance ){
         QVector3D objectVel =  go->getPhysicsComponent()->getVelocity();

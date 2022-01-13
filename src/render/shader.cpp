@@ -7,6 +7,7 @@ Shader::Shader(){
 
 }
 
+
 Shader::Shader( std::string vertexShader, std::string fragmentShader ){
 
     if (!program.addShaderFromSourceFile(QOpenGLShader::Vertex, vertexShader.c_str()))
@@ -20,12 +21,19 @@ Shader::Shader( std::string vertexShader, std::string fragmentShader ){
 
 }
 
+/**
+ * Add the direction and the color of a DirectionalLight
+ */
 void Shader::loadDirectionalLight( DirectionalLight light ){
     this->useShaderProgram();
     this->setUniformValue( "directionalLight.direction", light.getDirection() );
     this->setUniformValue( "directionalLight.lightColor", light.getLightColor());
 }
 
+
+/**
+ * Load points lights lists
+ */
 void Shader::loadPointLights( std::vector<PointLight> lights ){
     this->useShaderProgram();
 

@@ -8,6 +8,9 @@ Game::Game( CameraComponent * camera,  QObject * parent ) : QObject(parent){
     this->camera = camera;
 }
 
+/**
+ * init all composant of the game ( cameras, meshs, terrain, textures etc.)
+ */
 void Game::initGame(){
 
 
@@ -72,7 +75,6 @@ void Game::initGame(){
 
     terrainGO = new GameObjectMesh( "Terrain", terrainRenderer, terrainCollider, false );
     terrainGO->scale( terrain.getScale() );
-//    terrainGO->move( QVector3D( -64.0 * terrain.getScale(), 0.0, 64.0 * terrain.getScale() ) );
 
     this->goMeshes.push_back( terrainGO );
     colliderEngine.setTerrain( terrain );
@@ -137,7 +139,6 @@ void Game::initGame(){
     snowyObj.push_back("../GameEngine/objects/TreeNoLeavesBig/");
     snowyObj.push_back("../GameEngine/objects/TreeNoLeavesSmall/");
 
-
     std::vector<Texture> treeSnowTextures;
     treeSnowTextures.push_back( treeSnow );
 
@@ -187,8 +188,6 @@ void Game::initGame(){
     positionsTreeSnow.push_back(getHeightObject(50.8224,107.928));
     positionsTreeSnow.push_back(getHeightObject(37.2173,109.069));
     positionsTreeSnow.push_back(getHeightObject(38.1351,98.8298));
-
-
 
     for(int i = 0 ;i<positionsTreeSnow.size();i++ ){
         scalesTreeSnow.push_back( 0.2 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(0.6))));
@@ -274,6 +273,12 @@ void Game::initGame(){
         positionsBox.push_back(getHeightObject(65.6861,84.8065 ));
         positionsBox.push_back(getHeightObject(93.6861,98.8065 ));
         positionsBox.push_back(getHeightObject(96.608,117.022 ));
+        positionsBox.push_back(getHeightObject(106.499,78.8863 ));
+        positionsBox.push_back(getHeightObject(101.644,89.2934 ));
+        positionsBox.push_back(getHeightObject(106.095,94.29394 ));
+        positionsBox.push_back(getHeightObject(116.568,108.903 ));
+        positionsBox.push_back(getHeightObject(30.2478,58.9035 ));
+        positionsBox.push_back(getHeightObject(33.3264,44.7455 ));
 
         for(int i = 0 ;i<positionsBox.size();i++ ){
              scalesBox.push_back( 0.2);
@@ -288,8 +293,6 @@ void Game::initGame(){
             boxGO->move( positionsBox[i] );
             this->goMeshes.push_back( boxGO );
         }
-
-    // Collectible ------------------------------------------------------------------------------
 
         // bush  ------------------------------------------------------------------------------
 
@@ -366,7 +369,6 @@ void Game::initGame(){
         positionsTree.push_back(getHeightObject(111.582,11.8752 ));
         positionsTree.push_back(getHeightObject(108.91,9.10252 ));
         positionsTree.push_back(getHeightObject(102.289,6.81778 ));
-
 
 
         for(int i = 0 ;i<positionsTree.size();i++ ){
@@ -451,10 +453,10 @@ void Game::initGame(){
 
         QVector<QVector3D> positionsDesertHouse;
         QVector<float> scalesDesertHouse;
+
         //Land
         positionsDesertHouse.push_back(getHeightObject(84.500,61.3606 ));
         positionsDesertHouse.push_back(getHeightObject(79.1818,58.7066 ));
-
 
 
         for(int i = 0 ;i<positionsDesertHouse.size();i++ ){
@@ -470,8 +472,6 @@ void Game::initGame(){
             desertHouseGO->move( positionsDesertHouse[i] );
             this->goMeshes.push_back( desertHouseGO );
         }
-
-
 
          //    treeHouse  ------------------------------------------------------------------------------
 
@@ -584,7 +584,6 @@ void Game::initGame(){
                 positionsPillar.push_back(QVector3D(43.872,0.0,57.6844));
 
 
-
                 for(int i = 0 ;i<positionsPillar.size();i++ ){
                     scalesPillar.push_back( 0.8);
                 }
@@ -620,7 +619,7 @@ void Game::initGame(){
 
     sceneGraph = SceneGraph( baseGo, this->goMeshes, playerGO, mainCameraGO, this->physicsEngine, this->colliderEngine, terrain );
     SoundEngine soundEngine;
-//    soundEngine.ost();
+    soundEngine.ost();
 
 }
 
@@ -628,11 +627,17 @@ void Game::input( QKeyEvent * key  ){
     this->sceneGraph.input( key );
 }
 
+/**
+ * Update gameObject of the scene
+ */
 void Game::update( float fixedStep )
 {
     this->sceneGraph.update( fixedStep  );
 }
 
+/**
+ * Render the scene
+ */
 void Game::render(  float deltaTime ){
     renderingEngine.renderScene( this->sceneGraph, deltaTime );
 //    renderingEngine.renderText();

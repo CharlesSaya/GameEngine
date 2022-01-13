@@ -9,6 +9,9 @@ ColliderEngine::ColliderEngine( float deltaTime ){
     this->deltaTime = deltaTime;
 }
 
+/**
+ * detect if 2 AABB are intersecting
+ */
 bool ColliderEngine::intersectAABB( AABB &box1, AABB &box2 ){
 
 
@@ -17,6 +20,9 @@ bool ColliderEngine::intersectAABB( AABB &box1, AABB &box2 ){
            && ( ( box1.getMin().z() >= box2.getMax().z() ) && ( box1.getMax().z() <= box2.getMin().z() ) ) );
 }
 
+/**
+ * build box for the broad phase
+ */
 AABB& ColliderEngine::buildBroadPhaseBox( AABB &broadPhaseBox, QVector3D velocity, AABB& box1 ){
     qDebug() << "LastBox"  << box1.getLastMin() << box1.getMax();
     qDebug() << "Box"  << box1.getMin() << box1.getMax();
@@ -34,6 +40,9 @@ AABB& ColliderEngine::buildBroadPhaseBox( AABB &broadPhaseBox, QVector3D velocit
     return broadPhaseBox;
 }
 
+/**
+ * Swept AABB
+ */
 float ColliderEngine::sweptAABB( QVector3D velocity, AABB& box1, AABB& box2, QVector3D& normal, QVector3D &planePoint ){
 
     float dxEntry, dyEntry, dzEntry;

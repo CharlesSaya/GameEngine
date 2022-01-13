@@ -2,24 +2,10 @@
 
 using Random = effolkronium::random_static;
 
-void ParticleGenerator::setCamera(GameObjectCamera *newCamera)
-{
-    camera = newCamera;
-}
-
-float ParticleGenerator::getRange() const
-{
-    return spawnRange;
-}
-
-void ParticleGenerator::setRange(float newRange)
-{
-    spawnRange = newRange;
-}
-
 ParticleGenerator::ParticleGenerator(){
 
 }
+
 
 ParticleGenerator::ParticleGenerator( float number, std::vector<Texture> &sprites, QVector3D particlesSpawnPoint, QVector3D particleDirection, bool renderPoint ){
     this->context = QOpenGLContext::currentContext();
@@ -87,6 +73,9 @@ void ParticleGenerator::initBuffers(){
 
 }
 
+/*
+ * Initialise the geometry of particles
+ */
 void ParticleGenerator::initGeometry(){   
 
     if ( ! renderPoint ){
@@ -103,6 +92,9 @@ void ParticleGenerator::initGeometry(){
 
 }
 
+/*
+ * Override first particle if all others are alive
+ */
 uint ParticleGenerator::firstUnusedParticle()
 {
     for (uint i = lastUsedParticle; i < maxParticles; ++i) {
@@ -118,8 +110,6 @@ uint ParticleGenerator::firstUnusedParticle()
             return i;
         }
     }
-
-    // override first particle if all others are alive
     lastUsedParticle = 0;
     return 0;
 }
@@ -128,8 +118,9 @@ void ParticleGenerator::sortParticles(){
     std::sort(&particles[0], &particles[maxParticles]);
 }
 
-
-
+/*
+ * Update particle (direction, spread, speed, etc.)
+ */
 void ParticleGenerator::update( float dt ){
     newParticles = (int)(dt*10000.0);
 
@@ -198,6 +189,9 @@ void ParticleGenerator::update( float dt ){
 
 }
 
+/*
+ * Render particles
+ */
 void ParticleGenerator::render( Shader * shader ){
     shader->useShaderProgram();
     QMatrix4x4 view = camera->getCameraComponent()->getViewMatrix();
@@ -301,6 +295,21 @@ void ParticleGenerator::render( Shader * shader ){
 
     }
 
+}
+
+void ParticleGenerator::setCamera(GameObjectCamera *newCamera)
+{
+    camera = newCamera;
+}
+
+float ParticleGenerator::getRange() const
+{
+    return spawnRange;
+}
+
+void ParticleGenerator::setRange(float newRange)
+{
+    spawnRange = newRange;
 }
 
 

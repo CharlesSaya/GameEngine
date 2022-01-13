@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QMediaPlayer>
+#include <QDir>
+#include <QMediaPlaylist>
 
 class SoundEngine : public QObject
 {
@@ -15,6 +17,8 @@ public:
     void walk();
     void jump();
     void ost();
+    void static ring();
+    void static grid();
 };
 
 #endif // SOUNDENGINE_H

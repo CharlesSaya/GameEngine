@@ -12,7 +12,9 @@ Texture::Texture(  std::string file, std::string location ){
     glFuncs = this->context->versionFunctions<QOpenGLFunctions_3_3_Core>();
 }
 
-
+/**
+ * initialize texture
+ */
 void Texture::initTexture(){
     this->texture = new QOpenGLTexture( this->image );
     this->texture->setWrapMode( QOpenGLTexture::ClampToBorder );
@@ -22,6 +24,9 @@ void Texture::initTexture(){
 
 }
 
+/**
+ * Bind texture in shader
+ */
 void Texture::bindTexture( uint textureUnit, Shader * shader ) const {
 
     glFuncs->glActiveTexture( GL_TEXTURE0 + textureUnit );
@@ -30,6 +35,9 @@ void Texture::bindTexture( uint textureUnit, Shader * shader ) const {
 
 }
 
+/**
+ * unbind texture in shader
+ */
 void Texture::unbindTexture( uint textureUnit ) const{
     glFuncs->glActiveTexture( GL_TEXTURE0 + textureUnit );
     this->texture->release();

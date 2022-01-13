@@ -32,7 +32,9 @@ Terrain::Terrain( float gridSize, float scale, std::string file, Texture & heigh
     initGeometry();
 }
 
-
+/*
+ *Init terrain with a plan
+ */
 void Terrain::initGeometry()
 {
 
@@ -81,11 +83,9 @@ void Terrain::initGeometry()
 
 }
 
-float Terrain::getMaxClimbableHeight() const
-{
-    return maxClimbableHeight;
-}
-
+/**
+ * get the normal of a triangle at the worldPosition
+ */
 QVector3D Terrain:: getFaceNormalAtPosition( QVector3D &worldPosition ){
     QImage &im = this->heightmap.getImage();
 
@@ -106,6 +106,9 @@ QVector3D Terrain:: getFaceNormalAtPosition( QVector3D &worldPosition ){
         return computeFaceNormal( planeVertices[( gridZ + 1 ) * im.width() + gridX].position, planeVertices[ ( gridZ + 1 ) * im.width() + ( gridX + 1 ) ].position, planeVertices[ gridZ * im.width() + ( gridX + 1 ) ].position );
 }
 
+/**
+ * Compute normal
+ */
 QVector3D Terrain::computeNormal( QVector2D texcoords ){
     float heightL = 0.0f;
     float heightR = 0.0f;
@@ -128,47 +131,17 @@ QVector3D Terrain::computeNormal( QVector2D texcoords ){
     return QVector3D( heightL - heightR, 2.0f, heightD - heightU ).normalized();
 }
 
+/**
+ * get the normal with vertex triangles
+ */
 QVector3D Terrain::computeFaceNormal( QVector3D& v0, QVector3D&  v1, QVector3D& v2  ){
     return QVector3D::crossProduct( v1 - v0, v2 - v0 ).normalized();
 }
 
-const std::string &Terrain::getOBJFilename() const
-{
-    return terrainOBJ;
-}
 
-
-float Terrain::getScale() const
-{
-    return scale;
-}
-
-float Terrain::getHeightOfTerrain  ( QVector3D &position ){
-    QImage &im = this->heightmap.getImage();
-
-    QVector3D relativePosition = position - QVector3D();
-
-    int gridX =  int( floor( relativePosition.x() / gridSquareSize ) );
-    int gridZ =  int( floor( relativePosition.z() / gridSquareSize ) );
-    if ( (gridX < 0) || (gridX > im.width() -1)  || (gridZ < 0) || (gridZ > im.height() - 1 ) )
-        return 0.f;
-
-
-    float posX = fmod(relativePosition.x(), gridSquareSize) / gridSquareSize;
-    float posZ = fmod(relativePosition.z(), gridSquareSize) / gridSquareSize;
-
-    if ( posX <= 1. - posZ )
-        return baricentricHeight( QVector3D( 0., heights[ gridZ * im.width() + gridX ], 0. ),
-                                  QVector3D( 1., heights[ ( gridZ + 1 ) * im.width() + gridX ], 0. ),
-                                  QVector3D( 0., heights[ gridZ * im.width() + ( gridX + 1 ) ], 1. ),
-                                  QVector2D( posX, posZ ) );
-    else
-        return baricentricHeight( QVector3D( 1., heights[ ( gridZ + 1 ) * im.width() + gridX ], 0. ),
-                                  QVector3D( 1., heights[ ( gridZ + 1 ) * im.width() + ( gridX + 1 ) ], 1. ),
-                                  QVector3D( 0., heights[ gridZ * im.width() + ( gridX + 1 ) ], 1. ),
-                                  QVector2D( posX, posZ ) );
-}
-
+/**
+ * get the normal of a triangle at the worldPosition
+ */
 float Terrain::getHeightTerrain(  QVector3D &position ){
     QImage &im = this->heightmap.getImage();
 
@@ -198,7 +171,9 @@ float Terrain::getHeightTerrain(  QVector3D &position ){
     }
 }
 
-
+/**
+ * Compute the baricentricHeight
+ */
 float Terrain::baricentricHeight(  QVector3D v0, QVector3D v1, QVector3D v2, QVector2D pos ){
 
     float det = ( v1.z() - v2.z() ) * ( v0.x() - v2.x() ) + ( v2.x() - v1.x() ) * (v0.z() - v2.z());
@@ -216,7 +191,6 @@ float Terrain::getHeight( QVector2D coords ){
     float height = im.pixelColor( coords.x(), coords.y() ).redF();
     return height * this->maximumHeight;
 }
-
 
 float Terrain::getMaximumHeight(){
     return maximumHeight;
@@ -238,7 +212,6 @@ float Terrain::getMinimumHeight(){
 
 std::vector<GLuint> &Terrain::getPlaneIndices()
 {
-
     return planeIndices;
 }
 
@@ -257,3 +230,19 @@ void Terrain::setPlaneVertices(const std::vector<VertexData> &newPlaneVertices)
     planeVertices = newPlaneVertices;
 }
 
+float Terrain::getMaxClimbableHeight() const
+{
+    return maxClimbableHeight;
+}
+
+
+const std::string &Terrain::getOBJFilename() const
+{
+    return terrainOBJ;
+}
+
+
+float Terrain::getScale() const
+{
+    return scale;
+}

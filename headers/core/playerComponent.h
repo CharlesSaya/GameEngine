@@ -9,6 +9,7 @@
 
 #include "headers/core/gameObject.h"
 #include "headers/core/gameObjectMesh.h"
+#include "headers/core/soundEngine.h"
 
 #include "headers/render/ray.h"
 #include "headers/render/shader.h"
