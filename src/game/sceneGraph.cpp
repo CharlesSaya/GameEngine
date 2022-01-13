@@ -81,7 +81,6 @@ void SceneGraph::update( float fixedStep ){
     // update player physics
       this->updatePhysics( goPlayer, fixedStep );
       goPlayer->rotate(goPlayer->getMoveComponent()->getRotationY());
-      qDebug()<< goPlayer->getPhysicsComponent()->getVelocity();
 
       // update main camera position
       float angleX = goCamera->getMoveComponent()->getRotationX().toEulerAngles()[0];

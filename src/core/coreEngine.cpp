@@ -15,7 +15,10 @@ CoreEngine::CoreEngine(int frames, QWidget *parent) :
     QOpenGLWidget(parent),
     frames(frames)
 {
-    this->resize( 1366, 768 );
+    QCursor cursor(Qt::BlankCursor);
+    QApplication::setOverrideCursor(cursor);
+    QApplication::changeOverrideCursor(cursor);
+//    this->resize( 1366, 768 );
 
     this->renderStep = frames / 1000.f;
     this->grabMouse();

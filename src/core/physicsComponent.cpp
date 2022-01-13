@@ -35,18 +35,18 @@ void PhysicsComponent::updatePhysics( float step,  GameObject * go, Terrain &ter
 
     QVector3D meanSpeed = (velocity + newVelocity) / 2.0 ;
 
-    if( abs( meanSpeed.x() )> this->maxSpeed )
-        meanSpeed.setX( sgn( meanSpeed.x() ) * this->maxSpeed   );
+//    if( abs( meanSpeed.x() )> this->maxSpeed )
+//        meanSpeed.setX( sgn( meanSpeed.x() ) * this->maxSpeed   );
 
-    if( abs( meanSpeed.y() )> 2 * this->maxSpeed )
-        meanSpeed.setY( sgn( meanSpeed.y() ) * 2 * this->maxSpeed  );
+//    if( abs( meanSpeed.y() )> 2 * this->maxSpeed )
+//        meanSpeed.setY( sgn( meanSpeed.y() ) * 2 * this->maxSpeed  );
 
-    if( abs( meanSpeed.z() )> this->maxSpeed )
-        meanSpeed.setZ( sgn( meanSpeed.z() ) * this->maxSpeed );
+//    if( abs( meanSpeed.z() )> this->maxSpeed )
+//        meanSpeed.setZ( sgn( meanSpeed.z() ) * this->maxSpeed );
 
-//    if( meanSpeed.length()  > this->maxSpeed )
-//        meanSpeed = this->maxSpeed * meanSpeed.normalized();
-
+    if( meanSpeed.length()  > this->maxSpeed )
+        meanSpeed = this->maxSpeed * meanSpeed.normalized();
+    meanSpeed.setY( meanSpeed.y() * 1.2f );
     if ( meanSpeed.length() != 0.0f ){
         go->move( meanSpeed * step );
         worldPos= go->getWorldPosition();

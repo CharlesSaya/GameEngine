@@ -58,7 +58,7 @@ private:
     float mass = 1.0;
     float friction = 1.0;
     float restitution = .0;
-    float maxSpeed = 2.0;
+    float maxSpeed = 5.0;
 
     QVector3D worldPos;
     float height;

@@ -78,8 +78,8 @@ int main(int argc, char *argv[])
     CoreEngine *coreEngine =  new CoreEngine( 60, mainWindow );
     mainWindow->setWindowTitle( "Game" );
     mainWindow->setCentralWidget( coreEngine );
-    mainWindow->show();
-//    mainWindow->showFullScreen();
+//    mainWindow->show();
+    mainWindow->showFullScreen();
 
 #else
     QLabel note("OpenGL Support required");
