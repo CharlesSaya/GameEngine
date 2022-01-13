@@ -62,9 +62,13 @@ private:
     QVector3D white = QVector3D( 1., 1., 1.);
     QVector3D red = QVector3D( 1., 0., 0. );
     QVector3D sandColor = QVector3D( 0.76, 0.70, 0.5 );
-    QVector3D snowColor = QVector3D( 0.78, 0.98, 0.95 );
+    QVector3D emberColor = QVector3D( 0.87, 0., 0.);
+    QVector3D brownColor = QVector3D( 0.5, 0.03, 0.03);
+    QVector3D yellowColor = QVector3D( 242. / 255.,125. / 255.,12. / 255.);
 
-    ParticleGenerator snowGenerator;
+    ParticleGenerator emberGenerator;
+    ParticleGenerator emberGenerator2;
+    ParticleGenerator emberGenerator3;
     ParticleGenerator sandPointGenerator;
     ParticleGenerator sandSpriteGenerator;
     ParticleGenerator leavesGenerator;

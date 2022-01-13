@@ -78,7 +78,7 @@ vec3 colorDirectionalLight(DirectionalLight light, vec3 normal, vec3 pos, vec4 l
 
     float shadow = shadowCalculation( lightSpacePos, normal);
 
-    return  ambient +  ( 1.0 -  shadow )* ( lambertian  );
+    return  ambient +  ( 1.0 -  shadow )* ( specular  + lambertian  );
 
 }
 

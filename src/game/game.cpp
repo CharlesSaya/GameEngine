@@ -109,7 +109,7 @@ void Game::initGame(){
 
     playerGO  = new GameObjectPlayer( "Player" , playerRenderer, playerMove, playerPhysics, playerCollider, playerComponent,terrainGO );
     playerGO->scale( QVector3D(0.8, 0.8, 0.8));
-    playerGO->move( QVector3D(getHeightObject(26.0543,23.3017) ) );
+        playerGO->move( QVector3D(getHeightObject(26.0543,23.3017) ) );
 
     // Sphere
     std::vector<Texture> sphereTextures;

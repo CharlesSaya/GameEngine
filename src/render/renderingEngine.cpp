@@ -77,10 +77,14 @@ void RenderingEngine::initParticles(){
 
     // SNOW PARTICLES
 
-    Texture snowSprite = Texture( "../GameEngine/textures/snowflakes.png", "sprite" );
+    emberGenerator = ParticleGenerator( 2000, QVector3D( 128.0, 0., 97 ), QVector3D( -1.0, 0.0, 0.0 ), emberColor,  true );
+    emberGenerator.setRange( 31 );
 
-    snowGenerator = ParticleGenerator( 3000, QVector3D( 0.0, 0., 97 ), QVector3D( 1.0, 0.0, 0.0 ), snowColor,  true );
-    snowGenerator.setRange( 31 );
+    emberGenerator2 = ParticleGenerator( 2000, QVector3D( 128.0, 0., 97 ), QVector3D( -1.0, 0.0, 0.0 ), brownColor,  true );
+    emberGenerator2.setRange( 31 );
+
+    emberGenerator3 = ParticleGenerator( 2000, QVector3D( 128.0, 0., 97 ), QVector3D( -1.0, 0.0, 0.0 ), yellowColor,  true );
+    emberGenerator3.setRange( 31 );
 
     // SAND PARTICLES
 
@@ -121,7 +125,7 @@ void RenderingEngine::initLensFlares(){
     Texture texture7 = Texture( "../GameEngine/textures/lensFlare/tex7.png", "flare" );
     Texture texture8 = Texture( "../GameEngine/textures/lensFlare/tex8.png", "flare" );
 
-    std::vector<FlareTexture> flareTextures  ={ FlareTexture( sun, 0.25),
+    std::vector<FlareTexture> flareTextures  ={ FlareTexture( sun, 0.2),
                                                 FlareTexture( texture6, 0.15),
                                                 FlareTexture( texture4, 0.05),
                                                 FlareTexture( texture2, 0.05),
@@ -510,8 +514,14 @@ void RenderingEngine::renderScene( SceneGraph &sceneGraph,  float deltaTime ){
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
-//    snowGenerator.update( deltaTime );
-//    snowGenerator.render( pointParticleShader );
+    emberGenerator.update( deltaTime );
+    emberGenerator.render( pointParticleShader );
+
+    emberGenerator2.update( deltaTime );
+    emberGenerator2.render( pointParticleShader );
+
+    emberGenerator3.update( deltaTime );
+    emberGenerator3.render( pointParticleShader );
 
     sandSpriteGenerator.update( deltaTime );
     sandSpriteGenerator.render( particleShader );
@@ -569,7 +579,9 @@ GameObjectCamera *RenderingEngine::getMainCamera() const
 void RenderingEngine::setMainCamera(GameObjectCamera *newMainCamera)
 {
     mainCamera = newMainCamera;
-    snowGenerator.setCamera( mainCamera );
+    emberGenerator.setCamera( mainCamera );
+    emberGenerator2.setCamera( mainCamera );
+    emberGenerator3.setCamera( mainCamera );
     sandPointGenerator.setCamera( mainCamera );
     sandSpriteGenerator.setCamera( mainCamera );
     leavesGenerator.setCamera( mainCamera );

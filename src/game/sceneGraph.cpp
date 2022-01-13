@@ -247,30 +247,43 @@ Node * SceneGraph::getRoot(){
 
 void SceneGraph::checkCollectibleNumber(GameObjectMesh *grid)
 {
-    bool stopGrid0 = false;
-    if( grid->getName()=="Grid0" && goPlayer->getPlayerComponent()->getCollectibleNumber()>=3 && !stopGrid0 ){
+
+    if( grid->getName()=="Grid0" && goPlayer->getPlayerComponent()->getCollectibleNumber()>=3){
         elapsedTime = timer.elapsed() -elapsedTime;
         grid->move(0.0f,gridSpeed*elapsedTime,0.0f);
+        if(!gridSoundPlayed){
+            SoundEngine().grid();
+            gridSoundPlayed=true;
+        }
         if(grid->getWorldPosition().y()<-10.0f){
-            stopGrid0 = true;
+            grid->destroy();
             elapsedTime = 0;
+
         }
     }
-    bool stopGrid1 = false;
-    if( grid->getName()=="Grid1" && goPlayer->getPlayerComponent()->getCollectibleNumber()>=6 && !stopGrid1){
+    if( grid->getName()=="Grid1" && goPlayer->getPlayerComponent()->getCollectibleNumber()>=6){
         elapsedTime = timer.elapsed() -elapsedTime;
         grid->move(0.0f,gridSpeed*elapsedTime,0.0f);
+        if(!gridSoundPlayed){
+            SoundEngine().grid();
+            gridSoundPlayed=true;
+        }
         if(grid->getWorldPosition().y()<-10.0f){
-            stopGrid1 = true;
+            grid->destroy();
             elapsedTime = 0;
+            gridSoundPlayed = false;
         }
     }
-    bool stopGrid2 = false;
-    if( grid->getName()=="Grid2"&& goPlayer->getPlayerComponent()->getCollectibleNumber()>=9 && !stopGrid2){
+    if( grid->getName()=="Grid2"&& goPlayer->getPlayerComponent()->getCollectibleNumber()>=9){
         elapsedTime = timer.elapsed() -elapsedTime;
         grid->move(0.0f,gridSpeed*elapsedTime,0.0f);
-        if(grid->getWorldPosition().y()<-10.0f){
-            stopGrid2 = true;
+        if(!gridSoundPlayed){
+            SoundEngine().grid();
+            gridSoundPlayed=true;
+        }
+        if(grid->getWorldPosition().y()<-20.0f){
+            grid->destroy();
+            gridSoundPlayed = false;
         }
     }
 

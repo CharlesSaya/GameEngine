@@ -144,7 +144,7 @@ void FlareGenerator::render( float brightness, Shader * shader ){
         return;
 
     QVector2D sunToCenter = QVector2D( 0.5, 0.5 ) - sunPosition;
-    float relativeBrightness = 1.0f - ( sunToCenter.length() / 0.7f );
+    float relativeBrightness = 1.0f - ( sunToCenter.length()  );
 
     if( relativeBrightness < 0.0f)
         return;
@@ -159,7 +159,7 @@ void FlareGenerator::render( float brightness, Shader * shader ){
     shader->setUniformValue( "projection", camera->getCameraComponent()->getProjection() );
 
     renderFlare( flareTextures[0], shader );
-    shader->setUniformValue("brightness", relativeBrightness * 0.95f );
+    shader->setUniformValue("brightness", relativeBrightness  );
 
     for( uint i = 1; i< flareTextures.size(); i++ )
         renderFlare( flareTextures[i], shader );
