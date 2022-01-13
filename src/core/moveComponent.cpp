@@ -1,11 +1,19 @@
 #include "headers/core/moveComponent.h"
 
+/**
+ * @brief Constructeur
+ * @param terrain
+ * @param parent
+ */
 
 MoveComponent::MoveComponent( Terrain & terrain, QObject * parent){
-
     this->terrain = terrain;
-
 }
+
+/**
+ * @brief Slot activé lorsque le joueur appuie sur une touche du clavier
+ * @param key
+ */
 
 void MoveComponent::pressedInput(QKeyEvent * key){
     switch( key->key() ){
@@ -54,16 +62,10 @@ void MoveComponent::pressedInput(QKeyEvent * key){
     }
 }
 
-QQuaternion MoveComponent::getRotationY()
-{
-    return rotationY;
-}
-
-QQuaternion MoveComponent::getRotationX()
-{
-    return rotationX;
-}
-
+/**
+ * @brief Slot activé lorsque le joueur relâche sur une touche du clavier
+ * @param key
+ */
 
 void MoveComponent::releasedInput(QKeyEvent * key){
     switch( key->key() ){
@@ -111,6 +113,13 @@ void MoveComponent::releasedInput(QKeyEvent * key){
     }
 }
 
+/**
+ * @brief Slot activé lorsque la souris est bougée
+ * @param pos
+ * @param resetX
+ * @param resetY
+ */
+
 void MoveComponent::mouseMoveEvent(QVector2D pos, bool resetX, bool resetY ){
     float hAngle = 0., vAngle = 0.;
     float sensitivity = 0.05f;
@@ -141,14 +150,15 @@ void MoveComponent::mouseMoveEvent(QVector2D pos, bool resetX, bool resetY ){
     pitch = 0.0f;
 }
 
+// Getters & Setters
 
-void MoveComponent::update( float step ){
-
-//    float height;
-//    QVector3D worldPos;
-
-//      worldPos = transform.getWorldPosition();
-//      height = terrain.getHeight( worldPos );
-//      transform.getPosition().setY( height );
-
+QQuaternion MoveComponent::getRotationY()
+{
+    return rotationY;
 }
+
+QQuaternion MoveComponent::getRotationX()
+{
+    return rotationX;
+}
+

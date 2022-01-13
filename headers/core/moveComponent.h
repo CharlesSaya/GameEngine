@@ -28,7 +28,6 @@ public:
     MoveComponent( Terrain & terrain, QObject * parent = 0  );
 
     void input( QKeyEvent * key  );
-    void update( float step );
 
     QQuaternion getRotationY();
     QQuaternion getRotationX();

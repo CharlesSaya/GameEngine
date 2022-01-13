@@ -4,6 +4,12 @@ CubeMap::CubeMap(){
 
 }
 
+/**
+ * @brief Constructeur
+ * @param size
+ * @param shader
+ * @param textures
+ */
 CubeMap::CubeMap( int size, Shader * shader, std::vector< Texture > & textures ){
     this->size = size;
     this->shader = shader;
@@ -19,6 +25,10 @@ CubeMap::CubeMap( int size, Shader * shader, std::vector< Texture > & textures )
     initGeometry();
     initTextures();
 }
+
+/**
+ * @brief Initialise la géométrie du cube
+ */
 
 void CubeMap::initGeometry(){
 
@@ -166,6 +176,10 @@ void CubeMap::initGeometry(){
 
 }
 
+/**
+ * @brief Initialise les textures à plaquer sur la CubeMap
+ */
+
 void CubeMap::initTextures(){
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
@@ -231,6 +245,10 @@ void CubeMap::initTextures(){
 //    this->skyboxTexture->generateMipMaps();
 }
 
+/**
+ * @brief Bind la texture au programme courant
+ * @param textureUnit
+ */
 void CubeMap::bindTexture( uint textureUnit ){
 
     glActiveTexture(GL_TEXTURE0);
@@ -238,9 +256,20 @@ void CubeMap::bindTexture( uint textureUnit ){
     shader->setUniformValue( "skybox", textureUnit );
 }
 
+/**
+ * @brief Unbind la texture au programme courant
+ * @param textureUnit
+ */
 void CubeMap::unbindTexture(){
+    glActiveTexture(GL_TEXTURE0);
     this->skyboxTexture->release();
 }
+
+/**
+ * @brief Dessine la cubemap
+ * @param camera
+ * @param model
+ */
 
 void CubeMap::render( GameObjectCamera * camera, QMatrix4x4 model ){
     shader->useShaderProgram();
@@ -278,6 +307,7 @@ void CubeMap::render( GameObjectCamera * camera, QMatrix4x4 model ){
 
 }
 
+// Getters & Setters
 Shader *CubeMap::getShader() const
 {
     return shader;

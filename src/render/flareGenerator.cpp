@@ -1,13 +1,17 @@
 #include "headers/render/flareGenerator.h"
 
-void FlareGenerator::setCamera(GameObjectCamera *newCamera)
-{
-    camera = newCamera;
-}
+// Classe générant un effet de Lens Flare
+
 
 FlareGenerator::FlareGenerator(){
 
 }
+/**
+ * @brief Constructeur
+ * @param sun
+ * @param textures
+ * @param spacing
+ */
 
 FlareGenerator::FlareGenerator(const DirectionalLight &sun, const std::vector<FlareTexture> &textures, float spacing ) : sun(sun),
     flareTextures(textures)
@@ -19,6 +23,10 @@ FlareGenerator::FlareGenerator(const DirectionalLight &sun, const std::vector<Fl
     initGeometry();
 }
 
+/**
+ * @brief Initialise les VertexBuffer
+ */
+
 void FlareGenerator::initBuffers(){
 
     this->vBuffer = QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
@@ -29,6 +37,9 @@ void FlareGenerator::initBuffers(){
 
 }
 
+/**
+ * @brief Initialise la géométrie d'un Quad
+ */
 void FlareGenerator::initGeometry(){
 
     particleData.push_back( { QVector3D( -1.0f,  1.0f, 0.0f ), QVector3D( 0.0f,  0.0f, 1.0f ), QVector2D( 0.0f, 1.0f ) });
@@ -41,6 +52,11 @@ void FlareGenerator::initGeometry(){
 
 }
 
+/**
+ * @brief Retourne la position du soleil dans l'espace écran
+ * @return
+ */
+
 QVector2D FlareGenerator::sunScreenPosition(){
     QVector4D sunPosition = camera->getCameraComponent()->getProjection() * camera->getCameraComponent()->getViewMatrix() * QVector4D( sun.getLightPosition(), 1.0 );
 
@@ -51,12 +67,22 @@ QVector2D FlareGenerator::sunScreenPosition(){
     return QVector2D( x, y );
 }
 
+/**
+ * @brief Calcule la position des différentes textures créant le Lens Flare
+ * @param sunToCenter
+ * @param sunPosition
+ */
 void FlareGenerator::computeFlaresPosition( QVector2D sunToCenter, QVector2D sunPosition ){
     for( uint i = 0 ; i < flareTextures.size(); i++ ){
         flareTextures[i].setScreenPos( QVector2D( sunPosition + i * spacing * sunToCenter ) );
     }
 }
 
+/**
+ * @brief Dessine un quad sur lequel est plaqué une texture
+ * @param flare
+ * @param shader
+ */
 void FlareGenerator::renderFlare( FlareTexture flare, Shader * shader ){
     flare.getTexture().bindTexture( 0, shader );
 
@@ -101,6 +127,11 @@ void FlareGenerator::renderFlare( FlareTexture flare, Shader * shader ){
     glFuncs->glDrawArrays( GL_TRIANGLE_STRIP, 0, 4 );
 }
 
+/**
+ * @brief Combine les différents quads pour former le Lens Flare
+ * @param brightness
+ * @param shader
+ */
 void FlareGenerator::render( float brightness, Shader * shader ){
 
     QMatrix4x4 view = camera->getCameraComponent()->getViewMatrix();
@@ -140,3 +171,9 @@ void FlareGenerator::screenResized( int width, int height  ){
 
 }
 
+// Getters & Setters
+
+void FlareGenerator::setCamera(GameObjectCamera *newCamera)
+{
+    camera = newCamera;
+}

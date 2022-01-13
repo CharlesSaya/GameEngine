@@ -453,7 +453,7 @@ void RenderingEngine::renderGeometryData( SceneGraph &sceneGraph ){
 }
 
 /**
- * @brief Rend la scène sur un quad en combinant les rendus sur texturedd
+ * @brief Rend la scène sur un quad en combinant les rendus sur texture
  */
 
 void RenderingEngine::renderPostProcess()

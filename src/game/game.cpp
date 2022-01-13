@@ -621,7 +621,6 @@ void Game::initGame(){
 }
 
 void Game::input( QKeyEvent * key  ){
-    this->sceneGraph.input( key );
 }
 
 /**

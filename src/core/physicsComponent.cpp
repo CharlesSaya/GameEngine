@@ -15,16 +15,16 @@ PhysicsComponent::PhysicsComponent( PhysicsEngine &physicsEngine,  QObject * par
 void PhysicsComponent::updatePhysics( float step,  GameObject * go, Terrain &terrain ){
 
     worldPos= go->getWorldPosition();
-    height = terrain.getHeightOfTerrain( worldPos );
+    height = terrain.getHeightTerrain( worldPos );
 
-    if(playerIsOnGround()&& !(height > worldPos.y() && acos( QVector3D::dotProduct( terrain.getFaceNormalAtPosition( worldPos ), QVector3D( 0.0, 1.0, 0.0) ) ) * 180 / M_PI > 60.0)|| getResting()) canJump=true;
+    if(playerIsOnGround()&& !(height > worldPos.y() && acos( QVector3D::dotProduct( terrain.getFaceNormalAtPosition( worldPos ), QVector3D( 0.0, 1.0, 0.0) ) ) * 180 / M_PI > 60.0) || getResting() ) canJump=true;
     else canJump =false;
 
     move(*go->getTransform());
     acceleration = - physicsEngine.getDamp() * velocity;
 
-//    if ( !resting )
-//        acceleration += physicsEngine.getGravity();
+    if ( !resting )
+        acceleration += physicsEngine.getGravity();
 
     acceleration /= mass;
 
@@ -38,7 +38,7 @@ void PhysicsComponent::updatePhysics( float step,  GameObject * go, Terrain &ter
     if ( meanSpeed.length() != 0.0f ){
         go->move( meanSpeed * step );
         worldPos= go->getWorldPosition();
-        height = terrain.getHeightOfTerrain( worldPos );
+        height = terrain.getHeightTerrain( worldPos );
         QVector3D normal =  terrain.getFaceNormalAtPosition( worldPos );
         if( height > worldPos.y() && acos( QVector3D::dotProduct( normal, QVector3D( 0.0, 1.0, 0.0) ) ) * 180 / M_PI > 60.0 )
             go->move( - meanSpeed * step );

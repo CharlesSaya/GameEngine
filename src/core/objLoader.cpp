@@ -1,5 +1,12 @@
 #include "headers/core/objloader.h"
 
+/**
+ * @brief Sépare une ligne représetant une face dans le fichier OBJ
+ * @param line
+ * @param delimiter
+ * @return
+ */
+
 vector<string> split(  string line,  string delimiter ){
 
     size_t pos = 0;
@@ -18,6 +25,18 @@ vector<string> split(  string line,  string delimiter ){
 
     return list;
 }
+
+/**
+ * @brief Associe chaque triangle à ses verticex/normales/texcoord
+ * @param line
+ * @param vertexDatas
+ * @param faces
+ * @param positions
+ * @param normals
+ * @param textureCoords
+ * @param hasNormal
+ * @param hasTexcoord
+ */
 
 void processVertex( string line,
                     vector<VertexData> & vertexDatas,
@@ -53,6 +72,13 @@ void processVertex( string line,
 
     }
 }
+
+/**
+ * @brief Charge l'objet afin de retourner les données parsées
+ * @param file
+ * @param vertexDatas
+ * @param faces
+ */
 
 void ObjLoader::loadObject( string file, vector<VertexData> & vertexDatas, vector<int> &faces )
 {

@@ -1,15 +1,28 @@
 #include "headers/core/transform.h"
 
+/**
+ * @brief Constructeur
+ * @param parent
+ */
 Transform::Transform( QObject * parent ) : QObject(parent) {
     this->rotation = QQuaternion();
     this->scale = QVector3D(1.,1.,1.);
     this->position = QVector3D();
     this->lastWorldPosition = QVector3D();
 }
+/**
+ * @brief Constructeur
+ * @param position
+ */
 
 Transform::Transform( QVector3D &position ){
     this->position = position;
 }
+
+/**
+ * @brief Constructeur
+ * @param transform
+ */
 
 Transform::Transform( Transform & transform ){
     this->rotation = transform.rotation;
@@ -18,6 +31,10 @@ Transform::Transform( Transform & transform ){
     this->lastWorldPosition = transform.position;
 }
 
+/**
+ * @brief Applique une translation sur le transform
+ * @param vector
+ */
 
 void Transform::applyTranslation( QVector3D vector ){
     this->lastWorldPosition = this->getWorldPosition();
@@ -25,17 +42,30 @@ void Transform::applyTranslation( QVector3D vector ){
     emit transformed();
 }
 
+/**
+ * @brief Applique une rotation sur le transform
+ * @param quaternion
+ */
 
 void Transform::applyRotation( QQuaternion quaternion ){
     this->lastWorldPosition = this->getWorldPosition();
     this->rotation = quaternion;
 }
 
+/**
+ * @brief Applique une mise à l'échelle sur le transform
+ * @param vector
+ */
 void Transform::applyScale( QVector3D vector ){
     this->lastWorldPosition = this->getWorldPosition();
     this->scale = ( vector );
     emit transformed();
 }
+
+/**
+ * @brief Applique une mise à l'échelle sur le transform
+ * @param scale
+ */
 
 void Transform::applyScale( float scale ){
     this->lastWorldPosition = this->getWorldPosition();
@@ -43,7 +73,9 @@ void Transform::applyScale( float scale ){
     emit transformed();
 }
 
-
+/**
+ * @brief Remets à nul toutes les transformations et positions
+ */
 void Transform::resetModel(){
     this->model.setToIdentity();
     this->rotation = QQuaternion();
@@ -52,6 +84,11 @@ void Transform::resetModel(){
     this->lastWorldPosition = this->getWorldPosition();
     emit transformed();
 }
+
+/**
+ * @brief Retourne la matrice modèle associé au Transform
+ * @return
+ */
 
 QMatrix4x4 & Transform::getModel()
 {
@@ -62,6 +99,8 @@ QMatrix4x4 & Transform::getModel()
     this->model = tr * rt * sc;
     return this->model;
 }
+
+//Getters & Setters
 
 QVector3D &Transform::getPosition()
 {

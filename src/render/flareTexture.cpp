@@ -1,5 +1,6 @@
 #include "headers/render/flareTexture.h"
 
+// Getters & Setters
 const Texture &FlareTexture::getTexture() const
 {
     return texture;

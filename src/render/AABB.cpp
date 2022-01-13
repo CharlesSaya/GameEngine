@@ -2,6 +2,10 @@
 
 #include <vector>
 
+/**
+ * @brief Constructeur
+ */
+
 AABB::AABB(){
 
     this->context = QOpenGLContext::currentContext();
@@ -13,6 +17,10 @@ AABB::AABB(){
 //    AABBindexesBuffer.create();
 }
 
+/**
+ * @brief Constructeur
+ * @param points
+ */
 AABB::AABB( std::vector<VertexData> &points ){
 
     for( unsigned int i = 0; i < points.size(); i++){
@@ -48,48 +56,9 @@ AABB::AABB( std::vector<VertexData> &points ){
 //    AABBindexesBuffer.create();
 }
 
-void AABB::resizeAABB( AABB& bBox ){
-    if (min.x() > bBox.getMin().x())
-        min.setX( bBox.getMin().x() );
-
-    if (min.y() > bBox.getMin().y())
-        min.setY( bBox.getMin().y() );
-
-    if (min.z() < bBox.getMin().z())
-        min.setZ( bBox.getMin().z() );
-
-    if (max.x() < bBox.getMax().x())
-        max.setX( bBox.getMax().x() );
-
-    if (max.y() < bBox.getMax().y())
-        max.setY( bBox.getMax().y() );
-
-    if (max.z() > bBox.getMax().z())
-        max.setZ( bBox.getMax().z());
-
-
-    minDefault = min;
-    maxDefault = max;
-    lastMin = QVector3D( min);
-    lastMax = QVector3D( max);
-
-}
-
-void AABB::resetAABB(){
-    min  = QVector3D(__FLT_MAX__ ,__FLT_MAX__, -__FLT_MAX__) ;
-    max = QVector3D(-__FLT_MAX__ ,-__FLT_MAX__,__FLT_MAX__) ;
-    lastMin = QVector3D(__FLT_MAX__ ,__FLT_MAX__, -__FLT_MAX__) ;
-    lastMax = QVector3D(-__FLT_MAX__ ,-__FLT_MAX__,__FLT_MAX__) ;
-}
-
-void AABB::updateAABB( const  QMatrix4x4 &model ) {
-    lastMin = QVector3D( min);
-    lastMax = QVector3D( max);
-    min = model * minDefault;
-    max = model * maxDefault;
-
-}
-
+/**
+ * @brief Initialize les données à insérer dans le VertexBuffer afin de les rendre sur l'écran
+ */
 void AABB::initBuffers(){
 
     QVector3D minD = minDefault;
@@ -132,7 +101,66 @@ void AABB::initBuffers(){
 
 }
 
-bool AABB::intersect(const Ray & ray) {
+/**
+ * @brief Fonction permettant de redimensionner la boundingBox
+ * @param bBox
+ */
+void AABB::resizeAABB( AABB& bBox ){
+    if (min.x() > bBox.getMin().x())
+        min.setX( bBox.getMin().x() );
+
+    if (min.y() > bBox.getMin().y())
+        min.setY( bBox.getMin().y() );
+
+    if (min.z() < bBox.getMin().z())
+        min.setZ( bBox.getMin().z() );
+
+    if (max.x() < bBox.getMax().x())
+        max.setX( bBox.getMax().x() );
+
+    if (max.y() < bBox.getMax().y())
+        max.setY( bBox.getMax().y() );
+
+    if (max.z() > bBox.getMax().z())
+        max.setZ( bBox.getMax().z());
+
+
+    minDefault = min;
+    maxDefault = max;
+    lastMin = QVector3D( min);
+    lastMax = QVector3D( max);
+
+}
+
+/**
+ * @brief Remet à zéro les bornes de la boundingBox
+ */
+void AABB::resetAABB(){
+    min  = QVector3D(__FLT_MAX__ ,__FLT_MAX__, -__FLT_MAX__) ;
+    max = QVector3D(-__FLT_MAX__ ,-__FLT_MAX__,__FLT_MAX__) ;
+    lastMin = QVector3D(__FLT_MAX__ ,__FLT_MAX__, -__FLT_MAX__) ;
+    lastMax = QVector3D(-__FLT_MAX__ ,-__FLT_MAX__,__FLT_MAX__) ;
+}
+
+/**
+ * @brief Mets à jour la position de la boundingBox dans le monde
+ * @param model
+ */
+void AABB::updateAABB( const  QMatrix4x4 &model ) {
+    lastMin = QVector3D( min);
+    lastMax = QVector3D( max);
+    min = model * minDefault;
+    max = model * maxDefault;
+
+}
+
+/**
+ * @brief Fonction testant la collision AABB-Ray
+ * @param ray
+ * @return
+ */
+
+bool AABB::intersectRay(const Ray & ray) {
     float t;
     QVector3D rayDirection = ray.getDirection();
     QVector3D rayOrigin = ray.getOrigin();
@@ -184,6 +212,11 @@ bool AABB::intersect(const Ray & ray) {
 
 }
 
+/**
+ * @brief Dessine la boundingBox
+ * @param shader
+ */
+
 void AABB::drawAABB( Shader * shader ){
     this->initBuffers();
 
@@ -203,6 +236,9 @@ void AABB::drawAABB( Shader * shader ){
 
     glFuncs->glDrawElements(GL_LINES, indexCount, GL_UNSIGNED_INT, 0);
 }
+
+
+//Getters & Setters
 
 float AABB::getHeight(){
     return this->max.y() - this->min.y();
