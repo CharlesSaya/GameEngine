@@ -23,7 +23,6 @@ uniform sampler2D shadowTexture;
 uniform sampler2D normalTexture;
 uniform sampler2D positionTexture;
 uniform sampler2D bloomTexture;
-uniform sampler2D lightSpacePosTexture;
 
 uniform mat4 lightSpaceMatrix;
 uniform mat4 view;
@@ -116,7 +115,6 @@ void main()
 
     vec4 pos           = texture( positionTexture, v_texcoord.xy );
     vec4 lightSpacePos = lightSpaceMatrix * pos;
-//    vec4 lightSpacePos = texture( lightSpacePosTexture, v_texcoord.xy );
     vec3 viewDir       = normalize( cameraPosition - pos.rgb);
     vec3 normal        = normalize( texture( normalTexture, v_texcoord.xy ).rgb);
 

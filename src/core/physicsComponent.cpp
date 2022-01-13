@@ -21,20 +21,19 @@ void PhysicsComponent::updatePhysics( float step,  GameObject * go, Terrain &ter
     height = terrain.getHeightTerrain( worldPos );
 
     if(playerIsOnGround()&& !(height > worldPos.y() && acos( QVector3D::dotProduct( terrain.getFaceNormalAtPosition( worldPos ), QVector3D( 0.0, 1.0, 0.0) ) ) * 180 / M_PI > 60.0) || getResting() ) canJump=true;
-//    else canJump =false;
+    else canJump =false;
 
     move(*go->getTransform());
     acceleration = - physicsEngine.getDamp() * velocity;
 
-//    if ( !resting )
-//        acceleration += physicsEngine.getGravity();
+    if ( !resting )
+        acceleration += physicsEngine.getGravity();
 
     acceleration /= mass;
 
     QVector3D newVelocity  = velocity + acceleration * step;
 
     QVector3D meanSpeed = (velocity + newVelocity) / 2.0 ;
-    QVector3D meanSpeedMinusY = QVector3D( meanSpeed.x(), 0.0, meanSpeed.z() ) ;
 
     if( abs( meanSpeed.x() )> this->maxSpeed )
         meanSpeed.setX( sgn( meanSpeed.x() ) * this->maxSpeed   );
@@ -47,6 +46,7 @@ void PhysicsComponent::updatePhysics( float step,  GameObject * go, Terrain &ter
 
 //    if( meanSpeed.length()  > this->maxSpeed )
 //        meanSpeed = this->maxSpeed * meanSpeed.normalized();
+
 
     if ( meanSpeed.length() != 0.0f ){
         go->move( meanSpeed * step );
@@ -120,7 +120,7 @@ void PhysicsComponent::move(Transform & transform){
                 if(canJump){
                     velocity.setY(0.1f);
                     velocity +=  jump ;
-//                    canJump = false;
+                    canJump = false;
                     if(!playedMusic){
                         SoundEngine().jump();
                         playedMusic = true;

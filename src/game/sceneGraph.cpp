@@ -1,5 +1,14 @@
 #include "headers/game/sceneGraph.h"
 
+const std::vector<GameObjectMesh *> &SceneGraph::getGoMeshes() const
+{
+    return goMeshes;
+}
+
+GameObjectPlayer *SceneGraph::getGoPlayer() const
+{
+    return goPlayer;
+}
 
 SceneGraph::SceneGraph(){
 
@@ -30,15 +39,10 @@ SceneGraph::SceneGraph( std::vector<GameObject *>& goList,
 
     this->physicsEngine = physicsEngine;
     this->colliderEngine = colliderEngine;
+
     timer.start();
 }
 
-
-/**
- * @brief Construit le graph de scene
- * @param go
- * @return
- */
 Node * SceneGraph::buildGraphScene( GameObject * go ){
     Node * node = new Node();
     node->gameObject  = go;
@@ -70,16 +74,14 @@ Node * SceneGraph::buildGraphScene( GameObject * go ){
     return node;
 }
 
+void SceneGraph::input(QKeyEvent *key){
+}
 
-/*
- * Update the physics, position and BVH gameObjects
- * Compute Collision
- */
 void SceneGraph::update( float fixedStep ){
     // update player physics
       this->updatePhysics( goPlayer, fixedStep );
       goPlayer->rotate(goPlayer->getMoveComponent()->getRotationY());
-//      qDebug()<< goPlayer->getWorldPosition();
+      qDebug()<< goPlayer->getPhysicsComponent()->getVelocity();
 
       // update main camera position
       float angleX = goCamera->getMoveComponent()->getRotationX().toEulerAngles()[0];
@@ -131,9 +133,7 @@ void SceneGraph::update( float fixedStep ){
     destroyGOs();
 
 }
-/*
- * Destroys gameObjects
- */
+
 void SceneGraph::destroyGOs(){
     std::vector<GameObjectMesh *>::iterator itA;
 
@@ -147,9 +147,6 @@ void SceneGraph::destroyGOs(){
     }
 }
 
-/*
- * Render the scene Graph
- */
 void SceneGraph::render( GameObjectCamera * camera, Shader * shader  ){
 
     this->renderMesh( goPlayer, camera, shader );
@@ -161,9 +158,6 @@ void SceneGraph::render( GameObjectCamera * camera, Shader * shader  ){
 
 }
 
-/*
- * Render BVH
- */
 void SceneGraph::renderBVH( Node * node, Shader * shader ){
     node->nodeBoundingBox.drawAABB(shader);
 
@@ -177,7 +171,6 @@ void SceneGraph::renderBVH( Node * node, Shader * shader ){
         }
     }
 }
-
 
 void SceneGraph::updateBVH( Node * node ){
 
@@ -210,10 +203,6 @@ void SceneGraph::updateBVH( Node * node ){
     }
 }
 
-
-/**
- * @brief Met à jour la posiitions des BVH
- */
 void SceneGraph::updateALLBVH(){
     // update children AABB
     this->root = new Node();
@@ -228,11 +217,6 @@ void SceneGraph::updateALLBVH(){
 
 }
 
-
-/**
- * @brief Permet de detecter les collisions rayon/BVH
- * @param node
- */
 void SceneGraph::rayBVHCollision( Node * node ){
     bool collision = node->nodeBoundingBox.intersectRay( goPlayer->getPlayerComponent()->getRay() );
     if( node->children.empty() && collision ){
@@ -254,88 +238,48 @@ void SceneGraph::rayBVHCollision( Node * node ){
     }
 }
 
-
-/**
- * @brief Permet de savoir si un noeud contient des enfants
- * @param node
- * @return
- */
 bool SceneGraph::isLeaf( Node * node ){
     return node->children.empty();
-}
-
-/*
- * Check the number of collectible in player inventory
- * If there is a certain quantity, open grids
- */
-/**
- * @brief Vérifie le nombre de collectible dans l'inventaire du joueur, s'il y en a un certain nombre, cela ouvre des grilles
- * @param grid
- */
-void SceneGraph::checkCollectibleNumber(GameObjectMesh *grid)
-{
-
-    if( grid->getName()=="Grid0" && goPlayer->getPlayerComponent()->getCollectibleNumber()>=3){
-        elapsedTime = timer.elapsed() -elapsedTime;
-        grid->move(0.0f,gridSpeed*elapsedTime,0.0f);
-        if(!gridSoundPlayed){
-            SoundEngine().grid();
-            gridSoundPlayed=true;
-        }
-        if(grid->getWorldPosition().y()<-10.0f){
-            grid->destroy();
-            elapsedTime = 0;
-
-        }
-    }
-    if( grid->getName()=="Grid1" && goPlayer->getPlayerComponent()->getCollectibleNumber()>=3){
-        elapsedTime = timer.elapsed() -elapsedTime;
-        grid->move(0.0f,gridSpeed*elapsedTime,0.0f);
-        if(!gridSoundPlayed){
-            SoundEngine().grid();
-            gridSoundPlayed=true;
-        }
-        if(grid->getWorldPosition().y()<-10.0f){
-            grid->destroy();
-            elapsedTime = 0;
-            gridSoundPlayed = false;
-        }
-    }
-    if( grid->getName()=="Grid2"&& goPlayer->getPlayerComponent()->getCollectibleNumber()>=9){
-        elapsedTime = timer.elapsed() -elapsedTime;
-        grid->move(0.0f,gridSpeed*elapsedTime,0.0f);
-        if(!gridSoundPlayed){
-            SoundEngine().grid();
-            gridSoundPlayed=true;
-        }
-        if(grid->getWorldPosition().y()<-20.0f){
-            grid->destroy();
-            gridSoundPlayed = false;
-        }
-    }
-
-
-}
-
-/**
- * @brief Fait tourner les anneaux sur eux-mêmes
- * @param ring
- */
-void SceneGraph::rotateRing(GameObjectMesh *ring)
-{
-    ring->rotate(QVector3D(0.0f,1.0f,0.0f),timer.elapsed()/10);
-}
-
-const std::vector<GameObjectMesh *> &SceneGraph::getGoMeshes() const
-{
-    return goMeshes;
-}
-
-GameObjectPlayer *SceneGraph::getGoPlayer() const
-{
-    return goPlayer;
 }
 
 Node * SceneGraph::getRoot(){
     return this->root;
 }
+
+void SceneGraph::checkCollectibleNumber(GameObjectMesh *grid)
+{
+    bool stopGrid0 = false;
+    if( grid->getName()=="Grid0" && goPlayer->getPlayerComponent()->getCollectibleNumber()>=1 && !stopGrid0 ){
+        elapsedTime = timer.elapsed() -elapsedTime;
+        grid->move(0.0f,gridSpeed*elapsedTime,0.0f);
+        if(grid->getWorldPosition().y()<-10.0f){
+            stopGrid0 = true;
+            elapsedTime = 0;
+        }
+    }
+    bool stopGrid1 = false;
+    if( grid->getName()=="Grid1" && goPlayer->getPlayerComponent()->getCollectibleNumber()>=5 && !stopGrid1){
+        elapsedTime = timer.elapsed() -elapsedTime;
+        grid->move(0.0f,gridSpeed*elapsedTime,0.0f);
+        if(grid->getWorldPosition().y()<-10.0f){
+            stopGrid1 = true;
+            elapsedTime = 0;
+        }
+    }
+    bool stopGrid2 = false;
+    if( grid->getName()=="Grid2"&& goPlayer->getPlayerComponent()->getCollectibleNumber()>=15 && !stopGrid2){
+        elapsedTime = timer.elapsed() -elapsedTime;
+        grid->move(0.0f,gridSpeed*elapsedTime,0.0f);
+        if(grid->getWorldPosition().y()<-10.0f){
+            stopGrid2 = true;
+        }
+    }
+
+
+}
+
+void SceneGraph::rotateRing(GameObjectMesh *ring)
+{
+    ring->rotate(QVector3D(0.0f,1.0f,0.0f),timer.elapsed()/10);
+}
+

@@ -4,7 +4,6 @@ layout (location = 0) out vec4 gPosition;
 layout (location = 1) out vec3 gNormal;
 layout (location = 2) out vec4 gDiffuse;
 layout (location = 3) out vec4 gBloom;
-layout (location = 4) out vec4 gLightSpacePos;
 
 in vec4 v_pos;
 in vec4 v_viewPos;
@@ -66,7 +65,6 @@ void main(void)
     vec3 faceNormal = normalize( cross( xTangent, yTangent ) );
 
     gNormal = normalize(faceNormal);
-    gLightSpacePos = v_lightSpacePos;
 
     if( terrain )
         gDiffuse = totalColour ;

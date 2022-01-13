@@ -4,7 +4,6 @@ SoundEngine::SoundEngine(){
 
 }
 
-
 void SoundEngine::ost(){
     QMediaPlaylist *playlist = new QMediaPlaylist();
     playlist->addMedia(QUrl::fromLocalFile(

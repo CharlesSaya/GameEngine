@@ -188,16 +188,9 @@ void RenderingEngine::initGBufferFBO()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, gBloom, 0);
 
-    // light space pos buffer
-    glGenTextures(1, &gLightSpace);
-    glBindTexture(GL_TEXTURE_2D, gLightSpace);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, screenWidth, screenHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT4, GL_TEXTURE_2D, gLightSpace, 0);
 
-    unsigned int attachments[5] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4 };
-    glDrawBuffers(5, attachments);
+    unsigned int attachments[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
+    glDrawBuffers(4, attachments);
 
     // depth render buffer
     glGenRenderbuffers( 1, &depthRBO );
@@ -322,11 +315,6 @@ void RenderingEngine::initPostProcessShader(){
     glActiveTexture( GL_TEXTURE4 );
     glBindTexture( GL_TEXTURE_2D, gBloom );
     postProcessShader->setUniformValue("bloomTexture", 4);
-
-    glActiveTexture( GL_TEXTURE5 );
-    glBindTexture( GL_TEXTURE_2D, gLightSpace );
-    postProcessShader->setUniformValue("lightSpacePosTexture", 5);
-
 
 }
 
@@ -543,7 +531,6 @@ void RenderingEngine::renderScene( SceneGraph &sceneGraph,  float deltaTime ){
     glEnable(GL_DEPTH_TEST);
 
 }
-
 
 /**
  * @brief Génère la géométrie d'un quad

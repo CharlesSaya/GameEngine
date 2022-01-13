@@ -39,7 +39,7 @@ private:
     uint m_shadowMapFBO = 0;
     uint m_shadowMapTex = 0;
 
-    uint gFBO = 0, gPosition, gNormal, gColor, gDiffuse, gBloom, gLightSpace, depthRBO;
+    uint gFBO = 0, gPosition, gNormal, gColor, gDiffuse, gBloom, depthRBO;
 
     uint blurVFbo = 0 , blurHFbo  = 0, blurVTexture, blurTexture;
 
