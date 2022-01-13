@@ -1,8 +1,16 @@
 #include "headers/render/renderText.h"
 
+// Classe permettant de générer du texte sur l'écran
+
+
 RenderText::RenderText(){
 
 }
+
+/**
+ * @brief Constructeur
+ * @param fontAtlas
+ */
 
 RenderText::RenderText( Texture &fontAtlas ){
     this->context = QOpenGLContext::currentContext();
@@ -13,6 +21,9 @@ RenderText::RenderText( Texture &fontAtlas ){
     this->initTexture();
 }
 
+/**
+ * @brief Initialise les VertexBuffers
+ */
 void RenderText::initBuffers(){
 
     this->vBuffer = QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
@@ -22,6 +33,10 @@ void RenderText::initBuffers(){
     this->tBuffer.create();
 
 }
+
+/**
+ * @brief Initialise la texture représentant la police de texte
+ */
 
 void RenderText::initTexture(){
 
@@ -37,6 +52,15 @@ void RenderText::initTexture(){
     glFuncs->glTexImage2D( GL_TEXTURE_2D , 0, GL_RGBA, 512, 512, 0, GL_RGBA, GL_UNSIGNED_BYTE, this->fontAtlas.getImage().constBits());
     glFuncs->glGenerateMipmap(GL_TEXTURE_2D);
 }
+
+/**
+ * @brief Dessinne un message à l'écran à la position souhaitée
+ * @param text
+ * @param position
+ * @param screenFormat
+ * @param size
+ * @param shader
+ */
 
 void RenderText::renderText( std::string text, QVector2D position, QVector2D screenFormat, int size, Shader * shader  ){
     qDebug() << this->fontAtlas.getImage().width() << this->fontAtlas.getImage().height();

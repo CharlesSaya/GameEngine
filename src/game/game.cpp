@@ -83,7 +83,7 @@ void Game::initGame(){
 
     plainArea = new GameObject("plainArea",terrainGO);
     desertArea = new GameObject("desertArea",terrainGO);
-    moutainArea = new GameObject("moutainArea",terrainGO);
+    mountainArea = new GameObject("mountainArea",terrainGO);
 
     // Player Game Object  ------------------------------------------------------------------------------
 
@@ -195,7 +195,7 @@ void Game::initGame(){
 
     for(int i = 0 ;i<positionsTreeSnow.size();i++ ){
         Mesh treeMesh =Mesh( snowyObj[rand()%snowyObj.size()], treeSnowTextures, shader, white, false );
-        GameObjectMesh * treeGO = new GameObjectMesh( "Tree" + std::to_string(i), new MeshRenderer( treeMesh, this  ), new ColliderComponent( this ), false,moutainArea );
+        GameObjectMesh * treeGO = new GameObjectMesh( "Tree" + std::to_string(i), new MeshRenderer( treeMesh, this  ), new ColliderComponent( this ), false,mountainArea );
         treeGO->scale( scalesTreeSnow[i] );
         treeGO->move( positionsTreeSnow[i] );
 //        treeGO->getColliderComponent()->
@@ -282,7 +282,6 @@ void Game::initGame(){
 
         for(int i = 0 ;i<positionsBox.size();i++ ){
              scalesBox.push_back( 0.2);
-
         }
 
         for(int i = 0 ;i<positionsBox.size();i++ ){
@@ -370,11 +369,9 @@ void Game::initGame(){
         positionsTree.push_back(getHeightObject(108.91,9.10252 ));
         positionsTree.push_back(getHeightObject(102.289,6.81778 ));
 
-
         for(int i = 0 ;i<positionsTree.size();i++ ){
             scalesTree.push_back( 0.2 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(0.6))));
         }
-
 
         for(int i = 0 ;i<positionsTree.size();i++ ){
             scalesTree.push_back( 0.2 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(0.7))));
@@ -455,9 +452,9 @@ void Game::initGame(){
         QVector<float> scalesDesertHouse;
 
         //Land
+
         positionsDesertHouse.push_back(getHeightObject(84.500,61.3606 ));
         positionsDesertHouse.push_back(getHeightObject(79.1818,58.7066 ));
-
 
         for(int i = 0 ;i<positionsDesertHouse.size();i++ ){
             scalesDesertHouse.push_back(0.30);
@@ -503,7 +500,7 @@ void Game::initGame(){
         tunnelGO->move( 120.959,-10.0f,225.183 );
         this->goMeshes.push_back( tunnelGO );
 
-        //    outdoorField  ------------------------------------------------------------------------------
+        //  zzzzzzzz outdoorField  ------------------------------------------------------------------------------
 
         string planObj;
         planObj= "../GameEngine/objects/outdoorField/";
@@ -512,7 +509,7 @@ void Game::initGame(){
         Mesh planMesh =Mesh(planObj,  vector<Texture>(), shader, white, false );
         GameObjectMesh * planGO = new GameObjectMesh( "plan", new MeshRenderer(planMesh, this  ), new ColliderComponent( this ), new PhysicsComponent(physicsEngine, this ) ,false );
         planGO->move( 0.0,-0.3f,0.0 );
-        this->goMeshes.push_back( planGO );
+//        this->goMeshes.push_back( planGO );
 
         // grid  ------------------------------------------------------------------------------
 
@@ -608,7 +605,7 @@ void Game::initGame(){
 
     connect( this, &Game::sendMouseMoved, cameraMove, &MoveComponent::mouseMoveEvent );
 
-    mainCameraGO = new GameObjectCamera("Main camera",camera,cameraMove,cameraPhysics,cameraCollider, playerGO  );
+    mainCameraGO = new GameObjectCamera("Main camera",camera,cameraMove,cameraPhysics,cameraCollider, playerGO );
     mainCameraGO->move(0.0f,0.0f,1.0f);
     mainCameraGO->updateCameraPosition();
 

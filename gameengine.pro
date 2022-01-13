@@ -13,7 +13,6 @@ SOURCES += src/game/main.cpp \
     src/core/moveComponent.cpp \
     src/core/objLoader.cpp \
     src/core/physicsComponent.cpp \
-    src/core/player.cpp \
     src/core/playerComponent.cpp \
     src/core/soundEngine.cpp \
     src/game/MainWindow.cpp \
@@ -51,7 +50,6 @@ HEADERS += \
     headers/core/moveComponent.h \
     headers/core/objloader.h \
     headers/core/physicsComponent.h \
-    headers/core/player.h \
     headers/core/playerComponent.h \
     headers/core/soundEngine.h \
     headers/dirent.h \

@@ -1,5 +1,15 @@
 #include "headers/core/gameObjectPlayer.h"
 
+/**
+ * @brief GameObjectPlayer::GameObjectPlayer
+ * @param name
+ * @param meshRenderer
+ * @param moveComponent
+ * @param physicsComponent
+ * @param colliderComponent
+ * @param playerComponent
+ * @param parent
+ */
 
 GameObjectPlayer::GameObjectPlayer( std::string name, MeshRenderer * meshRenderer, MoveComponent * moveComponent, PhysicsComponent * physicsComponent, ColliderComponent * colliderComponent,PlayerComponent * playerComponent,  GameObject * parent ){
 
@@ -17,6 +27,10 @@ GameObjectPlayer::GameObjectPlayer( std::string name, MeshRenderer * meshRendere
         parent->addChild( this );
 }
 
+/**
+ * @brief Initialise les connexions Signaux/Slots
+ */
+
 void GameObjectPlayer::initSignalsSlots(){
 
     connect( moveComponent, &MoveComponent::move, physicsComponent, &PhysicsComponent::hasMoved );
@@ -29,9 +43,11 @@ void GameObjectPlayer::initSignalsSlots(){
 
     connect( moveComponent, &MoveComponent::moveChild, playerComponent, &PlayerComponent::hasMovedChild );
     connect( moveComponent, &MoveComponent::stopChild, playerComponent, &PlayerComponent::hasStoppedChild );
-
-
 }
+
+/**
+ * @brief Slot activé lorsque l'objet a été déplacé
+ */
 
 void GameObjectPlayer::hasTransformed(){
     QMatrix4x4 tr, rt, sc;
@@ -41,6 +57,7 @@ void GameObjectPlayer::hasTransformed(){
     emit updatePlayerComponent( this->getWorldPosition(), this->getTransform()->getRotation() * direction );
 }
 
+// Signals & Slots
 
 PlayerComponent *GameObjectPlayer::getPlayerComponent() const
 {

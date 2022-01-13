@@ -27,12 +27,13 @@ public:
     void updatePhysics( float step, GameObject * go, Terrain & terrain );
     void updatePhysicsMesh( float step, GameObject * go );
     void stop();
-    PhysicsEngine &physicsEngine;
 
     void move(Transform & transform);
     void rotate();
 
     bool atRest();
+    bool playerIsOnGround();
+
     // Getters & Setters
 
     const QVector3D &getVelocity() const;
@@ -50,7 +51,6 @@ public:
     bool getResting() const;
     void setResting(bool newResting);
 
-    bool playerIsOnGround();
 private:
 
     float speed = 1.0f    ;
@@ -63,7 +63,6 @@ private:
     float height;
 
     bool resting = false;
-
     bool canJump = false;
 
     QSet<uint> inputsMoves;
@@ -80,6 +79,8 @@ private:
     QVector3D left     = QVector3D( -speed, 0.0 , 0.0    );
     QVector3D jump     = QVector3D( 0.0, 5. * speed , 0.0    );
     QVector3D dive     = QVector3D( 0.0, -speed , 0.0    );
+
+    PhysicsEngine &physicsEngine;
 
 };
 

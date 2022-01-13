@@ -5,6 +5,12 @@ CoreEngine::CoreEngine(){
 
 }
 
+/**
+ * @brief Constructeur
+ * @param frames
+ * @param parent
+ */
+
 CoreEngine::CoreEngine(int frames, QWidget *parent) :
     QOpenGLWidget(parent),
     frames(frames)
@@ -22,30 +28,48 @@ CoreEngine::CoreEngine(int frames, QWidget *parent) :
     mousePressPosition =QVector2D( width()/2, height()/2 );
 }
 
+/**
+ * @brief Slot activé par l'appui d'une touche de souris
+ * @param event
+ */
+
 void CoreEngine::mousePressEvent( QMouseEvent *event){
 
     this->game->pressedMouse( event );
 
 }
 
+/**
+ * @brief Slot activé par le relachement d'une touche de souris
+ * @param event
+ */
+
 void CoreEngine::mouseReleaseEvent( QMouseEvent *event){
     this->game->releasedMouse( event );
 
 }
 
+/**
+ * @brief Slot récupérant les évenements de la molette
+ * @param event
+ */
+
 void CoreEngine::wheelEvent(QWheelEvent *event){
     this->game->mouseWheel( event );
 }
+
+/**
+ * @brief Slot activé par le mouvement de la souris souris
+ * @param e
+ */
 
 void CoreEngine::mouseMoveEvent(QMouseEvent *e){
     if( e->localPos().x() > this->width() -10. || e->localPos().x() < 10. ){
         this->cursor().setPos( mapToGlobal( QPoint( this->width()/2, e->localPos().y() ) ) );
         this->game->mouseMoved( QVector2D( this->cursor().pos() ), true, false );
     }else if ( e->localPos().y() > this->height() -10. || e->localPos().y() < 10. ){
-        qDebug() << mapToGlobal( QPoint( e->localPos().x(), e->localPos().y() ) );
         this->cursor().setPos( mapToGlobal( QPoint( e->localPos().x(), this->height()/2 ) ) );
         this->game->mouseMoved( QVector2D( this->cursor().pos() ), false, true );
-        qDebug() << this->cursor().pos();
 
     }
     else
@@ -53,6 +77,10 @@ void CoreEngine::mouseMoveEvent(QMouseEvent *e){
 
 }
 
+/**
+ * @brief Slot activé par l'appui d'une touche de souris
+ * @param key
+ */
 
 void CoreEngine::keyPressEvent(QKeyEvent *key){
     float movementSpeed = deltaTime;
@@ -60,10 +88,19 @@ void CoreEngine::keyPressEvent(QKeyEvent *key){
 
 }
 
+/**
+ * @brief Slot activé par le relachement d'une touche de souris
+ * @param key
+ */
+
 void CoreEngine::keyReleaseEvent(QKeyEvent *key){
     this->game->keyReleased( key );
 
 }
+
+/**
+ * Event activé à chaque boucle de rendu
+ */
 
 void CoreEngine::timerEvent(QTimerEvent *)
 {
@@ -78,6 +115,10 @@ void CoreEngine::timerEvent(QTimerEvent *)
     update();
 }
 
+/**
+ * @brief Initialise les fonctions et le contexte d'OpenGL
+ */
+
 void CoreEngine::initializeGL(){
     initializeOpenGLFunctions();
     glClearColor(0, 0, 0, 1);
@@ -85,13 +126,17 @@ void CoreEngine::initializeGL(){
 
 //       glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
 
-
-    //Start timer   -------------------------------------------------------------------------------
     time.start();
     timer.start( this->renderStep, this );
     initGame();
 
 }
+
+/**
+ * @brief Slots appelé lorsque la fenêtre se redimensionne
+ * @param w
+ * @param h
+ */
 
 void CoreEngine::resizeGL(int w, int h)
 {
@@ -101,14 +146,15 @@ void CoreEngine::resizeGL(int w, int h)
     renderingEngine.screenResized( this->width(), this->height() );
 }
 
+/**
+ * @brief Initialisation du jeu
+ */
+
 void CoreEngine::initGame(){
 
-    // Physics Engine  -----------------------------------------------------------------------
     physicsEngine = PhysicsEngine( this->fixedStep );
     colliderEngine = ColliderEngine( this->fixedStep );
     renderingEngine = RenderingEngine( this->renderStep );
-
-    // Game  --------------------------------------------------------------------------------
 
     this->game->setCamera( camera );
     this->game->setPhysicsEngine( physicsEngine );
@@ -117,6 +163,10 @@ void CoreEngine::initGame(){
     this->game->initGame();
 
 }
+
+/**
+ * @brief Fonction permettant l'affichage de la scène sur l'écran
+ */
 
 void CoreEngine::paintGL()
 {

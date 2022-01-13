@@ -100,7 +100,7 @@ private:
 
     GameObject * plainArea ;
     GameObject * desertArea ;
-    GameObject * moutainArea ;
+    GameObject * mountainArea ;
 
     Shader * shader ;
     Shader * terrainShader;

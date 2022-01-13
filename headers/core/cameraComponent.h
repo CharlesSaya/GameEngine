@@ -12,11 +12,6 @@
 class CameraComponent : public QObject {
     Q_OBJECT
 
-public slots:
-
-
-protected:
-    bool eventFilter( QObject * obj, QEvent * event );
 
 private:
     float fov, zFar, zNear;
@@ -49,8 +44,6 @@ public:
                     float zNear, float zFar, QObject * parent = 0  );
 
     void updatePosition(const QMatrix4x4& model);
-
-    void move( QVector3D axis );
 
     void rotate( float pitch, float yaw );
     void setCameraTarget(QVector3D cameraTarget);

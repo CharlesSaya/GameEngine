@@ -55,7 +55,7 @@ class AABB {
         void drawAABB( Shader * shader );
 
         void updateAABB( const  QMatrix4x4 &model );
-        bool intersect(const Ray & ray);
+        bool intersectRay(const Ray & ray);
         // Getters & setters
 
         int getIndexCount() const;

@@ -12,13 +12,12 @@ in vec2 v_texcoord;
 
 uniform bool terrain;
 
-
-uniform sampler2D tex0; // snow
-uniform sampler2D tex1; // rock
-uniform sampler2D tex2; // grass
-uniform sampler2D tex3; // plateau
-uniform sampler2D tex4; // sand
-uniform sampler2D tex5; // hill
+uniform sampler2D tex0;
+uniform sampler2D tex1;
+uniform sampler2D tex2;
+uniform sampler2D tex3;
+uniform sampler2D tex4;
+uniform sampler2D tex5;
 
 uniform sampler2D blendmapTop;      // blendmap top
 uniform sampler2D blendmapMiddle; // blendmap middle
@@ -55,8 +54,6 @@ void main(void)
                           texture(tex4, v_texcoord) * blendMapMiddleColour.b+
                           texture(tex2, v_texcoord) * blendMapBottomColour.b;
 
-
-//    vec4 backgroundTextureColour = texture(tex2,v_texcoord) * backTextureAmount;
 
     vec4 totalColour = rTextureColour + gTextureColour + bTextureColour;
 

@@ -32,5 +32,6 @@
         <file>objects/pillar/pillar.obj</file>
         <file>objects/ring/ring.obj</file>
         <file>objects/Doraemon/Doraemon.obj</file>
+        <file>objects/tails/tails.obj</file>
     </qresource>
 </RCC>

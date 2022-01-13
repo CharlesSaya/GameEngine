@@ -1,9 +1,15 @@
 #include "headers/render/renderingEngine.h"
 
+// Classe définissant le moteur de rendu
+
 RenderingEngine::RenderingEngine(){
 
 }
 
+/**
+ * @brief Constructeur
+ * @param renderStep
+ */
 RenderingEngine::RenderingEngine( float renderStep ){
     this->step = renderStep;
     this->context = QOpenGLContext::currentContext();
@@ -37,12 +43,17 @@ RenderingEngine::RenderingEngine( float renderStep ){
     initTextRendering();
 }
 
+/**
+ * @brief Initialise le générateur de texte à l'écran
+ */
 void RenderingEngine::initTextRendering(){
     Texture fontAtlas = Texture( "../GameEngine/textures/ExportedFont.png", "fontAtlas" );
     textGenerator = RenderText( fontAtlas );
 }
 
-// INIT POINT LIGHTS
+/**
+ * @brief Init pointLights
+ */
 
 void RenderingEngine::initPointLights(){
     const unsigned int NR_LIGHTS = 0;
@@ -58,7 +69,9 @@ void RenderingEngine::initPointLights(){
     }
 }
 
-// CONFIGURE PARTICLES
+/**
+ * @brief Initialise les générateurs de particules
+ */
 
 void RenderingEngine::initParticles(){
 
@@ -68,6 +81,7 @@ void RenderingEngine::initParticles(){
 
     snowGenerator = ParticleGenerator( 3000, QVector3D( 0.0, 0., 97 ), QVector3D( 1.0, 0.0, 0.0 ), snowColor,  true );
     snowGenerator.setRange( 31 );
+    
     // SAND PARTICLES
 
     sandPointGenerator = ParticleGenerator( 1500, QVector3D( 0.0, 0., 52. ), QVector3D( 1.0, 0.0, 0.0 ), sandColor, true );
@@ -91,7 +105,10 @@ void RenderingEngine::initParticles(){
     leavesGenerator.setRange( 18 );
 
 }
-// CONFIGURE LENS FLARE
+
+/**
+ * @brief Initialise le générateur de Lens Flare
+ */
 
 void RenderingEngine::initLensFlares(){
 
@@ -121,28 +138,6 @@ void RenderingEngine::initLensFlares(){
 
 }
 
-void RenderingEngine::generateQuad(){
-
-    if (quadVAO == 0)
-     {
-         float quadVertices[] = {
-             -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-             -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-              1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
-              1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-         };
-
-         glGenVertexArrays(1, &quadVAO);
-
-         glGenBuffers(1, &quadVBO);
-         glBindVertexArray(quadVAO);
-
-         glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
-         glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
-
-     }
-
-}
 
 // CONGIFURE FBO
 
@@ -181,12 +176,12 @@ void RenderingEngine::initGBufferFBO()
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, gDiffuse, 0);
 
     // bloom buffer
-//    glGenTextures(1, &gBloom);
-//    glBindTexture(GL_TEXTURE_2D, gBloom);
-//    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, screenWidth, screenHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-//    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, gBloom, 0);
+    glGenTextures(1, &gBloom);
+    glBindTexture(GL_TEXTURE_2D, gBloom);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, screenWidth, screenHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, gBloom, 0);
 
     unsigned int attachments[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
     glDrawBuffers(4, attachments);
@@ -486,6 +481,8 @@ void RenderingEngine::renderScene( SceneGraph &sceneGraph,  float deltaTime ){
     glEnable(GL_DEPTH_TEST);
 
 }
+
+// Getters & Se
 
 GameObjectCamera *RenderingEngine::getMainCamera() const
 {

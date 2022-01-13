@@ -1,9 +1,22 @@
 #include "headers/core/meshrenderer.h"
 
+/**
+ * @brief Constructeur
+ * @param mesh
+ * @param parent
+ */
 
 MeshRenderer::MeshRenderer( Mesh &mesh, QObject * parent ) {
     this->mesh = mesh;
 }
+
+/**
+ * @brief Dessine le mesh associé au MeshRenderer
+ * @param transform
+ * @param model
+ * @param camera
+ * @param shader
+ */
 
 void MeshRenderer::renderMesh( Transform & transform, const QMatrix4x4& model, CameraComponent * camera, Shader * shader ) {
 
@@ -34,10 +47,16 @@ void MeshRenderer::renderMesh( Transform & transform, const QMatrix4x4& model, C
     this->mesh.unbindTextures();
    }
 
+/**
+ * @brief Mets à jour la BoundingBox du mesh
+ * @param model
+ */
 
 void MeshRenderer::updateAABB( const QMatrix4x4& model )  {
     this->mesh.updateAABB( model );
 }
+
+// Getters & Setters
 
 void MeshRenderer::setLightSpaceMatrix(const QMatrix4x4 & lightSpaceMatrix){
     this->lightSpaceMatrix = lightSpaceMatrix;

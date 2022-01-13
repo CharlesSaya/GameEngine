@@ -5,16 +5,20 @@ PhysicsComponent::PhysicsComponent( PhysicsEngine &physicsEngine,  QObject * par
 
 }
 
+/**
+ * @brief Mets à jour la physique ( vitesse, position  du joueur
+ * @param step
+ * @param go
+ * @param terrain
+ */
 
 void PhysicsComponent::updatePhysics( float step,  GameObject * go, Terrain &terrain ){
 
     worldPos= go->getWorldPosition();
     height = terrain.getHeightOfTerrain( worldPos );
 
-    if(playerIsOnGround()&& !(height > worldPos.y() && acos( QVector3D::dotProduct( terrain.getFaceNormalAtPosition( worldPos ), QVector3D( 0.0, 1.0, 0.0) ) ) * 180 / M_PI > 60.0)|| getResting())
-        canJump=true;
+    if(playerIsOnGround()&& !(height > worldPos.y() && acos( QVector3D::dotProduct( terrain.getFaceNormalAtPosition( worldPos ), QVector3D( 0.0, 1.0, 0.0) ) ) * 180 / M_PI > 60.0)|| getResting()) canJump=true;
     else canJump =false;
-
 
     move(*go->getTransform());
     acceleration = - physicsEngine.getDamp() * velocity;
@@ -25,7 +29,6 @@ void PhysicsComponent::updatePhysics( float step,  GameObject * go, Terrain &ter
     acceleration /= mass;
 
     QVector3D newVelocity  = velocity + acceleration * step;
-
 
     QVector3D meanSpeed = (velocity + newVelocity) / 2.0 ;
 
@@ -45,6 +48,12 @@ void PhysicsComponent::updatePhysics( float step,  GameObject * go, Terrain &ter
 
 
 }
+
+/**
+ * @brief Mets à jour la physique ( vitesse, position ) d'un Mesh si nécessaire
+ * @param step
+ * @param go
+ */
 
 void PhysicsComponent::updatePhysicsMesh( float step,  GameObject * go ){
 
@@ -69,6 +78,10 @@ void PhysicsComponent::updatePhysicsMesh( float step,  GameObject * go ){
 
 }
 
+/**
+ * @brief Mets à jour la vélocité actuelle en fonction des inputs du joueur
+ * @param transform
+ */
 
 void PhysicsComponent::move(Transform & transform){
     for( uint i : inputsMoves ){
@@ -104,9 +117,29 @@ void PhysicsComponent::move(Transform & transform){
     }
 }
 
+/**
+ * @brief Prédicat pour récupérer l'état de repos d'un joueur
+ * @return
+ */
+
 bool PhysicsComponent::atRest(){
     return resting;
 }
+
+/**
+ * @brief Prédicat pour récupérer l'état grounded d'un joueur
+ * @return
+ */
+
+bool PhysicsComponent::playerIsOnGround(){
+     if(worldPos.y() - height < 0.3 )
+             return true;
+     else return false;
+}
+
+/**
+ * @brief Mets à nul la vitesse du joueur
+ */
 
 void PhysicsComponent::stop()
 {
@@ -114,6 +147,29 @@ void PhysicsComponent::stop()
     else
     velocity = QVector3D();
 
+}
+
+
+// Signals & Slots
+
+/**
+ * @brief Slot activé lorsque que le joueur appuie sur une touche de mouvement
+ * @param inputsMoves
+ */
+
+void PhysicsComponent::hasMoved( QSet<uint> inputsMoves ){
+    this->inputsMoves = inputsMoves;
+//    resting = false;
+}
+
+/**
+ * @brief Slot activé lorsque que le joueur relâche une touche de mouvement
+ * @param inputsMoves
+ */
+
+void PhysicsComponent::hasStopped( QSet<uint> inputsMoves ){
+    this->inputsMoves = inputsMoves;
+    stop();
 }
 
 // Getters & Setters
@@ -168,17 +224,4 @@ void PhysicsComponent::setFriction(float newFriction)
     friction = newFriction;
 }
 
-bool PhysicsComponent::playerIsOnGround(){
-     if(worldPos.y() - height < 0.7 )return true;
-     else return false;
-}
 
-void PhysicsComponent::hasMoved( QSet<uint> inputsMoves ){
-    this->inputsMoves = inputsMoves;
-//    resting = false;
-}
-
-void PhysicsComponent::hasStopped( QSet<uint> inputsMoves ){
-    this->inputsMoves = inputsMoves;
-    stop();
-}

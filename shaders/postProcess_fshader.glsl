@@ -39,8 +39,7 @@ float shadowCalculation(vec4 fragPosLightSpace, vec3 normal)
 
     float currentDepth = projCoords.z;
 
-    float bias = max(0.05 * (1.0 - dot(normal, normalize(-directionalLight.direction))), 0.5);
-
+    float bias = max(0.05 * (1.0 - dot(normal, normalize(-directionalLight.direction))), 0.005);
     float shadow = 0.0;
     vec2 texelSize = 1.0 / textureSize(shadowTexture, 0);
     for(int x = -1; x <= 1; ++x)
@@ -57,6 +56,7 @@ float shadowCalculation(vec4 fragPosLightSpace, vec3 normal)
         shadow = 0.0;
 
     return shadow;
+
 }
 
 vec3 colorDirectionalLight(DirectionalLight light, vec3 normal, vec3 pos, vec4 lightSpacePos )
@@ -76,9 +76,10 @@ vec3 colorDirectionalLight(DirectionalLight light, vec3 normal, vec3 pos, vec4 l
 
     vec3 ambient = 0.4 * color.xyz * light.lightColor;
 
-    float shadow = shadowCalculation(lightSpacePos, normal);
+    float shadow = shadowCalculation( lightSpacePos, normal);
 
-    return  ambient + ( 1.0 - shadow ) * ( lambertian +  specular );
+    return  ambient +  ( 1.0 -  shadow )* ( lambertian +  specular );
+
 }
 
 vec3 colorPointLight(PointLight light, vec3 normal, vec3 pos, vec4 lightSpacePos )
@@ -117,16 +118,14 @@ void main()
     vec3 viewDir       = normalize( cameraPosition - pos.rgb);
     vec3 normal        = normalize( texture( normalTexture, v_texcoord.xy ).rgb);
 
-    vec3 xTangent = vec4(dFdx( view * pos )).xyz;
-    vec3 yTangent = vec4(dFdy( view * pos )).xyz;
-    vec3 faceNormal = normalize( cross( xTangent, yTangent ) );
-
     vec3 color = colorDirectionalLight( directionalLight, normal, pos.rgb, lightSpacePos );
 
-    for(int i = 0; i < 1; i++)
-        color += colorPointLight( pointLights[i], normal, pos.rgb, lightSpacePos);
 
-    gl_FragColor = vec4( color + texture( bloomTexture, v_texcoord ).xyz, 1.0 );
+//    for(int i = 0; i < 1; i++)
+//        color += colorPointLight( pointLights[i], normal, pos.rgb, lightSpacePos);
+
+//    gl_FragColor = vec4( color , 1.0 );
+    gl_FragColor = vec4( color , 1.0 );
 
 }
 //! [0]

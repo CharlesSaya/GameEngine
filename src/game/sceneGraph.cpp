@@ -149,7 +149,6 @@ void SceneGraph::destroyGOs(){
  */
 void SceneGraph::render( GameObjectCamera * camera, Shader * shader  ){
 
-
     this->renderMesh( goPlayer, camera, shader );
     goPlayer->getPlayerComponent()->drawRay( camera->getCameraComponent()->getViewMatrix(), camera->getCameraComponent()->getProjection() );
 
@@ -229,7 +228,7 @@ void SceneGraph::updateALLBVH(){
  * detect collision ray/BVH collision
  */
 void SceneGraph::rayBVHCollision( Node * node ){
-    bool collision = node->nodeBoundingBox.intersect( goPlayer->getPlayerComponent()->getRay() );
+    bool collision = node->nodeBoundingBox.intersectRay( goPlayer->getPlayerComponent()->getRay() );
     if( node->children.empty() && collision ){
         goPlayer->getPlayerComponent()->telekinesis( goPlayer, node->gameObject );
 
@@ -241,7 +240,7 @@ void SceneGraph::rayBVHCollision( Node * node ){
             if( ( childNode->gameObject->getName() == goPlayer->getName() ) )
                 continue;
 
-            bool collision = childNode->nodeBoundingBox.intersect( goPlayer->getPlayerComponent()->getRay() );
+            bool collision = childNode->nodeBoundingBox.intersectRay( goPlayer->getPlayerComponent()->getRay() );
             if( collision ){
                 rayBVHCollision( childNode );
             }

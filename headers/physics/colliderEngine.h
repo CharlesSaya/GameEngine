@@ -43,7 +43,6 @@ public:
         if( node->children.empty() && ( node->gameObject->getName() != go->getName() )){
 //            qDebug()<<(node->gameObject->getName().c_str() );
             if ( collision ){
-
                 // Test if the collided object is a collectible
                 if ( go->getName() == "Player" &&  node->gameObject->getIsCollectible()  ){
                     dynamic_cast<GameObjectPlayer*>(go)->getPlayerComponent()->addCollectible();
@@ -77,10 +76,16 @@ public:
 
 
             for( Node * childNode : node->children ){
+
                 if( ( childNode->gameObject->getName() == go->getName() ) )
                     continue;
+
                 bool collision = intersectAABB( go->getMeshRenderer()->getMesh().getAABB(), childNode->nodeBoundingBox );
+
                 if( collision ){
+
+                    if( go->getName() == "Player" )
+                        qDebug() <<  childNode->gameObject->getName().c_str() << childNode->nodeBoundingBox.getMin() << childNode->nodeBoundingBox.getMax() ;
 
                     if ( childNode->gameObject->getName() == "Terrain"){
 
