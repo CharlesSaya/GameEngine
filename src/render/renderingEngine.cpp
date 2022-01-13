@@ -1,9 +1,15 @@
 #include "headers/render/renderingEngine.h"
 
+// Classe définissant le moteur de rendu
+
 RenderingEngine::RenderingEngine(){
 
 }
 
+/**
+ * @brief Constructeur
+ * @param renderStep
+ */
 RenderingEngine::RenderingEngine( float renderStep ){
     this->step = renderStep;
     this->context = QOpenGLContext::currentContext();
@@ -37,12 +43,17 @@ RenderingEngine::RenderingEngine( float renderStep ){
     initTextRendering();
 }
 
+/**
+ * @brief Initialise le générateur de texte à l'écran
+ */
 void RenderingEngine::initTextRendering(){
     Texture fontAtlas = Texture( "../GameEngine/textures/ExportedFont.png", "fontAtlas" );
     textGenerator = RenderText( fontAtlas );
 }
 
-// INIT POINT LIGHTS
+/**
+ * @brief Init pointLights
+ */
 
 void RenderingEngine::initPointLights(){
     const unsigned int NR_LIGHTS = 0;
@@ -58,7 +69,9 @@ void RenderingEngine::initPointLights(){
     }
 }
 
-// CONFIGURE PARTICLES
+/**
+ * @brief Initialise les générateurs de particules
+ */
 
 void RenderingEngine::initParticles(){
 
@@ -68,6 +81,7 @@ void RenderingEngine::initParticles(){
 
     snowGenerator = ParticleGenerator( 3000, QVector3D( 0.0, 0., 97 ), QVector3D( 1.0, 0.0, 0.0 ), snowColor,  true );
     snowGenerator.setRange( 31 );
+
     // SAND PARTICLES
 
     sandPointGenerator = ParticleGenerator( 1500, QVector3D( 0.0, 0., 52. ), QVector3D( 1.0, 0.0, 0.0 ), sandColor, true );
@@ -91,7 +105,10 @@ void RenderingEngine::initParticles(){
     leavesGenerator.setRange( 18 );
 
 }
-// CONFIGURE LENS FLARE
+
+/**
+ * @brief Initialise le générateur de Lens Flare
+ */
 
 void RenderingEngine::initLensFlares(){
 
@@ -121,30 +138,13 @@ void RenderingEngine::initLensFlares(){
 
 }
 
-void RenderingEngine::generateQuad(){
-
-    if (quadVAO == 0)
-     {
-         float quadVertices[] = {
-             -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-             -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-              1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
-              1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-         };
-
-         glGenVertexArrays(1, &quadVAO);
-
-         glGenBuffers(1, &quadVBO);
-         glBindVertexArray(quadVAO);
-
-         glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
-         glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
-
-     }
-
-}
 
 // CONGIFURE FBO
+
+/**
+ * @brief Initialise le FBO utilisé pour le rendu des G
+ * @param sceneGraph
+ */
 
 void RenderingEngine::initGBufferFBO()
 {
@@ -181,12 +181,12 @@ void RenderingEngine::initGBufferFBO()
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, gDiffuse, 0);
 
     // bloom buffer
-//    glGenTextures(1, &gBloom);
-//    glBindTexture(GL_TEXTURE_2D, gBloom);
-//    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, screenWidth, screenHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-//    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, gBloom, 0);
+    glGenTextures(1, &gBloom);
+    glBindTexture(GL_TEXTURE_2D, gBloom);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, screenWidth, screenHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, gBloom, 0);
 
     unsigned int attachments[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
     glDrawBuffers(4, attachments);
@@ -200,6 +200,11 @@ void RenderingEngine::initGBufferFBO()
     glBindFramebuffer(GL_FRAMEBUFFER, context->defaultFramebufferObject());
 
 }
+
+/**
+ * @brief Initialise le FBO utilisé pour le blur
+ * @param sceneGraph
+ */
 
 void RenderingEngine::initBlurFBO()
 {
@@ -239,6 +244,11 @@ void RenderingEngine::initBlurFBO()
 
 }
 
+/**
+ * @brief Initialise le FBO utilisé pour le shadow mapping
+ * @param sceneGraph
+ */
+
 void RenderingEngine::initDepthFBO( SceneGraph &sceneGraph )
 {
     if(m_shadowMapFBO != 0)
@@ -272,6 +282,9 @@ void RenderingEngine::initDepthFBO( SceneGraph &sceneGraph )
 
 // CONGIFURE SHADERS
 
+/**
+ * @brief Initialise le Shader de post processing en associant les textures résultant des rendus différés
+ */
 void RenderingEngine::initPostProcessShader(){
 
     postProcessShader->useShaderProgram();
@@ -304,6 +317,9 @@ void RenderingEngine::initPostProcessShader(){
 
 }
 
+/**
+ * @brief Initialise le Shader de flou vertical
+ */
 void RenderingEngine::initVBlurShader(){
 
     blurVShader->useShaderProgram();
@@ -312,6 +328,10 @@ void RenderingEngine::initVBlurShader(){
     glBindTexture( GL_TEXTURE_2D, gBloom );
     blurVShader->setUniformValue("target", 0);
 }
+
+/**
+ * @brief Initialise le Shader de flou horizontal
+ */
 
 void RenderingEngine::initHBlurShader(){
 
@@ -323,6 +343,10 @@ void RenderingEngine::initHBlurShader(){
 
 }
 
+/**
+ * @brief Configure les Uniform des shaders
+ * @param sceneGraph
+ */
 
 void RenderingEngine::configureUniforms( SceneGraph &sceneGraph ){
     for( GameObjectMesh * go : sceneGraph.getGoMeshes()){
@@ -342,6 +366,9 @@ void RenderingEngine::configureUniforms( SceneGraph &sceneGraph ){
 
 // RENDERING FUNCTIONS
 
+/**
+ * @brief Fonction effectuant un effet de Bloom sur la scène en combinant des flous gaussiens
+ */
 void RenderingEngine::renderBloom(){
     initBlurFBO();
     initVBlurShader();
@@ -385,9 +412,12 @@ void RenderingEngine::renderBloom(){
 
 }
 
+/**
+ * @brief Fonction permettant la récupération d'une carte de profondeur
+ * @param sceneGraph
+ */
 void RenderingEngine::renderShadowMap(SceneGraph &sceneGraph)
 {
-
     initDepthFBO( sceneGraph );
 
     shadowShader->useShaderProgram();
@@ -401,6 +431,11 @@ void RenderingEngine::renderShadowMap(SceneGraph &sceneGraph)
     glViewport(0, 0, screenWidth, screenHeight);
 
 }
+
+/**
+ * @brief Fonction remplissant les G-BUFFERS lors d'une passe de rendu
+ * @param sceneGraph
+ */
 
 void RenderingEngine::renderGeometryData( SceneGraph &sceneGraph ){
 
@@ -416,6 +451,10 @@ void RenderingEngine::renderGeometryData( SceneGraph &sceneGraph ){
     glViewport(0, 0, screenWidth, screenHeight);
 
 }
+
+/**
+ * @brief Rend la scène sur un quad en combinant les rendus sur texturedd
+ */
 
 void RenderingEngine::renderPostProcess()
 {
@@ -435,15 +474,18 @@ void RenderingEngine::renderText(){
     textGenerator.renderText( "01", QVector2D( screenWidth/2.0, screenHeight/2.0 ), QVector2D( screenWidth, screenHeight ), 30.0, textShader );
 }
 
-
+/**
+ * @brief Rend la scène en appelant les différentes fonctions de rendu différé et
+ * en affichant tout ceci sur un quad
+ * @param sceneGraph
+ * @param deltaTime
+ */
 void RenderingEngine::renderScene( SceneGraph &sceneGraph,  float deltaTime ){
 
     renderShadowMap(sceneGraph);
     renderGeometryData(sceneGraph);
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-//    configureUniforms( sceneGraph );
-//    sceneGraph.render( mainCamera );
 
     // render the final scene by adding the differents FBO textures on a quad
     generateQuad();
@@ -486,6 +528,36 @@ void RenderingEngine::renderScene( SceneGraph &sceneGraph,  float deltaTime ){
     glEnable(GL_DEPTH_TEST);
 
 }
+
+
+/**
+ * @brief Génère la géométrie d'un quad
+ */
+
+void RenderingEngine::generateQuad(){
+
+    if (quadVAO == 0)
+     {
+         float quadVertices[] = {
+             -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+             -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+              1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+              1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+         };
+
+         glGenVertexArrays(1, &quadVAO);
+
+         glGenBuffers(1, &quadVBO);
+         glBindVertexArray(quadVAO);
+
+         glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+         glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+
+     }
+
+}
+
+// Getters & Setters
 
 GameObjectCamera *RenderingEngine::getMainCamera() const
 {
